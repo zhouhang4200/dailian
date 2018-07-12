@@ -11,18 +11,16 @@
     <tbody>
     @foreach($userRoles as $userRole)
         <tr class="userRole-td">
-            <td>{{ $userRole->id }}</td>
-            <td>{{ $userRole->name }}</td>
-            <td>{{ hasEmployees($userRole) }}</td>
+            <td>1</td>
+            <td>1</td>
+            <td>1</td>
             <td>
-            @foreach($userRole->newPermissions as $permission)
-            {{ $permission->alias }} &nbsp;&nbsp;
-            @endforeach
+            1
             </td>
             <td>
                 <div style="text-align: center">
-                <a href="{{ route('station.edit', ['id' => $userRole->id]) }}" class="layui-btn layui-btn-normal layui-btn-mini">编辑</a>
-                <button class="layui-btn layui-btn-normal layui-btn-mini" lay-id="{{ $userRole->id }}" lay-submit="" lay-filter='delete'>删除</button>
+                <a href="" class="qs-btn qs-btn-normal qs-btn-mini">编辑</a>
+                <button class="qs-btn qs-btn-normal qs-btn-mini" lay-id="" lay-submit="" lay-filter='delete'>删除</button>
                 </div>
             </td>
         </tr>

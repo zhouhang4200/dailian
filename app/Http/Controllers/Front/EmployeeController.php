@@ -67,22 +67,7 @@ class EmployeeController extends Controller
 
     public function groupCreate()
     {
-        // 主账号
-        $user = User::find(Auth::user()->getPrimaryUserId());
-        // 清除缓存
-        Cache::forget('permissions:user:'.$user->id);
-        // 获取此账号下的所有的权限IDS
-        $userPermissionIds = $user->getUserPermissions()->pluck('id');
-        // 获取此账号的权限以及权限模块
-//        $modulePermissions = NewModule::whereHas('newPermissions', function ($query) use ($userPermissionIds) {
-//            $query->whereIn('new_permissions.id', $userPermissionIds);
-//        })
-//            ->with(['newPermissions' => function ($query) use ($userPermissionIds) {
-//                $query->whereIn('new_permissions.id', $userPermissionIds);
-//            }])
-//            ->get();
-//
-//        return view('frontend.v1.user.station.create', compact('modulePermissions'));
+
     }
 
     public function groupStore()

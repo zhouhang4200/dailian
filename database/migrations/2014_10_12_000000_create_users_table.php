@@ -34,8 +34,7 @@ class CreateUsersTable extends Migration
             $table->dateTime('current_login_at')->comment('当前登录时间');
             $table->bigInteger('current_login_ip')->comment('当前登录IP');
             $table->rememberToken();
-            $table->dateTime('created_at')->comment('创建时间');
-            $table->dateTime('updated_at')->comment('更新时间');
+            $table->timestamps();
         });
     }
 

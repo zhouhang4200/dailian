@@ -16,8 +16,7 @@ class CreateOrderTypesTable extends Migration
         Schema::create('order_types', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 60)->comment('订单类型名称');
-            $table->dateTime('created_at')->comment('创建时间');
-            $table->dateTime('updated_at')->comment('更新时间');
+            $table->timestamps();
         });
     }
 

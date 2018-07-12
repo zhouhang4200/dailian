@@ -20,8 +20,7 @@ class CreateBalanceRechargesTable extends Migration
             $table->decimal('amount', 17, 4)->comment('交易单号');
             $table->tinyInteger('source')->comment('充值来源 1 支付宝 2微信 3 转账');
             $table->string('remark', 500)->comment('备注');
-            $table->dateTime('created_at')->comment('创建时间');
-            $table->dateTime('updated_at')->comment('更新时间');
+            $table->timestamps();
         });
     }
 

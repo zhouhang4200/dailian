@@ -16,8 +16,7 @@ class CreateGameTypesTable extends Migration
         Schema::create('game_types', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 60)->comment('类型名称');
-            $table->dateTime('created_at')->comment('创建时间');
-            $table->dateTime('updated_at')->comment('更新时间');
+            $table->timestamps();
         });
     }
 

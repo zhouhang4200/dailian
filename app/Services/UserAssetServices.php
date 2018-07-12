@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\GameLevelingOrder;
+namespace App\Services;
 
 use \Exception;
 use App\Models\User;
@@ -11,11 +11,10 @@ use App\Models\RealNameCertification;
 use Illuminate\Support\Facades\DB;
 
 /**
- * 用户资产操作
- * Class UserAssetOperation
- * @package App\Services\GameLevelingOrder
+ * 用户资产服务类
+ * Class UserAssetServices
  */
-class UserAssetOperation
+class UserAssetServices
 {
     /**
      * @var null
@@ -59,10 +58,10 @@ class UserAssetOperation
      * @param float $amount 金额
      * @param string $tradeNO 交易单号
      * @param string $remark 备注
-     * @return UserAssetOperation|null
+     * @return UserAssetServices|null
      * @throws Exception
      */
-    public static function init(int $subType, int $userId, float $amount, string $tradeNO, string $remark)
+    public static function init(int $subType, int $userId, float $amount, string $tradeNO, string $remark = null)
     {
         if (!$user = User::find($userId)) {
             throw new Exception('用户ID不合法');
@@ -73,10 +72,14 @@ class UserAssetOperation
         if (! $tradeNO) {
             throw new Exception('交易单号不合法');
         }
-        self::$subType = $subType;
+        if (! in_array($subType, array_flip(config('user_asset_type.sub_type')))) {
+            throw new Exception('子类型不存在');
+        }
+        self::$type    = (int) substr($subType, 0, 1);
+        self::$subType = (int) $subType;
         self::$amount  = $amount;
         self::$tradeNO = $tradeNO;
-        self::$remark  = $remark;
+        self::$remark  = config('user_asset_type.sub_type')[$subType];
         self::$userId  = $user->parent_id;
 
         if (self::$instance === null) {
@@ -90,8 +93,6 @@ class UserAssetOperation
      */
     public function recharge()
     {
-        self::$type = 1;
-
         DB::beginTransaction();
         try {
             $userAsset = UserAsset::where('user_id', self::$userId)->lockForUpdate()->first();
@@ -113,8 +114,6 @@ class UserAssetOperation
      */
     public function withdraw()
     {
-        self::$type = 2;
-
         DB::beginTransaction();
         try {
             $userAsset = UserAsset::where('user_id', self::$userId)->lockForUpdate()->first();
@@ -155,8 +154,6 @@ class UserAssetOperation
      */
     public function freeze()
     {
-        self::$type = 3;
-
         DB::beginTransaction();
         try {
             $userAsset = UserAsset::where('user_id', self::$userId)->lockForUpdate()->first();
@@ -171,7 +168,7 @@ class UserAssetOperation
             $userAsset->frozen = bcadd($userAsset->frozen, self::$amount);
             $userAsset->save();
         } catch (Exception $exception) {
-            throw new Exception($exception->getMessage());
+            throw new Exception($exception->getMessage() . self::$userId);
         }
         DB::commit();
         return true;
@@ -182,8 +179,6 @@ class UserAssetOperation
      */
     public function unFreeze()
     {
-        self::$type = 4;
-
         DB::beginTransaction();
         try {
             $userAsset = UserAsset::where('user_id', self::$userId)->lockForUpdate()->first();
@@ -196,7 +191,7 @@ class UserAssetOperation
             $freeze = UserAssetFlow::where('user_id', self::$userId)
                 ->where('trade_no', self::$tradeNO)->where('type', 3)->sum('amount');
             if ($freeze < self::$amount) {
-                throw new Exception('解冻金额与冻结金额不匹配');
+                throw new Exception('解冻金额大于冻结金额');
             }
 
             // 写流水
@@ -214,12 +209,10 @@ class UserAssetOperation
     }
 
     /**
-     * 支出
+     * 从余额支出
      */
-    public function expend()
+    public function expendFromBalance()
     {
-        self::$type = 5;
-
         DB::beginTransaction();
         try {
             $userAsset = UserAsset::where('user_id', self::$userId)->lockForUpdate()->first();
@@ -242,12 +235,36 @@ class UserAssetOperation
     }
 
     /**
+     * 从冻结支出
+     */
+    public function expendFromFreeze()
+    {
+        DB::beginTransaction();
+        try {
+            $userAsset = UserAsset::where('user_id', self::$userId)->lockForUpdate()->first();
+            // 检测冻结余额是否够本次支出
+            if ($userAsset->freeze < self::$amount) {
+                throw new Exception('冻结余额不够支出');
+            }
+
+            // 写流水
+            $this->flow($userAsset->balance,  bcsub($userAsset->frozen, self::$amount));
+
+            // 更新用户冻结余额
+            $userAsset->frozen = bcsub($userAsset->frozen, self::$amount);
+            $userAsset->save();
+        } catch (Exception $exception) {
+            throw new Exception($exception->getMessage());
+        }
+        DB::commit();
+        return true;
+    }
+
+    /**
      * 收入
      */
     public function income()
     {
-        self::$type = 6;
-
         DB::beginTransaction();
         try {
             $userAsset = UserAsset::where('user_id', self::$userId)->lockForUpdate()->first();

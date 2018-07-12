@@ -15,11 +15,10 @@ class CreateUserAssetsTable extends Migration
     {
         Schema::create('user_assets', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id')->comment('用户ID');
+            $table->unsignedInteger('user_id')->comment('用户ID');
             $table->decimal('balance', 17, 2)->comment('余额');
             $table->decimal('frozen', 17, 2)->comment('冻结资金');
-            $table->dateTime('created_at')->comment('创建时间');
-            $table->dateTime('updated_at')->comment('更新时间');
+            $table->timestamps();
         });
     }
 

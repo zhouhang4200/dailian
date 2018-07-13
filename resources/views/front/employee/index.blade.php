@@ -3,7 +3,6 @@
 @section('title', '账号 - 员工管理')
 
 @section('css')
-    <link href="{{ asset('/css/index.css') }}" rel="stylesheet">
     <style>
         .layui-layer-btn{
             text-align:center !important;

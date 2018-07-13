@@ -61,7 +61,7 @@ $goodsRoute = [
 ];
 
 $myAccount = ['home-accounts.edit', 'home-accounts.index'];
-$stationManagement = ['station.create', 'station.index', 'station.edit'];
+$stationManagement = ['employee', 'employee.group'];
 $employeeManagement = ['staff-management.index', 'staff-management.edit', 'staff-management.create'];
 $blacklist = ['hatchet-man-blacklist.index', 'hatchet-man-blacklist.create', 'hatchet-man-blacklist.edit'];
 $finance = ['frontend.finance.asset', 'frontend.finance.amount-flow', 'frontend.finance.asset-daily',
@@ -198,24 +198,23 @@ $finance = ['frontend.finance.asset', 'frontend.finance.amount-flow', 'frontend.
                 </div>
 
                 <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu">
-
-                        <li data-name="home" class="layui-nav-item @if(in_array(Route::currentRouteName(), $accountRoute)) layui-nav-itemed @endif">
-                            <a href="javascript:;" lay-tips="账号" lay-direction="2">
-                                <i class="layui-icon iconfont  icon-group-o"></i>
-                                <cite>账号</cite>
-                            </a>
-                            <dl class="layui-nav-child">
-                                <dd data-name="console" class="@if( in_array(Route::currentRouteName(), $myAccount)) layui-this  @endif">
-                                    <a href="">我的账号</a>
-                                </dd>
-
-                                    <dd data-name="console" class="@if( in_array(Route::currentRouteName(), $stationManagement)) layui-this  @endif">
-                                        <a href="{{ route('employee.group') }}">岗位管理</a>
-                                    </dd>
-
-                            </dl>
-                        </li>
-
+                    <li data-name="home" class="layui-nav-item @if(in_array(Route::currentRouteName(), $accountRoute)) layui-nav-itemed @endif">
+                        <a href="javascript:;" lay-tips="账号管理" lay-direction="2">
+                            <i class="layui-icon iconfont  icon-group-o"></i>
+                            <cite>账号</cite>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd data-name="console" class="@if( in_array(Route::currentRouteName(), $stationManagement)) layui-this  @endif">
+                                <a href="{{ route('employee.group') }}">岗位管理</a>
+                            </dd>
+                            <dd data-name="console" class="@if( in_array(Route::currentRouteName(), $stationManagement)) layui-this  @endif">
+                                <a href="{{ route('employee') }}">员工管理</a>
+                            </dd>
+                            <dd data-name="console" class="@if( in_array(Route::currentRouteName(), $stationManagement)) layui-this  @endif">
+                                <a href="{{ route('employee') }}">实名认证</a>
+                            </dd>
+                        </dl>
+                    </li>
                 </ul>
             </div>
         </div>

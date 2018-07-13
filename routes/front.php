@@ -31,7 +31,7 @@ Route::namespace('Auth')->group(function (){
 Route::group(['middleware' => 'auth'], function (){
     Route::get('/home', 'HomeController@index')->name('home');
 
-    // 员工 与 员工分组
+    // 员工 与 岗位
     Route::prefix('employee')->group(function (){
         Route::get('/', 'EmployeeController@index')->name('employee'); // 员工列表
         Route::get('create', 'EmployeeController@create')->name('employee.create'); // 员工添加视图
@@ -58,7 +58,7 @@ Route::group(['middleware' => 'auth'], function (){
     });
     // 个人资料
     Route::prefix('profile')->group(function (){
-        Route::get('/', 'ProfileController@index')->name('finance');
+        Route::get('/', 'ProfileController@index')->name('profile');
     });
 });
 

@@ -1,9 +1,9 @@
-@extends('frontend.v1.layouts.app')
+@extends('front.layouts.app')
 
 @section('title', '账号 - 岗位添加')
 
 @section('css')
-    <link rel="stylesheet" type="text/css" href="/backend/css/bootstrap/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/back/css/bootstrap/bootstrap.min.css"/>
     <style>
         .layui-form input {
             width:800px;
@@ -51,11 +51,11 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @forelse($modulePermissions as $modulePermission)
+                            @forelse($modulePermissions as $module => $permissions)
                                 <tr>
-                                    <td><input type="checkbox" name="new_module_id" lay-skin="primary" title="{{ $modulePermission->name }}" lay-filter="module" value="{{ $modulePermission->id }}"></td>
+                                    <td><input type="checkbox" name="module_name" lay-skin="primary" title="{{ $module }}" lay-filter="module" value="{{ $module }}"></td>
                                     <td>
-                                        @forelse($modulePermission->newPermissions as $permission)
+                                        @forelse($permissions as $permission)
                                         <div class="layui-input-inline" style="width:240px">
                                             <input type="checkbox" name="permissions" lay-skin="primary" title="{{ $permission->alias }}" value="{{ $permission->id }}">
                                         </div>
@@ -96,14 +96,16 @@
         })
         form.on('submit(confirm)', function (data) {
             var ids=[];
+            var name=data.field.name;
             $("input:checkbox[name='permissions']:checked").each(function() { // 遍历name=test的多选框
                 $(this).val();  // 每一个被选中项的值
                 ids.push($(this).val());
             });
-            $.post("{{ route('station.store') }}", {ids:ids,data:data.field}, function (result) {
+
+            $.post("{{ route('employee.group.store') }}", {ids:ids,name:name}, function (result) {
                 layer.msg(result.message);
-                if (result.status > 0) {
-                    window.location.href="{{ route('station.index') }}";
+                if (result.status == 1) {
+                    window.location.href="{{ route('employee.group') }}";
                 }
             })
             return false;

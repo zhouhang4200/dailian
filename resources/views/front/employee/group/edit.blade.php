@@ -1,9 +1,9 @@
-@extends('frontend.v1.layouts.app')
+@extends('front.layouts.app')
 
 @section('title', '账号 - 岗位编辑')
 
 @section('css')
-    <link rel="stylesheet" type="text/css" href="/backend/css/bootstrap/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/back/css/bootstrap/bootstrap.min.css"/>
     <style>
         .layui-form input {
             width:800px;
@@ -51,14 +51,14 @@
                             </tr>
                             </thead>
                             <tbody>
-                                @forelse($modulePermissions as $modulePermission)
+                                @forelse($modulePermissions as $module => $modulePermission)
                                 <tr>
-                                    <td><input type="checkbox" name="new_module_id" lay-skin="primary" title="{{ $modulePermission->name }}" lay-filter="module" value="{{ $modulePermission->id }}"></td>
+                                    <td><input type="checkbox" name="module_name" lay-skin="primary" title="{{ $module }}" lay-filter="module" value="{{ $module }}"></td>
                                     <td>
                                         <div class="layui-form-item" pane="">
-                                        @forelse($modulePermission->newPermissions as $permission)
+                                        @forelse($modulePermission as $permission)
                                         <div class="layui-input-inline" style="width:240px">
-                                          <input type="checkbox" name="permissions" lay-skin="primary" title="{{ $permission->alias }}" value="{{ $permission->id }}" {{ in_array($permission->id, $userRole->newPermissions->pluck('id')->toArray()) ? 'checked' : '' }}>
+                                          <input type="checkbox" name="permissions" lay-skin="primary" title="{{ $permission->alias }}" value="{{ $permission->id }}" {{ in_array($permission->id, $userRole->permissions->pluck('id')->toArray()) ? 'checked' : '' }}>
                                         </div>
                                         @empty
                                         @endforelse
@@ -99,19 +99,20 @@ layui.use('form', function(){
     // 编辑
     form.on('submit(update)', function (data) {
         var permissionIds=[];
+        var name=data.field.name;
+        var id=data.field.id;
         $("input:checkbox[name='permissions']:checked").each(function() { // 遍历name=test的多选框
             $(this).val();  // 每一个被选中项的值
             permissionIds.push($(this).val());
         });
-        $.post("{{ route('station.update') }}", {permissionIds:permissionIds, data:data.field}, function (result) {
+        $.post("{{ route('employee.group.update') }}", {permissionIds:permissionIds, name:name,id:id}, function (result) {
             layer.msg(result.message);
-            if (result.status > 0) {
-                window.location.href="{{ route('station.index') }}";
+            if (result.status == 1) {
+                window.location.href="{{ route('employee.group') }}";
             }
         })
         return false;
     });
-
 });
 </script>
 @endsection

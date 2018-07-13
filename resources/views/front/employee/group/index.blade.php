@@ -3,7 +3,6 @@
 @section('title', '账号 - 岗位列表')
 
 @section('css')
-    <link href="{{ asset('/css/index.css') }}" rel="stylesheet">
     <style>
         .layui-form-label {
             width:100px;
@@ -37,7 +36,20 @@
             var form = layui.form; //只有执行了这一步，部分表单元素才会自动修饰成功
             var layer = layui.layer;
             // 删除
-
+            form.on('submit(delete)', function (data) {
+                var roleId=this.getAttribute('lay-id');
+                $.post("{{ route('employee.group.delete') }}", {roleId:roleId}, function (result) {
+                    layer.msg(result.message);
+                    if (result.status == 1) {
+                        $.get("{{ route('employee.group') }}", function (result) {
+                            $('#role').html(result);
+                            form.render();
+                        }, 'json');
+                    }
+                    form.render;
+                });
+                return false;
+            })
         });
     </script>
 @endsection

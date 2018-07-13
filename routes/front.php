@@ -43,9 +43,9 @@ Route::group(['middleware' => 'auth'], function (){
         Route::get('group', 'EmployeeController@group')->name('employee.group'); // 岗位列表
         Route::get('group/create', 'EmployeeController@groupCreate')->name('employee.group.create'); // 岗位添加视图
         Route::post('group/store', 'EmployeeController@groupStore')->name('employee.group.store'); // 岗位保存
-        Route::get('group/edit', 'EmployeeController@groupEdit')->name('employee.group.edit'); // 岗位编辑视图
+        Route::get('group/edit/{id}', 'EmployeeController@groupEdit')->name('employee.group.edit'); // 岗位编辑视图
         Route::post('group/update', 'EmployeeController@groupUpdate')->name('employee.group.update'); // 岗位信息更新
-        Route::post('group/delete', 'EmployeeController@groupDelete')->name('employee.group.update'); // 岗位信息更新
+        Route::post('group/delete', 'EmployeeController@groupDelete')->name('employee.group.delete'); // 岗位信息更新
     });
     // 订单
     Route::prefix('order')->group(function (){

@@ -9,21 +9,28 @@
     </tr>
     </thead>
     <tbody>
-    @foreach($userRoles as $userRole)
+        @forelse($userRoles as $userRole)
         <tr class="userRole-td">
-            <td>1</td>
-            <td>1</td>
-            <td>1</td>
+            <td>{{ $userRole->id  }}</td>
+            <td>{{ $userRole->alias  }}</td>
+            <td>{{ hasEmployees($userRole) ?: '--' }}</td>
             <td>
-            1
+                @forelse($userRole->permissions as $permission)
+                    {{ $permission->alias }}&nbsp;&nbsp;
+                @empty
+                @endforelse
             </td>
             <td>
                 <div style="text-align: center">
-                <a href="" class="qs-btn qs-btn-normal qs-btn-mini">编辑</a>
-                <button class="qs-btn qs-btn-normal qs-btn-mini" lay-id="" lay-submit="" lay-filter='delete'>删除</button>
+                <a href="{{ route('employee.group.edit', ['id' => $userRole->id]) }}" class="qs-btn qs-btn-normal qs-btn-mini">编辑</a>
+                <button class="qs-btn qs-btn-normal qs-btn-mini" lay-id="{{ $userRole->id }}" lay-submit="" lay-filter='delete'>删除</button>
                 </div>
             </td>
         </tr>
-    @endforeach
+        @empty
+            <tr class="userRole-td">
+                <td colspan="6">暂无数据</td>
+            </tr>
+        @endforelse
     </tbody>
 </table>

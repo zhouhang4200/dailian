@@ -2,12 +2,19 @@
 
 namespace App\Models;
 
+use Auth;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, SoftDeletes;
+
+    /**
+     * @var array
+     */
+    protected $dates = ['deleted_at'];
 
     /**
      * The attributes that are mass assignable.
@@ -15,7 +22,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'phone', 'password', 'pay_password',
+        'phone', 'password', 'pay_password', 'name', 'parent_id', 'avatar'
     ];
 
     /**
@@ -86,5 +93,25 @@ class User extends Authenticatable
         return $this->belongsToMany(Permission::class, 'user_permissions', 'user_id', 'permission_id');
     }
 
+    /**
+     * @param $query
+     * @param array $filters
+     * @return mixed
+     */
+    public static function scopeEmployeeFilter($query, $filters = [])
+    {
+        if ($filters['userId']) {
+            $query->where('id', $filters['userId']);
+        }
 
+        if ($filters['name']) {
+            $query->where('name', $filters['name']);
+        }
+
+        if ($filters['station']) {
+            $userIds = Role::find($filters['station'])->users->pluck('id');
+            $query->whereIn('id', $userIds);
+        }
+        return $query->where('parent_id', Auth::user()->parent_id);
+    }
 }

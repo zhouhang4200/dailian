@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Front;
 
+use DB;
 use Auth;
 use Cache;
 use App\Models\User;
@@ -18,34 +19,163 @@ use App\Http\Controllers\Controller;
  */
 class EmployeeController extends Controller
 {
-    public function index()
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\JsonResponse|\Illuminate\View\View
+     */
+    public function index(Request $request)
     {
+        $name = $request->name;
+        $station = $request->station;
+        $userId = $request->userId;
+        // 获取主账号分配的角色
+        $userRoles = Role::where('user_id', Auth::user()->parent_id)->get();
+        // 获取所有的子账号
+        $children = User::where('parent_id', Auth::user()->parent_id)->get();
+        // 筛选
+        $filters = compact('name', 'userId', 'station');
 
+        //状态2是封号，1是正常
+        $users = User::employeeFilter($filters)
+            ->paginate(10);
+
+        // 删除的时候页面不刷新
+        if ($request->ajax()) {
+            return response()->json(view()->make('front.employee.list', [
+                'users' => $users,
+            ])->render());
+        }
+
+        return view('front.employee.index', compact('name', 'station', 'userId', 'users', 'userRoles', 'children'));
     }
 
-    public function create()
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function create(Request $request)
     {
+        //获取主账号设置的所有角色
+        $userRoles = Role::where('user_id', Auth::user()->parent_id)->get();
 
+        return view('front.employee.create', compact('userRoles'));
     }
 
-    public function store()
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function store(Request $request)
     {
+        // 判断手机号是否唯一
+        $isSingle = User::where('phone', $request->data['phone'])->withTrashed()->first();
 
+        if ($isSingle) {
+            return response()->json(['status' => 0, 'message' => '账号已存在']);
+        }
+        // 数据
+        $data = $request->data;
+        $data['password'] = bcrypt(clientRSADecrypt($request->password));
+        $data['pay_password'] = bcrypt(clientRSADecrypt($request->pay_password));
+        $data['parent_id'] = Auth::user()->parent_id;
+        $data['avatar'] = "/frontend/v1/images/default-avatar.png";
+        $roleIds = $request->roles ?: [];
+
+        // 添加子账号同时添加角色
+        $user = User::create($data);
+        $user->roles()->sync($roleIds);
+        // 清除缓存
+        Cache::forget('permission:user:'.$user->id);
+
+        return response()->json(['status' => 1, 'message' => '添加成功']);
     }
 
-    public function edit()
+    /**
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function edit(Request $request, $id)
     {
+        $user = User::find($id);
+        $userRoles = Role::where('user_id', Auth::user()->parent_id)->get();
 
+        return view('front.employee.edit', compact('userRoles', 'user'));
     }
 
-    public function update()
+    /**
+     * @param Request $request
+     * @return mixed
+     */
+    public function update(Request $request)
     {
+        DB::beginTransaction();
+        // 子账号
+        $user = User::find($request->id);
+        $data = $request->data;
+        // 如果存在密码则修改密码
+        if (clientRSADecrypt($request->password)) {
+            $data['password'] = bcrypt(clientRSADecrypt($request->password));
+        } else {
+            unset($data['password']);
+        }
 
+        if (clientRSADecrypt($request->pay_password)) {
+            $data['pay_password'] = bcrypt(clientRSADecrypt($request->pay_password));
+        } else {
+            unset($data['pay_password']);
+        }
+
+        try {
+            // 关联到管理员-角色表
+            $roleIds = $request->roles ?? [];
+            $user->roles()->sync($roleIds);
+            // 更新账号
+            $user->update($data);
+            // 清除缓存
+            Cache::forget('permission:user:'.$user->id);
+        } catch (Exception $e) {
+            DB::rollBack();
+            return response()->json(['status' => 0, 'message' => '修改失败']);
+        }
+        DB::commit();
+        return response()->json(['status' => 1, 'message' => '修改成功']);
     }
 
-    public function delete()
+    /**
+     * @param Request $request
+     * @return mixed
+     */
+    public function delete(Request $request)
     {
+        $user = User::find($request->id);
+        // 删除该员工下面的角色和权限
+        $user->roles()->detach();
+        // 删除该角色并清空缓存
+        $user->delete();
+        // 清除缓存
+        Cache::forget('permission:user:'.$user->id);
 
+        return response()->json(['status' => 1, 'message' => '删除成功']);
+    }
+
+    /**
+     * @param Request $request
+     * @return mixed
+     */
+    public function forbidden(Request $request)
+    {
+        $user = User::find($request->id);
+        // status=2是禁用
+        if ($user->status == 2) {
+            $user->status = 1;
+            $user->save();
+            return response()->json(['status' => 1, 'message' => '账号已启用']);
+        } elseif($user->status == 1) {
+            $user->status = 2;
+            $user->save();
+            return response()->json(['status' => 1, 'message' => '账号已禁用']);
+        }
     }
 
     /**
@@ -169,6 +299,10 @@ class EmployeeController extends Controller
         }
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function groupDelete(Request $request)
     {
         // 获取当前岗位

@@ -34,11 +34,12 @@ Route::group(['middleware' => 'auth'], function (){
     // 员工 与 员工分组
     Route::prefix('employee')->group(function (){
         Route::get('/', 'EmployeeController@index')->name('employee'); // 员工列表
-        Route::get('create', 'EmployeeController@index')->name('employee.create'); // 员工添加视图
+        Route::get('create', 'EmployeeController@create')->name('employee.create'); // 员工添加视图
         Route::post('store', 'EmployeeController@store')->name('employee.store'); // 员工保存
-        Route::get('edit', 'EmployeeController@edit')->name('employee.edit'); // 员工编辑视图
-        Route::post('update', 'EmployeeController@edit')->name('employee.update'); // 员工信息更新
+        Route::get('edit/{id}', 'EmployeeController@edit')->name('employee.edit'); // 员工编辑视图
+        Route::post('update', 'EmployeeController@update')->name('employee.update'); // 员工信息更新
         Route::post('delete', 'EmployeeController@delete')->name('employee.delete'); // 员工删除
+        Route::post('forbidden', 'EmployeeController@forbidden')->name('employee.forbidden'); // 员工删除
 
         Route::get('group', 'EmployeeController@group')->name('employee.group'); // 岗位列表
         Route::get('group/create', 'EmployeeController@groupCreate')->name('employee.group.create'); // 岗位添加视图

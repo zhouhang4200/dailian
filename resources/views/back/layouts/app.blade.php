@@ -1,79 +1,135 @@
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}">
+<html>
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
+    <title>订单集市@yield('title')</title>
+    <link type="image/x-icon" href="/favicon.ico" rel="shortcut icon"/>
+    <link rel="stylesheet" type="text/css" href="/back/css/bootstrap/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/back/css/libs/font-awesome.css"/>
+    <link rel="stylesheet" type="text/css" href="/back/css/libs/nanoscroller.css"/>
+    <link rel="stylesheet" type="text/css" href="/back/css/compiled/layout.css"/>
+    <link rel="stylesheet" type="text/css" href="/back/css/compiled/elements.css?v1"/>
+    <link rel="stylesheet" type="text/css" href="/back/css/libs/dropzone.css">
+    <link rel="stylesheet" type="text/css" href="/back/css/libs/magnific-popup.css">
+    <link rel="stylesheet" type="text/css" href="/back/css/libs/datepicker.css">
+    <link rel="stylesheet" type="text/css" href="/back/css/compiled/custom.css">
+    <link rel="stylesheet" type="text/css" href="/vendor/layui/css/layui.css">
+    <link rel="stylesheet" type="text/css" href="/back/css/globale.css">
+    <link rel="stylesheet" type="text/css" href="/back/css/layui-rewrit.css">
+    <link rel="stylesheet" href="/front/lib/css/new.css">
+    <link id="layuicss-layer" rel="stylesheet" href="/front/lib/js/layui/css/modules/layer/default/layer.css" media="all">
+    @yield('css')
 
-    <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-
-    <title>{{ config('app.name', 'Laravel') }}</title>
-
-    <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <!--[if lt IE 9]>
+    <script src="/back/js/html5shiv.js"></script>
+    <script src="/back/js/respond.min.js"></script>
+    <![endif]-->
+    <script src="/back/js/demo-rtl.js"></script>
 </head>
-<body>
-<div id="app">
-    <nav class="navbar navbar-default navbar-static-top">
+<body class="pace-done theme-whbl">
+<div class="">
+    <header class="navbar" id="header-navbar">
         <div class="container">
-            <div class="navbar-header">
-
-                <!-- Collapsed Hamburger -->
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse">
-                    <span class="sr-only">Toggle Navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
+            <h2 class="logo">千手 · 订单集市</h2>
+            <div class="clearfix">
+                <button class="navbar-toggle" data-target=".navbar-ex1-collapse" data-toggle="collapse" type="button">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="fa fa-bars"></span>
                 </button>
-
-                <!-- Branding Image -->
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
-                </a>
-            </div>
-
-            <div class="collapse navbar-collapse" id="app-navbar-collapse">
-                <!-- Left Side Of Navbar -->
-                <ul class="nav navbar-nav">
-                    &nbsp;
-                </ul>
-
-                <!-- Right Side Of Navbar -->
-                <ul class="nav navbar-nav navbar-right">
-                    <!-- Authentication Links -->
-                    @if (Auth::guard('admin')->guest())
-                        <li><a href="{{ route('admin.login') }}">Login</a></li>
-                    @else
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                {{ Auth::guard('admin')->user()->name }} <span class="caret"></span>
+                <div class="nav-no-collapse navbar-left pull-left hidden-sm hidden-xs">
+                    <ul class="nav navbar-nav pull-left">
+                        <li>
+                            <a class="btn" id="make-small-nav">
+                                <i class="fa fa-bars"></i>
                             </a>
-
-                            <ul class="dropdown-menu" role="menu">
+                        </li>
+                    </ul>
+                </div>
+                <div class="nav-no-collapse pull-right" id="header-nav">
+                    <ul class="nav navbar-nav pull-right">
+                        <li class="dropdown profile-dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                {{--<img src="/img/samples/scarlet-159.png" alt=""/>--}}
+                                <span class="hidden-xs">管理员</span> <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#"><i class="fa fa-cog"></i>修改密码</a></li>
                                 <li>
-                                    <a href="{{ route('admin.logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        Logout
+                                    <a href="javascript:void(0)" onclick="logout()">
+                                        <i class="fa fa-power-off"></i> 注销登录
                                     </a>
-
-                                    <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
-                                        {{ csrf_field() }}
-                                    </form>
                                 </li>
                             </ul>
                         </li>
-                    @endif
-                </ul>
+                    </ul>
+                </div>
             </div>
         </div>
-    </nav>
-
-    @yield('content')
+    </header>
+    <div id="page-wrapper" class="container">
+        <div class="row">
+            @include('backend.layouts.partials.menu')
+            <div id="content-wrapper">
+                @yield('breadcrumb')
+                @yield('content')
+            </div>
+        </div>
+    </div>
 </div>
 
-<!-- Scripts -->
-<script src="{{ asset('js/app.js') }}"></script>
+<script src="/back/js/jquery.js"></script>
+<script src="/back/js/bootstrap.js"></script>
+<script src="/back/js/jquery.nanoscroller.min.js"></script>
+<script src="/back/js/skin.js"></script>
+<script src="/back/js/bootstrap-datepicker.js"></script>
+<script src="/back/js/scripts.js"></script>
+<script src="/back/js/pace.min.js"></script>
+<script src="/back/js/helper.js"></script>
+<script src="/vendor/layui/layui.js"></script>
+<script src="/back/js/classie.js"></script>
+<script src="/back/js/modalEffects.js"></script>
+<script src="/back/js/jquery.modalEffects.js"></script>
+<script>
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    function reload() {
+        setTimeout(function () {
+            location.reload();
+        }, 900);
+    }
+
+    function reloadHref() {
+        setTimeout(function () {
+            location.href = location.href;
+        }, 900);
+    }
+
+    function redirect(str) {
+        setTimeout(function () {
+            window.location.href=str;
+        }, 900);
+    }
+    function logout() {
+        layui.use(['form', 'layedit', 'laydate'], function(){
+            var form = layui.form
+                ,layer = layui.layer;
+            layer.confirm('确定退出吗?', {icon: 3, title:'提示'}, function(index){
+                $.post('/admin/logout', {}, function(str){
+                    window.location.href='/admin/login';
+                });
+                layer.close(index);
+            });
+
+        });
+    }
+</script>
+@yield('js')
 </body>
 </html>

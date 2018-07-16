@@ -1,0 +1,122 @@
+.container {
+  width: 1200px;
+  margin: 0 auto;
+}
+.iconfont {
+  font-size: 22px;
+}
+.header .container {
+  height: 88px;
+  position: relative;
+}
+.header .container img {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 190px;
+  height: 29px;
+}
+.main {
+  background-color: #342353;
+}
+.main .container {
+  position: relative;
+  height: 605px;
+}
+.main .container .login_img {
+  width: 638px;
+  height: 354px;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+}
+.main .container .login_img img {
+  height: 100%;
+  width: 100%;
+}
+.main .container .login_box {
+  width: 300px;
+  padding: 25px 25px 23px;
+  background-color: #e9e9f2;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.main .container .login_box .login_title {
+  height: 18px;
+  line-height: 18px;
+  font-size: 16px;
+  color: #3c3c3c;
+  margin-top: 9px;
+  padding-bottom: 8px;
+  font-weight: 700;
+}
+.main .container .login_box .layui-form .layui-form-item {
+  position: relative;
+  margin-top: 20px;
+  margin-bottom: 0;
+}
+.main .container .login_box .layui-form .layui-form-item .layui-form-label {
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  color: #fff;
+  background: #ddd;
+  text-align: center;
+  padding: 0;
+  position: absolute;
+  left: 1px;
+  top: 1px;
+  outline: 0;
+  z-index: 999;
+}
+.main .container .login_box .layui-form .layui-form-item .layui-input-block {
+  margin-left: 0px;
+}
+.main .container .login_box .layui-form .layui-form-item .layui-input-block .layui-input {
+  width: 240px;
+  font-size: 14px;
+  line-height: 18px;
+  height: 18px;
+  padding: 11px 8px 11px 50px;
+  border: 1px solid #ddd;
+  box-sizing: content-box;
+}
+.main .container .login_box .layui-form .layui-form-item .qs-btn {
+  width: 300px;
+  height: 42px;
+  border: 0;
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: middle;
+  line-height: 42px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  background: #f40;
+  border-radius: 3px;
+  cursor: pointer;
+  zoom: 1;
+}
+.main .container .login_box .layui-form .login-link a {
+  color: #6c6c6c;
+  line-height: 18px;
+  font-weight: 600;
+}
+.main .container .login_box .layui-form .login-link a:hover {
+  color: #f40;
+}
+.main .container .login_box .layui-form .login-link a:focus {
+  color: #f40;
+}
+.layui-input:hover,
+.layui-textarea:hover {
+  border-color: #ddd !important;
+}
+.layui-input:focus,
+.layui-textarea:focus {
+  border-color: #ddd !important;
+}

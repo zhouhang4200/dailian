@@ -1,70 +1,58 @@
-@extends('front.layouts.auth')
+@extends('front.auth.layouts.app')
 
-@section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Reset Password</div>
+@section('title', '重置密码')
 
-                <div class="panel-body">
-                    <form class="form-horizontal" method="POST" action="{{ route('password.request') }}">
-                        {{ csrf_field() }}
+@section('css')
+    <style>
+        .input-container input {
+            height:40px;
+        }
+    </style>
+@endsection
 
-                        <input type="hidden" name="token" value="{{ $token }}">
-
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email" class="col-md-4 control-label">E-Mail Address</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control" name="email" value="{{ $email or old('email') }}" required autofocus>
-
-                                @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <label for="password" class="col-md-4 control-label">Password</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control" name="password" required>
-
-                                @if ($errors->has('password'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
-                            <label for="password-confirm" class="col-md-4 control-label">Confirm Password</label>
-                            <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
-
-                                @if ($errors->has('password_confirmation'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('password_confirmation') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
-                                    Reset Password
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+@section('main')
+    <form method="POST" action="{{ route('password.request') }}"  class="layui-form">
+        {!! csrf_field() !!}
+            <div class="container">
+                <div class="input-container">
+                    <div class="title">重置密码</div>
+                    <input type="hidden" name="token" value="{{ $token }}">
+                    <div class="layui-form-item">
+                        <input type="email" name="email" required="" lay-verify="required" placeholder="请输入邮箱" value="{{ old('email') }}" autocomplete="off" class="layui-input layui-form-danger">
+                        <i class="layui-icon icon">&#xe612;</i>
+                    </div>
+                    <div class="layui-form-item ">
+                        <input type="password" name="password" required="" lay-verify="required" placeholder="请输入至少6位数密码" autocomplete="off" class="layui-input layui-form-danger">
+                        <i class="layui-icon icon"> &#x1005;</i>
+                    </div>
+                    <div class="layui-form-item ">
+                        <input type="password" name="password_confirmation" required="" lay-verify="required" placeholder="再次输入密码" autocomplete="off" class="layui-input layui-form-danger">
+                        <i class="layui-icon icon"> &#x1005;</i>
+                    </div>
+                    <div class="layui-form-item">
+                        <button class="layui-btn layui-btn-normal" lay-submit lay-filter="formDemo" style="width: 100%">重 置</button>
+                    </div>
+                    <div class="register-and-forget-password">
+                        <a class="register" target="_blank" href="{{ route('login') }}">登录</a>
+                        <div class="layui-clear"></div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
+    </form>
+@endsection
+
+@section('js')
+    <script>
+        layui.use(['form', 'layedit', 'laydate'], function(){
+            var form = layui.form
+                ,layer = layui.layer;
+
+            var errorPassword = "{{ $errors->count() > 0 && array_key_exists('password', $errors->toArray()) && $errors->toArray()['password'] ? '请按要求填写密码!' : '' }}";
+            var errorEmail = "{{ $errors->count() > 0 && array_key_exists('email', $errors->toArray()) && $errors->toArray()['email'] ? '邮箱填写错误!' : '' }}";
+
+            if(errorEmail) {
+                layer.msg(errorEmail, {icon: 5, time:1500});            } else if (errorPassword) {
+                layer.msg(errorPassword, {icon: 5, time:1500});            }
+        });
+    </script>
 @endsection

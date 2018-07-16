@@ -80,10 +80,10 @@ Route::namespace('Auth')->group(function (){
     Route::post('logout', 'LoginController@logout')->name('logout');
 
     Route::prefix('password')->group(function (){
-        Route::get('email', 'ForgotPasswordController@sendResetLinkEmail')->name('password.email');
+        Route::post('email', 'ForgotPasswordController@sendResetLinkEmail')->name('password.email');
         Route::get('reset', 'ForgotPasswordController@showLinkRequestForm')->name('password.request');
         Route::post('reset', 'ResetPasswordController@reset');
-        Route::get('reset/{token}', 'ResetPasswordController@showResetForm ')->name('password.reset');
+        Route::get('reset/{token}', 'ResetPasswordController@showResetForm')->name('password.reset');
     });
     Route::get('register', 'RegisterController@showRegistrationForm')->name('register');
     Route::post('register', 'RegisterController@register');

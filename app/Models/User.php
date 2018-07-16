@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Auth;
+use App\Notifications\ResetPasswordNotification;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -113,5 +114,13 @@ class User extends Authenticatable
             $query->whereIn('id', $userIds);
         }
         return $query->where('parent_id', Auth::user()->parent_id);
+    }
+
+    /**
+     * @param string $token
+     */
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new ResetPasswordNotification($token));
     }
 }

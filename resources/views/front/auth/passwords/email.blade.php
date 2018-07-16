@@ -1,47 +1,46 @@
-@extends('front.layouts.auth')
+@extends('front.auth.layouts.app')
 
-@section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Reset Password</div>
+@section('title', '密码找回')
 
-                <div class="panel-body">
-                    @if (session('status'))
-                        <div class="alert alert-success">
-                            {{ session('status') }}
-                        </div>
-                    @endif
+@section('css')
+    <style>
+        .input-container input {
+            height:40px;
+        }
+    </style>
+@endsection
 
-                    <form class="form-horizontal" method="POST" action="{{ route('password.email') }}">
-                        {{ csrf_field() }}
+@section('main')
+    <form method="POST" action="{{ route('password.email') }}"  class="layui-form">
+        {!! csrf_field() !!}
+            <div class="container">
+                <div class="input-container">
+                    <div class="title">邮件地址</div>
+                    <div class="layui-form-item">
+                        <input type="email" name="email" required="" lay-verify="required" placeholder="请输入" value="{{ old('email') }}" autocomplete="off" class="layui-input layui-form-danger">
+                        <i class="layui-icon icon">&#xe612;</i>
+                    </div>
 
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email" class="col-md-4 control-label">E-Mail Address</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required>
-
-                                @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
-                                    Send Password Reset Link
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+                    <div class="layui-form-item">
+                        <button class="layui-btn layui-btn-normal" lay-submit lay-filter="formDemo" style="width: 100%">发 送</button>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
+    </form>
+@endsection
+
+@section('js')
+    <script>
+        layui.use(['form', 'layedit', 'laydate'], function(){
+            var form = layui.form
+                ,layer = layui.layer;
+
+            var error = "{{ $errors->count() > 0 ? '请填写注册时的邮箱!' : '' }}";
+            var succ = "{{ session('status') ? '发送成功!' : '' }}";
+
+            if (error) {
+                layer.msg(error, {icon: 5, time:2000});            } else if (succ) {
+                layer.msg(succ, {icon: 6, time:2000});            }
+        });
+    </script>
 @endsection

@@ -70,10 +70,57 @@ class GameLevelingOrder extends Model
     }
 
     /**
+     * 根据传入的条件获取订单
+     * @param  integer $who 1 发单方 2 接单方 3 不限定
+     * @param  array $condition 传入的过滤条件
+     * @return $this|\Illuminate\Database\Eloquent\Builder|static
+     */
+    public static function getOrderByCondition($condition, $who = 3)
+    {
+        if ($who == 1) {
+            $build = self::with('complain', 'consult')->where('parent_user_id', request()->user()->parent_id);
+        } else if ($who == 2) {
+            $build = self::with('complain', 'consult')->where('take_parent_user_id', request()->user()->parent_id);
+        } else {
+            $build = self::with('complain', 'consult');
+        }
+
+        if (isset($condition['parent_user_id']) && $condition['parent_user_id']) {
+            $build->where('parent_user_id', $condition['parent_user_id']);
+        }
+
+        if (isset($condition['take_parent_user_id']) && $condition['take_parent_user_id']) {
+            $build->where('take_parent_user_id', $condition['take_parent_user_id']);
+        }
+
+        if (isset($condition['status']) && $condition['status']) {
+            $build->where('status', $condition['status']);
+        }
+
+        if (isset($condition['trade_no']) && $condition['trade_no']) {
+            $build->where('trade_no', $condition['trade_no']);
+        }
+
+        if (isset($condition['game_id']) && $condition['game_id']) {
+            $build->where('game_id', $condition['game_id']);
+        }
+
+        if (isset($condition['start_time']) && $condition['start_time']) {
+            $build->where('created_at', '>=',$condition['start_time']);
+        }
+
+        if (isset($condition['end_time']) && $condition['end_time']) {
+            $build->where('created_at', '>=',$condition['end_time']);
+        }
+
+        return $build;
+    }
+
+    /**
      * 获取订单状态
      * @return mixed
      */
-    public  function getOrderStatus()
+    public  function getOrderStatusDes()
     {
         return $this->statusDes[$this->status];
     }

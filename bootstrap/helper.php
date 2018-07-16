@@ -13,6 +13,62 @@ function generateOrderNo()
     return $orderDate . str_pad($orderQuantity, 8, 0, STR_PAD_LEFT);
 }
 
+/**
+ * 将秒转成: (天\小时\分\秒) 形式
+ *
+ * @param      $seconds
+ * @param bool $showSeconds
+ *
+ * @return bool|string
+ */
+function sec2Time($seconds, $showSeconds = false)
+{
+    if (is_numeric($seconds)) {
+        $value = array(
+            'years' => 0, 'days' => 0, 'hours' => 0,
+            'minutes' => 0, 'seconds' => 0,
+        );
+        if ($seconds >= 31556926) {
+            $value['years'] = floor($seconds / 31556926);
+            $seconds = ($seconds % 31556926);
+        }
+        if ($seconds >= 86400) {
+            $value['days'] = floor($seconds / 86400);
+            $seconds = ($seconds % 86400);
+        }
+        if ($seconds >= 3600) {
+            $value['hours'] = floor($seconds / 3600);
+            $seconds = ($seconds % 3600);
+        }
+        if ($seconds >= 60) {
+            $value['minutes'] = floor($seconds / 60);
+            $seconds = ($seconds % 60);
+        }
+        $value['seconds'] = floor($seconds);
+
+        $t = '';
+        if ($value['years'] > 0) {
+            $t .= $value['years'] . '年';
+        }
+        if ($value['days'] > 0) {
+            $t .= $value['days'] . '天';
+        }
+        if ($value['hours'] > 0) {
+            $t .= $value['hours'] . '小时';
+        }
+        if ($value['minutes'] > 0) {
+            $t .= $value['minutes'] . '分钟';
+        }
+        if ($value['seconds'] > 0 || $showSeconds) {
+            $t .= $value['seconds'] . '秒';
+        }
+        Return $t;
+    } else {
+        return (bool)FALSE;
+    }
+}
+
+
 if (!function_exists('hasEmployees')) {
     /**
      * 获取某个岗位有哪些员工

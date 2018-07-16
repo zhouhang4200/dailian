@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Front;
 
+use \Exception;
 use App\Services\OrderServices;
-use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
 /**
@@ -21,12 +21,14 @@ class OrderOperationController extends Controller
      */
     public function take()
     {
+        DB::beginTransaction();
         try {
             OrderServices::init(request()->user()->id, request('trade_no'))->take();
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             return response()->ajaxFail();
         }
-
+        DB::commit();
+        return response()->ajaxSuccess();
     }
 
     /**
@@ -34,7 +36,14 @@ class OrderOperationController extends Controller
      */
     public function applyComplete()
     {
-        OrderServices::init(request()->user()->id, request('trade_no'))->take();
+        DB::beginTransaction();
+        try {
+            OrderServices::init(request()->user()->id, request('trade_no'))->applyComplete();
+        } catch (Exception $exception) {
+
+        }
+        DB::commit();
+        return response()->ajaxSuccess();
     }
 
     /**
@@ -42,7 +51,14 @@ class OrderOperationController extends Controller
      */
     public function cancelComplete()
     {
-        OrderServices::init(request()->user()->id, request('trade_no'))->take();
+        DB::beginTransaction();
+        try {
+            OrderServices::init(request()->user()->id, request('trade_no'))->cancelComplete();
+        } catch (Exception $exception) {
+
+        }
+        DB::commit();
+        return response()->ajaxSuccess();
     }
 
     /**
@@ -50,7 +66,14 @@ class OrderOperationController extends Controller
      */
     public function complete()
     {
-        OrderServices::init(request()->user()->id, request('trade_no'))->take();
+        DB::beginTransaction();
+        try {
+            OrderServices::init(request()->user()->id, request('trade_no'))->complete();
+        } catch (Exception $exception) {
+
+        }
+        DB::commit();
+        return response()->ajaxSuccess();
     }
 
     /**
@@ -58,7 +81,14 @@ class OrderOperationController extends Controller
      */
     public function onSale()
     {
-        OrderServices::init(request()->user()->id, request('trade_no'))->take();
+        DB::beginTransaction();
+        try {
+            OrderServices::init(request()->user()->id, request('trade_no'))->onSale();
+        } catch (Exception $exception) {
+
+        }
+        DB::commit();
+        return response()->ajaxSuccess();
     }
 
     /**
@@ -66,7 +96,12 @@ class OrderOperationController extends Controller
      */
     public function offSale()
     {
-        OrderServices::init(request()->user()->id, request('trade_no'))->take();
+        DB::beginTransaction();
+        try {
+            OrderServices::init(request()->user()->id, request('trade_no'))->offSale();
+        } catch (Exception $exception) {
+
+        }
     }
 
     /***
@@ -74,7 +109,14 @@ class OrderOperationController extends Controller
      */
     public function lock()
     {
-        OrderServices::init(request()->user()->id, request('trade_no'))->take();
+        DB::beginTransaction();
+        try {
+            OrderServices::init(request()->user()->id, request('trade_no'))->lock();
+        } catch (Exception $exception) {
+
+        }
+        DB::commit();
+        return response()->ajaxSuccess();
     }
 
     /**
@@ -82,7 +124,14 @@ class OrderOperationController extends Controller
      */
     public function cancelLock()
     {
-        OrderServices::init(request()->user()->id, request('trade_no'))->take();
+        DB::beginTransaction();
+        try {
+            OrderServices::init(request()->user()->id, request('trade_no'))->cancelLock();
+        } catch (Exception $exception) {
+
+        }
+        DB::commit();
+        return response()->ajaxSuccess();
     }
 
     /**
@@ -90,7 +139,14 @@ class OrderOperationController extends Controller
      */
     public function anomaly()
     {
-        OrderServices::init(request()->user()->id, request('trade_no'))->take();
+        DB::beginTransaction();
+        try {
+            OrderServices::init(request()->user()->id, request('trade_no'))->anomaly();
+        } catch (Exception $exception) {
+
+        }
+        DB::commit();
+        return response()->ajaxSuccess();
     }
 
     /**
@@ -98,7 +154,13 @@ class OrderOperationController extends Controller
      */
     public function cancelAnomaly()
     {
-        OrderServices::init(request()->user()->id, request('trade_no'))->take();
+        try {
+            OrderServices::init(request()->user()->id, request('trade_no'))->cancelAnomaly();
+        } catch (Exception $exception) {
+
+        }
+        DB::commit();
+        return response()->ajaxSuccess();
     }
 
     /**
@@ -106,7 +168,19 @@ class OrderOperationController extends Controller
      */
     public function applyConsult()
     {
-        OrderServices::init(request()->user()->id, request('trade_no'))->take();
+        $amount = request('amount');
+        $securityDeposit = request('security_deposit');
+        $efficiencyDeposit = request('remark');
+        $remark = request('remark');
+
+        DB::beginTransaction();
+        try {
+            OrderServices::init(request()->user()->id, request('trade_no'))->applyConsult($amount, $securityDeposit, $efficiencyDeposit, $remark);
+        } catch (Exception $exception) {
+
+        }
+        DB::commit();
+        return response()->ajaxSuccess();
     }
 
     /**
@@ -114,7 +188,14 @@ class OrderOperationController extends Controller
      */
     public function cancelConsult()
     {
-        OrderServices::init(request()->user()->id, request('trade_no'))->take();
+        DB::beginTransaction();
+        try {
+            OrderServices::init(request()->user()->id, request('trade_no'))->cancelConsult();
+        } catch (Exception $exception) {
+
+        }
+        DB::commit();
+        return response()->ajaxSuccess();
     }
 
     /**
@@ -122,7 +203,15 @@ class OrderOperationController extends Controller
      */
     public function applyComplain()
     {
-        OrderServices::init(request()->user()->id, request('trade_no'))->take();
+        DB::beginTransaction();
+        try {
+            OrderServices::init(request()->user()->id, request('trade_no'))->applyComplain(request('remark'));
+        } catch (Exception $exception) {
+
+        }
+        DB::commit();
+        return response()->ajaxSuccess();
+
     }
 
     /**
@@ -130,7 +219,14 @@ class OrderOperationController extends Controller
      */
     public function cancelComplain()
     {
-        OrderServices::init(request()->user()->id, request('trade_no'))->take();
+        DB::beginTransaction();
+        try {
+            OrderServices::init(request()->user()->id, request('trade_no'))->cancelComplain();
+        } catch (Exception $exception) {
+
+        }
+        DB::commit();
+        return response()->ajaxSuccess();
     }
 
 }

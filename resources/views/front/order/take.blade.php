@@ -464,38 +464,38 @@
     <script type="text/html" id="operation">
 
         @{{# if (d.status_des == '代练中') {  }}
-            <button class="qs-btn qs-btn-sm" style="width: 80px;"   data-no="@{{ d.trade_no }}" lay-submit lay-filter="lock">申请验收</button>
-            <button class="qs-btn qs-btn-primary qs-btn-sm qs-btn-table" style="width: 80px;"   data-no="@{{ d.trade_no }}" lay-submit lay-filter="lock">协商撤销</button>
+            <button class="qs-btn qs-btn-sm" style="width: 80px;"   data-no="@{{ d.trade_no }}" lay-submit lay-filter="apply-complete">申请验收</button>
+            <button class="qs-btn qs-btn-primary qs-btn-sm qs-btn-table" style="width: 80px;"   data-no="@{{ d.trade_no }}" lay-submit lay-filter="apply-consult">协商撤销</button>
         @{{# }   }}
 
         @{{# if (d.status_des == '待验收') {  }}
-            <button class="qs-btn qs-btn-sm" style="width: 80px;"   data-no="@{{ d.trade_no }}" lay-submit lay-filter="lock">协商撤销</button>
-            <button class="qs-btn qs-btn-primary qs-btn-sm qs-btn-table" style="width: 80px;"   data-no="@{{ d.trade_no }}" lay-submit lay-filter="lock">取消验收</button>
+            <button class="qs-btn qs-btn-sm" style="width: 80px;" data-no="@{{ d.trade_no }}" lay-submit lay-filter="apply-consult">协商撤销</button>
+            <button class="qs-btn qs-btn-primary qs-btn-sm qs-btn-table" style="width: 80px;" data-no="@{{ d.trade_no }}" lay-submit lay-filter="cancel-complete">取消验收</button>
         @{{# }   }}
 
         @{{# if (d.status_des == '撤销中' && d.consult == 1) {  }}
-        <button class="qs-btn qs-btn-sm" style="width: 80px;"   data-no="@{{ d.trade_no }}" lay-submit lay-filter="lock">取消撤销</button>
-        <button class="qs-btn qs-btn-primary qs-btn-sm qs-btn-table" style="width: 80px;"   data-no="@{{ d.trade_no }}" lay-submit lay-filter="lock">申请仲裁</button>
+            <button class="qs-btn qs-btn-sm" style="width: 80px;"   data-no="@{{ d.trade_no }}" lay-submit lay-filter="lock">取消撤销</button>
+            <button class="qs-btn qs-btn-primary qs-btn-sm qs-btn-table" style="width: 80px;"   data-no="@{{ d.trade_no }}" lay-submit lay-filter="apply-complain">申请仲裁</button>
         @{{# } else if(d.status_des == '撤销中' && d.consult == 2) {  }}
-        <button class="qs-btn qs-btn-sm" style="width: 80px;"   data-no="@{{ d.trade_no }}" lay-submit lay-filter="lock" >同意撤销</button>
-        <button class="qs-btn qs-btn-primary qs-btn-sm qs-btn-table" style="width: 80px;"   data-no="@{{ d.trade_no }}" lay-submit lay-filter="lock">申请仲裁</button>
+            <button class="qs-btn qs-btn-sm" style="width: 80px;"   data-no="@{{ d.trade_no }}" lay-submit lay-filter="agree=consult" >同意撤销</button>
+            <button class="qs-btn qs-btn-primary qs-btn-sm qs-btn-table" style="width: 80px;"   data-no="@{{ d.trade_no }}" lay-submit lay-filter="apply-complain">申请仲裁</button>
         @{{# }  }}
 
         @{{# if (d.status_des == '仲裁中' && d.complain == 1) {  }}
-        <button class="qs-btn qs-btn-sm" style="width: 80px;"   data-no="@{{ d.trade_no }}" lay-submit lay-filter="lock">取消仲裁</button>
-        <button class="qs-btn qs-btn-primary qs-btn-sm qs-btn-table" style="width: 80px;"   data-no="@{{ d.trade_no }}" lay-submit lay-filter="lock">同意撤销</button>
-        @{{# } else if(d.status_des == '撤销中' && d.complain == 2) {  }}
-        <button class="qs-btn qs-btn-sm" style="width: 80px;"   data-no="@{{ d.trade_no }}"></button>
-        <button class="qs-btn qs-btn-primary qs-btn-sm qs-btn-table" style="width: 80px;"   data-no="@{{ d.trade_no }}" lay-submit lay-filter="lock">同意撤销</button>
+            <button class="qs-btn qs-btn-sm" style="width: 80px;" data-no="@{{ d.trade_no }}" lay-submit lay-filter="cancel-complain">取消仲裁</button>
+        @{{# }  }}
+
+        @{{# if (d.status_des == '仲裁中' && d.consult == 2) {  }}
+            <button class="qs-btn qs-btn-primary qs-btn-sm qs-btn-table" style="width: 80px;" data-no="@{{ d.trade_no }}" lay-submit lay-filter="agree-consult" >同意撤销</button>
         @{{# }   }}
 
         @{{# if (d.status == '异常') {  }}
-        <button class="qs-btn qs-btn-sm" style="width: 80px;"   data-no="@{{ d.trade_no }}">取消异常</button>
-        <button class="qs-btn qs-btn-primary qs-btn-sm qs-btn-table" style="width: 80px;"   data-no="@{{ d.trade_no }}" lay-submit lay-filter="lock">协商撤销</button>
+            <button class="qs-btn qs-btn-sm" style="width: 80px;" data-no="@{{ d.trade_no }}" lay-submit lay-filter="cancel-anomaly">取消异常</button>
+            <button class="qs-btn qs-btn-primary qs-btn-sm qs-btn-table" style="width: 80px;"   data-no="@{{ d.trade_no }}" lay-submit lay-filter="apply-consult">协商撤销</button>
         @{{# }   }}
 
         @{{# if (d.status == '锁定') {  }}
-        <button class="qs-btn qs-btn-sm" style="width: 80px;" data-no="@{{ d.trade_no }}" lay-submit lay-filter="lock">协商撤销</button>
+            <button class="qs-btn qs-btn-sm" style="width: 80px;" data-no="@{{ d.trade_no }}" lay-submit lay-filter="apply-consult">协商撤销</button>
         @{{# }   }}
 
     </script>
@@ -575,8 +575,7 @@
                     layTpl = layui.laytpl,
                     table = layui.table,
                     carousel =  layui.carousel;
-            // 是否将天猫订单发货
-            var delivery = 1;
+
             // 状态切换
             element.on('tab(order-list)', function () {
                 $('form').append('<input name="status" type="hidden" value="' + this.getAttribute('lay-id')  + '">');
@@ -598,20 +597,116 @@
                 return false;
             });
 
-            // 选择游戏加载对应的代练类型
-            form.on('submit(lock)', function (data) {
-                var tradeNO = $(data.elem).attr('data-no');
-                {{--$.post('{{ route('frontend.workbench.get-game-leveling-type') }}', {game_id: data.value}, function (result) {--}}
-                    {{--var options = '<option value="">请选择代练类型</option>';--}}
-                    {{--$.each(result.content, function(index, item) {--}}
-                        {{--options += '<option value="' + item  + '">' + item  + '</option>';--}}
-                    {{--});--}}
-                    {{--$('select[name=game_leveling_type]').html(options);--}}
-                    {{--layui.form.render();--}}
-                {{--}, 'json')--}}
+            // 接单
+            form.on('submit(take)', function (data) {
+                $.post('{{ route('order.operation.take') }}', {trade_no: $(data.elem).attr('data-no')}, function (result) {
+                    if (result.status) {
+                        reloadOrderList();
+                        layer.msg(result.message);
+                    } else {
+
+                    }
+                }, 'json')
             });
-
-
+            // 申请验收
+            form.on('submit(apply-complete)', function (data) {
+                $.post('{{ route('order.operation.apply-complete') }}', {trade_no: $(data.elem).attr('data-no')}, function (result) {
+                    if (result.status) {
+                        reloadOrderList();
+                        layer.msg(result.message);
+                    } else {
+                        layer.alert(result.message);
+                    }
+                }, 'json')
+            });
+            // 取消验收
+            form.on('submit(cancel-complete)', function (data) {
+                $.post('{{ route('order.operation.cancel-complete') }}', {trade_no: $(data.elem).attr('data-no')}, function (result) {
+                    if (result.status) {
+                        reloadOrderList();
+                        layer.msg(result.message);
+                    } else {
+                        layer.alert(result.message);
+                    }
+                }, 'json')
+            });
+            // 异常
+            form.on('submit(anomaly)', function (data) {
+                $.post('{{ route('order.operation.anomaly') }}', {trade_no: $(data.elem).attr('data-no')}, function (result) {
+                    if (result.status) {
+                        reloadOrderList();
+                        layer.msg(result.message);
+                    } else {
+                        layer.alert(result.message);
+                    }
+                }, 'json')
+            });
+            // 取消异常
+            form.on('submit(cancel-anomaly)', function (data) {
+                $.post('{{ route('order.operation.cancel-anomaly') }}', {trade_no: $(data.elem).attr('data-no')}, function (result) {
+                    if (result.status) {
+                        reloadOrderList();
+                        layer.msg(result.message);
+                    } else {
+                        layer.alert(result.message);
+                    }
+                }, 'json')
+            });
+            // 申请撤销
+            form.on('submit(apply-consult)', function (data) {
+                $.post('{{ route('order.operation.apply-consult') }}', {trade_no: $(data.elem).attr('data-no')}, function (result) {
+                    if (result.status) {
+                        reloadOrderList();
+                        layer.msg(result.message);
+                    } else {
+                        layer.alert(result.message);
+                    }
+                }, 'json')
+            });
+            // 取消撤销
+            form.on('submit(cancel-consult)', function (data) {
+                $.post('{{ route('order.operation.cancel-consult') }}', {trade_no: $(data.elem).attr('data-no')}, function (result) {
+                    if (result.status) {
+                        reloadOrderList();
+                        layer.msg(result.message);
+                    } else {
+                        layer.alert(result.message);
+                    }
+                }, 'json')
+            });
+            // 同意撤销
+            form.on('submit(agree-consult)', function (data) {
+                $.post('{{ route('order.operation.agree-consult') }}', {trade_no: $(data.elem).attr('data-no')}, function (result) {
+                    if (result.status) {
+                        reloadOrderList();
+                        layer.msg(result.message);
+                    } else {
+                        layer.alert(result.message);
+                    }
+                }, 'json')
+            });
+            // 申请仲裁
+            form.on('submit(apply-complain)', function (data) {
+                $.post('{{ route('order.operation.apply-complain') }}', {trade_no: $(data.elem).attr('data-no')}, function (result) {
+                    if (result.status) {
+                        reloadOrderList();
+                        layer.msg(result.message);
+                    } else {
+                        layer.alert(result.message);
+                    }
+                }, 'json')
+            });
+            // 取消仲裁
+            form.on('submit(cancel-complain)', function (data) {
+                $.post('{{ route('order.operation.cancel-complain') }}', {trade_no: $(data.elem).attr('data-no')}, function (result) {
+                    if (result.status) {
+                        reloadOrderList();
+                        layer.msg(result.message);
+                    } else {
+                        layer.alert(result.message);
+                    }
+                }, 'json')
+            });
             // 加载数据
             table.render({
                 elem: '#order-list',

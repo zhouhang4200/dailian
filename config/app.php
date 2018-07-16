@@ -176,7 +176,8 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-
+        // 响应宏
+        App\Providers\ResponseMacroServiceProvider::class,
     ],
 
     /*

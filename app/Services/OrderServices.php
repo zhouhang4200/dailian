@@ -396,7 +396,7 @@ class OrderServices
      * @return object
      * @throws Exception
      */
-    public function unLock()
+    public function cancelLock()
     {
         // 锁定状态可以取消锁定
         if (self::$order->status != 7) {

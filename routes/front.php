@@ -11,20 +11,8 @@
 |
 */
 
-// 登录
-Route::namespace('Auth')->group(function (){
-    Route::get('login', 'LoginController@showLoginForm')->name('login');
-    Route::post('login', 'LoginController@login');
-    Route::post('logout', 'LoginController@logout')->name('logout');
-
-    Route::prefix('password')->group(function (){
-        Route::get('email', 'ForgotPasswordController@sendResetLinkEmail')->name('password.email');
-        Route::get('reset', 'ForgotPasswordController@showLinkRequestForm')->name('password.request');
-        Route::post('reset', 'ResetPasswordController@reset');
-        Route::get('reset/{token}', 'ResetPasswordController@showResetForm ')->name('password.reset');
-    });
-    Route::get('register', 'RegisterController@showRegistrationForm')->name('register');
-    Route::post('register', 'RegisterController@register');
+Route::get('/', function (){
+    return view('welcome');
 });
 
 // 登录后
@@ -50,7 +38,11 @@ Route::group(['middleware' => 'auth'], function (){
     });
     // 订单
     Route::prefix('order')->group(function (){
-        Route::get('/', 'OrderController@index')->name('order');
+        Route::get('/', 'OrderController@index')->name('order'); // 待接单列表
+        Route::get('take', 'OrderController@take')->name('order.take'); // 接单管理视图
+        Route::post('take', 'OrderController@takeData'); // 接单列表数据
+        Route::get('send', 'OrderController@send')->name('order.send'); // 发单管理视图
+        Route::post('send', 'OrderController@sendData'); // 发单列表数据
     });
     // 财务
     Route::prefix('finance')->group(function (){
@@ -62,3 +54,18 @@ Route::group(['middleware' => 'auth'], function (){
     });
 });
 
+// 登录
+Route::namespace('Auth')->group(function (){
+    Route::get('login', 'LoginController@showLoginForm')->name('login');
+    Route::post('login', 'LoginController@login');
+    Route::post('logout', 'LoginController@logout')->name('logout');
+
+    Route::prefix('password')->group(function (){
+        Route::get('email', 'ForgotPasswordController@sendResetLinkEmail')->name('password.email');
+        Route::get('reset', 'ForgotPasswordController@showLinkRequestForm')->name('password.request');
+        Route::post('reset', 'ResetPasswordController@reset');
+        Route::get('reset/{token}', 'ResetPasswordController@showResetForm ')->name('password.reset');
+    });
+    Route::get('register', 'RegisterController@showRegistrationForm')->name('register');
+    Route::post('register', 'RegisterController@register');
+});

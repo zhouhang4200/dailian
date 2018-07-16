@@ -1,63 +1,63 @@
 <?php
 $userPermissions = [];
 $homeRoute = [
-    'home-punishes.index',
-    'frontend.index',
+        'home-punishes.index',
+        'frontend.index',
 ];
 
 $workbenchRoute = [
-    'frontend.workbench.index',
-    'frontend.workbench.leveling.wait',
-    'frontend.workbench.leveling.create',
-    'frontend.workbench.leveling.index',
-    'frontend.workbench.leveling.complaints',
+        'frontend.workbench.index',
+        'frontend.workbench.leveling.wait',
+        'frontend.workbench.leveling.create',
+        'frontend.workbench.leveling.index',
+        'frontend.workbench.leveling.complaints',
 ];
 
 $accountRoute = [
-    'station.index',
-    'home-accounts.index',
-    'login.history',
-    'idents.index',
-    'idents.create',
-    'idents.edit',
-    'idents.edit',
-    'staff-management.index',
-    'hatchet-man-blacklist.index',
-    'home-accounts.edit',
-    'station.edit',
-    'station.create',
-    'staff-management.edit',
-    'staff-management.create',
-    'hatchet-man-blacklist.edit',
-    'hatchet-man-blacklist.create',
+        'station.index',
+        'home-accounts.index',
+        'login.history',
+        'idents.index',
+        'idents.create',
+        'idents.edit',
+        'idents.edit',
+        'staff-management.index',
+        'hatchet-man-blacklist.index',
+        'home-accounts.edit',
+        'station.edit',
+        'station.create',
+        'staff-management.edit',
+        'staff-management.create',
+        'hatchet-man-blacklist.edit',
+        'hatchet-man-blacklist.create',
 ];
 
 $financeRoute = [
-    'frontend.finance.asset',
-    'frontend.finance.asset-daily',
-    'frontend.finance.amount-flow',
-    'frontend.finance.withdraw-order',
-    'frontend.statistic.employee',
-    'frontend.statistic.order',
-    'frontend.statistic.sms',
-    'frontend.finance.order-report.index',
-    'frontend.finance.month-settlement-orders.index',
+        'frontend.finance.asset',
+        'frontend.finance.asset-daily',
+        'frontend.finance.amount-flow',
+        'frontend.finance.withdraw-order',
+        'frontend.statistic.employee',
+        'frontend.statistic.order',
+        'frontend.statistic.sms',
+        'frontend.finance.order-report.index',
+        'frontend.finance.month-settlement-orders.index',
 ];
 
 $settingRoute = [
-    'frontend.setting.receiving-control.index',
-    'frontend.setting.api-risk-management.index',
-    'frontend.setting.skin.index',
-    'frontend.setting.automatically-grab.goods',
-    'frontend.setting.sms.index',
-    'frontend.setting.tb-auth.index',
-    'frontend.setting.sending-assist.auto-markup',
-    'frontend.setting.tb-auth.store',
-    'frontend.setting.order-send-channel.index',
+        'frontend.setting.receiving-control.index',
+        'frontend.setting.api-risk-management.index',
+        'frontend.setting.skin.index',
+        'frontend.setting.automatically-grab.goods',
+        'frontend.setting.sms.index',
+        'frontend.setting.tb-auth.index',
+        'frontend.setting.sending-assist.auto-markup',
+        'frontend.setting.tb-auth.store',
+        'frontend.setting.order-send-channel.index',
 ];
 
 $goodsRoute = [
-    'frontend.goods.index',
+        'frontend.goods.index',
 ];
 
 $myAccount = ['home-accounts.edit', 'home-accounts.index'];
@@ -65,8 +65,8 @@ $stationManagement = ['station.create', 'station.index', 'station.edit'];
 $employeeManagement = ['staff-management.index', 'staff-management.edit', 'staff-management.create'];
 $blacklist = ['hatchet-man-blacklist.index', 'hatchet-man-blacklist.create', 'hatchet-man-blacklist.edit'];
 $finance = ['frontend.finance.asset', 'frontend.finance.amount-flow', 'frontend.finance.asset-daily',
-    'frontend.finance.withdraw-order', 'frontend.finance.order-report.index', 'frontend.statistic.employee',
-    'frontend.statistic.order', 'frontend.statistic.sms'
+        'frontend.finance.withdraw-order', 'frontend.finance.order-report.index', 'frontend.statistic.employee',
+        'frontend.statistic.order', 'frontend.statistic.sms'
 ];
 ?>
         <!DOCTYPE html>
@@ -74,14 +74,16 @@ $finance = ['frontend.finance.asset', 'frontend.finance.amount-flow', 'frontend.
 <head>
     <meta charset="utf-8">
     <title>@yield('title')</title>
-    <meta name="_token" content="{{ csrf_token() }}" >
+    <meta name="_token" content="{{ csrf_token() }}">
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <link rel="stylesheet" href="/front/lib/js/layui/css/layui.css" media="all">
     <link rel="stylesheet" href="/front/lib/css/admin.css" media="all">
     <link rel="stylesheet" href="/front/lib/css/new.css">
-    <link id="layuicss-layer" rel="stylesheet" href="/front/lib/js/layui/css/modules/layer/default/layer.css" media="all">
+    <link id="layuicss-layer" rel="stylesheet" href="/front/lib/js/layui/css/modules/layer/default/layer.css"
+          media="all">
     <style>
         .layui-layout-admin .layui-body {
             top: 50px;
@@ -113,16 +115,20 @@ $finance = ['frontend.finance.asset', 'frontend.finance.amount-flow', 'frontend.
         .layui-card .layui-tab {
             margin: 10px 0;
         }
+
         .layui-form-item {
             margin-bottom: 12px;
         }
-        .layui-tab-title li{
+
+        .layui-tab-title li {
             min-width: 50px;
         }
-        .qsdate{
+
+        .qsdate {
             display: inline-block;
             width: 42%;
         }
+
         /* 改写header高度 */
         .layui-card-header {
             height: 56px;
@@ -130,6 +136,7 @@ $finance = ['frontend.finance.asset', 'frontend.finance.amount-flow', 'frontend.
             color: #303133;
             font-size: 14px;
         }
+
         .layui-side-menu .layui-nav .layui-nav-item .layui-icon {
             position: absolute;
             top: 50%;
@@ -137,6 +144,7 @@ $finance = ['frontend.finance.asset', 'frontend.finance.amount-flow', 'frontend.
             margin-top: -20px;
             font-size: 24px;
         }
+
         .layui-card-body {
             padding-bottom: 30px;
         }
@@ -160,7 +168,7 @@ $finance = ['frontend.finance.asset', 'frontend.finance.amount-flow', 'frontend.
             <ul class="layui-nav layui-layout-right" lay-filter="layadmin-layout-right">
 
                 <li class="layui-nav-item" lay-unselect>
-                    <a  id="leveling-message">
+                    <a id="leveling-message">
                         <i class="layui-icon layui-icon-notice"></i>
                         <!-- 如果有新消息，则显示小圆点 -->
                         <span class="layui-badge-dot"></span>
@@ -197,24 +205,36 @@ $finance = ['frontend.finance.asset', 'frontend.finance.amount-flow', 'frontend.
                     <img src="/front/images/title.png" alt="">
                 </div>
 
-                <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu">
+                <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu"
+                    lay-filter="layadmin-system-side-menu">
 
-                        <li data-name="home" class="layui-nav-item @if(in_array(Route::currentRouteName(), $accountRoute)) layui-nav-itemed @endif">
-                            <a href="javascript:;" lay-tips="账号" lay-direction="2">
-                                <i class="layui-icon iconfont  icon-group-o"></i>
-                                <cite>账号</cite>
-                            </a>
-                            <dl class="layui-nav-child">
-                                <dd data-name="console" class="@if( in_array(Route::currentRouteName(), $myAccount)) layui-this  @endif">
-                                    <a href="">我的账号</a>
-                                </dd>
+                    <li data-name="home"
+                        class="layui-nav-item @if(in_array(Route::currentRouteName(), $accountRoute)) layui-nav-itemed @endif">
+                        <a href="{{ route('order.take') }}" lay-tips="账号" lay-direction="2">
+                            <i class="layui-icon iconfont  icon-group-o"></i>
+                            <cite>接单管理</cite>
+                        </a>
+                    </li>
 
-                                    <dd data-name="console" class="@if( in_array(Route::currentRouteName(), $stationManagement)) layui-this  @endif">
-                                        <a href="{{ route('employee.group') }}">岗位管理</a>
-                                    </dd>
+                    <li data-name="home"
+                        class="layui-nav-item @if(in_array(Route::currentRouteName(), $accountRoute)) layui-nav-itemed @endif">
+                        <a href="javascript:;" lay-tips="账号" lay-direction="2">
+                            <i class="layui-icon iconfont  icon-group-o"></i>
+                            <cite>账号</cite>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd data-name="console"
+                                class="@if( in_array(Route::currentRouteName(), $myAccount)) layui-this  @endif">
+                                <a href="">我的账号</a>
+                            </dd>
 
-                            </dl>
-                        </li>
+                            <dd data-name="console"
+                                class="@if( in_array(Route::currentRouteName(), $stationManagement)) layui-this  @endif">
+                                <a href="{{ route('employee.group') }}">岗位管理</a>
+                            </dd>
+
+                        </dl>
+                    </li>
 
                 </ul>
             </div>
@@ -239,16 +259,17 @@ $finance = ['frontend.finance.asset', 'frontend.finance.amount-flow', 'frontend.
     .layadmin-pagetabs .layui-tab-title li:after,
     .layadmin-pagetabs .layui-tab-title li.layui-this:after,
     .layui-layer-admin .layui-layer-title,
-    .layadmin-side-shrink .layui-side-menu .layui-nav>.layui-nav-item>.layui-nav-child {
+    .layadmin-side-shrink .layui-side-menu .layui-nav > .layui-nav-item > .layui-nav-child {
         background-color: #20222A !important;
     }
 
     .layui-nav-tree .layui-this,
-    .layui-nav-tree .layui-this>a,
+    .layui-nav-tree .layui-this > a,
     .layui-nav-tree .layui-nav-child dd.layui-this,
     .layui-nav-tree .layui-nav-child dd.layui-this a {
         background-color: #F78400 !important;
     }
+
     .layui-layout-admin .layui-logo {
         background-color: #F78400 !important;
     }

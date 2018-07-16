@@ -2,9 +2,6 @@
 
 namespace App\Services;
 
-use App\Models\GameLevelingOrderComplain;
-use App\Models\GameLevelingOrderConsult;
-use App\Models\GameLevelingOrderPreviousStatus;
 use \Exception;
 use App\Models\User;
 use App\Models\Game;
@@ -12,6 +9,9 @@ use App\Models\Region;
 use App\Models\GameLevelingType;
 use App\Models\GameLevelingOrder;
 use App\Models\GameLevelingOrderLog;
+use App\Models\GameLevelingOrderConsult;
+use App\Models\GameLevelingOrderComplain;
+use App\Models\GameLevelingOrderPreviousStatus;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -163,7 +163,7 @@ class OrderServices
 
     /**
      * 接单
-     * @return null
+     * @return object
      * @throws Exception
      */
     public function take()
@@ -199,7 +199,7 @@ class OrderServices
 
     /**
      * 删除订单
-     * @return null
+     * @return object
      * @throws Exception
      */
     public function delete()
@@ -224,7 +224,7 @@ class OrderServices
 
     /**
      * 申请验收
-     * @return null
+     * @return object
      * @throws Exception
      */
     public function applyComplete()
@@ -250,7 +250,7 @@ class OrderServices
 
     /**
      * 取消验收
-     * @return null
+     * @return object
      * @throws Exception
      */
     public function cancelComplete()
@@ -276,7 +276,7 @@ class OrderServices
 
     /**
      * 完成验收
-     * @return null
+     * @return object
      * @throws Exception
      */
     public function complete()

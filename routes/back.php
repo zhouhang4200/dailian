@@ -11,6 +11,11 @@
 |
 */
 
+// 登录后首页
+Route::group(['middleware' => 'auth.admin'], function (){
+    Route::get('/', 'HomeController@index')->name('home');
+});
+
 // 登录
 Route::namespace('Auth')->group(function (){
     Route::get('login', 'LoginController@showLoginForm')->name('admin.login');
@@ -18,7 +23,3 @@ Route::namespace('Auth')->group(function (){
     Route::post('logout', 'LoginController@logout')->name('admin.logout');
 });
 
-// 登录后首页
-Route::group(['middleware' => 'auth.admin'], function (){
-    Route::get('/', 'HomeController@index')->name('home');
-});

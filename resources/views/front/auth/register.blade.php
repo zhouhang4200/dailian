@@ -5,6 +5,14 @@
 @section('css')
 @endsection
 
+@section('header')
+    <div class="header">
+        <div class="container">
+            <img src="/front/images/title.png" alt="">
+        </div>
+    </div>
+@endsection
+
 @section('main')
     <div class="container">
         <div class="login_img">
@@ -17,7 +25,7 @@
             <form class="layui-form" action="">
                 {{ csrf_field() }}
                 <div class="layui-form-item">
-                    <label class="layui-form-label"><i class="iconfont icon-zhanghao-copy"></i></label>
+                    <label class="layui-form-label"><i class="iconfont icon-dianhua"></i></label>
                     <div class="layui-input-block">
                         <input type="text" name="phone" autocomplete="off" lay-verify="required|number" placeholder="请输入手机号" class="layui-input">
                     </div>
@@ -25,7 +33,7 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label"><i class="iconfont icon-ad77"></i></label>
                     <div class="layui-input-block">
-                        <input type="password" name="password" autocomplete="off" lay-verify="required" placeholder="请输入密码" class="layui-input">
+                        <input type="password" name="password" autocomplete="off" lay-verify="required" placeholder="请输入6-22位密码" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
@@ -33,7 +41,7 @@
                         <i class="iconfont icon-ad77"></i>
                     </label>
                     <div class="layui-input-block">
-                        <input type="password" name="password_confirmation" required="" lay-verify="required"  placeholder="再次输入密码" autocomplete="off" class="layui-input layui-form-danger">
+                        <input type="password" name="password_confirmation" required="" lay-verify="required"  placeholder="请确认密码" autocomplete="off" class="layui-input layui-form-danger">
                     </div>
                 </div>
                 <div class="layui-form-item">
@@ -48,7 +56,7 @@
                         <input type="text" name="email" autocomplete="off" lay-verify="required|email" placeholder="请输入邮箱" class="layui-input">
                     </div>
                 </div>
-                <div class="layui-form-item">
+                <div class="layui-form-item"  style="height:45px">
                     {!! Geetest::render() !!}
                 </div>
                 <div class="layui-form-item">

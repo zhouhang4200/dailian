@@ -98,16 +98,16 @@ class RegisterController extends Controller
         $data['password_confirmation'] = clientRSADecrypt($request->password_confirmation);
         $validator = Validator::make($data, [
             'geetest_challenge' => 'required',
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255',
-            'phone' => 'required|string|min:11|max:11|unique:users',
-            'password' => 'required|string|min:6|max:50|confirmed',
+            'name' => 'required|string|max:50',
+            'email' => 'required|string|email|max:100',
+            'phone' => 'required|string|size:11|unique:users',
+            'password' => 'required|string|min:6|max:22|confirmed',
         ], [
             'geetest_challenge.required' => '请点击按钮进行验证',
-            'phone.min' => '请正确输入手机号',
+            'phone.size' => '请填写正确的手机号',
             'phone.unique' => '手机号已被注册',
-            'phone.max' => '请正确输入手机号',
-            'password.min' => '密码最低6位',
+            'password.min' => '密码最少6位',
+            'password.max' => '密码最大22位',
             'password.confirmed' => '两次密码输入不一致',
         ]);
 

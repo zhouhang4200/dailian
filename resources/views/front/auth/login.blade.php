@@ -5,6 +5,14 @@
 @section('css')
 @endsection
 
+@section('header')
+    <div class="header">
+        <div class="container">
+            <img src="/front/images/title.png" alt="">
+        </div>
+    </div>
+@endsection
+
 @section('main')
     <div class="container">
         <div class="login_img">
@@ -17,7 +25,7 @@
             <form action="" class="layui-form">
                 {{ csrf_field() }}
                 <div class="layui-form-item">
-                    <label class="layui-form-label"><i class="iconfont icon-zhanghao-copy"></i></label>
+                    <label class="layui-form-label"><i class="iconfont icon-dianhua"></i></label>
                     <div class="layui-input-block">
                         <input type="text" name="phone" lay-verify="required" autocomplete="off" placeholder="请输入手机号" class="layui-input">
                     </div>
@@ -28,7 +36,7 @@
                         <input type="password" name="password" lay-verify="required" autocomplete="off" placeholder="请输入密码" class="layui-input">
                     </div>
                 </div>
-                <div class="layui-form-item">
+                <div class="layui-form-item" style="height:45px">
                     {!! Geetest::render() !!}
                 </div>
                 <div class="layui-form-item">

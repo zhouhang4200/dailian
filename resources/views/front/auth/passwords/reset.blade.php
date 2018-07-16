@@ -3,11 +3,21 @@
 @section('title', '重置密码')
 
 @section('css')
+    <link rel="stylesheet" href="/front/css/layui-rewrit.css">
+    <link rel="stylesheet" href="/front/css/login.css">
     <style>
         .input-container input {
             height:40px;
         }
     </style>
+@endsection
+
+@section('header')
+    <div class="header">
+        <div class="container">
+            <img src="/front/images/title.png" alt="">
+        </div>
+    </div>
 @endsection
 
 @section('main')
@@ -19,22 +29,18 @@
                     <input type="hidden" name="token" value="{{ $token }}">
                     <div class="layui-form-item">
                         <input type="email" name="email" required="" lay-verify="required" placeholder="请输入邮箱" value="{{ old('email') }}" autocomplete="off" class="layui-input layui-form-danger">
-                        <i class="layui-icon icon">&#xe612;</i>
+                        <i class="layui-icon icon">&#xe64c;</i>
                     </div>
                     <div class="layui-form-item ">
-                        <input type="password" name="password" required="" lay-verify="required" placeholder="请输入至少6位数密码" autocomplete="off" class="layui-input layui-form-danger">
+                        <input type="password" name="password" required="" lay-verify="required" placeholder="6-22位密码" autocomplete="off" class="layui-input layui-form-danger">
                         <i class="layui-icon icon"> &#x1005;</i>
                     </div>
                     <div class="layui-form-item ">
-                        <input type="password" name="password_confirmation" required="" lay-verify="required" placeholder="再次输入密码" autocomplete="off" class="layui-input layui-form-danger">
+                        <input type="password" name="password_confirmation" required="" lay-verify="required" placeholder="确认密码" autocomplete="off" class="layui-input layui-form-danger">
                         <i class="layui-icon icon"> &#x1005;</i>
                     </div>
                     <div class="layui-form-item">
-                        <button class="layui-btn layui-btn-normal" lay-submit lay-filter="formDemo" style="width: 100%">重 置</button>
-                    </div>
-                    <div class="register-and-forget-password">
-                        <a class="register" target="_blank" href="{{ route('login') }}">登录</a>
-                        <div class="layui-clear"></div>
+                        <button class="layui-btn layui-btn-normal" lay-submit lay-filter="formDemo" style="width: 100%">确认</button>
                     </div>
                 </div>
             </div>

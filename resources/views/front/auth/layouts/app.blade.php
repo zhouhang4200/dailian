@@ -8,17 +8,14 @@
     <title>@yield('title')</title>
     <link rel="stylesheet" href="/front/lib/js/layui/css/layui.css">
     <link rel="stylesheet" href="/front/lib/css/iconfont.css">
+    <link rel="stylesheet" href="/front/lib/css/new-iconfont.css">
     <link rel="stylesheet" href="/front/lib/css/new.css">
     <link rel="stylesheet" href="/front/css/index.css">
     @yield('css')
 </head>
 
 <body>
-<div class="header">
-    <div class="container">
-        <img src="/front/images/title.png" alt="">
-    </div>
-</div>
+    @yield('header')
 <div class="main">
     @yield('main')
 </div>

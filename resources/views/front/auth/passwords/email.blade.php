@@ -3,6 +3,8 @@
 @section('title', '密码找回')
 
 @section('css')
+    <link rel="stylesheet" href="/front/css/layui-rewrit.css">
+    <link rel="stylesheet" href="/front/css/login.css">
     <style>
         .input-container input {
             height:40px;
@@ -10,20 +12,26 @@
     </style>
 @endsection
 
+@section('header')
+    <div class="header">
+        <div class="container">
+            <img src="/front/images/title.png" alt="">
+        </div>
+    </div>
+@endsection
+
 @section('main')
     <form method="POST" action="{{ route('password.email') }}"  class="layui-form">
         {!! csrf_field() !!}
+            <div class="title">注册邮件地址</div>
             <div class="container">
-                <div class="input-container">
-                    <div class="title">邮件地址</div>
-                    <div class="layui-form-item">
-                        <input type="email" name="email" required="" lay-verify="required" placeholder="请输入" value="{{ old('email') }}" autocomplete="off" class="layui-input layui-form-danger">
-                        <i class="layui-icon icon">&#xe612;</i>
-                    </div>
+                <div class="layui-form-item">
+                    <input type="email" name="email" required="" lay-verify="required" placeholder="请输入邮箱" value="{{ old('email') }}" autocomplete="off" class="layui-input layui-form-danger">
+                    <i class="layui-icon icon">&#xe64c;</i>
+                </div>
 
-                    <div class="layui-form-item">
-                        <button class="layui-btn layui-btn-normal" lay-submit lay-filter="formDemo" style="width: 100%">发 送</button>
-                    </div>
+                <div class="layui-form-item">
+                    <button class="layui-btn layui-btn-normal" lay-submit lay-filter="formDemo" style="width: 100%">发 送</button>
                 </div>
             </div>
     </form>

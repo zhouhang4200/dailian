@@ -13,6 +13,7 @@ use App\Models\GameLevelingOrderConsult;
 use App\Models\GameLevelingOrderComplain;
 use App\Models\GameLevelingOrderPreviousStatus;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\Debug\Exception\FatalThrowableError;
 
 /**
  * 订单服务类
@@ -191,7 +192,7 @@ class OrderServices
             self::$order->save();
 
         } catch (Exception $exception) {
-            throw new Exception($exception->getMessage(), $exception->getCode());
+           throw new Exception($exception->getMessage());
         }
         DB::commit();
         return self::$order;
@@ -207,7 +208,7 @@ class OrderServices
         if (self::$order->status != 1) {
             throw new Exception('撤单失败,订单当前状态为: ' . self::$order->getOrderStatus());
         }
-        if (self::$order->parent_user_id != self::$user->parent_user_id) {
+        if (self::$order->parent_user_id != self::$user->parent_id) {
             throw new Exception('该订单不属于您,您无权撤单');
         }
         DB::beginTransaction();
@@ -216,7 +217,7 @@ class OrderServices
             self::$order->status = 14;
             self::$order->save();
         } catch (Exception $exception) {
-            throw new Exception($exception->getMessage(), $exception->getCode());
+           throw new Exception($exception->getMessage());
         }
         DB::commit();
         return self::$order;
@@ -232,7 +233,8 @@ class OrderServices
         if (self::$order->status != 2) {
             throw new Exception('申请验收失败,订单当前状态为: ' . self::$order->getOrderStatus());
         }
-        if (self::$order->take_parent_user_id != self::$user->parent_user_id) {
+
+        if (self::$order->take_parent_user_id != self::$user->parent_id) {
             throw new Exception('您不是接单方无法申请验收');
         }
 
@@ -240,9 +242,10 @@ class OrderServices
         try {
             // 修改订单状态
             self::$order->status = 3;
-            self::$order->save();
+            $result =  self::$order->save();
+            info('complete', [$result, self::$order->status]);
         } catch (Exception $exception) {
-            throw new Exception($exception->getMessage(), $exception->getCode());
+           throw new Exception($exception->getMessage());
         }
         DB::commit();
         return self::$order;
@@ -258,7 +261,7 @@ class OrderServices
         if (self::$order->status != 3) {
             throw new Exception('取消验收失败,订单当前状态为: ' . self::$order->getOrderStatus());
         }
-        if (self::$order->take_parent_user_id != self::$user->parent_user_id) {
+        if (self::$order->take_parent_user_id != self::$user->parent_id) {
             throw new Exception('您不是接单方无法申请验收');
         }
 
@@ -268,7 +271,7 @@ class OrderServices
             self::$order->status = 2;
             self::$order->save();
         } catch (Exception $exception) {
-            throw new Exception($exception->getMessage(), $exception->getCode());
+           throw new Exception($exception->getMessage());
         }
         DB::commit();
         return self::$order;
@@ -284,7 +287,7 @@ class OrderServices
         if (self::$order->status != 3) {
             throw new Exception('完成验收失败,订单当前状态为: ' . self::$order->getOrderStatus());
         }
-        if (self::$order->parent_user_id != self::$user->parent_user_id) {
+        if (self::$order->parent_user_id != self::$user->parent_id) {
             throw new Exception('您不是发单方无法完成验收');
         }
 
@@ -305,7 +308,7 @@ class OrderServices
             self::$order->status = 11;
             self::$order->save();
         } catch (Exception $exception) {
-            throw new Exception($exception->getMessage(), $exception->getCode());
+           throw new Exception($exception->getMessage());
         }
         DB::commit();
         return self::$order;
@@ -321,7 +324,7 @@ class OrderServices
         if (self::$order->status != 13) {
             throw new Exception('上架失败,订单当前状态为: ' . self::$order->getOrderStatus());
         }
-        if (self::$order->parent_user_id != self::$user->parent_user_id) {
+        if (self::$order->parent_user_id != self::$user->parent_id) {
             throw new Exception('您不是发单方无法上架该订单');
         }
 
@@ -331,7 +334,7 @@ class OrderServices
             self::$order->status = 1;
             self::$order->save();
         } catch (Exception $exception) {
-            throw new Exception($exception->getMessage(), $exception->getCode());
+           throw new Exception($exception->getMessage());
         }
         DB::commit();
         return self::$order;
@@ -347,7 +350,7 @@ class OrderServices
         if (self::$order->status != 1) {
             throw new Exception('下架失败,订单当前状态为: ' . self::$order->getOrderStatus());
         }
-        if (self::$order->parent_user_id != self::$user->parent_user_id) {
+        if (self::$order->parent_user_id != self::$user->parent_id) {
             throw new Exception('您不是发单方无法下架该订单');
         }
 
@@ -357,7 +360,7 @@ class OrderServices
             self::$order->status = 13;
             self::$order->save();
         } catch (Exception $exception) {
-            throw new Exception($exception->getMessage(), $exception->getCode());
+           throw new Exception($exception->getMessage());
         }
         DB::commit();
         return self::$order;
@@ -374,7 +377,7 @@ class OrderServices
         if (! in_array(self::$order->status, [3, 6])) {
             throw new Exception('锁定失败,订单当前状态为: ' . self::$order->getOrderStatus());
         }
-        if (self::$order->parent_user_id != self::$user->parent_user_id) {
+        if (self::$order->parent_user_id != self::$user->parent_id) {
             throw new Exception('您不是发单方无法锁定该订单');
         }
         DB::beginTransaction();
@@ -385,7 +388,7 @@ class OrderServices
             self::$order->status = 13;
             self::$order->save();
         } catch (Exception $exception) {
-            throw new Exception($exception->getMessage(), $exception->getCode());
+           throw new Exception($exception->getMessage());
         }
         DB::commit();
         return self::$order;
@@ -402,7 +405,7 @@ class OrderServices
         if (self::$order->status != 7) {
             throw new Exception('取消锁定失败,订单当前状态为: ' . self::$order->getOrderStatus());
         }
-        if (self::$order->parent_user_id != self::$user->parent_user_id) {
+        if (self::$order->parent_user_id != self::$user->parent_id) {
             throw new Exception('您不是发单方取消锁定该订单');
         }
         DB::beginTransaction();
@@ -413,7 +416,7 @@ class OrderServices
             self::$order->status = $previousStatus->status;
             self::$order->save();
         } catch (Exception $exception) {
-            throw new Exception($exception->getMessage(), $exception->getCode());
+           throw new Exception($exception->getMessage());
         }
         DB::commit();
         return self::$order;
@@ -430,7 +433,7 @@ class OrderServices
         if (self::$order->status != 2) {
             throw new Exception('标记异常失败,订单当前状态为: ' . self::$order->getOrderStatus());
         }
-        if (self::$order->take_parent_user_id != self::$user->parent_user_id) {
+        if (self::$order->take_parent_user_id != self::$user->parent_id) {
             throw new Exception('您不是接单方无法进行异常操作');
         }
         DB::beginTransaction();
@@ -439,7 +442,7 @@ class OrderServices
             self::$order->status = 6;
             self::$order->save();
         } catch (Exception $exception) {
-            throw new Exception($exception->getMessage(), $exception->getCode());
+           throw new Exception($exception->getMessage());
         }
         DB::commit();
         return self::$order;
@@ -456,7 +459,7 @@ class OrderServices
         if (self::$order->status != 6) {
             throw new Exception('取消异常失败,订单当前状态为: ' . self::$order->getOrderStatus());
         }
-        if (self::$order->take_parent_user_id != self::$user->parent_user_id) {
+        if (self::$order->take_parent_user_id != self::$user->parent_id) {
             throw new Exception('您不是接单方无法进行异常操作');
         }
         DB::beginTransaction();
@@ -465,7 +468,7 @@ class OrderServices
             self::$order->status = 2;
             self::$order->save();
         } catch (Exception $exception) {
-            throw new Exception($exception->getMessage(), $exception->getCode());
+           throw new Exception($exception->getMessage());
         }
         DB::commit();
         return self::$order;
@@ -482,6 +485,9 @@ class OrderServices
      */
     public function applyConsult($amount, $securityDeposit, $efficiencyDeposit, $remark)
     {
+        if (! $amount || ! $securityDeposit || ! $efficiencyDeposit || ! $remark) {
+            throw new Exception('请求参数不完整');
+        }
         // 状态为 代练中(2)  待收验(3) 异常(6) 锁定(7) 可申请撤销
         if ( ! in_array(self::$order->status, [2, 3, 6 ,7])) {
             throw new Exception('申请撤销失败,订单当前状态为: ' . self::$order->getOrderStatus());
@@ -490,8 +496,8 @@ class OrderServices
         try {
             // 记录撤销数据
             GameLevelingOrderConsult::store(
-                self::$user->user_id,
-                self::$user->parent_user_id,
+                self::$user->id,
+                self::$user->parent_id,
                 self::$order->trade_no,
                 $amount,
                 $securityDeposit,
@@ -503,7 +509,7 @@ class OrderServices
             self::$order->status = 4;
             self::$order->save();
         } catch (Exception $exception) {
-            throw new Exception($exception->getMessage(), $exception->getCode());
+            throw new Exception($exception->getMessage());
         }
         DB::commit();
         return self::$order;
@@ -521,7 +527,7 @@ class OrderServices
             throw new Exception('申请撤销失败,订单当前状态为: ' . self::$order->getOrderStatus());
         }
         // 检测当前操作用户与发起用户是否是同一人
-        if (self::$order->consult->parent_user_id != self::$user->parent_user_id) {
+        if (self::$order->consult->parent_user_id != self::$user->parent_id) {
             throw new Exception('您不是该订单撤销发起人无法取消撤销');
         }
         DB::beginTransaction();
@@ -535,7 +541,7 @@ class OrderServices
             self::$order->status = $previousStatus->status;
             self::$order->save();
         } catch (Exception $exception) {
-            throw new Exception($exception->getMessage(), $exception->getCode());
+            throw new Exception($exception->getMessage());
         }
         DB::commit();
         return self::$order;
@@ -553,7 +559,7 @@ class OrderServices
             throw new Exception('申请撤销失败,订单当前状态为: ' . self::$order->getOrderStatus());
         }
         // 检测当前操作用户与发起用户是否是同一人
-        if (self::$order->consult->parent_user_id == self::$user->parent_user_id) {
+        if (self::$order->consult->parent_user_id == self::$user->parent_id) {
             throw new Exception('您不能同意自己发起的撤销');
         }
         DB::beginTransaction();
@@ -648,7 +654,7 @@ class OrderServices
             self::$order->status = 8;
             self::$order->save();
         } catch (Exception $exception) {
-            throw new Exception($exception->getMessage(), $exception->getCode());
+           throw new Exception($exception->getMessage());
         }
         DB::commit();
         return self::$order;
@@ -671,8 +677,8 @@ class OrderServices
         try {
             // 记录撤销数据
             GameLevelingOrderComplain::store(
-                self::$user->user_id,
-                self::$user->parent_user_id,
+                self::$user->id,
+                self::$user->parent_id,
                 self::$order->trade_no,
                 $remark);
             // 存储图片
@@ -683,7 +689,7 @@ class OrderServices
             self::$order->status = 5;
             self::$order->save();
         } catch (Exception $exception) {
-            throw new Exception($exception->getMessage(), $exception->getCode());
+           throw new Exception($exception->getMessage());
         }
         DB::commit();
         return self::$order;
@@ -701,21 +707,20 @@ class OrderServices
             throw new Exception('取消仲裁失败,订单当前状态为: ' . self::$order->getOrderStatus());
         }
         // 检测当前操作用户与发起用户是否是同一人
-        if (self::$order->complain->parent_user_id != self::$user->parent_user_id) {
+        if (self::$order->complain->parent_user_id != self::$user->parent_id) {
             throw new Exception('您不是该订单仲裁发起人无法取消仲裁');
         }
         DB::beginTransaction();
         try {
             // 更新撤销数据
-            GameLevelingOrderComplain:where('game_leveling_orders_trade_no', self::$order->trade_no)
-                ->update(['status' => 2]);
+            GameLevelingOrderComplain:where('game_leveling_orders_trade_no', self::$order->trade_no)->update(['status' => 2]);
             // 记录订单前一个状态
             $previousStatus = GameLevelingOrderPreviousStatus::getLatestBy(self::$order->trade_no);
             // 修改订单状态
             self::$order->status = $previousStatus->status;
             self::$order->save();
         } catch (Exception $exception) {
-            throw new Exception($exception->getMessage(), $exception->getCode());
+           throw new Exception($exception->getMessage());
         }
         DB::commit();
         return self::$order;
@@ -837,7 +842,7 @@ class OrderServices
             // 更新仲裁数据
 
         } catch (Exception $exception) {
-            throw new Exception($exception->getMessage(), $exception->getCode());
+           throw new Exception($exception->getMessage());
         }
         DB::commit();
         return self::$order;

@@ -14,10 +14,10 @@ class ResponseMacroServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Response::macro('ajaxSuccess', function ($message = 'success', $content = []) {
+        Response::macro('ajaxSuccess', function ($message = '操作成功', $content = []) {
             return response()->json(['status' => 1, 'message' => $message, 'content' => $content], 200);
         });
-        Response::macro('ajaxFail', function ($message = 'fail', $content = []) {
+        Response::macro('ajaxFail', function ($message = '操作失败', $content = []) {
             return response()->json(['status' => 0, 'message' => $message, 'content' => $content], 200);
         });
     }

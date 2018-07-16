@@ -43,6 +43,11 @@ Route::group(['middleware' => 'auth'], function (){
         Route::post('take', 'OrderController@takeData'); // 接单列表数据
         Route::get('send', 'OrderController@send')->name('order.send'); // 发单管理视图
         Route::post('send', 'OrderController@sendData'); // 发单列表数据
+
+        Route::prefix('operation')->group(function (){
+            Route::post('take', 'OrderController@takeData')->name('order.operation.lock'); // 锁定
+        });
+
     });
     // 财务
     Route::prefix('finance')->group(function (){

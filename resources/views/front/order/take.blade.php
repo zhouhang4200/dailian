@@ -197,21 +197,21 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">*我愿意支付代练费（元）</label>
                         <div class="layui-input-block">
-                            <input type="text" name="amount" lay-verify="required|number" data-opt="" autocomplete="off"
+                            <input type="text" name="amount" lay-verify="required|number"  autocomplete="off"
                                    placeholder="请输入代练费" class="layui-input" style="width:400px">
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">我已支付代练费（元）</label>
                         <div class="layui-input-block">
-                            <input type="text" name="order_amount" id="order_amount" lay-verify="" data-opt=""
+                            <input type="text" name="order_amount" id="order_amount" lay-verify="" 
                                    autocomplete="off" placeholder="" class="layui-input order_amount" style="width:400px" disabled>
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">*需要对方赔付保证金</label>
                         <div class="layui-input-block">
-                            <input type="text" name="deposit" lay-verify="required|number" data-opt=""
+                            <input type="text" name="deposit" lay-verify="required|number" 
                                    autocomplete="off"
                                    placeholder="请输入保证金" class="layui-input" style="width:400px">
                         </div>
@@ -219,14 +219,14 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">对方已预付安全保证金（元）</label>
                         <div class="layui-input-block">
-                            <input type="text" name="safe" id="safe" lay-verify="" data-opt="" autocomplete="off"
+                            <input type="text" name="safe" id="safe" lay-verify=""  autocomplete="off"
                                    placeholder="" class="layui-input safe" style="width:400px" disabled>
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">对方已预付效率保证金（元）</label>
                         <div class="layui-input-block">
-                            <input type="text" name="effect" id="effect" lay-verify="" data-opt="" autocomplete="off"
+                            <input type="text" name="effect" id="effect" lay-verify=""  autocomplete="off"
                                    placeholder="" class="layui-input effect" style="width:400px" disabled>
                         </div>
                     </div>
@@ -257,21 +257,21 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">*需要对方支付代练费（元）</label>
                         <div class="layui-input-block">
-                            <input type="text" name="amount" lay-verify="required|number" data-opt="" autocomplete="off"
+                            <input type="text" name="amount" lay-verify="required|number"  autocomplete="off"
                                    placeholder="请输入代练费" class="layui-input" style="width:400px">
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">对方已支付代练费（元）</label>
                         <div class="layui-input-block">
-                            <input type="text" name="order_amount" id="order_amount" lay-verify="" data-opt=""
+                            <input type="text" name="order_amount" id="order_amount" lay-verify="" 
                                    autocomplete="off" placeholder="" class="layui-input order_amount" style="width:400px" disabled>
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">*我原意赔付保证金</label>
                         <div class="layui-input-block">
-                            <input type="text" name="deposit" lay-verify="required|number" data-opt=""
+                            <input type="text" name="deposit" lay-verify="required|number" 
                                    autocomplete="off"
                                    placeholder="请输入保证金" class="layui-input" style="width:400px">
                         </div>
@@ -279,14 +279,14 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">我已预付安全保证金（元）</label>
                         <div class="layui-input-block">
-                            <input type="text" name="safe" id="safe" lay-verify="" data-opt="" autocomplete="off"
+                            <input type="text" name="safe" id="safe" lay-verify=""  autocomplete="off"
                                    placeholder="" class="layui-input safe" style="width:400px" disabled>
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">我已预付效率保证金（元）</label>
                         <div class="layui-input-block">
-                            <input type="text" name="effect" id="effect" lay-verify="" data-opt="" autocomplete="off"
+                            <input type="text" name="effect" id="effect" lay-verify=""  autocomplete="off"
                                    placeholder="" class="layui-input effect" style="width:400px" disabled>
                         </div>
                     </div>
@@ -464,38 +464,38 @@
     <script type="text/html" id="operation">
 
         @{{# if (d.status_des == '代练中') {  }}
-            <button class="qs-btn qs-btn-sm" style="width: 80px;"  data-opt="" data-no="@{{ d.trade_no }}">申请验收</button>
-            <button class="qs-btn qs-btn-primary qs-btn-sm qs-btn-table" style="width: 80px;"  data-opt="" data-no="@{{ d.trade_no }}">协商撤销</button>
+            <button class="qs-btn qs-btn-sm" style="width: 80px;"   data-no="@{{ d.trade_no }}" lay-submit lay-filter="lock">申请验收</button>
+            <button class="qs-btn qs-btn-primary qs-btn-sm qs-btn-table" style="width: 80px;"   data-no="@{{ d.trade_no }}" lay-submit lay-filter="lock">协商撤销</button>
         @{{# }   }}
 
         @{{# if (d.status_des == '待验收') {  }}
-            <button class="qs-btn qs-btn-sm" style="width: 80px;"  data-opt="" data-no="@{{ d.trade_no }}">协商撤销</button>
-            <button class="qs-btn qs-btn-primary qs-btn-sm qs-btn-table" style="width: 80px;"  data-opt="" data-no="@{{ d.trade_no }}">取消验收</button>
+            <button class="qs-btn qs-btn-sm" style="width: 80px;"   data-no="@{{ d.trade_no }}" lay-submit lay-filter="lock">协商撤销</button>
+            <button class="qs-btn qs-btn-primary qs-btn-sm qs-btn-table" style="width: 80px;"   data-no="@{{ d.trade_no }}" lay-submit lay-filter="lock">取消验收</button>
         @{{# }   }}
 
         @{{# if (d.status_des == '撤销中' && d.consult == 1) {  }}
-        <button class="qs-btn qs-btn-sm" style="width: 80px;"  data-opt="" data-no="@{{ d.trade_no }}">取消撤销</button>
-        <button class="qs-btn qs-btn-primary qs-btn-sm qs-btn-table" style="width: 80px;"  data-opt="" data-no="@{{ d.trade_no }}">申请仲裁</button>
+        <button class="qs-btn qs-btn-sm" style="width: 80px;"   data-no="@{{ d.trade_no }}" lay-submit lay-filter="lock">取消撤销</button>
+        <button class="qs-btn qs-btn-primary qs-btn-sm qs-btn-table" style="width: 80px;"   data-no="@{{ d.trade_no }}" lay-submit lay-filter="lock">申请仲裁</button>
         @{{# } else if(d.status_des == '撤销中' && d.consult == 2) {  }}
-        <button class="qs-btn qs-btn-sm" style="width: 80px;"  data-opt="" data-no="@{{ d.trade_no }}">同意撤销</button>
-        <button class="qs-btn qs-btn-primary qs-btn-sm qs-btn-table" style="width: 80px;"  data-opt="" data-no="@{{ d.trade_no }}">申请仲裁</button>
+        <button class="qs-btn qs-btn-sm" style="width: 80px;"   data-no="@{{ d.trade_no }}" lay-submit lay-filter="lock" >同意撤销</button>
+        <button class="qs-btn qs-btn-primary qs-btn-sm qs-btn-table" style="width: 80px;"   data-no="@{{ d.trade_no }}" lay-submit lay-filter="lock">申请仲裁</button>
         @{{# }  }}
 
         @{{# if (d.status_des == '仲裁中' && d.complain == 1) {  }}
-        <button class="qs-btn qs-btn-sm" style="width: 80px;"  data-opt="" data-no="@{{ d.trade_no }}">取消仲裁</button>
-        <button class="qs-btn qs-btn-primary qs-btn-sm qs-btn-table" style="width: 80px;"  data-opt="" data-no="@{{ d.trade_no }}">同意撤销</button>
+        <button class="qs-btn qs-btn-sm" style="width: 80px;"   data-no="@{{ d.trade_no }}" lay-submit lay-filter="lock">取消仲裁</button>
+        <button class="qs-btn qs-btn-primary qs-btn-sm qs-btn-table" style="width: 80px;"   data-no="@{{ d.trade_no }}" lay-submit lay-filter="lock">同意撤销</button>
         @{{# } else if(d.status_des == '撤销中' && d.complain == 2) {  }}
-        <button class="qs-btn qs-btn-sm" style="width: 80px;"  data-opt="" data-no="@{{ d.trade_no }}"></button>
-        <button class="qs-btn qs-btn-primary qs-btn-sm qs-btn-table" style="width: 80px;"  data-opt="" data-no="@{{ d.trade_no }}">同意撤销</button>
+        <button class="qs-btn qs-btn-sm" style="width: 80px;"   data-no="@{{ d.trade_no }}"></button>
+        <button class="qs-btn qs-btn-primary qs-btn-sm qs-btn-table" style="width: 80px;"   data-no="@{{ d.trade_no }}" lay-submit lay-filter="lock">同意撤销</button>
         @{{# }   }}
 
         @{{# if (d.status == '异常') {  }}
-        <button class="qs-btn qs-btn-sm" style="width: 80px;"  data-opt="" data-no="@{{ d.trade_no }}">取消异常</button>
-        <button class="qs-btn qs-btn-primary qs-btn-sm qs-btn-table" style="width: 80px;"  data-opt="" data-no="@{{ d.trade_no }}">协商撤销</button>
+        <button class="qs-btn qs-btn-sm" style="width: 80px;"   data-no="@{{ d.trade_no }}">取消异常</button>
+        <button class="qs-btn qs-btn-primary qs-btn-sm qs-btn-table" style="width: 80px;"   data-no="@{{ d.trade_no }}" lay-submit lay-filter="lock">协商撤销</button>
         @{{# }   }}
 
         @{{# if (d.status == '锁定') {  }}
-        <button class="qs-btn qs-btn-sm" style="width: 80px;"  data-opt="" data-no="@{{ d.trade_no }}">协商撤销</button>
+        <button class="qs-btn qs-btn-sm" style="width: 80px;" data-no="@{{ d.trade_no }}" lay-submit lay-filter="lock">协商撤销</button>
         @{{# }   }}
 
     </script>
@@ -599,7 +599,8 @@
             });
 
             // 选择游戏加载对应的代练类型
-            form.on('select(game)', function (data) {
+            form.on('submit(lock)', function (data) {
+                var tradeNO = $(data.elem).attr('data-no');
                 {{--$.post('{{ route('frontend.workbench.get-game-leveling-type') }}', {game_id: data.value}, function (result) {--}}
                     {{--var options = '<option value="">请选择代练类型</option>';--}}
                     {{--$.each(result.content, function(index, item) {--}}

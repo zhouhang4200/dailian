@@ -28,7 +28,7 @@ class OrderOperationController extends Controller
             return response()->ajaxFail();
         }
         DB::commit();
-        return response()->ajaxSuccess();
+        return response()->ajaxSuccess('接单成功');
     }
 
     /**
@@ -40,10 +40,10 @@ class OrderOperationController extends Controller
         try {
             OrderServices::init(request()->user()->id, request('trade_no'))->applyComplete();
         } catch (Exception $exception) {
-
+            return response()->ajaxFail($exception->getMessage());
         }
         DB::commit();
-        return response()->ajaxSuccess();
+        return response()->ajaxSuccess('提交验收成功');
     }
 
     /**
@@ -55,10 +55,10 @@ class OrderOperationController extends Controller
         try {
             OrderServices::init(request()->user()->id, request('trade_no'))->cancelComplete();
         } catch (Exception $exception) {
-
+            return response()->ajaxFail($exception->getMessage());
         }
         DB::commit();
-        return response()->ajaxSuccess();
+        return response()->ajaxSuccess('取消验收成功');
     }
 
     /**
@@ -70,7 +70,7 @@ class OrderOperationController extends Controller
         try {
             OrderServices::init(request()->user()->id, request('trade_no'))->complete();
         } catch (Exception $exception) {
-
+            return response()->ajaxFail($exception->getMessage());
         }
         DB::commit();
         return response()->ajaxSuccess();
@@ -85,7 +85,7 @@ class OrderOperationController extends Controller
         try {
             OrderServices::init(request()->user()->id, request('trade_no'))->onSale();
         } catch (Exception $exception) {
-
+            return response()->ajaxFail($exception->getMessage());
         }
         DB::commit();
         return response()->ajaxSuccess();
@@ -100,8 +100,10 @@ class OrderOperationController extends Controller
         try {
             OrderServices::init(request()->user()->id, request('trade_no'))->offSale();
         } catch (Exception $exception) {
-
+            return response()->ajaxFail($exception->getMessage());
         }
+        DB::commit();
+        return response()->ajaxSuccess();
     }
 
     /***
@@ -113,7 +115,7 @@ class OrderOperationController extends Controller
         try {
             OrderServices::init(request()->user()->id, request('trade_no'))->lock();
         } catch (Exception $exception) {
-
+            return response()->ajaxFail($exception->getMessage());
         }
         DB::commit();
         return response()->ajaxSuccess();
@@ -128,7 +130,7 @@ class OrderOperationController extends Controller
         try {
             OrderServices::init(request()->user()->id, request('trade_no'))->cancelLock();
         } catch (Exception $exception) {
-
+            return response()->ajaxFail($exception->getMessage());
         }
         DB::commit();
         return response()->ajaxSuccess();
@@ -143,7 +145,7 @@ class OrderOperationController extends Controller
         try {
             OrderServices::init(request()->user()->id, request('trade_no'))->anomaly();
         } catch (Exception $exception) {
-
+            return response()->ajaxFail($exception->getMessage());
         }
         DB::commit();
         return response()->ajaxSuccess();
@@ -157,7 +159,7 @@ class OrderOperationController extends Controller
         try {
             OrderServices::init(request()->user()->id, request('trade_no'))->cancelAnomaly();
         } catch (Exception $exception) {
-
+            return response()->ajaxFail($exception->getMessage());
         }
         DB::commit();
         return response()->ajaxSuccess();
@@ -177,7 +179,7 @@ class OrderOperationController extends Controller
         try {
             OrderServices::init(request()->user()->id, request('trade_no'))->applyConsult($amount, $securityDeposit, $efficiencyDeposit, $remark);
         } catch (Exception $exception) {
-
+            return response()->ajaxFail($exception->getMessage());
         }
         DB::commit();
         return response()->ajaxSuccess();
@@ -192,7 +194,7 @@ class OrderOperationController extends Controller
         try {
             OrderServices::init(request()->user()->id, request('trade_no'))->cancelConsult();
         } catch (Exception $exception) {
-
+            return response()->ajaxFail($exception->getMessage());
         }
         DB::commit();
         return response()->ajaxSuccess();
@@ -207,7 +209,7 @@ class OrderOperationController extends Controller
         try {
             OrderServices::init(request()->user()->id, request('trade_no'))->applyComplain(request('remark'));
         } catch (Exception $exception) {
-
+            return response()->ajaxFail($exception->getMessage());
         }
         DB::commit();
         return response()->ajaxSuccess();
@@ -223,7 +225,7 @@ class OrderOperationController extends Controller
         try {
             OrderServices::init(request()->user()->id, request('trade_no'))->cancelComplain();
         } catch (Exception $exception) {
-
+            return response()->ajaxFail($exception->getMessage());
         }
         DB::commit();
         return response()->ajaxSuccess();

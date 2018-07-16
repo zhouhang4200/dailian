@@ -45,7 +45,7 @@ class GameLevelingOrder extends Model
     public $statusDes = [
         1 => '未接单',
         2 => '代练中',
-        3 => '待收验',
+        3 => '待验收',
         4 => '撤销中',
         5 => '仲裁中',
         6 => '仲裁中',

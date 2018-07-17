@@ -4,6 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * 订单前一个状态
+ * Class GameLevelingOrderPreviousStatus
+ *
+ * @package App\Models
+ */
 class GameLevelingOrderPreviousStatus extends Model
 {
     public $fillable = [

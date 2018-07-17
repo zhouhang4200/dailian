@@ -70,15 +70,27 @@ Route::group(['middleware' => 'auth'], function (){
     // 个人资料
     Route::prefix('profile')->group(function (){
         Route::get('/', 'ProfileController@index')->name('profile');
+        Route::get('edit', 'ProfileController@edit')->name('profile.edit');
+        Route::post('update', 'ProfileController@update')->name('profile.update');
+        Route::post('avatar/show', 'ProfileController@avatarShow')->name('profile.avatar-show'); // layui后台返回头像路径到页面
+        Route::post('avatar/update', 'ProfileController@avatarUpdate')->name('profile.avatar-update'); // 上传头像
+    });
+    // 实名认证
+    Route::prefix('real-name-certification')->group(function () {
+        Route::get('/', 'RealNameCertificationController@index')->name('real-name-certification.index');
+        Route::get('create', 'RealNameCertificationController@create')->name('real-name-certification.create');
+        Route::post('store', 'RealNameCertificationController@store')->name('real-name-certification.store');
+        Route::get('edit/{id}', 'RealNameCertificationController@edit')->name('real-name-certification.edit');
+        Route::post('update', 'RealNameCertificationController@update')->name('real-name-certification.update');
     });
 });
 
-// 登录
+// 登录 与 注册
 Route::namespace('Auth')->group(function (){
     Route::get('login', 'LoginController@showLoginForm')->name('login');
     Route::post('login', 'LoginController@login');
     Route::post('logout', 'LoginController@logout')->name('logout');
-
+    // 密码找回
     Route::prefix('password')->group(function (){
         Route::post('email', 'ForgotPasswordController@sendResetLinkEmail')->name('password.email');
         Route::get('reset', 'ForgotPasswordController@showLinkRequestForm')->name('password.request');

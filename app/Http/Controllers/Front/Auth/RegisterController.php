@@ -82,7 +82,7 @@ class RegisterController extends Controller
             'phone' => $data['phone'],
             'password' => bcrypt($data['password']),
             'pay_password' => bcrypt($data['password']),
-            'avatar' => '/resources/users/default.jpg',
+            'avatar' => '/resources/default.jpg',
         ]);
     }
 
@@ -99,13 +99,14 @@ class RegisterController extends Controller
         $validator = Validator::make($data, [
             'geetest_challenge' => 'required',
             'name' => 'required|string|max:50',
-            'email' => 'required|string|email|max:100',
+            'email' => 'required|string|email|max:100|unique:users',
             'phone' => 'required|string|size:11|unique:users',
             'password' => 'required|string|min:6|max:22|confirmed',
         ], [
             'geetest_challenge.required' => '请点击按钮进行验证',
             'phone.size' => '请填写正确的手机号',
             'phone.unique' => '手机号已被注册',
+            'email.unique' => '邮箱已被注册',
             'password.min' => '密码最少6位',
             'password.max' => '密码最大22位',
             'password.confirmed' => '两次密码输入不一致',

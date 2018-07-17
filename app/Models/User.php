@@ -61,9 +61,13 @@ class User extends Authenticatable
 
     public function realNameCertification()
     {
-
+        return $this->hasOne(RealNameCertification::class, 'user_id');
     }
 
+    public function userAsset()
+    {
+        return $this->hasOne(UserAsset::class, 'user_id');
+    }
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */

@@ -6,5 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class RealNameCertification extends Model
 {
-    //
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

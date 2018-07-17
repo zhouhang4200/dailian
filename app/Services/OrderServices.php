@@ -170,7 +170,7 @@ class OrderServices
     public function take()
     {
         if (self::$order->status != 1) {
-            throw new Exception('接单失败,订单当前状态为: ' . self::$order->getOrderStatus());
+            throw new Exception('接单失败,订单当前状态为: ' . self::$order->getStatusDes());
         }
 
         DB::beginTransaction();
@@ -206,7 +206,7 @@ class OrderServices
     public function delete()
     {
         if (self::$order->status != 1) {
-            throw new Exception('撤单失败,订单当前状态为: ' . self::$order->getOrderStatus());
+            throw new Exception('撤单失败,订单当前状态为: ' . self::$order->getStatusDes());
         }
         if (self::$order->parent_user_id != self::$user->parent_id) {
             throw new Exception('该订单不属于您,您无权撤单');
@@ -231,7 +231,7 @@ class OrderServices
     public function applyComplete()
     {
         if (self::$order->status != 2) {
-            throw new Exception('申请验收失败,订单当前状态为: ' . self::$order->getOrderStatus());
+            throw new Exception('申请验收失败,订单当前状态为: ' . self::$order->getStatusDes());
         }
 
         if (self::$order->take_parent_user_id != self::$user->parent_id) {
@@ -259,7 +259,7 @@ class OrderServices
     public function cancelComplete()
     {
         if (self::$order->status != 3) {
-            throw new Exception('取消验收失败,订单当前状态为: ' . self::$order->getOrderStatus());
+            throw new Exception('取消验收失败,订单当前状态为: ' . self::$order->getStatusDes());
         }
         if (self::$order->take_parent_user_id != self::$user->parent_id) {
             throw new Exception('您不是接单方无法申请验收');
@@ -285,7 +285,7 @@ class OrderServices
     public function complete()
     {
         if (self::$order->status != 3) {
-            throw new Exception('完成验收失败,订单当前状态为: ' . self::$order->getOrderStatus());
+            throw new Exception('完成验收失败,订单当前状态为: ' . self::$order->getStatusDes());
         }
         if (self::$order->parent_user_id != self::$user->parent_id) {
             throw new Exception('您不是发单方无法完成验收');
@@ -322,7 +322,7 @@ class OrderServices
     public function onSale()
     {
         if (self::$order->status != 13) {
-            throw new Exception('上架失败,订单当前状态为: ' . self::$order->getOrderStatus());
+            throw new Exception('上架失败,订单当前状态为: ' . self::$order->getStatusDes());
         }
         if (self::$order->parent_user_id != self::$user->parent_id) {
             throw new Exception('您不是发单方无法上架该订单');
@@ -348,7 +348,7 @@ class OrderServices
     public function offSale()
     {
         if (self::$order->status != 1) {
-            throw new Exception('下架失败,订单当前状态为: ' . self::$order->getOrderStatus());
+            throw new Exception('下架失败,订单当前状态为: ' . self::$order->getStatusDes());
         }
         if (self::$order->parent_user_id != self::$user->parent_id) {
             throw new Exception('您不是发单方无法下架该订单');
@@ -375,7 +375,7 @@ class OrderServices
     {
         // 待验收 与 异常时可以锁定
         if (! in_array(self::$order->status, [3, 6])) {
-            throw new Exception('锁定失败,订单当前状态为: ' . self::$order->getOrderStatus());
+            throw new Exception('锁定失败,订单当前状态为: ' . self::$order->getStatusDes());
         }
         if (self::$order->parent_user_id != self::$user->parent_id) {
             throw new Exception('您不是发单方无法锁定该订单');
@@ -403,7 +403,7 @@ class OrderServices
     {
         // 锁定状态可以取消锁定
         if (self::$order->status != 7) {
-            throw new Exception('取消锁定失败,订单当前状态为: ' . self::$order->getOrderStatus());
+            throw new Exception('取消锁定失败,订单当前状态为: ' . self::$order->getStatusDes());
         }
         if (self::$order->parent_user_id != self::$user->parent_id) {
             throw new Exception('您不是发单方取消锁定该订单');
@@ -431,7 +431,7 @@ class OrderServices
     {
         // 只有代练中订单可进行异常标记
         if (self::$order->status != 2) {
-            throw new Exception('标记异常失败,订单当前状态为: ' . self::$order->getOrderStatus());
+            throw new Exception('标记异常失败,订单当前状态为: ' . self::$order->getStatusDes());
         }
         if (self::$order->take_parent_user_id != self::$user->parent_id) {
             throw new Exception('您不是接单方无法进行异常操作');
@@ -457,7 +457,7 @@ class OrderServices
     {
         // 只有异常订单可取消异常
         if (self::$order->status != 6) {
-            throw new Exception('取消异常失败,订单当前状态为: ' . self::$order->getOrderStatus());
+            throw new Exception('取消异常失败,订单当前状态为: ' . self::$order->getStatusDes());
         }
         if (self::$order->take_parent_user_id != self::$user->parent_id) {
             throw new Exception('您不是接单方无法进行异常操作');
@@ -485,12 +485,9 @@ class OrderServices
      */
     public function applyConsult($amount, $securityDeposit, $efficiencyDeposit, $remark)
     {
-        if (! $amount || ! $securityDeposit || ! $efficiencyDeposit || ! $remark) {
-            throw new Exception('请求参数不完整');
-        }
         // 状态为 代练中(2)  待收验(3) 异常(6) 锁定(7) 可申请撤销
         if ( ! in_array(self::$order->status, [2, 3, 6 ,7])) {
-            throw new Exception('申请撤销失败,订单当前状态为: ' . self::$order->getOrderStatus());
+            throw new Exception('申请撤销失败,订单当前状态为: ' . self::$order->getStatusDes());
         }
         DB::beginTransaction();
         try {
@@ -524,7 +521,7 @@ class OrderServices
     {
         // 状态为 撤销中 可取消撤销
         if (self::$order->status != 4) {
-            throw new Exception('申请撤销失败,订单当前状态为: ' . self::$order->getOrderStatus());
+            throw new Exception('申请撤销失败,订单当前状态为: ' . self::$order->getStatusDes());
         }
         // 检测当前操作用户与发起用户是否是同一人
         if (self::$order->consult->parent_user_id != self::$user->parent_id) {
@@ -556,7 +553,7 @@ class OrderServices
     {
         // 状态为 撤销中 可取消撤销
         if (self::$order->status == 4) {
-            throw new Exception('申请撤销失败,订单当前状态为: ' . self::$order->getOrderStatus());
+            throw new Exception('申请撤销失败,订单当前状态为: ' . self::$order->getStatusDes());
         }
         // 检测当前操作用户与发起用户是否是同一人
         if (self::$order->consult->parent_user_id == self::$user->parent_id) {
@@ -671,7 +668,7 @@ class OrderServices
     {
         // 状态为 代练中(2)  待收验(3) 异常(4)
         if ( ! in_array(self::$order->status, [2, 3, 4])) {
-            throw new Exception('申请仲裁失败,订单当前状态为: ' . self::$order->getOrderStatus());
+            throw new Exception('申请仲裁失败,订单当前状态为: ' . self::$order->getStatusDes());
         }
         DB::beginTransaction();
         try {
@@ -704,7 +701,7 @@ class OrderServices
     {
         // 状态为 撤销中 可取消撤销
         if (self::$order->status != 5) {
-            throw new Exception('取消仲裁失败,订单当前状态为: ' . self::$order->getOrderStatus());
+            throw new Exception('取消仲裁失败,订单当前状态为: ' . self::$order->getStatusDes());
         }
         // 检测当前操作用户与发起用户是否是同一人
         if (self::$order->complain->parent_user_id != self::$user->parent_id) {
@@ -739,7 +736,7 @@ class OrderServices
     {
         // 状态为 仲裁中 可取消撤销
         if (self::$order->status != 5) {
-            throw new Exception('仲裁失败,订单当前状态为: ' . self::$order->getOrderStatus());
+            throw new Exception('仲裁失败,订单当前状态为: ' . self::$order->getStatusDes());
         }
 
         DB::beginTransaction();

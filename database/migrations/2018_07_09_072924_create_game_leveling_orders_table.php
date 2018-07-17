@@ -16,8 +16,10 @@ class CreateGameLevelingOrdersTable extends Migration
         Schema::create('game_leveling_orders', function (Blueprint $table) {
             $table->increments('id');
             $table->string('trade_no', 22)->comment('交易单号');
-            $table->unsignedInteger('user_id')->comment('创建订单用户');
-            $table->unsignedInteger('parent_user_id')->comment('创建订单用户的父ID');
+            $table->unsignedInteger('user_id')->comment('创建订单用户ID');
+            $table->string('username')->comment('创建订单用户');
+            $table->unsignedInteger('parent_user_id')->comment('创建订单用户父ID');
+            $table->string('parent_username')->comment('创建订单用户父');
             $table->unsignedTinyInteger('order_type_id')->comment('订单类型');
             $table->unsignedInteger('game_type_id')->comment('游戏类型ID');
             $table->unsignedInteger('game_class_id')->comment('游戏类别ID');
@@ -32,8 +34,8 @@ class CreateGameLevelingOrdersTable extends Migration
             $table->string('game_account', 100)->comment('游戏账号');
             $table->string('game_password', 500)->comment('游戏密码');
             $table->string('game_role', 100)->comment('游戏角色');
-            $table->decimal('security_deposit', 17, 2)->comment('安全保证金');
-            $table->decimal('efficiency_deposit', 17, 2)->comment('效率保证金');
+            $table->decimal('security_deposit', 17, 2)->default(0)->comment('安全保证金');
+            $table->decimal('efficiency_deposit', 17, 2)->default(0)->comment('效率保证金');
             $table->text('explain')->comment('代练说明');
             $table->text('requirement')->comment('代练要求');
             $table->string('take_order_password', 30)->nullable()->comment('接单密码');
@@ -42,11 +44,14 @@ class CreateGameLevelingOrdersTable extends Migration
             $table->string('user_phone', 20)->default(0)->comment('发单用户电话');
             $table->string('user_qq', 20)->default(0)->comment('发单用户qq');
             $table->unsignedInteger('status')->default(1)->comment('订单状态');
-            $table->unsignedInteger('take_user_id')->comment('接单用户ID');
-            $table->unsignedInteger('parent_take_user_id')->comment('接单用户父ID');
+            $table->unsignedInteger('take_user_id')->default(0)->comment('接单用户ID');
+            $table->unsignedInteger('take_username')->nullable()->comment('接单用户名');
+            $table->unsignedInteger('take_parent_user_id')->default(0)->comment('接单用户父ID');
+            $table->unsignedInteger('take_parent_username')->nullable()->comment('接单用户父用户名');
             $table->timestamp('take_at')->nullable()->comment('接单时间');
-            $table->decimal('price_increase_step', 17, 2)->comment('自动加价步长');
-            $table->decimal('price_ceiling', 17, 2)->comment('自动加价上限');
+            $table->decimal('price_increase_step', 17, 2)->default(0)->comment('自动加价步长');
+            $table->decimal('price_ceiling', 17, 2)->default(0)->comment('自动加价上限');
+            $table->timestamp('apply_complete_at')->nullable()->comment('申请验收时间');
             $table->timestamp('complete_at')->nullable()->comment('订单完成时间');
             $table->unsignedTinyInteger('source')->default(1)->comment('订单来源');
             $table->timestamps();

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Front;
 
 use \Exception;
 use App\Services\OrderServices;
+use App\Models\GameLevelingOrder;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
@@ -170,14 +171,23 @@ class OrderOperationController extends Controller
      */
     public function applyConsult()
     {
+        $tradeNO = request('trade_no');
         $amount = request('amount');
-        $securityDeposit = request('security_deposit');
-        $efficiencyDeposit = request('remark');
+        $deposit = request('deposit');
         $remark = request('remark');
+        $securityDeposit = 0;
+        $efficiencyDeposit = 0;
 
         DB::beginTransaction();
+
+        // 拆分安全与效率保证金
+        if ($deposit > 0) {
+            $order = GameLevelingOrder::getOrderBy($tradeNO);
+            $securityDeposit = $order->security_deposit;
+            $efficiencyDeposit = bcsub($deposit, $order->efficiency_deposit);
+        }
         try {
-            OrderServices::init(request()->user()->id, request('trade_no'))->applyConsult($amount, $securityDeposit, $efficiencyDeposit, $remark);
+            OrderServices::init(request()->user()->id, $tradeNO)->applyConsult($amount, $securityDeposit, $efficiencyDeposit, $remark);
         } catch (Exception $exception) {
             return response()->ajaxFail($exception->getMessage());
         }

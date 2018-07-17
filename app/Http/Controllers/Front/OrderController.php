@@ -4,10 +4,13 @@ namespace App\Http\Controllers\Front;
 
 use App\Models\Game;
 use App\Models\GameLevelingOrder;
-use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
 
+/**
+ * Class OrderController
+ *
+ * @package App\Http\Controllers\Front
+ */
 class OrderController extends Controller
 {
     public function index()
@@ -16,6 +19,7 @@ class OrderController extends Controller
     }
 
     /**
+     * 接单方视图
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function take()
@@ -61,45 +65,19 @@ class OrderController extends Controller
                 'payer_phone',
             ]);
 
-            // 写入状态中文
-            $ordersArr[$key]['status_des'] = $item->getOrderStatusDes();
-
+            // 写入状态描述
+            $ordersArr[$key]['status_describe'] = $item->getStatusDescribe();
             // 隐藏部分密码
             $ordersArr[$key]['game_password'] = str_replace(substr($ordersArr[$key]['game_password'], -4, 4), '****', $ordersArr[$key]['game_password']);
-
             // 计算订单剩余代练时间
-            $ordersArr[$key]['remaining_time'] = sec2Time(Carbon::parse($item->take_at)
-                ->addDays($item->day)
-                ->addHours($item->hours)
-                ->diffInSeconds(Carbon::now()));
-
+            $ordersArr[$key]['remaining_time'] = $item->getRemainingTime();
             // 计算订单获得金额 支付金额
-            $ordersArr[$key]['get_amount'] = 0;
-            $ordersArr[$key]['pay_amount'] = 0;
-            $ordersArr[$key]['poundage'] = 0;
-            $ordersArr[$key]['profit'] = 0;
-            $ordersArr[$key]['complain'] = 0;
-            $ordersArr[$key]['consult'] = 0;
-
-            // 仲裁完成
-            if (optional($item->complain)->status == 3) {
-                $ordersArr[$key]['get_amount'] += $item->complain->amount;
-                $ordersArr[$key]['pay_amount'] = bcadd($item->complain->security_deposit, $item->complain->efficiency_deposit);
-                $ordersArr[$key]['poundage'] = $item->complain->poundage;
-                $ordersArr[$key]['complain'] = $item->complain->parent_user_id == request()->user()->parent_user_id ? 1 : 2;
-            }
-            // 协商完成
-            if (optional($item->consult)->consult == 3) {
-                $ordersArr[$key]['get_amount'] += $item->complain->amount;
-                $ordersArr[$key]['pay_amount'] = bcadd($item->complain->security_deposit, $item->complain->efficiency_deposit);
-                $ordersArr[$key]['consult'] = $item->complain->parent_user_id == request()->user()->parent_user_id ? 1 : 2;
-            }
-            // 正常结算
-            if ($item->status == 10) {
-                $ordersArr[$key]['get_amount'] += $item->amount;
-            }
-            // 计算订单利润
-            $ordersArr[$key]['profit'] = $ordersArr[$key]['get_amount'] - $ordersArr[$key]['pay_amount'];
+            $ordersArr[$key]['income_amount'] = $item->getIncomeAmount();
+            $ordersArr[$key]['expend_amount'] = $item->getExpendAmount();
+            $ordersArr[$key]['poundage'] = $item->getPoundage();;
+            $ordersArr[$key]['profit'] = $item->getProfit();
+            $ordersArr[$key]['consult_initiator'] = $item->getConsultInitiator();
+            $ordersArr[$key]['complain_initiator'] = $item->getComplainInitiator();
         }
 
         return [
@@ -110,9 +88,19 @@ class OrderController extends Controller
         ];
     }
 
-    public function takeShow()
+    /**
+     * 接单人查看订单详情
+     * @param $tradeNO
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function takeShow($tradeNO)
     {
+        $order = GameLevelingOrder::getOrderByCondition(['trade_no' => $tradeNO], 2)->firstOrFail();
 
+        return view('front.order.take_detail', [
+            'order' => $order
+        ]);
     }
 
 

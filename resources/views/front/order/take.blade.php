@@ -1,6 +1,6 @@
 @extends('front.layouts.app')
 
-@section('title', '订单-接单管理')
+@section('title', '接单管理')
 
 @section('css')
     <link rel="stylesheet" href="/front/css/bootstrap-fileinput.css">
@@ -95,6 +95,10 @@
         .layui-table-edit:focus {
             border-color: #e6e6e6 !important
         }
+        /** 协商撤销样式重写 **/
+        .consult-pop  .layui-form-label {
+            width: 160px !important
+        }
     </style>
 @endsection
 
@@ -154,29 +158,29 @@
                 <div class="layui-tab layui-tab-brief layui-form" lay-filter="order-list">
                     <ul class="layui-tab-title">
                         <li class="layui-this" lay-id="0">全部 <span  class="layui-badge layui-bg-blue wait-handle-quantity  layui-hide"></span></li>
-                        <li class="" lay-id="13">代练中
+                        <li class="" lay-id="2">代练中
                             <span class="qs-badge quantity-13 layui-hide"></span>
                         </li>
-                        <li class="" lay-id="14">待验收
+                        <li class="" lay-id="3">待验收
                             <span class="qs-badge quantity-14 layui-hide"></span>
                         </li>
-                        <li class="" lay-id="15">撤销中
+                        <li class="" lay-id="4">撤销中
                             <span class="qs-badge quantity-15 layui-hide"></span>
                         </li>
-                        <li class="" lay-id="16">仲裁中
+                        <li class="" lay-id="5">仲裁中
                             <span class="qs-badge quantity-16 layui-hide"></span>
                         </li>
-                        <li class="" lay-id="17">异常
+                        <li class="" lay-id="6">异常
                             <span class="qs-badge quantity-17 layui-hide"></span>
                         </li>
-                        <li class="" lay-id="18">锁定
+                        <li class="" lay-id="7">锁定
                             <span class="qs-badge quantity-18 layui-hide"></span>
                         </li>
-                        <li class="" lay-id="19">已撤销
+                        <li class="" lay-id="8">已撤销
                         </li>
-                        <li class="" lay-id="20">已结算
+                        <li class="" lay-id="10">已结算
                         </li>
-                        <li class="" lay-id="21">已仲裁
+                        <li class="" lay-id="9">已仲裁
                         </li>
                     </ul>
                 </div>
@@ -188,322 +192,54 @@
 @endsection
 
 @section('pop')
-    <div class="consult" style="display: none; padding:  0 20px">
-        <div class="layui-tab-content">
-            <span style="color:red;margin-right:15px;">双方友好协商撤单，若有分歧可以在订单中留言或申请客服介入；若申请成功，此单将被锁定，若双方取消撤单会退回至原有状态。<br/></span>
-            <form class="layui-form" method="POST" action="">
-                {!! csrf_field() !!}
-                <div style="width: 80%" id="info">
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">*我愿意支付代练费（元）</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="amount" lay-verify="required|number"  autocomplete="off"
-                                   placeholder="请输入代练费" class="layui-input" style="width:400px">
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">我已支付代练费（元）</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="order_amount" id="order_amount" lay-verify="" 
-                                   autocomplete="off" placeholder="" class="layui-input order_amount" style="width:400px" disabled>
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">*需要对方赔付保证金</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="deposit" lay-verify="required|number" 
-                                   autocomplete="off"
-                                   placeholder="请输入保证金" class="layui-input" style="width:400px">
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">对方已预付安全保证金（元）</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="safe" id="safe" lay-verify=""  autocomplete="off"
-                                   placeholder="" class="layui-input safe" style="width:400px" disabled>
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">对方已预付效率保证金（元）</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="effect" id="effect" lay-verify=""  autocomplete="off"
-                                   placeholder="" class="layui-input effect" style="width:400px" disabled>
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">撤销理由</label>
-                        <div class="layui-input-block">
-                            <textarea placeholder="请输入撤销理由" name="revoke_message" lay-verify="required"
-                                      class="layui-textarea" style="width:400px"></textarea>
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label"></label>
-                        <div class="layui-input-block">
-                            <button class="qs-btn  layui-btn-normal" lay-submit lay-filter="consult">立即提交</button>
-                            <span cancel class="qs-btn  layui-btn-normal cancel">取消</span>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-    <div class="consult2" style="display: none; padding:  0 20px">
-        <div class="layui-tab-content">
-            <span style="color:red;margin-right:15px;">双方友好协商撤单，若有分歧可以在订单中留言或申请客服介入；若申请成功，此单将被锁定，若双方取消撤单会退回至原有状态。<br/></span>
-            <form class="layui-form" method="POST" action="">
-                {!! csrf_field() !!}
-                <div style="width: 80%" id="info">
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">*需要对方支付代练费（元）</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="amount" lay-verify="required|number"  autocomplete="off"
-                                   placeholder="请输入代练费" class="layui-input" style="width:400px">
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">对方已支付代练费（元）</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="order_amount" id="order_amount" lay-verify="" 
-                                   autocomplete="off" placeholder="" class="layui-input order_amount" style="width:400px" disabled>
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">*我原意赔付保证金</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="deposit" lay-verify="required|number" 
-                                   autocomplete="off"
-                                   placeholder="请输入保证金" class="layui-input" style="width:400px">
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">我已预付安全保证金（元）</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="safe" id="safe" lay-verify=""  autocomplete="off"
-                                   placeholder="" class="layui-input safe" style="width:400px" disabled>
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">我已预付效率保证金（元）</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="effect" id="effect" lay-verify=""  autocomplete="off"
-                                   placeholder="" class="layui-input effect" style="width:400px" disabled>
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">撤销理由</label>
-                        <div class="layui-input-block">
-                            <textarea placeholder="请输入撤销理由" name="revoke_message" lay-verify="required"
-                                      class="layui-textarea" style="width:400px"></textarea>
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label"></label>
-                        <div class="layui-input-block">
-                            <button class="qs-btn  layui-btn-normal" lay-submit lay-filter="consult">立即提交</button>
-                            <span cancel class="qs-btn  layui-btn-normal cancel">取消</span>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-    <div class="complain" style="display: none; padding: 20px">
-        <form class="layui-form">
-            <input type="hidden" id="order_no" name="order_no">
-            <div class="layui-form-item layui-form-text">
-                <label class="layui-form-label">证据截图</label>
-                <div class="layui-input-block">
-                    <div class="fileinput-group">
-                        <div class="fileinput fileinput-new" data-provides="fileinput" id="exampleInputUpload">
-                            <div class="fileinput-new thumbnail" style="width: 100px;height: 100px;">
-                                <img id='picImg' style="width: 60px;height:60px;margin:auto;margin-top:20px;" src="/frontend/images/upload-btn-bg.png" alt="" />
-                            </div>
-                            <div class="fileinput-preview fileinput-exists thumbnail pic-1" style="width: 100px;height: 100px;"></div>
-                            <div style="height: 0;">
-                                <span class=" btn-file" style="padding: 0;">
-                                    <span class="fileinput-new"></span>
-                                    <span class="fileinput-exists"></span>
-                                    <input type="file" name="pic1" id="picID" accept="image/gif,image/jpeg,image/x-png" />
-                                </span>
-                                <a href="javascript:;" class="fileinput-exists" data-dismiss="fileinput" style="padding: 0;">
-                                    <i class="iconfont icon-shanchu4"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="fileinput-group">
-                        <div class="fileinput fileinput-new" data-provides="fileinput" id="exampleInputUpload">
-                            <div class="fileinput-new thumbnail" style="width: 100px;height: 100px;">
-                                <img id='picImg' style="width: 60px;height:60px;margin:auto;margin-top:20px;" src="/frontend/images/upload-btn-bg.png" alt="" />
-                            </div>
-                            <div class="fileinput-preview fileinput-exists thumbnail pic-2" style="width: 100px;height: 100px;"></div>
-                            <div>
-                                <span class="btn-file" style="padding: 0;">
-                                    <span class="fileinput-new"></span>
-                                    <span class="fileinput-exists"></span>
-                                    <input type="file" name="pic1" id="picID" accept="image/gif,image/jpeg,image/x-png" />
-                                </span>
-                                <a href="javascript:;" class="fileinput-exists" data-dismiss="fileinput" style="padding: 0;">
-                                    <i class="iconfont icon-shanchu4"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="fileinput-group">
-                        <div class="fileinput fileinput-new" data-provides="fileinput" id="exampleInputUpload">
-                            <div class="fileinput-new thumbnail" style="width: 100px;height: 100px;">
-                                <img id='picImg' style="width: 60px;height:60px;margin:auto;margin-top:20px;" src="/frontend/images/upload-btn-bg.png" alt="" />
-                            </div>
-                            <div class="fileinput-preview fileinput-exists thumbnail pic-3" style="width: 100px;height: 100px;"></div>
-                            <div>
-                               <span class="btn-file" style="padding: 0;">
-                                    <span class="fileinput-new"></span>
-                                    <span class="fileinput-exists"></span>
-                                    <input type="file" name="pic1" id="picID" accept="image/gif,image/jpeg,image/x-png" />
-                               </span>
-                                <a href="javascript:;" class="fileinput-exists" data-dismiss="fileinput" style="padding: 0;">
-                                    <i class="iconfont icon-shanchu4"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="layui-form-item layui-form-text">
-                <label class="layui-form-label">仲裁理由</label>
-                <div class="layui-input-block">
-                    <textarea placeholder="请输入申请仲裁理由" name="complain_message"  class="layui-textarea"></textarea>
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <div class="layui-input-block">
-                    <button class="qs-btn layui-btn-normal" id="submit" lay-submit lay-filter="complain">确认
-                    </button>
-                    <span cancel class="qs-btn  layui-btn-normal cancel">取消</span>
-                </div>
-            </div>
-        </form>
-    </div>
-    <div class="complete-upload" style="display: none; padding: 20px">
-        <form class="layui-form">
-            <input type="hidden" id="order_no" name="order_no">
-            <div class="layui-form-item layui-form-text">
-                <label class="layui-form-label">完成截图</label>
-                <div class="layui-input-block">
-                    <div class="fileinput-group">
-                        <div class="fileinput fileinput-new" data-provides="fileinput" id="exampleInputUpload">
-                            <div class="fileinput-new thumbnail" style="width: 100px;height: 100px;">
-                                <img id='picImg' style="width: 60px;height:60px;margin:auto;margin-top:20px;" src="/frontend/images/upload-btn-bg.png" alt="" />
-                            </div>
-                            <div class="fileinput-preview fileinput-exists thumbnail pic-1" style="width: 100px;height: 100px;"></div>
-                            <div style="height: 0;">
-                                <span class=" btn-file" style="padding: 0;">
-                                    <span class="fileinput-new"></span>
-                                    <span class="fileinput-exists"></span>
-                                    <input type="file" name="pic1" id="picID" accept="image/gif,image/jpeg,image/x-png" />
-                                </span>
-                                <a href="javascript:;" class="fileinput-exists" data-dismiss="fileinput" style="padding: 0;">
-                                    <i class="iconfont icon-shanchu4"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="fileinput-group">
-                        <div class="fileinput fileinput-new" data-provides="fileinput" id="exampleInputUpload">
-                            <div class="fileinput-new thumbnail" style="width: 100px;height: 100px;">
-                                <img id='picImg' style="width: 60px;height:60px;margin:auto;margin-top:20px;" src="/frontend/images/upload-btn-bg.png" alt="" />
-                            </div>
-                            <div class="fileinput-preview fileinput-exists thumbnail pic-2" style="width: 100px;height: 100px;"></div>
-                            <div>
-                                <span class="btn-file" style="padding: 0;">
-                                    <span class="fileinput-new"></span>
-                                    <span class="fileinput-exists"></span>
-                                    <input type="file" name="pic1" id="picID" accept="image/gif,image/jpeg,image/x-png" />
-                                </span>
-                                <a href="javascript:;" class="fileinput-exists" data-dismiss="fileinput" style="padding: 0;">
-                                    <i class="iconfont icon-shanchu4"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="fileinput-group">
-                        <div class="fileinput fileinput-new" data-provides="fileinput" id="exampleInputUpload">
-                            <div class="fileinput-new thumbnail" style="width: 100px;height: 100px;">
-                                <img id='picImg' style="width: 60px;height:60px;margin:auto;margin-top:20px;" src="/frontend/images/upload-btn-bg.png" alt="" />
-                            </div>
-                            <div class="fileinput-preview fileinput-exists thumbnail pic-3" style="width: 100px;height: 100px;"></div>
-                            <div>
-                               <span class="btn-file" style="padding: 0;">
-                                    <span class="fileinput-new"></span>
-                                    <span class="fileinput-exists"></span>
-                                    <input type="file" name="pic1" id="picID" accept="image/gif,image/jpeg,image/x-png" />
-                               </span>
-                                <a href="javascript:;" class="fileinput-exists" data-dismiss="fileinput" style="padding: 0;">
-                                    <i class="iconfont icon-shanchu4"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <div class="layui-input-block">
-                    <button class="qs-btn layui-btn-normal" id="submit" lay-submit lay-filter="complete-upload">确认
-                    </button>
-                    <span cancel class="qs-btn  layui-btn-normal cancel">取消</span>
-                </div>
-            </div>
-        </form>
-    </div>
-    <div class="layui-carousel" id="carousel" style="display: none"></div>
+    @include('front.order.take_pop')
 @endsection
 
 @section('js')
     <script src="/front/js/bootstrap-fileinput.js"></script>
     <script type="text/html" id="operation">
 
-        @{{# if (d.status_des == '代练中') {  }}
+        @{{# if (d.status_describe == '代练中') {  }}
             <button class="qs-btn qs-btn-sm" style="width: 80px;"   data-no="@{{ d.trade_no }}" lay-submit lay-filter="apply-complete">申请验收</button>
-            <button class="qs-btn qs-btn-primary qs-btn-sm qs-btn-table" style="width: 80px;"   data-no="@{{ d.trade_no }}" lay-submit lay-filter="apply-consult">协商撤销</button>
+            <button class="qs-btn qs-btn-primary qs-btn-sm qs-btn-table" style="width: 80px;"   data-no="@{{ d.trade_no }}" data-amount="@{{ d.amount }}" data-security_deposit="@{{ d.security_deposit }}" data-efficiency_deposit="@{{ d.efficiency_deposit }}" lay-submit lay-filter="apply-consult">协商撤销</button>
         @{{# }   }}
 
-        @{{# if (d.status_des == '待验收') {  }}
-            <button class="qs-btn qs-btn-sm" style="width: 80px;" data-no="@{{ d.trade_no }}" lay-submit lay-filter="apply-consult">协商撤销</button>
-            <button class="qs-btn qs-btn-primary qs-btn-sm qs-btn-table" style="width: 80px;" data-no="@{{ d.trade_no }}" lay-submit lay-filter="cancel-complete">取消验收</button>
+        @{{# if (d.status_describe == '待验收') {  }}
+        <button class="qs-btn qs-btn-sm " style="width: 80px;" data-no="@{{ d.trade_no }}" lay-submit lay-filter="cancel-complete">取消验收</button>
+        <button class="qs-btn qs-btn-primary qs-btn-sm qs-btn-table" style="width: 80px;" data-no="@{{ d.trade_no }}" data-amount="@{{ d.amount }}" data-security_deposit="@{{ d.security_deposit }}" data-efficiency_deposit="@{{ d.efficiency_deposit }}" lay-submit lay-filter="apply-consult">协商撤销</button>
         @{{# }   }}
 
-        @{{# if (d.status_des == '撤销中' && d.consult == 1) {  }}
-            <button class="qs-btn qs-btn-sm" style="width: 80px;"   data-no="@{{ d.trade_no }}" lay-submit lay-filter="lock">取消撤销</button>
+        @{{# if (d.status_describe == '撤销中' && d.consult_initiator == 2) {  }}
+            <button class="qs-btn qs-btn-sm" style="width: 80px;"   data-no="@{{ d.trade_no }}" lay-submit lay-filter="cancel-consult">取消撤销</button>
             <button class="qs-btn qs-btn-primary qs-btn-sm qs-btn-table" style="width: 80px;"   data-no="@{{ d.trade_no }}" lay-submit lay-filter="apply-complain">申请仲裁</button>
-        @{{# } else if(d.status_des == '撤销中' && d.consult == 2) {  }}
-            <button class="qs-btn qs-btn-sm" style="width: 80px;"   data-no="@{{ d.trade_no }}" lay-submit lay-filter="agree=consult" >同意撤销</button>
+        @{{# } else if(d.status_describe == '撤销中' && d.consult == 1) {  }}
+            <button class="qs-btn qs-btn-sm" style="width: 80px;"   data-no="@{{ d.trade_no }}" lay-submit lay-filter="agree-consult" >同意撤销</button>
             <button class="qs-btn qs-btn-primary qs-btn-sm qs-btn-table" style="width: 80px;"   data-no="@{{ d.trade_no }}" lay-submit lay-filter="apply-complain">申请仲裁</button>
         @{{# }  }}
 
-        @{{# if (d.status_des == '仲裁中' && d.complain == 1) {  }}
+        @{{# if (d.status_describe == '仲裁中' && d.complain_initiator == 2) {  }}
             <button class="qs-btn qs-btn-sm" style="width: 80px;" data-no="@{{ d.trade_no }}" lay-submit lay-filter="cancel-complain">取消仲裁</button>
         @{{# }  }}
 
-        @{{# if (d.status_des == '仲裁中' && d.consult == 2) {  }}
+        @{{# if (d.status_describe == '仲裁中' && d.consult == 1) {  }}
             <button class="qs-btn qs-btn-primary qs-btn-sm qs-btn-table" style="width: 80px;" data-no="@{{ d.trade_no }}" lay-submit lay-filter="agree-consult" >同意撤销</button>
         @{{# }   }}
 
         @{{# if (d.status == '异常') {  }}
             <button class="qs-btn qs-btn-sm" style="width: 80px;" data-no="@{{ d.trade_no }}" lay-submit lay-filter="cancel-anomaly">取消异常</button>
-            <button class="qs-btn qs-btn-primary qs-btn-sm qs-btn-table" style="width: 80px;"   data-no="@{{ d.trade_no }}" lay-submit lay-filter="apply-consult">协商撤销</button>
+            <button class="qs-btn qs-btn-primary qs-btn-sm qs-btn-table" style="width: 80px;"   data-no="@{{ d.trade_no }}" data-amount="@{{ d.amount }}" data-security_deposit="@{{ d.security_deposit }}" data-efficiency_deposit="@{{ d.efficiency_deposit }}" lay-submit lay-filter="apply-consult">协商撤销</button>
         @{{# }   }}
 
         @{{# if (d.status == '锁定') {  }}
-            <button class="qs-btn qs-btn-sm" style="width: 80px;" data-no="@{{ d.trade_no }}" lay-submit lay-filter="apply-consult">协商撤销</button>
+            <button class="qs-btn qs-btn-sm" style="width: 80px;" data-no="@{{ d.trade_no }}" data-amount="@{{ d.amount }}" data-security_deposit="@{{ d.security_deposit }}" data-efficiency_deposit="@{{ d.efficiency_deposit }}" lay-submit lay-filter="apply-consult">协商撤销</button>
         @{{# }   }}
 
     </script>
     <script type="text/html" id="noTemplate">
-        <a style="color:#1f93ff"  href="{{ route('order') }}?no=@{{ d.trade_no }}" target="_blank">@{{ d.trade_no }}</a>
+        <a style="color:#1f93ff"  href="{{ route('order.take') }}/@{{ d.trade_no }}" target="_blank">@{{ d.trade_no }}</a>
     </script>
     <script type="text/html" id="statusTemplate">
-        @{{ d.status_des }}  <br>
+        @{{ d.status_describe }}  <br>
         @{{# if(d.timeout == 1 && d.status == 13)  { }}
         <span style="color:#ff8500"> @{{ d.timeout_time }}</span>
         @{{# } else if(d.status == 13 || d.status == 1) { }}
@@ -576,6 +312,9 @@
                     table = layui.table,
                     carousel =  layui.carousel;
 
+            // 订单操作
+            @include('front.order.take_operation', ['type' => 'list'])
+
             // 状态切换
             element.on('tab(order-list)', function () {
                 $('form').append('<input name="status" type="hidden" value="' + this.getAttribute('lay-id')  + '">');
@@ -597,116 +336,6 @@
                 return false;
             });
 
-            // 接单
-            form.on('submit(take)', function (data) {
-                $.post('{{ route('order.operation.take') }}', {trade_no: $(data.elem).attr('data-no')}, function (result) {
-                    if (result.status) {
-                        reloadOrderList();
-                        layer.msg(result.message);
-                    } else {
-
-                    }
-                }, 'json')
-            });
-            // 申请验收
-            form.on('submit(apply-complete)', function (data) {
-                $.post('{{ route('order.operation.apply-complete') }}', {trade_no: $(data.elem).attr('data-no')}, function (result) {
-                    if (result.status) {
-                        reloadOrderList();
-                        layer.msg(result.message);
-                    } else {
-                        layer.alert(result.message);
-                    }
-                }, 'json')
-            });
-            // 取消验收
-            form.on('submit(cancel-complete)', function (data) {
-                $.post('{{ route('order.operation.cancel-complete') }}', {trade_no: $(data.elem).attr('data-no')}, function (result) {
-                    if (result.status) {
-                        reloadOrderList();
-                        layer.msg(result.message);
-                    } else {
-                        layer.alert(result.message);
-                    }
-                }, 'json')
-            });
-            // 异常
-            form.on('submit(anomaly)', function (data) {
-                $.post('{{ route('order.operation.anomaly') }}', {trade_no: $(data.elem).attr('data-no')}, function (result) {
-                    if (result.status) {
-                        reloadOrderList();
-                        layer.msg(result.message);
-                    } else {
-                        layer.alert(result.message);
-                    }
-                }, 'json')
-            });
-            // 取消异常
-            form.on('submit(cancel-anomaly)', function (data) {
-                $.post('{{ route('order.operation.cancel-anomaly') }}', {trade_no: $(data.elem).attr('data-no')}, function (result) {
-                    if (result.status) {
-                        reloadOrderList();
-                        layer.msg(result.message);
-                    } else {
-                        layer.alert(result.message);
-                    }
-                }, 'json')
-            });
-            // 申请撤销
-            form.on('submit(apply-consult)', function (data) {
-                $.post('{{ route('order.operation.apply-consult') }}', {trade_no: $(data.elem).attr('data-no')}, function (result) {
-                    if (result.status) {
-                        reloadOrderList();
-                        layer.msg(result.message);
-                    } else {
-                        layer.alert(result.message);
-                    }
-                }, 'json')
-            });
-            // 取消撤销
-            form.on('submit(cancel-consult)', function (data) {
-                $.post('{{ route('order.operation.cancel-consult') }}', {trade_no: $(data.elem).attr('data-no')}, function (result) {
-                    if (result.status) {
-                        reloadOrderList();
-                        layer.msg(result.message);
-                    } else {
-                        layer.alert(result.message);
-                    }
-                }, 'json')
-            });
-            // 同意撤销
-            form.on('submit(agree-consult)', function (data) {
-                $.post('{{ route('order.operation.agree-consult') }}', {trade_no: $(data.elem).attr('data-no')}, function (result) {
-                    if (result.status) {
-                        reloadOrderList();
-                        layer.msg(result.message);
-                    } else {
-                        layer.alert(result.message);
-                    }
-                }, 'json')
-            });
-            // 申请仲裁
-            form.on('submit(apply-complain)', function (data) {
-                $.post('{{ route('order.operation.apply-complain') }}', {trade_no: $(data.elem).attr('data-no')}, function (result) {
-                    if (result.status) {
-                        reloadOrderList();
-                        layer.msg(result.message);
-                    } else {
-                        layer.alert(result.message);
-                    }
-                }, 'json')
-            });
-            // 取消仲裁
-            form.on('submit(cancel-complain)', function (data) {
-                $.post('{{ route('order.operation.cancel-complain') }}', {trade_no: $(data.elem).attr('data-no')}, function (result) {
-                    if (result.status) {
-                        reloadOrderList();
-                        layer.msg(result.message);
-                    } else {
-                        layer.alert(result.message);
-                    }
-                }, 'json')
-            });
             // 加载数据
             table.render({
                 elem: '#order-list',
@@ -725,10 +354,10 @@
                     {field: 'created_at', title: '发单时间', width: 160},
                     {field: 'take_at', title: '接单时间', width: 160},
                     {title: '代练时间', width: 100, templet:'#dayHours'},
-                    {field: 'remaining_time', title: '剩余时间', width: 100},
+                    {field: 'remaining_time', title: '剩余时间', width: 165},
                     {field: 'payer_phone', title: '号主电话', width: 100},
-                    {field: 'get_amount', title: '获得金额', width: 80},
-                    {field: 'pay_amount', title: '支付金额', width: 80},
+                    {field: 'income_amount', title: '获得金额', width: 80},
+                    {field: 'expend_amount', title: '支付金额', width: 80},
                     {field: 'poundage', title: '手续费', width: 80},
                     {field: 'profit', title: '利润', width: 80},
                     {field: 'button', title: '操作',width:195, fixed: 'right', style:"height: 40px;line-height: 20px;", toolbar: '#operation'}

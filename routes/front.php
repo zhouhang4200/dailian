@@ -41,6 +41,8 @@ Route::group(['middleware' => 'auth'], function (){
         Route::get('/', 'OrderController@index')->name('order'); // 待接单列表
         Route::get('take', 'OrderController@take')->name('order.take'); // 接单管理视图
         Route::post('take', 'OrderController@takeData'); // 接单列表数据
+        Route::get('take/{tradeNO?}', 'OrderController@takeShow'); // 接单方查看订单详情
+
         Route::get('send', 'OrderController@send')->name('order.send'); // 发单管理视图
         Route::post('send', 'OrderController@sendData'); // 发单列表数据
 

@@ -18,7 +18,7 @@
         <div class="login_img">
             <img src="/front/images/login_img.png" alt="">
         </div>
-        <div class="login_box" id="register">
+        <div class="login_box">
             <div class="login_title">
                 立即注册
             </div>

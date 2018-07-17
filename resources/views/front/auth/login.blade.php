@@ -18,7 +18,7 @@
         <div class="login_img">
             <img src="/front/images/login_img.png" alt="">
         </div>
-        <div class="login_box" id='login'>
+        <div class="login_box" style="height:410px;">
             <div class="login_title">
                 账号登录
             </div>
@@ -36,17 +36,19 @@
                         <input type="password" name="password" lay-verify="required" autocomplete="off" placeholder="请输入密码" class="layui-input">
                     </div>
                 </div>
-                <div class="layui-form-item" style="height:45px">
+
+                <div class="layui-form-item" style="height: 45px;">
                     {!! Geetest::render() !!}
                 </div>
                 <div class="layui-form-item">
                     <button class="qs-btn" lay-submit="" lay-filter="login">登录</button>
                 </div>
-                <div class="layui-form-item login-link">
-                    <a href="{{ route('password.request') }}" class = "register" style="float: right;">忘记密码</a>
+                <div class="layui-form-item login-link" style="margin-bottom: 20px">
+                    <a href="{{ route('password.request') }}" class = "login" style="float: right;">忘记密码</a>
                     <a href="{{ route('register') }}" style="float: left;">立即注册</a>
                 </div>
             </form>
+            <div style="width: 410px;height: 130px;margin-top:5px;position: absolute;right:-10px;background: #342353"></div>
         </div>
     </div>
 @endsection

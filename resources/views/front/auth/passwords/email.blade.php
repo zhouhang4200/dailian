@@ -23,8 +23,7 @@
 @section('main')
     <form method="POST" action="{{ route('password.email') }}"  class="layui-form">
         {!! csrf_field() !!}
-            <div class="title">注册邮件地址</div>
-            <div class="container">
+            <div class="container" style="background: rgb(236,239,241)">
                 <div class="layui-form-item">
                     <input type="email" name="email" required="" lay-verify="required" placeholder="请输入邮箱" value="{{ old('email') }}" autocomplete="off" class="layui-input layui-form-danger">
                     <i class="layui-icon icon">&#xe64c;</i>

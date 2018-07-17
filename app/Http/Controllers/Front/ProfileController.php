@@ -27,7 +27,7 @@ class ProfileController extends Controller
 
         $realNameCertification = RealNameCertification::where('user_id', $user->parent_id)->first() ?? '';
 
-        return view('front.profile.index',compact('parentUser', 'user', 'realNameCertification '));
+        return view('front.profile.index',compact('parentUser', 'user', 'realNameCertification'));
     }
 
     /**

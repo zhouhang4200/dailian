@@ -62,7 +62,6 @@ class OrderServices
     }
 
     /**
-     * @param int $userId 发单人ID
      * @param int $gameId 游戏ID
      * @param int $regionId 区ID
      * @param int $serviceId 服ID
@@ -113,20 +112,16 @@ class OrderServices
             $region = Region::find($regionId);
             $service = Region::find($serviceId);
             $gameLevelingType = GameLevelingType::find($gameLevelingTypeId);
+
             // 生成交易订单号
             $tradeNO = generateOrderNo();
-            // 日志
-            GameLevelingOrderLog::store('下单',
-                $tradeNO,
-                self::$user->id,
-                self::$user->name,
-                self::$user->parent_id,
-                '下单成功');
             // 创建订单
             $order = GameLevelingOrder::create([
-                'trade_no' => generateOrderNo(),
+                'trade_no' => $tradeNO,
                 'user_id' => self::$user->id,
+                'username' => self::$user->name,
                 'parent_user_id' => self::$user->parent_id,
+                'parent_username' => optional(self::$user->parent)->name ?? self::$user->name,
                 'order_type_id' => 1,
                 'game_type_id' => $game->game_type_id,
                 'game_class_id'=> $game->game_class_id,
@@ -154,6 +149,8 @@ class OrderServices
                 'user_qq' => $userQQ,
                 'source' => $source,
             ]);
+            // 写入订单日志
+            GameLevelingOrderLog::store('发布', $tradeNO, self::$user->id, self::$user->name, self::$user->parent_id, self::$user->name . ': 发布了订单');
         } catch (Exception $exception) {
             throw new Exception($exception->getMessage());
         }
@@ -190,7 +187,8 @@ class OrderServices
             self::$order->take_parent_user_id = self::$user->parent_id;
             self::$order->take_at = date('Y-m-d H:i:s');
             self::$order->save();
-
+            // 写入订单日志
+            GameLevelingOrderLog::store('接单', self::$order->trade_no, self::$user->id, self::$user->name, self::$user->parent_id, self::$user->name . ': 进行操作 [接单]');
         } catch (Exception $exception) {
            throw new Exception($exception->getMessage());
         }
@@ -216,6 +214,8 @@ class OrderServices
             // 修改订单状态
             self::$order->status = 14;
             self::$order->save();
+            // 写入订单日志
+            GameLevelingOrderLog::store('撤单', self::$order->trade_no, self::$user->id, self::$user->name, self::$user->parent_id, self::$user->name . ': 进行操作 [撤单]');
         } catch (Exception $exception) {
            throw new Exception($exception->getMessage());
         }
@@ -242,8 +242,9 @@ class OrderServices
         try {
             // 修改订单状态
             self::$order->status = 3;
-            $result =  self::$order->save();
-            info('complete', [$result, self::$order->status]);
+            self::$order->save();
+            // 写入订单日志
+            GameLevelingOrderLog::store('申请验收', self::$order->trade_no, self::$user->id, self::$user->name, self::$user->parent_id, self::$user->name . ': 进行操作 [申请验收]');
         } catch (Exception $exception) {
            throw new Exception($exception->getMessage());
         }
@@ -270,6 +271,8 @@ class OrderServices
             // 修改订单状态
             self::$order->status = 2;
             self::$order->save();
+            // 写入订单日志
+            GameLevelingOrderLog::store('取消验收', self::$order->trade_no, self::$user->id, self::$user->name, self::$user->parent_id, self::$user->name . ': 进行操作 [取消验收]');
         } catch (Exception $exception) {
            throw new Exception($exception->getMessage());
         }
@@ -307,6 +310,8 @@ class OrderServices
             // 修改订单状态
             self::$order->status = 11;
             self::$order->save();
+            // 写入订单日志
+            GameLevelingOrderLog::store('完成验收', self::$order->trade_no, self::$user->id, self::$user->name, self::$user->parent_id, self::$user->name . ': 进行操作 [完成验收]');
         } catch (Exception $exception) {
            throw new Exception($exception->getMessage());
         }
@@ -333,6 +338,8 @@ class OrderServices
             // 修改订单状态
             self::$order->status = 1;
             self::$order->save();
+            // 写入订单日志
+            GameLevelingOrderLog::store('上架', self::$order->trade_no, self::$user->id, self::$user->name, self::$user->parent_id, self::$user->name . ': 进行操作 [上架]');
         } catch (Exception $exception) {
            throw new Exception($exception->getMessage());
         }
@@ -359,6 +366,8 @@ class OrderServices
             // 修改订单状态
             self::$order->status = 13;
             self::$order->save();
+            // 写入订单日志
+            GameLevelingOrderLog::store('下架', self::$order->trade_no, self::$user->id, self::$user->name, self::$user->parent_id, self::$user->name . ': 进行操作 [下架]');
         } catch (Exception $exception) {
            throw new Exception($exception->getMessage());
         }
@@ -387,6 +396,8 @@ class OrderServices
             // 修改订单状态
             self::$order->status = 13;
             self::$order->save();
+            // 写入订单日志
+            GameLevelingOrderLog::store('锁定', self::$order->trade_no, self::$user->id, self::$user->name, self::$user->parent_id, self::$user->name . ': 进行操作 [锁定]');
         } catch (Exception $exception) {
            throw new Exception($exception->getMessage());
         }
@@ -415,6 +426,8 @@ class OrderServices
             // 修改订单状态
             self::$order->status = $previousStatus->status;
             self::$order->save();
+            // 写入订单日志
+            GameLevelingOrderLog::store('取消锁定', self::$order->trade_no, self::$user->id, self::$user->name, self::$user->parent_id, self::$user->name . ': 进行操作 [取消锁定]');
         } catch (Exception $exception) {
            throw new Exception($exception->getMessage());
         }
@@ -441,6 +454,8 @@ class OrderServices
             // 修改订单状态
             self::$order->status = 6;
             self::$order->save();
+            // 写入订单日志
+            GameLevelingOrderLog::store('提交异常', self::$order->trade_no, self::$user->id, self::$user->name, self::$user->parent_id, self::$user->name . ': 进行操作 [提交异常]');
         } catch (Exception $exception) {
            throw new Exception($exception->getMessage());
         }
@@ -467,6 +482,8 @@ class OrderServices
             // 修改订单状态
             self::$order->status = 2;
             self::$order->save();
+            // 写入订单日志
+            GameLevelingOrderLog::store('取消异常', self::$order->trade_no, self::$user->id, self::$user->name, self::$user->parent_id, self::$user->name . ': 进行操作 [取消异常]');
         } catch (Exception $exception) {
            throw new Exception($exception->getMessage());
         }
@@ -505,6 +522,8 @@ class OrderServices
             // 修改订单状态
             self::$order->status = 4;
             self::$order->save();
+            // 写入订单日志
+            GameLevelingOrderLog::store('申请撤销', self::$order->trade_no, self::$user->id, self::$user->name, self::$user->parent_id, self::$user->name . ': 进行操作 [申请撤销]');
         } catch (Exception $exception) {
             throw new Exception($exception->getMessage());
         }
@@ -537,6 +556,8 @@ class OrderServices
             // 修改订单状态
             self::$order->status = $previousStatus->status;
             self::$order->save();
+            // 写入订单日志
+            GameLevelingOrderLog::store('取消撤销', self::$order->trade_no, self::$user->id, self::$user->name, self::$user->parent_id, self::$user->name . ': 进行操作 [取消撤销]');
         } catch (Exception $exception) {
             throw new Exception($exception->getMessage());
         }
@@ -650,6 +671,8 @@ class OrderServices
             // 修改订单状态
             self::$order->status = 8;
             self::$order->save();
+            // 写入订单日志
+            GameLevelingOrderLog::store('同意撤销', self::$order->trade_no, self::$user->id, self::$user->name, self::$user->parent_id, self::$user->name . ': 进行操作 [同意撤销]');
         } catch (Exception $exception) {
            throw new Exception($exception->getMessage());
         }
@@ -685,6 +708,8 @@ class OrderServices
             // 修改订单状态
             self::$order->status = 5;
             self::$order->save();
+            // 写入订单日志
+            GameLevelingOrderLog::store('申请仲裁', self::$order->trade_no, self::$user->id, self::$user->name, self::$user->parent_id, self::$user->name . ': 进行操作 [申请仲裁]');
         } catch (Exception $exception) {
            throw new Exception($exception->getMessage());
         }
@@ -716,6 +741,8 @@ class OrderServices
             // 修改订单状态
             self::$order->status = $previousStatus->status;
             self::$order->save();
+            // 写入订单日志
+            GameLevelingOrderLog::store('取消仲裁', self::$order->trade_no, self::$user->id, self::$user->name, self::$user->parent_id, self::$user->name . ': 进行操作 [取消仲裁]');
         } catch (Exception $exception) {
            throw new Exception($exception->getMessage());
         }
@@ -837,7 +864,9 @@ class OrderServices
             self::$order->status = 8;
             self::$order->save();
             // 更新仲裁数据
-
+            
+            // 写入订单日志
+            GameLevelingOrderLog::store('完成仲裁', self::$order->trade_no, self::$user->id, self::$user->username, 0, '客服: 进行操作 [完成仲裁]');
         } catch (Exception $exception) {
            throw new Exception($exception->getMessage());
         }

@@ -1,4 +1,4 @@
-<?php
+.<?php
 return [
     'type' => [
         1 => '充值',

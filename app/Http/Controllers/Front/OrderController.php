@@ -13,6 +13,9 @@ use App\Http\Controllers\Controller;
  */
 class OrderController extends Controller
 {
+    /**
+     * 待接单列表
+     */
     public function index()
     {
 
@@ -71,7 +74,7 @@ class OrderController extends Controller
             $ordersArr[$key]['game_password'] = str_replace(substr($ordersArr[$key]['game_password'], -4, 4), '****', $ordersArr[$key]['game_password']);
             // 计算订单剩余代练时间
             $ordersArr[$key]['remaining_time'] = $item->getRemainingTime();
-            // 计算订单获得金额 支付金额
+            // 计算订单获得金额 支付金额 手续费 利润 撤销发起人 仲裁发起人
             $ordersArr[$key]['income_amount'] = $item->getIncomeAmount();
             $ordersArr[$key]['expend_amount'] = $item->getExpendAmount();
             $ordersArr[$key]['poundage'] = $item->getPoundage();;
@@ -102,7 +105,6 @@ class OrderController extends Controller
             'order' => $order
         ]);
     }
-
 
     public function send()
     {

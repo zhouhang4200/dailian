@@ -30,7 +30,9 @@ class CreateGameLevelingOrdersTable extends Migration
             $table->unsignedInteger('server_id')->comment('游戏服务器ID');
             $table->string('server_name', 60)->comment('游戏服务器名称');
             $table->unsignedInteger('game_leveling_type_id')->comment('游戏代练类型');
+            $table->string('game_leveling_type_name')->comment('游戏代练类型名称');
             $table->string('title', 200)->comment('代练标题');
+            $table->decimal('amount', 17, 2)->comment('代练金额');
             $table->string('game_account', 100)->comment('游戏账号');
             $table->string('game_password', 500)->comment('游戏密码');
             $table->string('game_role', 100)->comment('游戏角色');

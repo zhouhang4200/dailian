@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
+ * 代练订单操作日志
  * Class GameLevelingOrderLog
  * @package App\Models
  */

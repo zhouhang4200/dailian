@@ -210,21 +210,23 @@ $finance = ['frontend.finance.asset', 'frontend.finance.amount-flow', 'frontend.
 
                     <li data-name="home"
                         class="layui-nav-item @if(in_array(Route::currentRouteName(), $accountRoute)) layui-nav-itemed @endif">
-                        <a href="javascript:;" lay-tips="账号" lay-direction="2">
+                        <a href="{{ route('employee.group') }}" lay-tips="账号" lay-direction="2">
                             <i class="layui-icon iconfont  icon-group-o"></i>
-                            <cite>账号</cite>
+                            <cite>账号管理</cite>
                         </a>
                         <dl class="layui-nav-child">
                             <dd data-name="console"
                                 class="@if( in_array(Route::currentRouteName(), $myAccount)) layui-this  @endif">
                                 <a href="">我的账号</a>
                             </dd>
-
                             <dd data-name="console"
                                 class="@if( in_array(Route::currentRouteName(), $stationManagement)) layui-this  @endif">
                                 <a href="{{ route('employee.group') }}">岗位管理</a>
                             </dd>
-
+                            <dd data-name="console"
+                                class="@if( in_array(Route::currentRouteName(), $stationManagement)) layui-this  @endif">
+                                <a href="{{ route('employee') }}">员工管理</a>
+                            </dd>
                         </dl>
                     </li>
 

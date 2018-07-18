@@ -50,6 +50,18 @@
                     </div>
                 </div>
                 <div class="layui-form-item">
+                    <label class="layui-form-label">*QQ号</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="qq" value="" lay-verify="required|number" placeholder="" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">*微信号</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="wechat" value="" lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
                     <div class="layui-input-block">
                         <button class="qs-btn qs-btn-normal" lay-submit="" lay-filter="store">确认</button>
                         <button type="button" class="qs-btn qs-btn-primary cancel" >取消</button>
@@ -95,10 +107,11 @@
                     password:encrypt(data.field.password),
                     pay_password:encrypt(data.field.pay_password),
                 }, function (result) {
-                    layer.msg(result.message);
-                    if (result.status == 1) {
-                        window.location.href="{{ route('employee') }}";
-                    }
+                    layer.msg(result.message, {time:500}, function() {
+                        if (result.status == 1) {
+                            window.location.href="{{ route('employee') }}";
+                        }
+                    });
                 });
                 return false;
             });

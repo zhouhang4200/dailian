@@ -86,7 +86,7 @@
                 <div id="user-img" class="info-img fl"
                       style="float:left;width:80px;height:100px;background-image:url('{{ $user->avatar }}');background-size: cover !important;background-position: center !important;margin-bottom:3px;">
                     <button class="qs-btn layui-btn-normal layui-btn-mini" id="avatar-edit"
-                            style="width:100%;padding:0;margin-top:105px;">修改头像
+                            style="width:100%;padding:0;margin-top:115px;">修改头像
                     </button>
                     @if(Auth::user()->isParent())
                         <button class="qs-btn layui-btn-normal layui-btn-mini" id="profit-edit"
@@ -122,7 +122,7 @@
                         </div>
                         <div class="layui-inline" style="width:270px;">
                             <label class="layui-form-label">最后登录 ：</label>
-                            <label class="layui-form-label" style="text-align: left;padding-left: 5px">
+                            <label class="layui-form-label" style="text-align: left;padding-left: 5px;width: 150px">
                                 {{ $user->last_login_at }}
                             </label>
                         </div>
@@ -147,7 +147,7 @@
                                             认证未通过
                                         @endif
                                     @else
-                                        <a href="{{ route('real-name-certification.create') }}" style="color:#707070">去认证</a>
+                                        <a href="{{ route('real-name-certification.create') }}" style="color:#198cff">去认证</a>
                                     @endif
                                 </label>
                             </div>

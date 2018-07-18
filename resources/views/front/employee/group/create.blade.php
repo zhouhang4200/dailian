@@ -103,10 +103,11 @@
             });
 
             $.post("{{ route('employee.group.store') }}", {ids:ids,name:name}, function (result) {
-                layer.msg(result.message);
-                if (result.status == 1) {
-                    window.location.href="{{ route('employee.group') }}";
-                }
+                layer.msg(result.message, {time:500}, function () {
+                    if (result.status == 1) {
+                        window.location.href="{{ route('employee.group') }}";
+                    }
+                });
             })
             return false;
         })

@@ -130,7 +130,7 @@ if (!function_exists('getIp')) {
         } elseif(isset($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] && strcasecmp($_SERVER['REMOTE_ADDR'], 'unknown')) {
             $ip = $_SERVER['REMOTE_ADDR'];
         }
-        return preg_match ( '/[\d\.]{7,15}/', $ip, $matches ) ? $matches [0] : '';
+        return preg_match ( '/[\d\.]{7,15}/', $ip, $matches ) ? $matches [0] : null;
     }
 }
 
@@ -153,12 +153,12 @@ if (!function_exists('getLoginCity')) {
             $res = json_decode($res);
 
             if (isset($res->code) && $res->code == 0) {
-                return $res->data->city ? : '';
+                return $res->data->city ? : null;
             }
         } catch (\Exception $e) {
-            return '';
+            return null;
         }
-        return '';
+        return null;
     }
 }
 

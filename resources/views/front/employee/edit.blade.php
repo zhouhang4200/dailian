@@ -18,7 +18,7 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">手机号</label>
                     <div class="layui-input-block">
-                        <input type="text" name="phone" value="{{ $user->phone }}" lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+                        <input type="text" name="phone" disabled="disabled" value="{{ $user->phone }}" lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
@@ -40,6 +40,18 @@
                             <input type="checkbox" name="roles" value="{{ $userRole->id }}" lay-skin="primary" title="{{ $userRole->alias }}" {{ $user->roles && in_array($userRole->id, $user->roles->pluck('id')->flatten()->toArray()) ? 'checked' : '' }} >
                         @empty
                         @endforelse
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">*QQ号</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="qq" value="{{ $user->qq }}" lay-verify="required|number" placeholder="" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">*微信号</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="wechat" value="{{ $user->wechat }}" lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
@@ -83,8 +95,11 @@
                 });
 
                 $.post("{{ route('employee.update') }}", {id:id,roles:roles,data:data.field,password:encrypt(data.field.password),pay_password:encrypt(data.field.pay_password)}, function (result) {
-                    layer.msg(result.message);
-                    window.location.href="{{ route('employee') }}";
+                    layer.msg(result.message, {time:500}, function () {
+                        if(result.status == 1) {
+                            window.location.href="{{ route('employee') }}";
+                        }
+                    });
                 });
                 return false;
             });

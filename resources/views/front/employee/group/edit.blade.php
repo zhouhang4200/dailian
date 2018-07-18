@@ -106,10 +106,11 @@ layui.use('form', function(){
             permissionIds.push($(this).val());
         });
         $.post("{{ route('employee.group.update') }}", {permissionIds:permissionIds, name:name,id:id}, function (result) {
-            layer.msg(result.message);
-            if (result.status == 1) {
-                window.location.href="{{ route('employee.group') }}";
-            }
+            layer.msg(result.message, {time:500}, function () {
+                if (result.status == 1) {
+                    window.location.href="{{ route('employee.group') }}";
+                }
+            });
         })
         return false;
     });

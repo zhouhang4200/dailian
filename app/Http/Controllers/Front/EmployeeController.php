@@ -79,6 +79,7 @@ class EmployeeController extends Controller
         $data['pay_password'] = bcrypt(clientRSADecrypt($request->pay_password));
         $data['parent_id'] = Auth::user()->parent_id;
         $data['avatar'] = "/frontend/v1/images/default-avatar.png";
+        $data['email'] = '';
         $roleIds = $request->roles ?: [];
 
         // 添加子账号同时添加角色
@@ -113,6 +114,8 @@ class EmployeeController extends Controller
         // 子账号
         $user = User::find($request->id);
         $data = $request->data;
+        unset($data['phone']);
+
         // 如果存在密码则修改密码
         if (clientRSADecrypt($request->password)) {
             $data['password'] = bcrypt(clientRSADecrypt($request->password));

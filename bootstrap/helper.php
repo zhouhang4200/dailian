@@ -1,5 +1,7 @@
 <?php
 
+use GuzzleHttp\Client;
+
 /**
  * 生成订单号
  * @return string
@@ -116,30 +118,66 @@ fgMCzgxMM0hmL1eC3kSxtd4z5gUAHLUxwuzrG+JroHpk
     }
 }
 
-if (!function_exists('base64ToImg')) {
-
+if (!function_exists('getIp')) {
     /**
-     * 将base64图片存为图片到resources 指定目录
-     * @param $base64Str string
-     * @param $path string 指定的目录
-     * @return array
+     * @return string
      */
-    function base64ToImg($base64Str, $path)
+    function getIp()
     {
-        if (preg_match('/^(data:\s*image\/(\w+);base64,)/', $base64Str, $result)) {
-            $imgDir = '/resources/' . $path . '/';
-            if (!is_dir(public_path($imgDir))) {
-                mkdir(public_path($imgDir), 0777);
-            }
-            $imageName = uniqid() . '.png';
-            $imgPath = $imgDir .  $imageName;
-            if (file_put_contents(public_path($imgPath), base64_decode(str_replace($result[1], '', $base64Str)))) {
-                return [
-                    'mime_type' => 'image/png',
-                    'name' => $imageName,
-                    'path' => $imgPath,
-                ];
-            }
+        if(getenv('HTTP_CLIENT_IP') && strcasecmp(getenv('HTTP_CLIENT_IP'), 'unknown')) {
+            $ip = getenv('HTTP_CLIENT_IP');
+        } elseif(getenv('HTTP_X_FORWARDED_FOR') && strcasecmp(getenv('HTTP_X_FORWARDED_FOR'), 'unknown')) {
+            $ip = getenv('HTTP_X_FORWARDED_FOR');
+        } elseif(getenv('REMOTE_ADDR') && strcasecmp(getenv('REMOTE_ADDR'), 'unknown')) {
+            $ip = getenv('REMOTE_ADDR');
+        } elseif(isset($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] && strcasecmp($_SERVER['REMOTE_ADDR'], 'unknown')) {
+            $ip = $_SERVER['REMOTE_ADDR'];
         }
+        return preg_match ( '/[\d\.]{7,15}/', $ip, $matches ) ? $matches [0] : null;
+    }
+}
+
+if (!function_exists('getLoginCity')) {
+    /**
+     * @param $ip
+     * @return string
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    function getLoginCity($ip)
+    {
+        try {
+            $url = 'http://ip.taobao.com/service/getIpInfo.php?ip=' . $ip;
+
+            $client = new Client();
+
+            $res = $client->request('GET', $url);
+            $res = $res->getBody()->getContents();
+
+            $res = json_decode($res);
+
+            if (isset($res->code) && $res->code == 0) {
+                return $res->data->city ? : null;
+            }
+        } catch (\Exception $e) {
+            return null;
+        }
+        return null;
+    }
+}
+
+if (!function_exists('myLog')) {
+    /**
+     * 自定义日志写入
+     * @param $fileName
+     * @param array $data
+     */
+    function myLog($fileName, $data = [])
+    {
+        if (php_sapi_name() == 'cli') {
+            $fileName = $fileName . '-cli';
+        }
+        $log = new \Monolog\Logger($fileName);
+        $log->pushHandler(new \Monolog\Handler\StreamHandler(storage_path() . '/logs/' . $fileName . '-' . date('Y-m-d') .'.log'));
+        $log->addInfo($fileName, $data);
     }
 }

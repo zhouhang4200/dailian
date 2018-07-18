@@ -82,7 +82,8 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label"></label>
                             <div class="layui-input-inline">
-                                <button type="hidden" class="qs-btn qs-btn-normal" lay-submit="" lay-filter="update">确认</button>
+                                <button type="hidden" class="qs-btn qs-btn-normal" lay-submit="" lay-filter="update">确认修改</button>
+                                <button type="hidden" class="qs-btn qs-btn-normal" lay-submit="" lay-filter="cancel">取消</button>
                             </div>
                         </div>
                     </div>
@@ -120,7 +121,11 @@
                 });
                 return false;
             });
-        });
 
+            form.on('submit(cancel)', function(data) {
+                window.location.href="{{ route('profile') }}";
+                return false;
+            });
+        });
     </script>
 @endsection

@@ -39,14 +39,28 @@ Route::group(['middleware' => 'auth'], function (){
     // 订单
     Route::prefix('order')->group(function (){
         Route::get('/', 'OrderController@index')->name('order'); // 待接单列表
-        Route::get('take', 'OrderController@take')->name('order.take'); // 接单管理视图
-        Route::post('take', 'OrderController@takeData'); // 接单列表数据
-        Route::get('take/{tradeNO?}', 'OrderController@takeShow'); // 接单方查看订单详情
 
-        Route::get('send', 'OrderController@send')->name('order.send'); // 发单管理视图
-        Route::post('send', 'OrderController@sendData'); // 发单列表数据
 
-        Route::prefix('operation')->group(function (){ // 订单操作
+        // 发单方
+        Route::prefix('send')->group(function (){
+            Route::get('/', 'OrderSendController@index')->name('order.send'); // 发单管理视图
+            Route::post('/', 'OrderSendController@orderData'); // 发单列表数据
+        });
+
+        // 接单方
+        Route::prefix('take')->group(function (){
+            Route::get('/', 'OrderTakeController@index')->name('order.take'); // 接单管理视图
+            Route::post('/', 'OrderTakeController@orderData'); // 接单列表数据
+            Route::get('{trade_no}', 'OrderTakeController@show')->name('order.take.show'); // 订单详情
+            Route::get('complain-info/{trade_no}', 'OrderTakeController@complainInfo')->name('order.take.complain-info'); // 仲裁信息
+            Route::post('complain-message', 'OrderTakeController@complainMessage')->name('order.take.complain-message'); // 发送仲裁留言
+            Route::get('operation-log/{trade_no}', 'OrderTakeController@operationLog')->name('order.take.operation-log'); // 订单操作日志
+            Route::get('message/{trade_no}', 'OrderTakeController@message')->name('order.take.message'); // 订单留言
+            Route::post('message/{trade_no}', 'OrderTakeController@sendMessage'); // 订单留言
+        });
+
+        // 订单操作
+        Route::prefix('operation')->group(function (){
             Route::post('take', 'OrderOperationController@takeData')->name('order.operation.take'); // 接单
             Route::post('apply-complete', 'OrderOperationController@applyComplete')->name('order.operation.apply-complete'); // 申请验收
             Route::post('cancel-complete', 'OrderOperationController@cancelComplete')->name('order.operation.cancel-complete'); // 取消验收
@@ -55,12 +69,12 @@ Route::group(['middleware' => 'auth'], function (){
             Route::post('off-sale', 'OrderOperationController@offSale')->name('order.operation.off-sale'); // 下架
             Route::post('lock', 'OrderOperationController@lock')->name('order.operation.lock'); // 锁定
             Route::post('cancel-lock', 'OrderOperationController@cancelLock')->name('order.operation.cancel-lock'); // 取消锁定
-            Route::post('anomaly', 'OrderOperationController@anomaly')->name('order.operation.anomaly'); // 异常
+            Route::post('anomaly', 'OrderOperationController@anomaly')->name('order.operation.anomaly'); // 提交异常
             Route::post('cancel-anomaly', 'OrderOperationController@cancelAnomaly')->name('order.operation.cancel-anomaly'); // 取消异常
             Route::post('apply-consult', 'OrderOperationController@applyConsult')->name('order.operation.apply-consult'); // 申请撤销
             Route::post('cancel-consult', 'OrderOperationController@cancelConsult')->name('order.operation.cancel-consult'); // 取消撤销
-            Route::post('agree-consult', 'OrderOperationController@agreeConsult')->name('order.operation.agree-consult'); // 申请撤销
-            Route::post('apply-complain', 'OrderOperationController@applyComplain')->name('order.operation.apply-complain'); // 取消撤销
+            Route::post('agree-consult', 'OrderOperationController@agreeConsult')->name('order.operation.agree-consult'); // 同意撤销
+            Route::post('apply-complain', 'OrderOperationController@applyComplain')->name('order.operation.apply-complain'); // 申请仲裁
             Route::post('cancel-complain', 'OrderOperationController@cancelComplain')->name('order.operation.cancel-complain'); // 取消仲裁
         });
 

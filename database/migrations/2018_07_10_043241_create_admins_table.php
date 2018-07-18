@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -21,6 +22,14 @@ class CreateAdminsTable extends Migration
             $table->unsignedTinyInteger('status')->default(1)->comment('状态 1 启用 2 禁用');
             $table->timestamps();
         });
+
+        DB::table('admins')->insert([
+            [
+                'name' => '超级管理员',
+                'username' => 'admin',
+                'password' => bcrypt('admin')
+            ],
+        ]);
     }
 
     /**

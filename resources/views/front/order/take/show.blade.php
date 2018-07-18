@@ -180,7 +180,7 @@
             width: 160px !important
         }
     </style>
-    <link rel="stylesheet" href="/front/v1/lib/css/im.css">
+    <link rel="stylesheet" href="/front/lib/css/im.css">
     <link rel="stylesheet" href="/front/css/bootstrap-fileinput.css">
 @endsection
 
@@ -367,19 +367,16 @@
                                                 <button class="qs-btn qs-btn-primary qs-btn-sm qs-btn-table" style="width: 80px;"   data-no="{{ $order->trade_no }}" lay-submit lay-filter="apply-complain">申请仲裁</button>
                                         @endif
 
-                                        @if ($order->getStatusDescribe() == '撤销中' && optional($order->consult)->parent_user_id == auth()->user()->parent_id)
+                                        @if ($order->getStatusDescribe() == '撤销中' && optional($order->consult)->initiator == 2)
                                             <button class="qs-btn qs-btn-sm" style="width: 80px;"   data-no="{{ $order->trade_no }}" lay-submit lay-filter="cancel-consult">取消撤销</button>
                                             <button class="qs-btn qs-btn-primary qs-btn-sm qs-btn-table" style="width: 80px;"   data-no="{{ $order->trade_no }}" lay-submit lay-filter="apply-complain">申请仲裁</button>
-                                        @elseif($order->getStatusDescribe() == '撤销中' && optional($order->consult)->parent_user_id != auth()->user()->parent_id)
-                                            <button class="qs-btn qs-btn-sm" style="width: 80px;"   data-no="{{ $order->trade_no }}" lay-submit lay-filter="agree-consult" >同意撤销</button>
-                                            <button class="qs-btn qs-btn-primary qs-btn-sm qs-btn-table" style="width: 80px;"   data-no="{{ $order->trade_no }}" lay-submit lay-filter="apply-complain">申请仲裁</button>
-                                        @endif
+                                         @endif
 
-                                        @if ($order->getStatusDescribe() == '仲裁中' && optional($order->complain)->parent_user_id == auth()->user()->parent_id)
+                                        @if ($order->getStatusDescribe() == '仲裁中' && optional($order->complain)->initiator == 2)
                                             <button class="qs-btn qs-btn-sm" style="width: 80px;" data-no="{{ $order->trade_no }}" lay-submit lay-filter="cancel-complain">取消仲裁</button>
                                         @endif
 
-                                        @if ($order->getStatusDescribe() == '仲裁中' && optional($order->complain)->parent_user_id != auth()->user()->parent_id)
+                                        @if ($order->getStatusDescribe() == '仲裁中' && optional($order->complain)->initiator == 1)
                                         <button class="qs-btn qs-btn-primary qs-btn-sm qs-btn-table" style="width: 80px;" data-no="{{ $order->trade_no }}" lay-submit lay-filter="agree-consult" >同意撤销</button>
                                         @endif
 
@@ -397,9 +394,9 @@
                             </div>
                         </form>
                     </div>
-                    <div class="layui-tab-item" lay-id="arbitration-info" id="arbitration-info">
+                    <div class="layui-tab-item" lay-id="complain-info" id="complain-info">
                     </div>
-                    <div class="layui-tab-item" lay-id="message" id="message">
+                    <div class="layui-tab-item" lay-id="operation-log" id="operation-log">
                     </div>
                 </div>
             </div>
@@ -422,7 +419,7 @@
                     </tr>
                     <tr>
                         <td>发布人</td>
-                        <td>{{ $order->getStatusDescribe() }}</td>
+                        <td>{{ $order->username }}</td>
                     </tr>
                     <tr>
                         <td>订单状态</td>
@@ -442,7 +439,7 @@
                     </tr>
                     <tr>
                         <td>提验时间</td>
-                        <td>{{ $order->getStatusDescribe() }}</td>
+                        <td>{{ $order->apply_complete_at }}</td>
                     </tr>
                     <tr>
                         <td>结算时间</td>
@@ -484,37 +481,10 @@
 @endsection
 
 @section('pop')
-    @include('front.order.take_pop')
+    @include('front.order.take.pop')
 @endsection
 
 @section('js')
-    <script id="imTemplate" type="text/html">
-        <ul>
-            @{{#  layui.each(d.message, function(index, item){ }}
-            @{{# if(item.sender == '您'){ }}
-            <li class="layim-chat-mine">
-                <div class="layim-chat-user">
-                    <img src="/front/images/service_avatar.jpg">
-                    <cite>
-                        <i>@{{ item.send_time }}</i>您
-                    </cite>
-                </div>
-                <div class="layim-chat-text">@{{ item.send_content}}</div>
-            </li>
-            @{{# }else{  }}
-            <li>
-                <div class="layim-chat-user">
-                    <img src="/front/images/customer_avatar.jpg">
-                    <cite>打手
-                        <i> @{{ item.send_time }}</i>
-                    </cite>
-                </div>
-                <div class="layim-chat-text">@{{ item.send_content}}</div>
-            </li>
-            @{{# }  }}
-            @{{# }); }}
-        </ul>
-    </script>
     <script id="images" type="text/html">
         <div carousel-item="" id="">
             @{{# var i = 0; layui.each(d, function(index, item){ }}
@@ -526,44 +496,63 @@
         </div>
     </script>
     <script src="/front/js/bootstrap-fileinput.js"></script>
-    <script src="/vendor/zoomify.min.js"></script>
     <script>
         layui.use(['form', 'layedit', 'laydate', 'laytpl', 'element', 'carousel'], function(){
             var form = layui.form, layer = layui.layer, layTpl = layui.laytpl, element = layui.element, carousel =  layui.carousel;
 
-            @include('front.order.take_operation', ['type' => 'detail'])
+            @include('front.order.take.operation', ['type' => 'detail'])
 
             element.on('tab()', function(){
-                {{--var id = this.getAttribute('lay-id');--}}
-                {{--if (id == 3) {--}}
-                    {{--$.get('{{ route('front.workbench.leveling.history', ['order_no' => $detail['no']]) }}', {id:1}, function (result) {--}}
-                        {{--$('#message').html(result);--}}
-                    {{--});--}}
-                {{--}--}}
-                {{--if (id == 2) {--}}
-                    {{--$.get('{{ route('front.workbench.leveling.arbitration-info').'?no=' . $detail['no'] }}', {id:1}, function (result) {--}}
-                        {{--$('#arbitration-info').html(result);--}}
-                    {{--});--}}
-                {{--}--}}
+                var id = this.getAttribute('lay-id');
+                if (id == 2) {
+                   complainInfo();
+                }
+                if (id == 3) {
+                    operationLog();
+                }
             });
 
-
-            // 加载留言
-            function loadMessage(bingId) {
-                var messageBingId = bingId ? bingId : 0;
-
-                {{--$.get("{{ route('front.workbench.leveling.leave-message', ['order_no' => $detail['no']]) }}?bing_id=" + messageBingId, function (result) {--}}
-                    {{--if (result.status === 1) {--}}
-                        {{--var getTpl = imTemplate.innerHTML, view = $('.layim-chat-main');--}}
-                        {{--layTpl(getTpl).render(result.content, function(html){--}}
-                            {{--view.html(html);--}}
-                            {{--layui.form.render();--}}
-                        {{--});--}}
-                        {{--$('.layim-chat-main').scrollTop( $('.layim-chat-main')[0].scrollHeight );--}}
-                    {{--}--}}
-                {{--});--}}
-            }
-
+            // 发送仲裁留言
+            form.on('submit(send-complain-message)', function (data) {
+                var image = $('.pic-add img').attr('src');
+                if (data.field.content) {
+                    $.post("{{ route('order.take.complain-message') }}", {
+                        'trade_no': "{{ $order->trade_no }}",
+                        'content': data.field.content,
+                        'image': image
+                    }, function (data) {
+                        if (data.status === 1) {
+                            layer.msg(data.message, {icon: 1});
+                            complainInfo();
+                        } else {
+                            layer.msg(data.message, {icon: 5});
+                            return false;
+                        }
+                    }, 'json');
+                } else {
+                    layer.msg('请输入要发送的内容', {icon: 5});
+                }
+                return false;
+            });
+            // 发送普通留言
+            form.on('submit(send-message)', function (data) {
+                if (data.field.content) {
+                    $.post("{{ route('order.take.message', ['trade_no' => $order->trade_no]) }}", {
+                        'content': data.field.content
+                    }, function (data) {
+                        if (data.status === 1) {
+                            message();
+                            $('.layim-chat-main').scrollTop( $('.layim-chat-main')[0].scrollHeight );
+                        } else {
+                            layer.msg(data.message, {icon: 5});
+                            return false;
+                        }
+                    }, 'json');
+                } else {
+                    layer.msg('请输入要发送的内容', {icon: 5});
+                }
+                return false;
+            });
             // 留言弹窗
             $('#im').click(function () {
                 layer.open({
@@ -573,31 +562,11 @@
                     area: ['850px', '561px'],
                     shade: 0.2,
                     moveType: 1,  //拖拽模式，0或者1
-                    content: $('#layui-boxx'),
+                    content: $('#im-pop'),
                     success: function (layero) {
-                        loadMessage(1);
+                        message();
                     }
                 });
-            });
-            // 发送留言
-            $('.layim-send-btn').click(function(){
-                var message = $('[name=layim-chat-textarea]').val();
-                {{--if (message) {--}}
-                    {{--$.post("{{ route('front.workbench.leveling.send-message') }}", {--}}
-                        {{--'order_no': "{{ $detail['no'] }}",--}}
-                        {{--'message':message--}}
-                    {{--}, function (data) {--}}
-                        {{--$('[name=layim-chat-textarea]').val('');--}}
-                        {{--if (data.status === 1) {--}}
-                            {{--loadMessage(0);--}}
-                        {{--} else {--}}
-                            {{--layer.msg(data.message, {icon: 5});--}}
-                            {{--return false;--}}
-                        {{--}--}}
-                    {{--}, 'json');--}}
-                {{--} else {--}}
-                    {{--layer.msg('请输入要发送的内容', {icon: 5});--}}
-                {{--}--}}
             });
             // 查看图片
             var ins = carousel.render({
@@ -646,50 +615,24 @@
                     {{--}--}}
                 {{--});--}}
             });
-            // 操作记录
-            $('#operation').click(function () {
-                {{--layer.open({--}}
-                    {{--type: 2,--}}
-                    {{--title: '操作记录',--}}
-                    {{--shadeClose: true,--}}
-                    {{--area: ['850px', '500px'],--}}
-                    {{--shade: 0.8,--}}
-                    {{--moveType: 1,--}}
-                    {{--content: '{{ route('front.workbench.leveling.history', ['order_no' => $detail['no']]) }}',--}}
-                    {{--success: function (layero) {--}}
-                    {{--}--}}
-                {{--});--}}
-            });
-
-
-            // 发送证据
-            form.on('submit(add_evidence)', function (data) {
-                {{--var content = $('[name=content]').val();--}}
-                {{--var pic = $('.pic-add img').attr('src');--}}
-                {{--var arbitration_id = this.getAttribute('lay-id');--}}
-                {{--var no = this.getAttribute('lay-no');--}}
-                {{--if (content) {--}}
-                    {{--$.post("{{ route('front.workbench.leveling.add-arbitration') }}", {--}}
-                        {{--'content':content,--}}
-                        {{--'pic':pic,--}}
-                        {{--'arbitration_id':arbitration_id,--}}
-                        {{--'no':no--}}
-                    {{--}, function (result) {--}}
-                        {{--if (result.status === 1) {--}}
-                            {{--autoLoad("{{ route('front.workbench.leveling.arbitration-info') }}", '#arbitration-info', no);--}}
-                            {{--layer.msg(result.message, {icon: 6});--}}
-                        {{--} else {--}}
-                            {{--layer.msg(result.message, {icon: 5});--}}
-                        {{--}--}}
-                    {{--}, 'json');--}}
-                    {{--return false;--}}
-                {{--} else {--}}
-                    {{--layer.msg('请输入要发送的内容', {icon: 5});--}}
-                {{--}--}}
-                return false;
-            });
-
-
+            // 加载订单操作日志
+            function operationLog() {
+                $.get("{{ route('order.take.operation-log', ['trade_no' => $order->trade_no]) }}", function (result) {
+                    $('#operation-log').html(result);
+                });
+            }
+            // 订单仲裁信息
+            function complainInfo() {
+                $.get('{{ route('order.take.complain-info', ['trade_no' => $order->trade_no])  }}', function (result) {
+                    $('#complain-info').html(result);
+                });
+            }
+            // 订单留言
+            function message() {
+                $.get('{{ route('order.take.message', ['trade_no' => $order->trade_no])  }}', function (result) {
+                    $('.layim-chat-main').html(result);
+                });
+            }
             $('.layui-card').on('click', '.photo', function () {
                 var imgSrc = $(this).attr('data-img');
                 layer.photos({

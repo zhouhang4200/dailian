@@ -258,7 +258,7 @@ class GameLevelingOrder extends Model
      */
     public function getConsultDescribe()
     {
-        if (! is_null($this->consult)) {
+        if (! is_null($this->consult) && optional($this->consult)->status != 2) {
 
             if ($this->consult->initiator == 1) { // 如果发起人为发单方
 
@@ -267,13 +267,13 @@ class GameLevelingOrder extends Model
                     return sprintf("你发起撤销, <br/> 你支付代练费用 %.2f 元, 对方支付保证金 %.2f, <br/> 原因: %s",
                         $this->consult->amount, 
                         bcadd($this->consult->security_deposit, $this->consult->efficiency_deposit),
-                        $this->consult->remark
+                        $this->consult->reason
                     );
                 } else {
                     return sprintf("对方发起撤销, <br/> 你支付代练费用 %.2f 元, 对方支付保证金 %.2f, <br/> 原因: %s",
                         $this->consult->amount, 
                         bcadd($this->consult->security_deposit, $this->consult->efficiency_deposit),
-                        $this->consult->remark
+                        $this->consult->reason
                     );
                 }
             } else if ($this->consult->initiator == 2) {  // 如果发起人为接单方
@@ -282,13 +282,13 @@ class GameLevelingOrder extends Model
                     return sprintf("你发起撤销, <br/> 对方支付代练费用 %.2f 元, 你支付保证金 %.2f, <br/> 原因: %s",
                         $this->consult->amount, 
                         bcadd($this->consult->security_deposit, $this->consult->efficiency_deposit),
-                        $this->consult->remark
+                        $this->consult->reason
                     );
                 } else {
                     return sprintf("对方发起撤销, <br/> 你支付代练费用 %.2f 元, 对方支付保证金 %.2f, <br/> 原因: %s",
                         $this->consult->amount, 
                         bcadd($this->consult->security_deposit, $this->consult->efficiency_deposit),
-                        $this->consult->remark
+                        $this->consult->reason
                     );
                 }
             }
@@ -304,7 +304,7 @@ class GameLevelingOrder extends Model
      */
     public function getComplainDescribe()
     {
-        if (!is_null($this->complain)) {
+        if (! is_null($this->complain) && optional($this->complain)->status == 3) {
             if ($this->complain->initiator == 1) { // 如果发起人为发单方
 
                 // 当前用户父Id 等于仲裁发起人
@@ -344,12 +344,25 @@ class GameLevelingOrder extends Model
     }
 
     /**
+     * 提交验收时间
+     * @return mixed|string
+     */
+    public function getApplyCompleteAtAttribute()
+    {
+        if ($this->status == 3) {
+            return $this->attributes['apply_complete_at'];
+        } else {
+            return '';
+        }
+    }
+
+    /**
      * 关联仲裁表
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function complain()
     {
-        return $this->hasOne(GameLevelingOrderConsult::class, 'game_leveling_orders_trade_no', 'trade_no');
+        return $this->hasOne(GameLevelingOrderComplain::class, 'game_leveling_order_trade_no', 'trade_no');
     }
 
     /**
@@ -358,6 +371,15 @@ class GameLevelingOrder extends Model
      */
     public function consult()
     {
-        return $this->hasOne(GameLevelingOrderConsult::class, 'game_leveling_orders_trade_no', 'trade_no');
+        return $this->hasOne(GameLevelingOrderConsult::class, 'game_leveling_order_trade_no', 'trade_no');
+    }
+
+    /**
+     * 关联留言表
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function message()
+    {
+        return $this->hasMany(GameLevelingOrderMessage::class, 'game_leveling_order_trade_no', 'trade_no');
     }
 }

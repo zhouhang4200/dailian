@@ -106,6 +106,10 @@ class ProfileController extends Controller
         return str_replace('\\', '/', $path);
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function avatarUpdate(Request $request)
     {
         if (Auth::user()->isParent()) {

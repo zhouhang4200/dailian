@@ -3,6 +3,7 @@
 @section('title', '丸子平台-登录')
 
 @section('css')
+    <link rel="stylesheet" href="/front/css/index.css">
 @endsection
 
 @section('header')

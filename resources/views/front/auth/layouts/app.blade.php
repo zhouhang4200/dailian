@@ -10,21 +10,19 @@
     <link rel="stylesheet" href="/front/lib/css/iconfont.css">
     <link rel="stylesheet" href="/front/lib/css/new-iconfont.css">
     <link rel="stylesheet" href="/front/lib/css/new.css">
-    <link rel="stylesheet" href="/front/css/index.css">
     @yield('css')
 </head>
-
 <body>
     @yield('header')
-<div class="main">
+    <div class="main">
     @yield('main')
-</div>
-<script src="/front/lib/js/layui/layui.js"></script>
-<script src="/front/lib/js/jquery-1.11.0.min.js"></script>
-<script src="/js/encrypt.js"></script>
-<script>
-    $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')}});
-</script>
-@yield('js')
+    </div>
+    <script src="/front/lib/js/layui/layui.js"></script>
+    <script src="/front/lib/js/jquery-1.11.0.min.js"></script>
+    <script src="/js/encrypt.js"></script>
+    <script>
+        $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')}});
+    </script>
+    @yield('js')
 </body>
 </html>

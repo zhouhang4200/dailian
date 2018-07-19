@@ -9,7 +9,7 @@
 @section('header')
     <div class="header">
         <div class="container">
-            <img src="/front/images/title.png" alt="">
+            <img src="/front/images/title1.png" alt="">
         </div>
     </div>
 @endsection
@@ -70,9 +70,9 @@
                 geetest_validate:data.field.geetest_validate
             }, function (result) {
                 if (result.status == 1) {
-                location.reload();
+                    location.reload();
                 } else {
-                layer.msg(result.message);
+                    layer.msg(result.message);
                 }
             return false;
             });

@@ -485,16 +485,6 @@
 @endsection
 
 @section('js')
-    <script id="images" type="text/html">
-        <div carousel-item="" id="">
-            @{{# var i = 0; layui.each(d, function(index, item){ }}
-            <div  style="background: url(@{{ item.url }}) no-repeat center/contain;"  @{{# if(i == 0){ }} class="layui-this" @{{# } }} >
-                <div class="carousel-tips" >@{{ item.description }} &nbsp;&nbsp;&nbsp; @{{ item.created_at }} </div>
-            </div>
-            @{{# if(i == 0){   i = 1;  } }}
-            @{{# }); }}
-        </div>
-    </script>
     <script src="/front/js/bootstrap-fileinput.js"></script>
     <script>
         layui.use(['form', 'layedit', 'laydate', 'laytpl', 'element', 'carousel'], function(){
@@ -579,41 +569,34 @@
                 indicator: 'none'
             });
             $('#carousel-btn').click(function () {
-                {{--$.get("{{ route('front.workbench.leveling.leave-image', ['order_no' => $detail['no']]) }}", function (result) {--}}
-                    {{--if (result.status === 1) {--}}
-                        {{--if (result.content.length > 0 ) {--}}
-                            {{--var getTpl = images.innerHTML, view = $('#carousel');--}}
-                            {{--layTpl(getTpl).render(result.content, function(html){--}}
-                                {{--view.html(html);--}}
-                                {{--layui.form.render();--}}
-                            {{--});--}}
-
-                            {{--layer.open({--}}
-                                {{--type: 1,--}}
-                                {{--title: false ,--}}
-                                {{--area: ['50%', '500px'],--}}
-                                {{--shade: 0.8,--}}
-                                {{--shadeClose: true,--}}
-                                {{--moveType: 1,--}}
-                                {{--content: $('#carousel'),--}}
-                                {{--success: function () {--}}
-                                    {{--//改变下时间间隔、动画类型、高度--}}
-                                    {{--ins.reload({--}}
-                                        {{--elem: '#carousel',--}}
-                                        {{--anim: 'fade',--}}
-                                        {{--width: '100%',--}}
-                                        {{--arrow: 'always',--}}
-                                        {{--autoplay: false,--}}
-                                        {{--height: '100%',--}}
-                                        {{--indicator: 'none'--}}
-                                    {{--});--}}
-                                {{--}--}}
-                            {{--});--}}
-                        {{--} else {--}}
-                            {{--layer.msg('暂时没有图片', {icon: 5});--}}
-                        {{--}--}}
-                    {{--}--}}
-                {{--});--}}
+                $.get("{{ route('order.apply-complete-image', ['trade_no' => $order->trade_no]) }}", function (result) {
+                    if (result.status === 1) {
+                        $('#carousel').html(result.content);
+                        layer.open({
+                            type: 1,
+                            title: false ,
+                            area: ['50%', '500px'],
+                            shade: 0.8,
+                            shadeClose: true,
+                            moveType: 1,
+                            content: $('#carousel'),
+                            success: function () {
+                                //改变下时间间隔、动画类型、高度
+                                ins.reload({
+                                    elem: '#carousel',
+                                    anim: 'fade',
+                                    width: '100%',
+                                    arrow: 'always',
+                                    autoplay: false,
+                                    height: '100%',
+                                    indicator: 'none'
+                                });
+                            }
+                        });
+                    } else {
+                        layer.msg('暂时没有图片', {icon: 5});
+                    }
+                });
             });
             // 加载订单操作日志
             function operationLog() {

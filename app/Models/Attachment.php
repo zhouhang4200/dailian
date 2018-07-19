@@ -16,6 +16,15 @@ class Attachment extends Model
         'mime_type',
         'path',
     ];
+
+    public $hidden = [
+        'id',
+        'mime_type',
+        'attachment_id',
+        'attachment_type',
+        'created_at',
+        'updated_at',
+    ];
     
     /**
      * @return \Illuminate\Database\Eloquent\Relations\MorphTo

@@ -382,4 +382,14 @@ class GameLevelingOrder extends Model
     {
         return $this->hasMany(GameLevelingOrderMessage::class, 'game_leveling_order_trade_no', 'trade_no');
     }
+
+    /**
+     * 申请验收记录
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function applyComplete()
+    {
+        return $this->hasOne(GameLevelingOrderApplyComplete::class, 'game_leveling_order_trade_no', 'trade_no');
+
+    }
 }

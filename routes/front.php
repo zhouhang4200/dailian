@@ -37,9 +37,10 @@ Route::group(['middleware' => 'auth'], function (){
         Route::post('group/delete', 'EmployeeController@groupDelete')->name('employee.group.delete'); // 岗位信息更新
     });
     // 订单
+
     Route::prefix('order')->group(function (){
         Route::get('/', 'OrderController@index')->name('order'); // 待接单列表
-
+        Route::get('apply-complete-image/{trade_no}', 'OrderController@applyCompleteImage')->name('order.apply-complete-image'); // 申请验收图片
 
         // 发单方
         Route::prefix('send')->group(function (){
@@ -51,12 +52,12 @@ Route::group(['middleware' => 'auth'], function (){
         Route::prefix('take')->group(function (){
             Route::get('/', 'OrderTakeController@index')->name('order.take'); // 接单管理视图
             Route::post('/', 'OrderTakeController@orderData'); // 接单列表数据
-            Route::get('{trade_no}', 'OrderTakeController@show')->name('order.take.show'); // 订单详情
-            Route::get('complain-info/{trade_no}', 'OrderTakeController@complainInfo')->name('order.take.complain-info'); // 仲裁信息
-            Route::post('complain-message', 'OrderTakeController@complainMessage')->name('order.take.complain-message'); // 发送仲裁留言
-            Route::get('operation-log/{trade_no}', 'OrderTakeController@operationLog')->name('order.take.operation-log'); // 订单操作日志
-            Route::get('message/{trade_no}', 'OrderTakeController@message')->name('order.take.message'); // 订单留言
-            Route::post('message/{trade_no}', 'OrderTakeController@sendMessage'); // 订单留言
+            Route::get('/{trade_no}', 'OrderTakeController@show')->name('order.take.show'); // 订单详情
+            Route::get('/complain-info/{trade_no}', 'OrderTakeController@complainInfo')->name('order.take.complain-info'); // 仲裁信息
+            Route::post('/complain-message', 'OrderTakeController@complainMessage')->name('order.take.complain-message'); // 发送仲裁留言
+            Route::get('/operation-log/{trade_no}', 'OrderTakeController@operationLog')->name('order.take.operation-log'); // 订单操作日志
+            Route::get('/message/{trade_no}', 'OrderTakeController@message')->name('order.take.message'); // 订单留言
+            Route::post('/message/{trade_no}', 'OrderTakeController@sendMessage'); // 订单留言
         });
 
         // 订单操作
@@ -77,7 +78,6 @@ Route::group(['middleware' => 'auth'], function (){
             Route::post('apply-complain', 'OrderOperationController@applyComplain')->name('order.operation.apply-complain'); // 申请仲裁
             Route::post('cancel-complain', 'OrderOperationController@cancelComplain')->name('order.operation.cancel-complain'); // 取消仲裁
         });
-
     });
     // 财务
     Route::prefix('finance')->group(function (){

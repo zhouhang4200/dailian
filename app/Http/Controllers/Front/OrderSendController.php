@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\DB;
  *
  * @package App\Http\Controllers\Front
  */
-class OrderController extends Controller
+class OrderSendController extends Controller
 {
     /**
      * 待接单列表

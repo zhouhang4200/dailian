@@ -137,9 +137,9 @@
     </form>
 </div>
 
-<div class="complete-upload" style="display: none; padding: 20px">
+<div class="apply-complete-pop" style="display: none; padding: 20px">
     <form class="layui-form">
-        <input type="hidden" id="order_no" name="order_no">
+        <input type="hidden" name="trade_no">
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">完成截图</label>
             <div class="layui-input-block">
@@ -148,7 +148,7 @@
                         <div class="fileinput-new thumbnail" style="width: 100px;height: 100px;">
                             <img id='picImg' style="width: 60px;height:60px;margin:auto;margin-top:20px;" src="/front/images/upload-btn-bg.png" alt="" />
                         </div>
-                        <div class="fileinput-preview fileinput-exists thumbnail pic-1" style="width: 100px;height: 100px;"></div>
+                        <div class="fileinput-preview fileinput-exists thumbnail apply-complete-image-1" style="width: 100px;height: 100px;"></div>
                         <div style="height: 0;">
                                 <span class=" btn-file" style="padding: 0;">
                                     <span class="fileinput-new"></span>
@@ -166,7 +166,7 @@
                         <div class="fileinput-new thumbnail" style="width: 100px;height: 100px;">
                             <img id='picImg' style="width: 60px;height:60px;margin:auto;margin-top:20px;" src="/front/images/upload-btn-bg.png" alt="" />
                         </div>
-                        <div class="fileinput-preview fileinput-exists thumbnail pic-2" style="width: 100px;height: 100px;"></div>
+                        <div class="fileinput-preview fileinput-exists thumbnail apply-complete-image-2" style="width: 100px;height: 100px;"></div>
                         <div>
                                 <span class="btn-file" style="padding: 0;">
                                     <span class="fileinput-new"></span>
@@ -184,7 +184,7 @@
                         <div class="fileinput-new thumbnail" style="width: 100px;height: 100px;">
                             <img id='picImg' style="width: 60px;height:60px;margin:auto;margin-top:20px;" src="/front/images/upload-btn-bg.png" alt="" />
                         </div>
-                        <div class="fileinput-preview fileinput-exists thumbnail pic-3" style="width: 100px;height: 100px;"></div>
+                        <div class="fileinput-preview fileinput-exists thumbnail apply-complete-image-3" style="width: 100px;height: 100px;"></div>
                         <div>
                                <span class="btn-file" style="padding: 0;">
                                     <span class="fileinput-new"></span>
@@ -201,7 +201,7 @@
         </div>
         <div class="layui-form-item">
             <div class="layui-input-block">
-                <button class="qs-btn layui-btn-normal" id="submit" lay-submit lay-filter="complete-upload">确认
+                <button class="qs-btn layui-btn-normal" id="submit" lay-submit lay-filter="confirm-apply-complete">确认
                 </button>
                 <span cancel class="qs-btn  layui-btn-normal cancel">取消</span>
             </div>

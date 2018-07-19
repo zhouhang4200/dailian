@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\GameLevelingOrderApplyComplete;
 use \Exception;
 use App\Models\User;
 use App\Models\Game;
@@ -225,10 +226,12 @@ class OrderServices
 
     /**
      * 申请验收
+     * @param array $image
+     *
      * @return object
-     * @throws Exception
+     * @throws \Exception
      */
-    public function applyComplete()
+    public function applyComplete($image = [])
     {
         if (self::$order->status != 2) {
             throw new Exception('申请验收失败,订单当前状态为: ' . self::$order->getStatusDes());
@@ -244,6 +247,12 @@ class OrderServices
             self::$order->status = 3;
             self::$order->apply_complete_at = date('Y-m-d H:i:s');
             self::$order->save();
+            // 记录验收记录
+            $applyComplete = GameLevelingOrderApplyComplete::create([
+                'game_leveling_order_trade_no' => self::$order->trade_no
+            ]);
+            // 存储验收图片
+            $applyComplete->image()->createMany($image);
             // 写入订单日志
             GameLevelingOrderLog::store('申请验收', self::$order->trade_no, self::$user->id, self::$user->name, self::$user->parent_id, self::$user->name . ': 进行操作 [申请验收]');
         } catch (Exception $exception) {
@@ -272,6 +281,17 @@ class OrderServices
             // 修改订单状态
             self::$order->status = 2;
             self::$order->save();
+            // 删除上传的提交完成图片
+            foreach (self::$order->applyComplete->image as $item) {
+                try {
+                    unlink(public_path($item->path));
+                } catch (Exception $exception) {
+                }
+            }
+            // 删除库中所有图片记录
+            self::$order->applyComplete->image()->delete();
+            // 删除所有相关的提交的完成记录
+            self::$order->applyComplete()->delete();
             // 写入订单日志
             GameLevelingOrderLog::store('取消验收', self::$order->trade_no, self::$user->id, self::$user->name, self::$user->parent_id, self::$user->name . ': 进行操作 [取消验收]');
         } catch (Exception $exception) {

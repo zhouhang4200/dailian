@@ -181,3 +181,31 @@ if (!function_exists('myLog')) {
         $log->addInfo($fileName, $data);
     }
 }
+if (!function_exists('base64ToImg')) {
+
+    /**
+     * 将base64图片存为图片到resources 指定目录
+     * @param $base64Str string
+     * @param $path string 指定的目录
+     * @return array
+     */
+    function base64ToImg($base64Str, $path)
+    {
+        if (preg_match('/^(data:\s*image\/(\w+);base64,)/', $base64Str, $result)) {
+            $imgDir = '/resources/' . $path . '/';
+            if (!is_dir(public_path($imgDir))) {
+                mkdir(public_path($imgDir), 0777);
+            }
+            $imageName = uniqid() . '.png';
+            $imgPath = $imgDir .  $imageName;
+            if (file_put_contents(public_path($imgPath), base64_decode(str_replace($result[1], '', $base64Str)))) {
+                return [
+                    'mime_type' => 'image/png',
+                    'name' => $imageName,
+                    'path' => $imgPath,
+                ];
+            }
+        }
+    }
+}
+

@@ -180,6 +180,12 @@ class OrderTakeController extends Controller
         ])->render());
     }
 
+    /**
+     * 发送订单留言
+     * @param $tradeNO
+     *
+     * @return mixed
+     */
     public function sendMessage($tradeNO)
     {
         $order = GameLevelingOrder::getOrderByCondition(['trade_no' =>  $tradeNO], 2)->with([

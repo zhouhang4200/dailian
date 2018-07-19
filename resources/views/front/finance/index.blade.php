@@ -113,8 +113,7 @@
         });
 
         $('#export').click(function () {
-            {{--var url = "{{ route('frontend.finance.amount-flow.export') }}?" + $('#search').serialize();--}}
-            window.location.href = url;
+            window.location.href = "{{ route('finance.asset-flow-export') }}?" + $('#search').serialize();
         });
     </script>
 @endsection

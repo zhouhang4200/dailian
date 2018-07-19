@@ -23,24 +23,32 @@ class FinanceController extends Controller
         ]);
     }
 
+    /**
+     * 资金流水导出
+     */
     public function assetFlowExport()
     {
         $query = UserAssetFlow::condition(request()->all());
-        export([
-            '天猫订单号',
-            '内部订单号',
-            '游戏',
-            '订单状态',
-            '结账状态',
-            '最终支付金额',
-            '代练结算时间',
-            '结账时间',
-        ], '财务订单导出', $query, function ($query, $out){
-            $query->chunk(100, function ($items) use ($out) {
 
+        return export([
+            '流水号',
+            '交易单号',
+            '类型',
+            '变动金额',
+            '账户余额',
+            '说明',
+            '时间',
+        ], '资金流水', $query, function ($query, $out){
+            $query->chunk(100, function ($items) use ($out) {
                 foreach ($items as $item) {
                     $data = [
-
+                        $item->id,
+                        $item->trade_no . "\t",
+                        config('user_asset.type')[$item->type],
+                        $item->amount,
+                        $item->balance,
+                        config('user_asset.sub_type')[$item->sub_type],
+                        $item->created_at,
                     ];
                     fputcsv($out, $data);
                 }

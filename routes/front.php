@@ -82,6 +82,7 @@ Route::group(['middleware' => 'auth'], function (){
     // 财务
     Route::prefix('finance')->group(function (){
         Route::get('/', 'FinanceController@index')->name('finance');
+        Route::get('asset-flow-export', 'FinanceController@assetFlowExport')->name('finance.asset-flow-export');
     });
     // 个人资料
     Route::prefix('profile')->group(function (){

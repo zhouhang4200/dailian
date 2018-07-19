@@ -25,6 +25,11 @@ class BalanceWithdraw extends Model
         return $this->belongsTo(UserAssetFlow::class, 'trade_no', 'trade_no');
     }
 
+    /**
+     * @param $query
+     * @param array $filters
+     * @return mixed
+     */
     public static function scopeFilter($query, $filters = [])
     {
         if (isset($filters['type']) && ! empty($filters['type'])) {
@@ -37,12 +42,12 @@ class BalanceWithdraw extends Model
             $query->where('status', $filters['status']);
         }
 
-        if (isset($filters['trade_no']) && ! empty($filters['trade_no'])) {
-            $query->where('trade_no', $filters['trade_no']);
+        if (isset($filters['tradeNo']) && ! empty($filters['tradeNo'])) {
+            $query->where('trade_no', $filters['tradeNo']);
         }
 
-        if (isset($filters['user_id']) && ! empty($filters['user_id'])) {
-            $query->where('user_id', $filters['user_id']);
+        if (isset($filters['userId']) && ! empty($filters['userId'])) {
+            $query->where('user_id', $filters['userId']);
         }
 
         if (isset($filters['remark']) && ! empty($filters['remark'])) {
@@ -52,11 +57,11 @@ class BalanceWithdraw extends Model
         }
 
         if (isset($filters['startDate']) && ! empty($filters['startDate'])) {
-            $query->where('startDate', '>=', $filters['startDate']);
+            $query->where('created_at', '>=', $filters['startDate']);
         }
 
         if (isset($filters['endDate']) && ! empty($filters['endDate'])) {
-            $query->where('endDate', '<=', $filters['endDate']);
+            $query->where('updated_at', '<=', $filters['endDate'].' 23:59:59');
         }
         return $query;
     }

@@ -70,7 +70,7 @@
     </header>
     <div id="page-wrapper" class="container">
         <div class="row">
-            @include('backend.layouts.partials.menu')
+            @include('back.layouts.menu')
             <div id="content-wrapper">
                 @yield('content')
             </div>

@@ -29,19 +29,43 @@ class BalanceWithdrawController extends Controller
 
             $this->export($exportDatas);
         }
-        dd($balanceWithdraws->toArray());
+
+        return view('back.finance.balance-withdraw.index', compact('startDate', 'endDate', 'type', 'status', 'tradeNo', 'userId', 'remark', 'balanceWithdraws'));
     }
 
     public function agree(Request $request)
     {
+        try {
+            $balanceWithdraw = BalanceWithdraw::find($request->id);
 
+            $balanceWithdraw->status = 2;
+            $balanceWithdraw->save();
+
+            return response()->json(['status' => 1, 'message' => '成功']);
+        }
+        catch (Exception $e) {
+            return response()->json(['status' => 0, 'message' => '失败']);
+        }
     }
 
     public function refuse(Request $request)
     {
+        try {
+            $balanceWithdraw = BalanceWithdraw::find($request->id);
 
+            $balanceWithdraw->remark = $request->remark;
+            $balanceWithdraw->status = 3;
+            $balanceWithdraw->save();
+
+            return response()->json(['status' => 1, 'message' => '成功']);
+        } catch (Exception $e) {
+            return response()->json(['status' => 0, 'message' => '失败']);
+        }
     }
 
+    /**
+     * @param $exportDatas
+     */
     public function export($exportDatas)
     {
         try {
@@ -53,8 +77,6 @@ class BalanceWithdrawController extends Controller
             $chunkExportDatas = array_chunk(array_reverse($exportDatas->toArray()), 1000);
 
             Excel::create('提现记录', function ($excel) use ($chunkExportDatas, $title) {
-
-                $types = ['1' => '审核中', '2' => '完成', '3' => '拒绝'];
                 foreach ($chunkExportDatas as $no => $chunkExportData) {
                     // 内容
                     $datas = [];
@@ -69,7 +91,7 @@ class BalanceWithdrawController extends Controller
                             $exportData['bank_card'],
                             $exportData['amount']+0,
                             config('user_asset_type.type')[$exportData['user_asset_flow']['type']],
-                            $types[$exportData['status']],
+                            config('balance_withdraw.status')[$exportData['status']],
                             $exportData['user_asset_flow']['remark'] ?? '--',
                             $exportData['created_at'],
                             $exportData['updated_at'],
@@ -84,7 +106,7 @@ class BalanceWithdrawController extends Controller
                 }
             })->export('xls');
         } catch (Exception $e) {
-            myLog('balance-withdraw-error', ['message' => $e->getMessage()]);
+            myLog('balance-withdraw-export-error', ['message' => $e->getMessage()]);
         }
     }
 }

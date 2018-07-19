@@ -14,22 +14,19 @@ $workbenchRoute = [
 ];
 
 $accountRoute = [
-    'station.index',
-    'home-accounts.index',
-    'login.history',
-    'idents.index',
-    'idents.create',
-    'idents.edit',
-    'idents.edit',
-    'staff-management.index',
-    'hatchet-man-blacklist.index',
-    'home-accounts.edit',
-    'station.edit',
-    'station.create',
-    'staff-management.edit',
-    'staff-management.create',
-    'hatchet-man-blacklist.edit',
-    'hatchet-man-blacklist.create',
+    'employee',
+    'employee.create',
+    'employee.edit',
+    'employee.update',
+    'employee.delete',
+    'employee.forbidden',
+    'employee.group',
+    'employee.group',
+    'employee.group.create',
+    'employee.group.store',
+    'employee.group.edit',
+    'employee.group.edit',
+    'employee.group.update',
 ];
 
 $financeRoute = [
@@ -210,21 +207,21 @@ $finance = ['frontend.finance.asset', 'frontend.finance.amount-flow', 'frontend.
 
                     <li data-name="home"
                         class="layui-nav-item @if(in_array(Route::currentRouteName(), $accountRoute)) layui-nav-itemed @endif">
-                        <a href="{{ route('employee.group') }}" lay-tips="账号" lay-direction="2">
+                        <a href="javascript:;" lay-tips="账号" lay-direction="2">
                             <i class="layui-icon iconfont  icon-group-o"></i>
                             <cite>账号管理</cite>
                         </a>
                         <dl class="layui-nav-child">
                             <dd data-name="console"
-                                class="@if( in_array(Route::currentRouteName(), $myAccount)) layui-this  @endif">
+                                class="@if( in_array(Route::currentRouteName(), $myAccount))   layui-this  @endif" >
                                 <a href="">我的账号</a>
                             </dd>
                             <dd data-name="console"
-                                class="@if( in_array(Route::currentRouteName(), $stationManagement)) layui-this  @endif">
+                                class="@if(Route::currentRouteName() == 'employee.group') layui-this  @endif">
                                 <a href="{{ route('employee.group') }}">岗位管理</a>
                             </dd>
                             <dd data-name="console"
-                                class="@if( in_array(Route::currentRouteName(), $stationManagement)) layui-this  @endif">
+                                class="@if(Route::currentRouteName() == 'employee') layui-this  @endif">
                                 <a href="{{ route('employee') }}">员工管理</a>
                             </dd>
                         </dl>

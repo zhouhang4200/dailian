@@ -129,6 +129,17 @@ $finance = ['frontend.finance.asset', 'frontend.finance.amount-flow', 'frontend.
         .layui-card-body {
             padding-bottom: 30px;
         }
+        .layui-layout-admin .layui-logo {
+            background-color: #198cff !important;
+        }
+        .layui-nav-tree .layui-this, .layui-nav-tree .layui-this>a, .layui-nav-tree .layui-nav-child dd.layui-this, .layui-nav-tree .layui-nav-child dd.layui-this a {
+            background-color: #198cff !important;
+        }
+        .layui-nav-tree .layui-nav-bar {
+            width: 5px;
+            height: 0;
+            background-color: #198cff;
+        }
     </style>
     @yield('css')
 </head>
@@ -157,17 +168,22 @@ $finance = ['frontend.finance.asset', 'frontend.finance.amount-flow', 'frontend.
                 </li>
                 <li class="layui-nav-item" lay-unselect style="margin-right: 30px;">
                     <a href="javascript:;">
-                        <img src="{{ auth()->user()->voucher ?? '' }}" class="layui-nav-img">
-                        <cite>{{ auth()->user()->username }}</cite>
+                        <img src="{{ auth()->user()->avatar ?? '' }}" class="layui-nav-img">
+                        <cite>{{ auth()->user()->phone }}</cite>
                     </a>
                     <dl class="layui-nav-child">
                         <dd style="text-align: center;">
                             <a href="{{ route('home') }}">基本资料</a>
                         </dd>
                         <hr>
-                        <dd style="text-align: center;">
-                            <a href="#" id="logout">退出</a>
+                        <dd style="text-align: center;" id="logout">
+                            <a href="{{ route('admin.logout') }}" onclick="event.preventDefault();">
+                                退出
+                            </a>
                         </dd>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            {{ csrf_field() }}
+                        </form>
                     </dl>
                 </li>
 
@@ -184,6 +200,7 @@ $finance = ['frontend.finance.asset', 'frontend.finance.amount-flow', 'frontend.
             <div class="layui-side-scroll">
                 <div class="layui-logo" lay-href="">
                     <img src="/front/images/title.png" alt="">
+                    <p style="height: 25px;line-height: 25px; display: inline-block"></p>
                 </div>
 
                 <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu"
@@ -250,26 +267,6 @@ $finance = ['frontend.finance.asset', 'frontend.finance.amount-flow', 'frontend.
         <div class="layadmin-body-shade" layadmin-event="shade"></div>
     </div>
 </div>
-
-<style>
-    .layui-side-menu,
-    .layadmin-pagetabs .layui-tab-title li:after,
-    .layadmin-pagetabs .layui-tab-title li.layui-this:after,
-    .layui-layer-admin .layui-layer-title,
-    .layadmin-side-shrink .layui-side-menu .layui-nav>.layui-nav-item>.layui-nav-child {
-        background-color: #20222A !important;
-    }
-
-    .layui-nav-tree .layui-this,
-    .layui-nav-tree .layui-this>a,
-    .layui-nav-tree .layui-nav-child dd.layui-this,
-    .layui-nav-tree .layui-nav-child dd.layui-this a {
-        background-color: #F78400 !important;
-    }
-    .layui-layout-admin .layui-logo {
-        background-color: #F78400 !important;
-    }
-</style>
 <script src="/front/lib/js/layui/layui.js"></script>
 <script src="/js/jquery-1.11.0.min.js"></script>
 <script src="/js/encrypt.js"></script>
@@ -277,9 +274,26 @@ $finance = ['frontend.finance.asset', 'frontend.finance.amount-flow', 'frontend.
 <script src="//cdn.bootcss.com/socket.io/1.3.7/socket.io.min.js"></script>
 <script>
     $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')}});
+
+    layui.config({
+        base: '/front/' //静态资源所在路径
+    }).extend({
+        index: 'lib/js/index' //主入口模块
+    }).use('index');
+
+    layui.use(['form', 'layedit', 'laydate', 'element'], function(){
+        var form = layui.form, layer = layui.layer, element = layui.element;
+    });
+
+    $('#logout').click(function () {
+        layer.confirm('确定退出吗?', {icon: 3, title:'提示'}, function(index){
+            document.getElementById('logout-form').submit();
+            layer.close(index);
+            return true;
+        });
+    });
 </script>
 @yield('js')
 </body>
-
 @yield('pop')
 </html>

@@ -26,7 +26,7 @@ class CreateUsersTable extends Migration
             $table->string('qq', 200)->nullable()->comment('qq账号');
             $table->string('qq_open_id', 200)->nullable()->comment('QQOpenID');
             $table->string('wechat_open_id', 200)->nullable()->comment('微信openID');
-            $table->string('avatar')->default('')->comment('头像');
+            $table->string('avatar')->default('/front/images/default_avatar.png')->comment('头像');
             $table->tinyInteger('sex')->default(1)->comment('性别 1 男 2 女');
             $table->dateTime('birthday')->nullable()->comment('生日');
             $table->tinyInteger('status')->default(1)->comment('状态 1 启用 2 禁用 3 已删除');

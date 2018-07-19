@@ -216,6 +216,23 @@ if (!function_exists('export')) {
      * @param $title
      * @param $name
      * @param $callback
+     *
+       export([
+           'id',
+           '名字',
+        ], '财务订单导出', $query, function ($query, $out){
+           $query->chunk(100, function ($items) use ($out) {
+
+               foreach ($items as $item) {
+                   $data = [
+                       $item->id,
+                       $item->name,
+                   ];
+                   fputcsv($out, $data);
+               }
+           });
+       });
+
      */
     function export($title, $name, $query, $callback)
     {

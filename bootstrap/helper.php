@@ -1,6 +1,7 @@
 <?php
 
 use GuzzleHttp\Client;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 /**
  * 生成订单号
@@ -209,3 +210,27 @@ if (!function_exists('base64ToImg')) {
     }
 }
 
+if (!function_exists('export')) {
+    /**
+     * 导出数据
+     * @param $title
+     * @param $name
+     * @param $callback
+     */
+    function export($title, $name, $query, $callback)
+    {
+        $response = new StreamedResponse(function () use ($title, $name, $query, $callback){
+            $out = fopen('php://output', 'w');
+            fwrite($out, chr(0xEF).chr(0xBB).chr(0xBF)); // 添加 BOM
+            fputcsv($out, $title);
+
+            $callback($query, $out);
+
+            fclose($out);
+        },200, [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="' .  $name .   '.csv"',
+        ]);
+        $response->send();
+    }
+}

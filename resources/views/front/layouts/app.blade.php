@@ -30,15 +30,7 @@ $accountRoute = [
 ];
 
 $financeRoute = [
-    'frontend.finance.asset',
-    'frontend.finance.asset-daily',
-    'frontend.finance.amount-flow',
-    'frontend.finance.withdraw-order',
-    'frontend.statistic.employee',
-    'frontend.statistic.order',
-    'frontend.statistic.sms',
-    'frontend.finance.order-report.index',
-    'frontend.finance.month-settlement-orders.index',
+    'finance',
 ];
 
 $settingRoute = [
@@ -62,8 +54,8 @@ $stationManagement = ['station.create', 'station.index', 'station.edit'];
 $employeeManagement = ['staff-management.index', 'staff-management.edit', 'staff-management.create'];
 $blacklist = ['hatchet-man-blacklist.index', 'hatchet-man-blacklist.create', 'hatchet-man-blacklist.edit'];
 $finance = ['frontend.finance.asset', 'frontend.finance.amount-flow', 'frontend.finance.asset-daily',
-    'frontend.finance.withdraw-order', 'frontend.finance.order-report.index', 'frontend.statistic.employee',
-    'frontend.statistic.order', 'frontend.statistic.sms'
+        'frontend.finance.withdraw-order', 'frontend.finance.order-report.index', 'frontend.statistic.employee',
+        'frontend.statistic.order', 'frontend.statistic.sms'
 ];
 ?>
         <!DOCTYPE html>
@@ -203,6 +195,20 @@ $finance = ['frontend.finance.asset', 'frontend.finance.amount-flow', 'frontend.
                             <i class="layui-icon iconfont  icon-group-o"></i>
                             <cite>接单管理</cite>
                         </a>
+                    </li>
+
+                    <li data-name="home"
+                        class="layui-nav-item @if(in_array(Route::currentRouteName(), $financeRoute)) layui-nav-itemed @endif">
+                        <a href="javascript:;" lay-tips="账号" lay-direction="2">
+                            <i class="layui-icon iconfont  icon-group-o"></i>
+                            <cite>财务管理</cite>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd data-name="console"
+                                class="@if(Route::currentRouteName() == 'finance') layui-this  @endif" >
+                                <a href="{{ route('finance') }}">资金流水</a>
+                            </dd>
+                        </dl>
                     </li>
 
                     <li data-name="home"

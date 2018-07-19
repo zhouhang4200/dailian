@@ -76,7 +76,7 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label">微信:</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="wechat" lay-verify="required|number" value="{{ $user->wechat }}" autocomplete="off" placeholder="请输入微信" class="layui-input">
+                                <input type="text" name="wechat" lay-verify="required" value="{{ $user->wechat }}" autocomplete="off" placeholder="请输入微信" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-form-item">

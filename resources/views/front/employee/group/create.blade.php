@@ -19,10 +19,9 @@
             width: 150px;
             margin-right: 10px;
         }
-        .layui-form-checked[lay-skin="primary"] span {     
+        .layui-form-checked[lay-skin="primary"] span {
             background-color: #fff;
         }
-
     </style>
 @endsection
 

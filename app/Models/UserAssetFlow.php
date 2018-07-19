@@ -16,4 +16,12 @@ class UserAssetFlow extends Model
         'frozen',
         'remark' ,
     ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function balanceWithdraw()
+    {
+        return $this->hasOne(BalanceWithdraw::class, 'trade_no', 'trade_no');
+    }
 }

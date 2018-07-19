@@ -22,7 +22,6 @@
     <link rel="stylesheet" href="/front/lib/css/new.css">
     <link id="layuicss-layer" rel="stylesheet" href="/front/lib/js/layui/css/modules/layer/default/layer.css" media="all">
     @yield('css')
-
     <!--[if lt IE 9]>
     <script src="/back/js/html5shiv.js"></script>
     <script src="/back/js/respond.min.js"></script>
@@ -33,7 +32,7 @@
 <div class="">
     <header class="navbar" id="header-navbar">
         <div class="container">
-            <h2 class="logo">千手 · 订单集市</h2>
+            <h2 class="logo">丸子代练平台</h2>
             <div class="clearfix">
                 <button class="navbar-toggle" data-target=".navbar-ex1-collapse" data-toggle="collapse" type="button">
                     <span class="sr-only">Toggle navigation</span>
@@ -73,7 +72,6 @@
         <div class="row">
             @include('backend.layouts.partials.menu')
             <div id="content-wrapper">
-                @yield('breadcrumb')
                 @yield('content')
             </div>
         </div>

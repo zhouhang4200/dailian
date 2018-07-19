@@ -23,3 +23,11 @@ Route::namespace('Auth')->group(function (){
     Route::post('logout', 'LoginController@logout')->name('admin.logout');
 });
 
+Route::prefix('finance')->group(function () {
+    // 余额提现管理
+        Route::prefix('balance-withdraw')->group(function () {
+            Route::get('/', 'BalanceWithdrawController@index')->name('balance-withdraw');
+            Route::post('agree', 'BalanceWithdrawController@agree')->name('balance-withdraw.agree'); // 同意
+            Route::post('refuse', 'BalanceWithdrawController@refuse')->name('balance-withdraw.refuse'); // 拒绝
+    });
+});

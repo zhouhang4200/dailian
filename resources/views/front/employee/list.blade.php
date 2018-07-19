@@ -5,6 +5,8 @@
             <th>编号</th>
             <th>员工姓名</th>
             <th>岗位</th>
+            <th>QQ</th>
+            <th>微信</th>
             <th>电话</th>
             <th>最后操作时间</th>
             <th>状态</th>
@@ -24,6 +26,8 @@
                         --
                     @endif
                 </td>
+                <td>{{ $user->qq ?? '--' }}</td>
+                <td>{{ $user->wechat ?? '--' }}</td>
                 <td>{{ $user->phone ?? '--' }}</td>
                 <td>{{ $user->updated_at ?? '--' }}</td>
                 <td><input type="checkbox" name="open" lay-data="{{ $user->id }}" {{ $user->status == 1 ? 'checked' : '' }} lay-skin="switch" lay-filter="open" ></td>

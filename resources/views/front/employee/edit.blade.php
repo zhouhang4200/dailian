@@ -2,6 +2,14 @@
 
 @section('title', '账号 - 员工管理 - 员工编辑')
 
+@section('css')
+    <style>
+        .layui-form-item {
+            width: 400px;
+        }
+    </style>
+@endsection
+
 @section('main')
     <div class="layui-card qs-text">
         <div class="layui-card-header">员工编辑</div>
@@ -18,7 +26,7 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">手机号</label>
                     <div class="layui-input-block">
-                        <input type="text" name="phone" disabled="disabled" value="{{ $user->phone }}" lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+                        <input type="text" style="background: #95a5a626" name="phone" disabled="disabled" value="{{ $user->phone }}" lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
@@ -43,13 +51,13 @@
                     </div>
                 </div>
                 <div class="layui-form-item">
-                    <label class="layui-form-label">*QQ号</label>
+                    <label class="layui-form-label">QQ号</label>
                     <div class="layui-input-block">
                         <input type="text" name="qq" value="{{ $user->qq }}" lay-verify="required|number" placeholder="" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
-                    <label class="layui-form-label">*微信号</label>
+                    <label class="layui-form-label">微信号</label>
                     <div class="layui-input-block">
                         <input type="text" name="wechat" value="{{ $user->wechat }}" lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
                     </div>

@@ -200,6 +200,7 @@ $finance = ['frontend.finance.asset', 'frontend.finance.amount-flow', 'frontend.
             <div class="layui-side-scroll">
                 <div class="layui-logo" lay-href="">
                     <img src="/front/images/title.png" alt="">
+                    <p style="height: 25px;line-height: 25px; display: inline-block"></p>
                 </div>
 
                 <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu"
@@ -273,6 +274,12 @@ $finance = ['frontend.finance.asset', 'frontend.finance.amount-flow', 'frontend.
 <script src="//cdn.bootcss.com/socket.io/1.3.7/socket.io.min.js"></script>
 <script>
     $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')}});
+
+    layui.config({
+        base: '/front/' //静态资源所在路径
+    }).extend({
+        index: 'lib/js/index' //主入口模块
+    }).use('index');
 
     layui.use(['form', 'layedit', 'laydate', 'element'], function(){
         var form = layui.form, layer = layui.layer, element = layui.element;

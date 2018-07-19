@@ -18,7 +18,7 @@ class CreateGameLevelingOrderLogsTable extends Migration
             $table->unsignedInteger('user_id')->comment('用户ID');
             $table->string('username', 60)->comment('用户名称');
             $table->string('name', 60)->comment('操作名称');
-            $table->string('content', 600)->comment('操作内容');
+            $table->string('description', 600)->comment('操作详情');
             $table->unsignedInteger('parent_user_id')->comment('用户父ID');
             $table->string('game_leveling_orders_trade_no', 22)->comment('代练订单交易号');
             $table->timestamps();

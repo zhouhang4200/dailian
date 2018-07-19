@@ -11,42 +11,50 @@ use Illuminate\Database\Eloquent\Model;
 class GameLevelingOrderConsult extends Model
 {
     public $fillable = [
+        'initiator',
         'user_id',
         'parent_user_id',
-        'game_leveling_orders_trade_no',
+        'game_leveling_order_trade_no',
         'amount',
         'security_deposit',
         'efficiency_deposit',
-        'remark',
+        'status',
+        'reason',
     ];
 
     /**
+     * @param $initiator
      * @param $userId
      * @param $parentUserId
      * @param $gameLevelingOrderTradeNO
      * @param $amount
      * @param $securityDeposit
      * @param $efficiencyDeposit
-     * @param $remark
+     * @param $status
+     * @param $reason
      * @return mixed
      */
     public static function store(
+        $initiator,
         $userId,
         $parentUserId,
         $gameLevelingOrderTradeNO,
         $amount,
         $securityDeposit,
         $efficiencyDeposit,
-        $remark)
+        $status,
+        $reason)
     {
-        return self::create([
+        return self::updateOrCreate(['game_leveling_order_trade_no' => $gameLevelingOrderTradeNO], [
+            'initiator' => $initiator,
             'user_id' => $userId,
             'parent_user_id' => $parentUserId,
-            'game_leveling_orders_trade_no' => $gameLevelingOrderTradeNO,
+            'game_leveling_order_trade_no' => $gameLevelingOrderTradeNO,
             'amount' => $amount,
             'security_deposit' => $securityDeposit,
             'efficiency_deposit' => $efficiencyDeposit,
-            'remark' => $remark,
+            'status' => $status,
+            'reason' => $reason,
         ]);
     }
 }

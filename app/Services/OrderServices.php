@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\GameLevelingOrderApplyComplete;
 use \Exception;
 use App\Models\User;
 use App\Models\Game;
@@ -49,7 +50,7 @@ class OrderServices
         if (! $user = User::find($userId)) {
             throw new Exception('用户ID不存在');
         }
-        if ($order = GameLevelingOrder::getOrderBy($gameLevelingOrderTradeNO)) {
+        if ($order = GameLevelingOrder::getOrderByCondition(['trade_no' => $gameLevelingOrderTradeNO])->first()) {
             self::$order = $order;
         }
 
@@ -225,10 +226,12 @@ class OrderServices
 
     /**
      * 申请验收
+     * @param array $image
+     *
      * @return object
-     * @throws Exception
+     * @throws \Exception
      */
-    public function applyComplete()
+    public function applyComplete($image = [])
     {
         if (self::$order->status != 2) {
             throw new Exception('申请验收失败,订单当前状态为: ' . self::$order->getStatusDes());
@@ -242,7 +245,14 @@ class OrderServices
         try {
             // 修改订单状态
             self::$order->status = 3;
+            self::$order->apply_complete_at = date('Y-m-d H:i:s');
             self::$order->save();
+            // 记录验收记录
+            $applyComplete = GameLevelingOrderApplyComplete::create([
+                'game_leveling_order_trade_no' => self::$order->trade_no
+            ]);
+            // 存储验收图片
+            $applyComplete->image()->createMany($image);
             // 写入订单日志
             GameLevelingOrderLog::store('申请验收', self::$order->trade_no, self::$user->id, self::$user->name, self::$user->parent_id, self::$user->name . ': 进行操作 [申请验收]');
         } catch (Exception $exception) {
@@ -271,6 +281,17 @@ class OrderServices
             // 修改订单状态
             self::$order->status = 2;
             self::$order->save();
+            // 删除上传的提交完成图片
+            foreach (self::$order->applyComplete->image as $item) {
+                try {
+                    unlink(public_path($item->path));
+                } catch (Exception $exception) {
+                }
+            }
+            // 删除库中所有图片记录
+            self::$order->applyComplete->image()->delete();
+            // 删除所有相关的提交的完成记录
+            self::$order->applyComplete()->delete();
             // 写入订单日志
             GameLevelingOrderLog::store('取消验收', self::$order->trade_no, self::$user->id, self::$user->name, self::$user->parent_id, self::$user->name . ': 进行操作 [取消验收]');
         } catch (Exception $exception) {
@@ -508,14 +529,18 @@ class OrderServices
         }
         DB::beginTransaction();
         try {
+            // 发起人
+            $initiator = self::$user->parent_id == self::$order->parent_user_id ? 1 : 2;
             // 记录撤销数据
             GameLevelingOrderConsult::store(
+                $initiator,
                 self::$user->id,
                 self::$user->parent_id,
                 self::$order->trade_no,
                 $amount,
                 $securityDeposit,
                 $efficiencyDeposit,
+                1,
                 $remark);
             // 记录订单前一个状态
             GameLevelingOrderPreviousStatus::store(self::$order->trade_no, self::$order->status);
@@ -549,7 +574,7 @@ class OrderServices
         DB::beginTransaction();
         try {
             // 记录撤销数据
-            GameLevelingOrderConsult::where('game_leveling_orders_trade_no', self::$order->trade_no)
+            GameLevelingOrderConsult::where('game_leveling_order_trade_no', self::$order->trade_no)
                 ->update(['status' => 2]);
             // 记录订单前一个状态
             $previousStatus = GameLevelingOrderPreviousStatus::getLatestBy(self::$order->trade_no);
@@ -583,7 +608,7 @@ class OrderServices
         DB::beginTransaction();
         try {
             // 记录撤销数据
-            GameLevelingOrderConsult::where('game_leveling_orders_trade_no', self::$order->trade_no)
+            GameLevelingOrderConsult::where('game_leveling_order_trade_no', self::$order->trade_no)
                 ->update(['status' => 3]);
             
             // 发单人 支出代练费
@@ -682,12 +707,12 @@ class OrderServices
 
     /**
      * 申请仲裁
-     * @param $remark
+     * @param $reason
      * @param array $image
      * @return object
      * @throws Exception
      */
-    public function applyComplain($remark, $image = [])
+    public function applyComplain($reason, $image = [])
     {
         // 状态为 代练中(2)  待收验(3) 异常(4)
         if ( ! in_array(self::$order->status, [2, 3, 4])) {
@@ -695,14 +720,18 @@ class OrderServices
         }
         DB::beginTransaction();
         try {
-            // 记录撤销数据
-            GameLevelingOrderComplain::store(
+            // 发起人
+            $initiator = self::$user->parent_id == self::$order->parent_user_id ? 1 : 2;
+            // 记录仲裁数据
+            $complain = GameLevelingOrderComplain::store(
+                $initiator,
                 self::$user->id,
                 self::$user->parent_id,
                 self::$order->trade_no,
-                $remark);
+                1,
+                $reason);
             // 存储图片
-
+            $complain->image()->createMany($image);
             // 记录订单前一个状态
             GameLevelingOrderPreviousStatus::store(self::$order->trade_no, self::$order->status);
             // 修改订单状态
@@ -735,12 +764,35 @@ class OrderServices
         DB::beginTransaction();
         try {
             // 更新撤销数据
-            GameLevelingOrderComplain:where('game_leveling_orders_trade_no', self::$order->trade_no)->update(['status' => 2]);
+            $complain = GameLevelingOrderComplain::where('game_leveling_order_trade_no', self::$order->trade_no)->first();
+            $complain->status = 2;
+            $complain->save();
+            // 删除上传的仲裁图片
+            foreach ($complain->image as $item) {
+                try {
+                    unlink(public_path($item->path));
+                } catch (Exception $exception) {
+
+                }
+            }
+            $complain->image()->delete();
+            // 删除上传的留言图片
+            foreach (self::$order->message as $item) {
+                try {
+                    unlink(public_path($item->image[0]->path));
+                } catch (Exception $exception) {
+
+                }
+                $item->image()->delete();
+            }
+            // 删除所有相关的留言
+            self::$order->message()->delete();
             // 记录订单前一个状态
             $previousStatus = GameLevelingOrderPreviousStatus::getLatestBy(self::$order->trade_no);
             // 修改订单状态
             self::$order->status = $previousStatus->status;
             self::$order->save();
+
             // 写入订单日志
             GameLevelingOrderLog::store('取消仲裁', self::$order->trade_no, self::$user->id, self::$user->name, self::$user->parent_id, self::$user->name . ': 进行操作 [取消仲裁]');
         } catch (Exception $exception) {
@@ -769,7 +821,7 @@ class OrderServices
         DB::beginTransaction();
         try {
             // 记录撤销数据
-            GameLevelingOrderConsult::where('game_leveling_orders_trade_no', self::$order->trade_no)
+            GameLevelingOrderConsult::where('game_leveling_order_trade_no', self::$order->trade_no)
                 ->update([
                     'status' => 3,
                     'amount' => $inputAmount,

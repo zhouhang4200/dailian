@@ -37,9 +37,18 @@ class OrderOperationController extends Controller
      */
     public function applyComplete()
     {
+        // 获取图片信息组成仲裁需要的数组
+        $images[] = base64ToImg(request('image_1'),  'complete');
+        $images[] = base64ToImg(request('image_2'),  'complete');
+        $images[] = base64ToImg(request('image_3'),  'complete');
+
+        if (count($images) == 0)  {
+            return response()->ajaxFail('提交验收至少需要一张图片');
+        }
+
         DB::beginTransaction();
         try {
-            OrderServices::init(request()->user()->id, request('trade_no'))->applyComplete();
+            OrderServices::init(request()->user()->id, request('trade_no'))->applyComplete(array_filter($images));
         } catch (Exception $exception) {
             return response()->ajaxFail($exception->getMessage());
         }
@@ -217,7 +226,12 @@ class OrderOperationController extends Controller
     {
         DB::beginTransaction();
         try {
-            OrderServices::init(request()->user()->id, request('trade_no'))->applyComplain(request('remark'));
+            // 获取图片信息组成仲裁需要的数组
+            $images[] = base64ToImg(request('image_1'),  'complain');
+            $images[] = base64ToImg(request('image_2'),  'complain');
+            $images[] = base64ToImg(request('image_3'),  'complain');
+
+            OrderServices::init(request()->user()->id, request('trade_no'))->applyComplain(request('reason'), array_filter($images));
         } catch (Exception $exception) {
             return response()->ajaxFail($exception->getMessage());
         }

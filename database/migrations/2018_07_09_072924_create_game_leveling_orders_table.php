@@ -36,7 +36,8 @@ class CreateGameLevelingOrdersTable extends Migration
             $table->string('game_account', 100)->comment('游戏账号');
             $table->string('game_password', 500)->comment('游戏密码');
             $table->string('game_role', 100)->comment('游戏角色');
-            $table->decimal('security_deposit', 17, 2)->default(0)->comment('安全保证金');
+            $table->unsignedInteger('day')->default(0)->comment('代练天数');
+            $table->unsignedInteger('hours')->default(0)->comment('代练小时');
             $table->decimal('efficiency_deposit', 17, 2)->default(0)->comment('效率保证金');
             $table->text('explain')->comment('代练说明');
             $table->text('requirement')->comment('代练要求');

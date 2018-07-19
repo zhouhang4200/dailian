@@ -17,7 +17,7 @@ class GameLevelingOrderLog extends Model
         'user_id',
         'username',
         'parent_user_id',
-        'content',
+        'description',
     ];
 
     /**
@@ -26,7 +26,7 @@ class GameLevelingOrderLog extends Model
      * @param $userId
      * @param $username
      * @param $parentId
-     * @param $content
+     * @param $description
      * @return mixed
      */
     public static function store(
@@ -35,7 +35,7 @@ class GameLevelingOrderLog extends Model
         $userId,
         $username,
         $parentId,
-        $content)
+        $description)
     {
         return self::create([
             'name' => $name,
@@ -43,7 +43,7 @@ class GameLevelingOrderLog extends Model
             'user_id' => $userId,
             'username' => $username,
             'parent_user_id' => $parentId,
-            'content' => $content,
+            'description' => $description,
         ]);
     }
 }

@@ -16,13 +16,14 @@ class CreateGameLevelingOrderComplainsTable extends Migration
         Schema::create('game_leveling_order_complains', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('user_id')->comment('用户ID');
-            $table->string('game_leveling_orders_trade_no', 22)->comment('代练订单交易号');
+            $table->unsignedInteger('parent_user_id')->comment('用户父ID');
+            $table->string('game_leveling_order_trade_no', 22)->comment('代练订单交易号');
             $table->decimal('amount', 17, 2)->default(0)->comment('代练费');
             $table->decimal('security_deposit', 17, 2)->default(0)->comment('安全保证金');
             $table->decimal('efficiency_deposit', 17, 2)->default(0)->comment('效率保证金');
             $table->string('reason', 500)->comment('申请仲裁原因');
-            $table->string('result', 500)->comment('处理结果');
-            $table->unsignedTinyInteger('status')->comment('状态 1 处理中 2 成功');
+            $table->string('result', 500)->nullable()->comment('处理结果');
+            $table->unsignedTinyInteger('status')->default(1)->comment('状态 1 处理中 2 成功');
             $table->unsignedTinyInteger('initiator')->comment('发起人 1 发单方 2 接单方');
             $table->timestamps();
         });

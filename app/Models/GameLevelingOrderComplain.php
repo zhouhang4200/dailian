@@ -12,33 +12,50 @@ use Illuminate\Database\Eloquent\Model;
 class GameLevelingOrderComplain extends Model
 {
     public $fillable = [
+        'initiator',
         'user_id',
         'parent_user_id',
-        'game_leveling_orders_trade_no',
+        'game_leveling_order_trade_no',
         'amount',
         'security_deposit',
         'efficiency_deposit',
-        'remark',
+        'status',
+        'reason',
     ];
 
     /**
+     * @param $initiator
      * @param $userId
      * @param $parentUserId
      * @param $gameLevelingOrderTradeNO
-     * @param $remark
+     * @param $status
+     * @param $reason
      * @return mixed
      */
     public static function store(
+        $initiator,
         $userId,
         $parentUserId,
         $gameLevelingOrderTradeNO,
-        $remark)
+        $status,
+        $reason)
     {
-        return self::create([
+        return self::updateOrCreate(['game_leveling_order_trade_no' => $gameLevelingOrderTradeNO], [
+            'initiator' => $initiator,
             'user_id' => $userId,
             'parent_user_id' => $parentUserId,
-            'game_leveling_orders_trade_no' => $gameLevelingOrderTradeNO,
-            'remark' => $remark,
+            'game_leveling_order_trade_no' => $gameLevelingOrderTradeNO,
+            'status' => $status,
+            'reason' => $reason,
         ]);
+    }
+
+    /**
+     * 对应的仲裁图片
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function image()
+    {
+        return $this->morphMany(Attachment::class, 'attachment', 'attachment_type', 'trade_no', 'game_leveling_order_trade_no');
     }
 }

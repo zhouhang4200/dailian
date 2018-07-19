@@ -61,16 +61,16 @@
 </div>
 <div class="complain-pop" style="display: none; padding: 20px">
     <form class="layui-form">
-        <input type="hidden" id="order_no" name="order_no">
+        <input type="hidden" name="trade_no">
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">证据截图</label>
             <div class="layui-input-block">
                 <div class="fileinput-group">
                     <div class="fileinput fileinput-new" data-provides="fileinput" id="exampleInputUpload">
                         <div class="fileinput-new thumbnail" style="width: 100px;height: 100px;">
-                            <img id='picImg' style="width: 60px;height:60px;margin:auto;margin-top:20px;" src="/frontend/images/upload-btn-bg.png" alt="" />
+                            <img id='picImg' style="width: 60px;height:60px;margin:auto;margin-top:20px;" src="/front/images/upload-btn-bg.png" alt="" />
                         </div>
-                        <div class="fileinput-preview fileinput-exists thumbnail pic-1" style="width: 100px;height: 100px;"></div>
+                        <div class="fileinput-preview fileinput-exists thumbnail complain-image-1" style="width: 100px;height: 100px;"></div>
                         <div style="height: 0;">
                                 <span class=" btn-file" style="padding: 0;">
                                     <span class="fileinput-new"></span>
@@ -86,9 +86,9 @@
                 <div class="fileinput-group">
                     <div class="fileinput fileinput-new" data-provides="fileinput" id="exampleInputUpload">
                         <div class="fileinput-new thumbnail" style="width: 100px;height: 100px;">
-                            <img id='picImg' style="width: 60px;height:60px;margin:auto;margin-top:20px;" src="/frontend/images/upload-btn-bg.png" alt="" />
+                            <img id='picImg' style="width: 60px;height:60px;margin:auto;margin-top:20px;" src="/front/images/upload-btn-bg.png" alt="" />
                         </div>
-                        <div class="fileinput-preview fileinput-exists thumbnail pic-2" style="width: 100px;height: 100px;"></div>
+                        <div class="fileinput-preview fileinput-exists thumbnail complain-image-2" style="width: 100px;height: 100px;"></div>
                         <div>
                                 <span class="btn-file" style="padding: 0;">
                                     <span class="fileinput-new"></span>
@@ -104,9 +104,9 @@
                 <div class="fileinput-group">
                     <div class="fileinput fileinput-new" data-provides="fileinput" id="exampleInputUpload">
                         <div class="fileinput-new thumbnail" style="width: 100px;height: 100px;">
-                            <img id='picImg' style="width: 60px;height:60px;margin:auto;margin-top:20px;" src="/frontend/images/upload-btn-bg.png" alt="" />
+                            <img id='picImg' style="width: 60px;height:60px;margin:auto;margin-top:20px;" src="/front/images/upload-btn-bg.png" alt="" />
                         </div>
-                        <div class="fileinput-preview fileinput-exists thumbnail pic-3" style="width: 100px;height: 100px;"></div>
+                        <div class="fileinput-preview fileinput-exists thumbnail complain-image-3" style="width: 100px;height: 100px;"></div>
                         <div>
                                <span class="btn-file" style="padding: 0;">
                                     <span class="fileinput-new"></span>
@@ -124,30 +124,31 @@
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">仲裁理由</label>
             <div class="layui-input-block">
-                <textarea placeholder="请输入申请仲裁理由" name="complain_message"  class="layui-textarea"></textarea>
+                <textarea placeholder="请输入申请仲裁理由" name="reason"  class="layui-textarea"></textarea>
             </div>
         </div>
         <div class="layui-form-item">
             <div class="layui-input-block">
-                <button class="qs-btn layui-btn-normal" id="submit" lay-submit lay-filter="complain">确认
+                <button class="qs-btn layui-btn-normal" id="submit" lay-submit lay-filter="confirm-apply-complain">确认
                 </button>
                 <span cancel class="qs-btn  layui-btn-normal cancel">取消</span>
             </div>
         </div>
     </form>
 </div>
-<div class="complete-upload" style="display: none; padding: 20px">
+
+<div class="apply-complete-pop" style="display: none; padding: 20px">
     <form class="layui-form">
-        <input type="hidden" id="order_no" name="order_no">
+        <input type="hidden" name="trade_no">
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">完成截图</label>
             <div class="layui-input-block">
                 <div class="fileinput-group">
                     <div class="fileinput fileinput-new" data-provides="fileinput" id="exampleInputUpload">
                         <div class="fileinput-new thumbnail" style="width: 100px;height: 100px;">
-                            <img id='picImg' style="width: 60px;height:60px;margin:auto;margin-top:20px;" src="/frontend/images/upload-btn-bg.png" alt="" />
+                            <img id='picImg' style="width: 60px;height:60px;margin:auto;margin-top:20px;" src="/front/images/upload-btn-bg.png" alt="" />
                         </div>
-                        <div class="fileinput-preview fileinput-exists thumbnail pic-1" style="width: 100px;height: 100px;"></div>
+                        <div class="fileinput-preview fileinput-exists thumbnail apply-complete-image-1" style="width: 100px;height: 100px;"></div>
                         <div style="height: 0;">
                                 <span class=" btn-file" style="padding: 0;">
                                     <span class="fileinput-new"></span>
@@ -163,9 +164,9 @@
                 <div class="fileinput-group">
                     <div class="fileinput fileinput-new" data-provides="fileinput" id="exampleInputUpload">
                         <div class="fileinput-new thumbnail" style="width: 100px;height: 100px;">
-                            <img id='picImg' style="width: 60px;height:60px;margin:auto;margin-top:20px;" src="/frontend/images/upload-btn-bg.png" alt="" />
+                            <img id='picImg' style="width: 60px;height:60px;margin:auto;margin-top:20px;" src="/front/images/upload-btn-bg.png" alt="" />
                         </div>
-                        <div class="fileinput-preview fileinput-exists thumbnail pic-2" style="width: 100px;height: 100px;"></div>
+                        <div class="fileinput-preview fileinput-exists thumbnail apply-complete-image-2" style="width: 100px;height: 100px;"></div>
                         <div>
                                 <span class="btn-file" style="padding: 0;">
                                     <span class="fileinput-new"></span>
@@ -181,9 +182,9 @@
                 <div class="fileinput-group">
                     <div class="fileinput fileinput-new" data-provides="fileinput" id="exampleInputUpload">
                         <div class="fileinput-new thumbnail" style="width: 100px;height: 100px;">
-                            <img id='picImg' style="width: 60px;height:60px;margin:auto;margin-top:20px;" src="/frontend/images/upload-btn-bg.png" alt="" />
+                            <img id='picImg' style="width: 60px;height:60px;margin:auto;margin-top:20px;" src="/front/images/upload-btn-bg.png" alt="" />
                         </div>
-                        <div class="fileinput-preview fileinput-exists thumbnail pic-3" style="width: 100px;height: 100px;"></div>
+                        <div class="fileinput-preview fileinput-exists thumbnail apply-complete-image-3" style="width: 100px;height: 100px;"></div>
                         <div>
                                <span class="btn-file" style="padding: 0;">
                                     <span class="fileinput-new"></span>
@@ -200,11 +201,47 @@
         </div>
         <div class="layui-form-item">
             <div class="layui-input-block">
-                <button class="qs-btn layui-btn-normal" id="submit" lay-submit lay-filter="complete-upload">确认
+                <button class="qs-btn layui-btn-normal" id="submit" lay-submit lay-filter="confirm-apply-complete">确认
                 </button>
                 <span cancel class="qs-btn  layui-btn-normal cancel">取消</span>
             </div>
         </div>
     </form>
+</div>
+<div class="layui-boxx" id="im-pop" style="display: none">
+    <div class="layui-layer-titlee" style="cursor: move;">
+        <div class="layui-unselect layim-chat-title">
+        </div>
+    </div>
+    <div id="layui-layim-chat" class="layui-layer-contentt">
+        <ul class="layui-unselect layim-chat-list">
+            <li class="layim-friend1008612 layim-chatlist-friend1008612 layim-this" layim-event="tabChat">
+                <img src="lib/css/res/touxiang.jpg">
+                <span>小闲</span>
+                <i class="layui-icon" layim-event="closeChat">ဇ</i>
+            </li>
+        </ul>
+        <div class="layim-chat-box layui-form">
+            <div class="layim-chat layim-chat-friend layui-show">
+                <div class="layim-chat-main">
+
+                </div>
+                <div class="layim-chat-footer">
+                    <div class="layim-chat-textarea">
+                        <textarea name="content"></textarea>
+                    </div>
+                    <div class="layim-chat-bottom">
+                        <div class="layim-chat-send">
+                            <span class="qs-btn opt-btn cancel">关闭</span>
+                            <span class="qs-btn opt-btn layim-send-btn" lay-submit="" lay-filter="send-message">发送</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <span class="layui-layer-setwin">
+        <a class="layui-layer-ico layui-layer-close layui-layer-close1" href="javascript:;"></a>
+    </span>
 </div>
 <div class="layui-carousel" id="carousel" style="display: none"></div>

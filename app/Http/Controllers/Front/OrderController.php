@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Front;
 
-use App\Models\Game;
+use \Exception;
 use App\Models\GameLevelingOrder;
 use App\Http\Controllers\Controller;
+
 
 /**
  * Class OrderController
@@ -22,102 +23,29 @@ class OrderController extends Controller
     }
 
     /**
-     * 接单方视图
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * 查看待接单详情
      */
-    public function take()
+    public function show()
     {
-        return view('front.order.take', [
-            'games' => Game::getAll(),
-        ]);
+
     }
 
     /**
-     * 获取接单方数据列表
-     * @return array
+     * 查看验收图片
+     * @param $tradeNO
      */
-    public function takeData()
+    public function applyCompleteImage($tradeNO)
     {
-        $orders = GameLevelingOrder::getOrderByCondition(request()->all(), 2)->paginate(50);
+        $order = GameLevelingOrder::getOrderByCondition(['trade_no' =>  $tradeNO])->with('applyComplete')->firstOrFail();
 
-        // 对获取数据进行处理后响应
-        $ordersArr = [];
-        foreach ($orders->items() as $key => $item) {
+        $this->authorize('view', $order);
 
-            $itemOrigin = $item->toArray();
-
-            // 保留需要的数据
-            $ordersArr[$key] = array_only($itemOrigin, [
-                'id',
-                'trade_no',
-                'status',
-                'game_name',
-                'region_name',
-                'server_name',
-                'title',
-                'game_account',
-                'game_password',
-                'game_role',
-                'amount',
-                'day',
-                'hours',
-                'security_deposit',
-                'efficiency_deposit',
-                'created_at',
-                'take_at',
-                'payer_phone',
-            ]);
-
-            // 写入状态描述
-            $ordersArr[$key]['status_describe'] = $item->getStatusDescribe();
-            // 隐藏部分密码
-            $ordersArr[$key]['game_password'] = str_replace(substr($ordersArr[$key]['game_password'], -4, 4), '****', $ordersArr[$key]['game_password']);
-            // 计算订单剩余代练时间
-            $ordersArr[$key]['remaining_time'] = $item->getRemainingTime();
-            // 计算订单获得金额 支付金额 手续费 利润 撤销发起人 仲裁发起人
-            $ordersArr[$key]['income_amount'] = $item->getIncomeAmount();
-            $ordersArr[$key]['expend_amount'] = $item->getExpendAmount();
-            $ordersArr[$key]['poundage'] = $item->getPoundage();;
-            $ordersArr[$key]['profit'] = $item->getProfit();
-            $ordersArr[$key]['consult_initiator'] = $item->getConsultInitiator();
-            $ordersArr[$key]['complain_initiator'] = $item->getComplainInitiator();
+        if (is_null($order->applyComplete)) {
+            return response()->ajaxFail('暂时没有图片');
         }
 
-        return [
-            'code' => 0,
-            'msg' => '',
-            'count' => $orders->total(),
-            'data' =>  $ordersArr,
-        ];
-    }
-
-    /**
-     * 接单人查看订单详情
-     * @param $tradeNO
-     *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function takeShow($tradeNO)
-    {
-        $order = GameLevelingOrder::getOrderByCondition(['trade_no' => $tradeNO], 2)->firstOrFail();
-
-        return view('front.order.take_detail', [
-            'order' => $order
-        ]);
-    }
-
-    public function send()
-    {
-        return view('front.order.send');
-    }
-
-    public function sendData()
-    {
-
-    }
-
-    public function sendShow()
-    {
-
+        return response()->ajaxSuccess('获取成功', view()->make('front.order.apply_complete_image', [
+            'image' => $order->applyComplete->image,
+        ])->render());
     }
 }

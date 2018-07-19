@@ -1,6 +1,7 @@
 <?php
 
 use GuzzleHttp\Client;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 /**
  * 生成订单号
@@ -16,8 +17,11 @@ function generateOrderNo()
 }
 
 /**
- * @param $seconds
+ * 将秒转成: (天\小时\分\秒) 形式
+ *
+ * @param      $seconds
  * @param bool $showSeconds
+ *
  * @return bool|string
  */
 function sec2Time($seconds, $showSeconds = false)
@@ -70,7 +74,7 @@ function sec2Time($seconds, $showSeconds = false)
 
 if (!function_exists('hasEmployees')) {
     /**
-     * 获取某个岗位员工
+     * 获取某个岗位有哪些员工
      * @param string $prefix
      * @return string
      */
@@ -176,5 +180,57 @@ if (!function_exists('myLog')) {
         $log = new \Monolog\Logger($fileName);
         $log->pushHandler(new \Monolog\Handler\StreamHandler(storage_path() . '/logs/' . $fileName . '-' . date('Y-m-d') .'.log'));
         $log->addInfo($fileName, $data);
+    }
+}
+if (!function_exists('base64ToImg')) {
+
+    /**
+     * 将base64图片存为图片到resources 指定目录
+     * @param $base64Str string
+     * @param $path string 指定的目录
+     * @return array
+     */
+    function base64ToImg($base64Str, $path)
+    {
+        if (preg_match('/^(data:\s*image\/(\w+);base64,)/', $base64Str, $result)) {
+            $imgDir = '/resources/' . $path . '/';
+            if (!is_dir(public_path($imgDir))) {
+                mkdir(public_path($imgDir), 0777);
+            }
+            $imageName = uniqid() . '.png';
+            $imgPath = $imgDir .  $imageName;
+            if (file_put_contents(public_path($imgPath), base64_decode(str_replace($result[1], '', $base64Str)))) {
+                return [
+                    'mime_type' => 'image/png',
+                    'name' => $imageName,
+                    'path' => $imgPath,
+                ];
+            }
+        }
+    }
+}
+
+if (!function_exists('export')) {
+    /**
+     * 导出数据
+     * @param $title
+     * @param $name
+     * @param $callback
+     */
+    function export($title, $name, $query, $callback)
+    {
+        $response = new StreamedResponse(function () use ($title, $name, $query, $callback){
+            $out = fopen('php://output', 'w');
+            fwrite($out, chr(0xEF).chr(0xBB).chr(0xBF)); // 添加 BOM
+            fputcsv($out, $title);
+
+            $callback($query, $out);
+
+            fclose($out);
+        },200, [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="' .  $name .   '.csv"',
+        ]);
+        $response->send();
     }
 }

@@ -5,8 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
+ * 用户资产
  * Class UserAssetFlow
- *
  * @package App\Models
  */
 class UserAssetFlow extends Model

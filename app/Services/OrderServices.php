@@ -175,13 +175,13 @@ class OrderServices
         try {
             // 如果存在保证金, 冻结接单方对应的保证金
             if (self::$order->security_deposit > 0) {
-                UserAssetServices::init(33, self::$user->id, self::$order->amount, self::$order->trade_no)->freeze();
+                UserAssetServices::init(33, self::$user->id, self::$order->amount, self::$order->trade_no)->frozen();
             }
             if (self::$order->efficiency_deposit > 0) {
-                UserAssetServices::init(34, self::$user->id, self::$order->amount, self::$order->trade_no)->freeze();
+                UserAssetServices::init(34, self::$user->id, self::$order->amount, self::$order->trade_no)->frozen();
             }
             // 冻结发单方对应订单金额
-            UserAssetServices::init(31, self::$order->user_id, self::$order->amount, self::$order->trade_no)->freeze();
+            UserAssetServices::init(31, self::$order->user_id, self::$order->amount, self::$order->trade_no)->frozen();
             // 保存接单人ID修改订单状态
             self::$order->status = 2;
             self::$order->take_user_id = self::$user->id;
@@ -318,15 +318,15 @@ class OrderServices
         DB::beginTransaction();
         try {
             // 发单方从冻结支出代练费用
-            UserAssetServices::init(61, self::$orde->user_id, self::$orde->amount, self::$order->trade_no)->expendFromFreeze();
+            UserAssetServices::init(61, self::$orde->user_id, self::$orde->amount, self::$order->trade_no)->expendFromFrozen();
             // 接单方收入代练费用
             UserAssetServices::init(61, self::$orde->take_user_id, self::$orde->amount, self::$order->trade_no)->income();
             // 如果存在保证金, 冻结接单方解冻保证金
             if (self::$order->security_deposit > 0) {
-                UserAssetServices::init(42, self::$user->take_user_id, self::$order->security_deposit, self::$order->trade_no)->unFreeze();
+                UserAssetServices::init(42, self::$user->take_user_id, self::$order->security_deposit, self::$order->trade_no)->unfrozen();
             }
             if (self::$order->efficiency_deposit > 0) {
-                UserAssetServices::init(43, self::$user->take_user_id, self::$order->efficiency_deposit, self::$order->trade_no)->unFreeze();
+                UserAssetServices::init(43, self::$user->take_user_id, self::$order->efficiency_deposit, self::$order->trade_no)->unfrozen();
             }
             // 修改订单状态
             self::$order->status = 11;
@@ -616,19 +616,19 @@ class OrderServices
             // 接单人 收入代练费
             $income = 0;
             // 发单人 解冻代练费
-            $unFreeze = 0;
+            $unfrozen = 0;
             // 接单 支出全保证金
             $securityDepositExpend = 0;
             // 发单人 收入安全保证金
             $securityDepositIncome = 0;
             // 接单人 解冻安全保证金
-            $securityDepositUnFreeze = 0;
+            $securityDepositUnfrozen = 0;
             // 接单人 支出效率保证金
             $efficiencyDepositExpend = 0;
             // 发单人 收入效率保证金
             $efficiencyDepositIncome= 0;
             // 接单人 解冻效率保证金
-            $efficiencyDepositUnFreeze = 0;
+            $efficiencyDepositUnfrozen = 0;
 
             if (self::$order->amount == self::$order->consult->amount) { // 协商 代练费全额支出
                 $expend = self::$order->amount;
@@ -636,9 +636,9 @@ class OrderServices
             } else if (self::$order->consult->amount > 0) { // 协商 代练费部分支出
                 $expend = self::$order->consult->amount;
                 $income = self::$order->consult->amount;
-                $unFreeze = bcsub(self::$order->amount, self::$order->consult->amount);
+                $unfrozen = bcsub(self::$order->amount, self::$order->consult->amount);
             } else if (self::$order->consult->amount == 0) { // 协商 代练费不用支出
-                $unFreeze = self::$order->amount;
+                $unfrozen = self::$order->amount;
             }
 
             if (self::$order->security_deposit == self::$order->consult->security_deposit) { // 协商 安全保证金全额支出
@@ -647,9 +647,9 @@ class OrderServices
             } else if (self::$order->consult->security_deposit > 0) { // 协商 安全保证金部分支出
                 $securityDepositIncome = self::$order->consult->security_deposit;
                 $securityDepositExpend= self::$order->consult->security_deposit;
-                $securityDepositUnFreeze = bcsub(self::$order->security_deposit, self::$order->consult->security_deposit);
+                $securityDepositUnfrozen = bcsub(self::$order->security_deposit, self::$order->consult->security_deposit);
             } else if (self::$order->consult->security_deposit == 0) { // 协商  安全保证金不用支出
-                $securityDepositUnFreeze = self::$order->security_deposit;
+                $securityDepositUnfrozen = self::$order->security_deposit;
             }
 
             if (self::$order->efficiency_deposit == self::$order->consult->efficiency_deposit) { // 协商 效率保证金全额支出
@@ -658,40 +658,40 @@ class OrderServices
             } else if (self::$order->consult->efficiency_deposit > 0) { // 协商 效率保证金部分支出
                 $efficiencyDepositIncome = self::$order->consult->efficiency_deposit;
                 $efficiencyDepositExpend= self::$order->consult->efficiency_deposit;
-                $efficiencyDepositUnFreeze = bcsub(self::$order->efficiency_deposit, self::$order->consult->efficiency_deposit);
+                $efficiencyDepositUnfrozen = bcsub(self::$order->efficiency_deposit, self::$order->consult->efficiency_deposit);
             } else if (self::$order->consult->efficiency_deposit == 0) { // 协商  效率保证金不用支出
-                $efficiencyDepositUnFreeze = self::$order->efficiency_deposit;
+                $efficiencyDepositUnfrozen = self::$order->efficiency_deposit;
             }
 
             // 代练费
             if ($expend > 0) {
-                UserAssetServices::init(61, self::$order->user_id, $expend, self::$order->trade_no)->expendFromFreeze();
+                UserAssetServices::init(61, self::$order->user_id, $expend, self::$order->trade_no)->expendFromFrozen();
             }
             if ($income > 0) {
                 UserAssetServices::init(51, self::$order->take_user_id, $income, self::$order->trade_no)->income();
             }
-            if ($unFreeze > 0) {
-                UserAssetServices::init(41, self::$order->user_id, $unFreeze, self::$order->trade_no)->unFreeze();
+            if ($unfrozen > 0) {
+                UserAssetServices::init(41, self::$order->user_id, $unfrozen, self::$order->trade_no)->unfrozen();
             }
             // 效率保证金
             if ($efficiencyDepositExpend > 0) {
-                UserAssetServices::init(62, self::$order->take_user_id, $efficiencyDepositExpend, self::$order->trade_no)->expendFromFreeze();
+                UserAssetServices::init(62, self::$order->take_user_id, $efficiencyDepositExpend, self::$order->trade_no)->expendFromFrozen();
             }
             if ($efficiencyDepositIncome > 0) {
                 UserAssetServices::init(52, self::$order->user_id, $efficiencyDepositIncome, self::$order->trade_no)->income();
             }
-            if ($efficiencyDepositUnFreeze > 0) {
-                UserAssetServices::init(42, self::$order->take_user_id, $efficiencyDepositUnFreeze, self::$order->trade_no)->unFreeze();
+            if ($efficiencyDepositUnfrozen > 0) {
+                UserAssetServices::init(42, self::$order->take_user_id, $efficiencyDepositUnfrozen, self::$order->trade_no)->unfrozen();
             }
             // 安全保证金
             if ($securityDepositExpend > 0) {
-                UserAssetServices::init(63, self::$order->take_user_id, $securityDepositExpend, self::$order->trade_no)->expendFromFreeze();
+                UserAssetServices::init(63, self::$order->take_user_id, $securityDepositExpend, self::$order->trade_no)->expendFromFrozen();
             }
             if ($securityDepositIncome > 0) {
                 UserAssetServices::init(53, self::$order->user_id, $securityDepositExpend, self::$order->trade_no)->income();
             }
-            if ($securityDepositUnFreeze > 0) {
-                UserAssetServices::init(43, self::$order->take_user_id, $securityDepositExpend, self::$order->trade_no)->unFreeze();
+            if ($securityDepositUnfrozen > 0) {
+                UserAssetServices::init(43, self::$order->take_user_id, $securityDepositExpend, self::$order->trade_no)->unfrozen();
             }
             // 修改订单状态
             self::$order->status = 8;
@@ -835,19 +835,19 @@ class OrderServices
             // 接单人 收入代练费
             $income = 0;
             // 发单人 解冻代练费
-            $unFreeze = 0;
+            $unfrozen = 0;
             // 接单 支出全保证金
             $securityDepositExpend = 0;
             // 发单人 收入安全保证金
             $securityDepositIncome = 0;
             // 接单人 解冻安全保证金
-            $securityDepositUnFreeze = 0;
+            $securityDepositUnfrozen = 0;
             // 接单人 支出效率保证金
             $efficiencyDepositExpend = 0;
             // 发单人 收入效率保证金
             $efficiencyDepositIncome= 0;
             // 接单人 解冻效率保证金
-            $efficiencyDepositUnFreeze = 0;
+            $efficiencyDepositUnfrozen = 0;
 
             if (self::$order->amount == $inputAmount) { // 仲裁 代练费全额支出
                 $expend = self::$order->amount;
@@ -855,9 +855,9 @@ class OrderServices
             } else if ($inputAmount > 0) { // 仲裁 代练费部分支出
                 $expend = $inputAmount;
                 $income = $inputAmount;
-                $unFreeze = bcsub(self::$order->amount, $inputAmount);
+                $unfrozen = bcsub(self::$order->amount, $inputAmount);
             } else if ($inputAmount == 0) { // 仲裁 代练费不用支出
-                $unFreeze = $inputAmount;
+                $unfrozen = $inputAmount;
             }
 
             if (self::$order->security_deposit == $inputSecurityDeposit) { // 协商 安全保证金全额支出
@@ -866,9 +866,9 @@ class OrderServices
             } else if ($inputSecurityDeposit > 0) { // 协商 安全保证金部分支出
                 $securityDepositIncome = $inputSecurityDeposit;
                 $securityDepositExpend= $inputSecurityDeposit;
-                $securityDepositUnFreeze = bcsub(self::$order->security_deposit, $inputSecurityDeposit);
+                $securityDepositUnfrozen = bcsub(self::$order->security_deposit, $inputSecurityDeposit);
             } else if ($inputSecurityDeposit == 0) { // 协商  安全保证金不用支出
-                $securityDepositUnFreeze = self::$order->security_deposit;
+                $securityDepositUnfrozen = self::$order->security_deposit;
             }
 
             if (self::$order->efficiency_deposit == $inputEfficiencyDeposit) { // 协商 效率保证金全额支出
@@ -877,40 +877,40 @@ class OrderServices
             } else if ($inputEfficiencyDeposit > 0) { // 协商 效率保证金部分支出
                 $efficiencyDepositIncome = $inputEfficiencyDeposit;
                 $efficiencyDepositExpend= $inputEfficiencyDeposit;
-                $efficiencyDepositUnFreeze = bcsub(self::$order->efficiency_deposit, $inputEfficiencyDeposit);
+                $efficiencyDepositUnfrozen = bcsub(self::$order->efficiency_deposit, $inputEfficiencyDeposit);
             } else if ($inputEfficiencyDeposit == 0) { // 协商  效率保证金不用支出
-                $efficiencyDepositUnFreeze = self::$order->efficiency_deposit;
+                $efficiencyDepositUnfrozen = self::$order->efficiency_deposit;
             }
 
             // 代练费
             if ($expend > 0) {
-                UserAssetServices::init(61, self::$order->user_id, $expend, self::$order->trade_no)->expendFromFreeze();
+                UserAssetServices::init(61, self::$order->user_id, $expend, self::$order->trade_no)->expendFromFrozen();
             }
             if ($income > 0) {
                 UserAssetServices::init(51, self::$order->take_user_id, $income, self::$order->trade_no)->income();
             }
-            if ($unFreeze > 0) {
-                UserAssetServices::init(41, self::$order->user_id, $unFreeze, self::$order->trade_no)->unFreeze();
+            if ($unfrozen > 0) {
+                UserAssetServices::init(41, self::$order->user_id, $unfrozen, self::$order->trade_no)->unfrozen();
             }
             // 效率保证金
             if ($efficiencyDepositExpend > 0) {
-                UserAssetServices::init(62, self::$order->take_user_id, $efficiencyDepositExpend, self::$order->trade_no)->expendFromFreeze();
+                UserAssetServices::init(62, self::$order->take_user_id, $efficiencyDepositExpend, self::$order->trade_no)->expendFromFrozen();
             }
             if ($efficiencyDepositIncome > 0) {
                 UserAssetServices::init(52, self::$order->user_id, $efficiencyDepositIncome, self::$order->trade_no)->income();
             }
-            if ($efficiencyDepositUnFreeze > 0) {
-                UserAssetServices::init(42, self::$order->take_user_id, $efficiencyDepositUnFreeze, self::$order->trade_no)->unFreeze();
+            if ($efficiencyDepositUnfrozen > 0) {
+                UserAssetServices::init(42, self::$order->take_user_id, $efficiencyDepositUnfrozen, self::$order->trade_no)->unfrozen();
             }
             // 安全保证金
             if ($securityDepositExpend > 0) {
-                UserAssetServices::init(63, self::$order->take_user_id, $securityDepositExpend, self::$order->trade_no)->expendFromFreeze();
+                UserAssetServices::init(63, self::$order->take_user_id, $securityDepositExpend, self::$order->trade_no)->expendFromFrozen();
             }
             if ($securityDepositIncome > 0) {
                 UserAssetServices::init(53, self::$order->user_id, $securityDepositExpend, self::$order->trade_no)->income();
             }
-            if ($securityDepositUnFreeze > 0) {
-                UserAssetServices::init(43, self::$order->take_user_id, $securityDepositExpend, self::$order->trade_no)->unFreeze();
+            if ($securityDepositUnfrozen > 0) {
+                UserAssetServices::init(43, self::$order->take_user_id, $securityDepositExpend, self::$order->trade_no)->unfrozen();
             }
             // 修改订单状态
             self::$order->status = 8;

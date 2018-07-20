@@ -68,16 +68,6 @@ class GameLevelingOrder extends Model
     ];
 
     /**
-     * 按订单号查询订单信息
-     * @param $tradeNO
-     * @return mixed
-     */
-    public static function getOrderBy($tradeNO)
-    {
-        return self::where('trade_no', $tradeNO)->with(['complain', 'consult'])->first();
-    }
-
-    /**
      * 根据传入的条件获取订单
      * @param  integer $who 1 发单方 2 接单方 3 不限定
      * @param  array $condition 传入的过滤条件

@@ -191,7 +191,7 @@ class OrderOperationController extends Controller
 
         // 拆分安全与效率保证金
         if ($deposit > 0) {
-            $order = GameLevelingOrder::getOrderBy($tradeNO);
+            $order = GameLevelingOrder::getOrderByCondition(['trade_no' => $tradeNO])->first();
             $securityDeposit = $order->security_deposit;
             $efficiencyDeposit = bcsub($deposit, $order->efficiency_deposit);
         }

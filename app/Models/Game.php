@@ -4,6 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * 游戏
+ * Class Game
+ *
+ * @package App\Models
+ */
 class Game extends Model
 {
     /**

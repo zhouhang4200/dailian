@@ -152,7 +152,7 @@ class UserAssetServices
     /**
      * 冻结
      */
-    public function freeze()
+    public function frozen()
     {
         DB::beginTransaction();
         try {
@@ -177,7 +177,7 @@ class UserAssetServices
     /**
      * 解冻
      */
-    public function unFreeze()
+    public function unfrozen()
     {
         DB::beginTransaction();
         try {
@@ -188,9 +188,9 @@ class UserAssetServices
             }
 
             // 检测用户相关冻结订单号总金额与需要解冻金额是否相符
-            $freeze = UserAssetFlow::where('user_id', self::$userId)
+            $frozen = UserAssetFlow::where('user_id', self::$userId)
                 ->where('trade_no', self::$tradeNO)->where('type', 3)->sum('amount');
-            if ($freeze < self::$amount) {
+            if ($frozen < self::$amount) {
                 throw new Exception('解冻金额大于冻结金额');
             }
 
@@ -238,14 +238,14 @@ class UserAssetServices
     /**
      * 从冻结支出
      */
-    public function expendFromFreeze()
+    public function expendFromFrozen()
     {
         DB::beginTransaction();
         try {
             $userAsset = UserAsset::where('user_id', self::$userId)->lockForUpdate()->first();
 
             // 检测冻结余额是否够本次支出
-            if ($userAsset->freeze < self::$amount) {
+            if ($userAsset->frozen < self::$amount) {
                 throw new Exception('冻结余额不够支出');
             }
 

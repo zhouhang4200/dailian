@@ -217,7 +217,7 @@ $finance = ['frontend.finance.asset', 'frontend.finance.amount-flow', 'frontend.
                     <li data-name="home"
                         class="layui-nav-item @if(in_array(Route::currentRouteName(), $financeRoute)) layui-nav-itemed @endif">
                         <a href="javascript:;" lay-tips="账号" lay-direction="2">
-                            <i class="layui-icon iconfont  icon-group-o"></i>
+                            <i class="layui-icon iconfont  icon-finance-o"></i>
                             <cite>财务管理</cite>
                         </a>
                         <dl class="layui-nav-child">

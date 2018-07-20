@@ -4,6 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * 余额提现
+ * Class BalanceWithdraw
+ *
+ * @package App\Models
+ */
 class BalanceWithdraw extends Model
 {
     public $fillable = [

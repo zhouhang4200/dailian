@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Back;
 
 use DB;
+use Exception;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\BalanceWithdraw;
 use App\Models\UserAssetFlow;
@@ -12,6 +13,10 @@ use App\Http\Controllers\Controller;
 
 class BalanceWithdrawController extends Controller
 {
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function index(Request $request)
     {
         $startDate = $request->startDate;

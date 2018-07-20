@@ -190,6 +190,7 @@ class UserAssetServices
             // 检测用户相关冻结订单号总金额与需要解冻金额是否相符
             $frozen = UserAssetFlow::where('user_id', self::$userId)
                 ->where('trade_no', self::$tradeNO)->where('type', 3)->sum('amount');
+
             if ($frozen < self::$amount) {
                 throw new Exception('解冻金额大于冻结金额');
             }

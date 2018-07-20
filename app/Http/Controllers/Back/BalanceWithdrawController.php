@@ -16,15 +16,15 @@ class BalanceWithdrawController extends Controller
     {
         $startDate = $request->startDate;
         $endDate = $request->endDate;
-        $type = $request->type;
         $status = $request->status;
         $tradeNo = $request->tradeNo;
         $userId = $request->userId;
         $remark = $request->remark;
 
-        $filters = compact('startDate', 'endDate', 'type', 'status', 'tradeNo', 'userId', 'remark');
-
-        $balanceWithdraws = BalanceWithdraw::filter($filters)->with('userAssetFlow')->paginate(20);
+        $filters = compact('startDate', 'endDate', 'status', 'tradeNo', 'userId', 'remark');
+        $balanceWithdraws = BalanceWithdraw::filter($filters)->with(['userAssetFlows' =>  function ($query) {
+            $query->latest('id')->first();
+        }])->paginate(20);
 
         if ($request->export == 1) {
             $this->export($filters);
@@ -47,8 +47,8 @@ class BalanceWithdrawController extends Controller
             $balanceWithdraw->save();
 
             $userAssetFlow = UserAssetFlow::where('trade_no', $balanceWithdraw->trade_no)->first();
-//            dd($userAssetFlow->sub_type, $userAssetFlow->user_id, $userAssetFlow->amount, $userAssetFlow->trade_no);
-            UserAssetServices::init($userAssetFlow->sub_type, $userAssetFlow->user_id, $userAssetFlow->amount, $userAssetFlow->trade_no)->expendFromFreeze();
+
+            UserAssetServices::init(35, $userAssetFlow->user_id, $userAssetFlow->amount, $userAssetFlow->trade_no)->expendFromFrozen();
         }
         catch (Exception $e) {
             DB::rollback();
@@ -74,7 +74,7 @@ class BalanceWithdrawController extends Controller
 
             $userAssetFlow = UserAssetFlow::where('trade_no', $balanceWithdraw->trade_no)->first();
 
-            UserAssetServices::init($userAssetFlow->sub_type, $userAssetFlow->user_id, $userAssetFlow->amount, $userAssetFlow->trade_no)->unFreeze();
+            UserAssetServices::init(45, $userAssetFlow->user_id, $userAssetFlow->amount, $userAssetFlow->trade_no)->unfrozen();
         } catch (Exception $e) {
             DB::rollback();
             return response()->json(['status' => 0, 'message' => '失败']);

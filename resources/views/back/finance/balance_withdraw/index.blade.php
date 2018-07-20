@@ -26,14 +26,6 @@
                                     </div>
                                 </div>
                                 <div class="form-group col-md-1">
-                                    <select class="form-control" name="type">
-                                        <option value="">所有类型</option>
-                                        @foreach (config('user_asset.type') as $key => $v)
-                                            <option value="{{ $key }}" {{ $key == $type ? 'selected' : '' }}>{{ $key }}. {{ $v }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="form-group col-md-1">
                                     <select class="form-control" name="status">
                                         <option value="">所有状态</option>
                                         @foreach (config('balance_withdraw.status') as $key => $value)
@@ -48,7 +40,7 @@
                                     <input type="text" class="form-control" placeholder="用户ID" name="userId" value="{{ $userId }}">
                                 </div>
                                 <div class="col-md-2">
-                                    <input type="text" class="form-control" placeholder="管理备注" name="remark" value="{{ $remark }}">
+                                    <input type="text" class="form-control" placeholder="拒绝原因" name="remark" value="{{ $remark }}">
                                 </div>
                                 <div class="col-md-2">
                                     <button class="btn btn-primary" type="submit">搜索</button>
@@ -68,9 +60,8 @@
                                 <th>开户行</th>
                                 <th>卡号</th>
                                 <th>提现金额</th>
-                                <th>类型</th>
                                 <th>状态</th>
-                                <th>管理员备注</th>
+                                <th>拒绝原因</th>
                                 <th>创建时间</th>
                                 <th>更新时间</th>
                                 <th>操作</th>
@@ -81,15 +72,14 @@
                                 <tr>
                                     <td>{{ $balanceWithdraw->trade_no }}</td>
                                     <td>{{ $balanceWithdraw->user_id }}</td>
-                                    <td>{{ $balanceWithdraw->userAssetFlow->balance }}</td>
-                                    <td>{{ $balanceWithdraw->userAssetFlow->frozen }}</td>
+                                    <td>{{ $balanceWithdraw->userAssetFlows[0]->balance }}</td>
+                                    <td>{{ $balanceWithdraw->userAssetFlows[0]->frozen }}</td>
                                     <td>{{ $balanceWithdraw->real_name ?? '' }}</td>
                                     <td>{{ $balanceWithdraw->bank_name ?? '' }}</td>
                                     <td>{{ $balanceWithdraw->bank_card ?? '' }}</td>
                                     <td>{{ $balanceWithdraw->amount+0 }}</td>
-                                    <td>{{ config('user_asset.type')[$balanceWithdraw->userAssetFlow->type] ?? '' }}</td>
                                     <td>{{ config('balance_withdraw.status')[$balanceWithdraw->status] }}</td>
-                                    <td>{{ $balanceWithdraw->userAssetFlow->remark ?? '--' }}</td>
+                                    <td>{{ $balanceWithdraw->remark ?? '--' }}</td>
                                     <td>{{ $balanceWithdraw->created_at }}</td>
                                     <td>{{ $balanceWithdraw->updated_at }}</td>
                                     <td>
@@ -107,7 +97,6 @@
                         </table>
                         {{ $balanceWithdraws->appends(compact(
                             'userId',
-                            'type',
                             'status',
                             'tradeNo',
                             'startDate',

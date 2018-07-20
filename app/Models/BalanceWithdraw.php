@@ -26,9 +26,9 @@ class BalanceWithdraw extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function userAssetFlow()
+    public function userAssetFlows()
     {
-        return $this->belongsTo(UserAssetFlow::class, 'trade_no', 'trade_no');
+        return $this->hasMany(UserAssetFlow::class, 'trade_no', 'trade_no');
     }
 
     /**
@@ -38,12 +38,6 @@ class BalanceWithdraw extends Model
      */
     public static function scopeFilter($query, $filters = [])
     {
-        if (isset($filters['type']) && ! empty($filters['type'])) {
-            $query->whereHas('userAssetFlow', function ($query) use ($filters) {
-                $query->where('type', $filters['type']);
-            });
-        }
-
         if (isset($filters['status']) && ! empty($filters['status'])) {
             $query->where('status', $filters['status']);
         }
@@ -57,9 +51,7 @@ class BalanceWithdraw extends Model
         }
 
         if (isset($filters['remark']) && ! empty($filters['remark'])) {
-            $query->whereHas('userAssetFlow', function ($query) use ($filters) {
-                $query->where('remark', $filters['remark']);
-            });
+            $query->where('remark', $filters['remark']);
         }
 
         if (isset($filters['startDate']) && ! empty($filters['startDate'])) {

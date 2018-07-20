@@ -58,7 +58,7 @@ $finance = ['frontend.finance.asset', 'frontend.finance.amount-flow', 'frontend.
         'frontend.statistic.order', 'frontend.statistic.sms'
 ];
 ?>
-        <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">

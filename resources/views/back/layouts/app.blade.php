@@ -19,7 +19,6 @@
     <link rel="stylesheet" type="text/css" href="/vendor/layui/css/layui.css">
     <link rel="stylesheet" type="text/css" href="/back/css/globale.css">
     <link rel="stylesheet" type="text/css" href="/back/css/layui-rewrit.css">
-    <link rel="stylesheet" href="/front/lib/css/new.css">
     <link id="layuicss-layer" rel="stylesheet" href="/front/lib/js/layui/css/modules/layer/default/layer.css" media="all">
     @yield('css')
     <!--[if lt IE 9]>
@@ -52,14 +51,17 @@
                         <li class="dropdown profile-dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 {{--<img src="/img/samples/scarlet-159.png" alt=""/>--}}
-                                <span class="hidden-xs">管理员</span> <b class="caret"></b>
+                                <span class="hidden-xs">{{ auth()->guard('admin')->user()->name }}</span> <b class="caret"></b>
                             </a>
                             <ul class="dropdown-menu">
                                 <li><a href="#"><i class="fa fa-cog"></i>修改密码</a></li>
                                 <li>
-                                    <a href="javascript:void(0)" onclick="logout()">
+                                    <a href="#" onclick="event.preventDefault();" id="logout">
                                         <i class="fa fa-power-off"></i> 注销登录
                                     </a>
+                                    <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
+                                        {{ csrf_field() }}
+                                    </form>
                                 </li>
                             </ul>
                         </li>
@@ -114,19 +116,20 @@
             window.location.href=str;
         }, 900);
     }
-    function logout() {
-        layui.use(['form', 'layedit', 'laydate'], function(){
-            var form = layui.form
-                ,layer = layui.layer;
-            layer.confirm('确定退出吗?', {icon: 3, title:'提示'}, function(index){
-                $.post('/admin/logout', {}, function(str){
-                    window.location.href='/admin/login';
-                });
-                layer.close(index);
-            });
 
+    layui.use(['form', 'layedit', 'laydate'], function(){
+        var form = layui.form
+            ,layer = layui.layer;
+
+        $('#logout').click(function () {
+            layer.confirm('确定退出吗?', {icon: 3, title:'提示'}, function(index){
+                document.getElementById('logout-form').submit();
+                layer.close(index);
+                return true;
+            });
         });
-    }
+    });
+
 </script>
 @yield('js')
 </body>

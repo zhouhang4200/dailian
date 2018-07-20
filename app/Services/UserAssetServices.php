@@ -90,9 +90,15 @@ class UserAssetServices
 
     /**
      * 充值
+     * @return bool
+     * @throws Exception
      */
     public function recharge()
     {
+        if (self::$type != 1) {
+            throw new Exception('请检查传入的子类型是否正确');
+        }
+
         DB::beginTransaction();
         try {
             $userAsset = UserAsset::where('user_id', self::$userId)->lockForUpdate()->first();
@@ -114,6 +120,10 @@ class UserAssetServices
      */
     public function withdraw()
     {
+        if (self::$type != 3) {
+            throw new Exception('请检查传入的子类型是否正确');
+        }
+
         DB::beginTransaction();
         try {
             $userAsset = UserAsset::where('user_id', self::$userId)->lockForUpdate()->first();
@@ -151,9 +161,14 @@ class UserAssetServices
 
     /**
      * 冻结
+     * @return bool
+     * @throws Exception
      */
     public function frozen()
     {
+        if (self::$type != 3) {
+            throw new Exception('请检查传入的子类型是否正确');
+        }
         DB::beginTransaction();
         try {
             $userAsset = UserAsset::where('user_id', self::$userId)->lockForUpdate()->first();
@@ -176,9 +191,15 @@ class UserAssetServices
 
     /**
      * 解冻
+     * @return bool
+     * @throws Exception
      */
     public function unfrozen()
     {
+        if (self::$type != 4) {
+            throw new Exception('请检查传入的子类型是否正确');
+        }
+
         DB::beginTransaction();
         try {
             $userAsset = UserAsset::where('user_id', self::$userId)->lockForUpdate()->first();
@@ -189,8 +210,13 @@ class UserAssetServices
 
             // 检测用户相关冻结订单号总金额与需要解冻金额是否相符
             $frozen = UserAssetFlow::where('user_id', self::$userId)
-                ->where('trade_no', self::$tradeNO)->where('type', 3)->sum('amount');
-            if ($frozen < self::$amount) {
+                ->where('trade_no', self::$tradeNO)->where('type', 3)->first();
+
+            if (is_null($frozen)) {
+                throw new Exception('不存在相关的冻结记录');
+            }
+
+            if ($frozen->amount < self::$amount) {
                 throw new Exception('解冻金额大于冻结金额');
             }
 
@@ -202,7 +228,7 @@ class UserAssetServices
             $userAsset->frozen = bcsub($userAsset->frozen, self::$amount);
             $userAsset->save();
         } catch (Exception $exception) {
-            throw new Exception($exception->getMessage());
+            throw new Exception($exception->getMessage() . $exception->getLine());
         }
         DB::commit();
         return true;
@@ -210,9 +236,15 @@ class UserAssetServices
 
     /**
      * 从余额支出
+     * @return bool
+     * @throws Exception
      */
     public function expendFromBalance()
     {
+        if (self::$type != 6) {
+            throw new Exception('请检查传入的子类型是否正确');
+        }
+
         DB::beginTransaction();
         try {
             $userAsset = UserAsset::where('user_id', self::$userId)->lockForUpdate()->first();
@@ -236,9 +268,15 @@ class UserAssetServices
 
     /**
      * 从冻结支出
+     * @return bool
+     * @throws Exception
      */
     public function expendFromFrozen()
     {
+        if (self::$type != 6) {
+            throw new Exception('请检查传入的子类型是否正确');
+        }
+
         DB::beginTransaction();
         try {
             $userAsset = UserAsset::where('user_id', self::$userId)->lockForUpdate()->first();
@@ -262,9 +300,14 @@ class UserAssetServices
 
     /**
      * 收入
+     * @return bool
+     * @throws Exception
      */
     public function income()
     {
+        if (self::$type != 5) {
+            throw new Exception('请检查传入的子类型是否正确');
+        }
         DB::beginTransaction();
         try {
             $userAsset = UserAsset::where('user_id', self::$userId)->lockForUpdate()->first();

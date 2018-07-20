@@ -216,6 +216,7 @@ class UserAssetServices
         DB::beginTransaction();
         try {
             $userAsset = UserAsset::where('user_id', self::$userId)->lockForUpdate()->first();
+
             // 检测余额是否够本次支出
             if ($userAsset->balance < self::$amount) {
                 throw new Exception('您的余额不够');
@@ -242,6 +243,7 @@ class UserAssetServices
         DB::beginTransaction();
         try {
             $userAsset = UserAsset::where('user_id', self::$userId)->lockForUpdate()->first();
+
             // 检测冻结余额是否够本次支出
             if ($userAsset->freeze < self::$amount) {
                 throw new Exception('冻结余额不够支出');

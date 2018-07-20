@@ -116,11 +116,6 @@
         $('#time-start').datepicker();
         $('#time-end').datepicker();
 
-        $('#export').click(function () {
-            var url = "{{ route('balance-withdraw') }}?export=1&" + $('#search-flow').serialize();
-            window.location.href = url;
-        });
-
         layui.use(['layer'], function () {
 
             // 拒绝
@@ -165,6 +160,8 @@
                 });
             });
         });
-
+        $('#export').click(function () {
+            window.location.href = "{{ route('balance-withdraw.export') }}?" + $('#search-flow').serialize();
+        });
     </script>
 @endsection

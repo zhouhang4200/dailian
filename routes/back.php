@@ -29,5 +29,6 @@ Route::prefix('finance')->group(function () {
             Route::get('/', 'BalanceWithdrawController@index')->name('balance-withdraw');
             Route::post('agree', 'BalanceWithdrawController@agree')->name('balance-withdraw.agree'); // 同意
             Route::post('refuse', 'BalanceWithdrawController@refuse')->name('balance-withdraw.refuse'); // 拒绝
+            Route::get('export', 'BalanceWithdrawController@export')->name('balance-withdraw.export'); // 导出
     });
 });

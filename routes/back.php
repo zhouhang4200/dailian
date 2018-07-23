@@ -26,9 +26,9 @@ Route::namespace('Auth')->group(function (){
 Route::prefix('finance')->group(function () {
     // 余额提现管理
         Route::prefix('balance-withdraw')->group(function () {
-            Route::get('/', 'BalanceWithdrawController@index')->name('balance-withdraw');
-            Route::post('agree', 'BalanceWithdrawController@agree')->name('balance-withdraw.agree'); // 同意
-            Route::post('refuse', 'BalanceWithdrawController@refuse')->name('balance-withdraw.refuse'); // 拒绝
-            Route::get('export', 'BalanceWithdrawController@export')->name('balance-withdraw.export'); // 导出
+            Route::get('/', 'BalanceWithdrawController@index')->name('admin.balance-withdraw');
+            Route::post('agree', 'BalanceWithdrawController@agree')->name('admin.balance-withdraw.agree'); // 同意
+            Route::post('refuse', 'BalanceWithdrawController@refuse')->name('admin.balance-withdraw.refuse'); // 拒绝
+            Route::get('export', 'BalanceWithdrawController@export')->name('admin.balance-withdraw.export'); // 导出
     });
 });

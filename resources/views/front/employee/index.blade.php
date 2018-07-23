@@ -24,7 +24,7 @@
             <form class="layui-form" method="" action="" >
                 <div class="layui-inline" style="float:left">
                     <div class="layui-form-item">
-                        <label class="layui-form-label" style="width: 60px; padding-left: 0px;">员工姓名</label>
+                        <label class="layui-form-label" style="width: 80px; padding-left: 0px;">员工姓名：</label>
                         <div class="layui-input-inline">
                             <select name="userId" lay-verify="" lay-search="">
                                 <option value="">请输入</option>
@@ -34,11 +34,11 @@
                                 @endforelse
                             </select>
                         </div>
-                        <label class="layui-form-label" style="width: 45px; padding-left: 0px;">账号</label>
+                        <label class="layui-form-label" style="width: 45px; padding-left: 0px;">账号：</label>
                         <div class="layui-input-inline">
                             <input type="text" class="layui-input" value="{{ $name ?? '' }}" name="name" placeholder="请输入">
                         </div>
-                        <label class="layui-form-label" style="width: 45px; padding-left: 0px;">岗位</label>
+                        <label class="layui-form-label" style="width: 45px; padding-left: 0px;">岗位：</label>
                         <div class="layui-input-inline">
                             <select name="station" lay-filter="">
                                 <option value="">请输入</option>

@@ -22,6 +22,15 @@
         .layui-form-checked[lay-skin="primary"] span {
             background-color: #fff;
         }
+        .layui-form-checked[lay-skin=primary] i {
+            border-color: #198cff;
+            background-color: #198cff;
+            color: #fff;
+        }
+        .layui-form-checkbox[lay-skin=primary]:hover i {
+            border-color: #198cff;
+            color: #fff;
+        }
     </style>
 @endsection
 

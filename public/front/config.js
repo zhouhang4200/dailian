@@ -65,8 +65,8 @@ layui.define(['laytpl', 'layer', 'element', 'util'], function(exports){
         ,alias: 'purple-red' //紫红
       },{
         main: '#344058'
-        ,logo: '#1E9FFF'
-        ,selected: '#1E9FFF'
+        ,logo: '#198cff'
+        ,selected: '#198cff'
         ,alias: 'ocean' //海洋
       },{
         main: '#3A3D49'

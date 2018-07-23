@@ -60,7 +60,7 @@ class OrderSendController extends Controller
                 'efficiency_deposit',
                 'created_at',
                 'take_at',
-                'payer_phone',
+                'player_phone',
             ]);
 
             // 写入状态描述

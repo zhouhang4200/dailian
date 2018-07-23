@@ -11,24 +11,77 @@ $currentOneLevelMenu = explode('.', Route::currentRouteName())[0];
                     <li>
                         <a href="{{ url('admin') }}">
                             <i class="fa fa-dashboard"></i>
-                            <span>后台权限</span>
+                            <span>首页</span>
                         </a>
                     </li>
 
                     <li @if(in_array($currentRouteName, [
-                        'order.platform.index',
+                        'admin.order',
+                        'admin.order.show',
+                        'admin.order.log',
                         ])) class="open active" @endif>
                         <a href="#" class="dropdown-toggle">
                             <i class="fa fa-shopping-cart"></i>
-                            <span>订单管理</span>
+                            <span>订单</span>
                             <i class="fa fa-chevron-circle-right drop-icon"></i>
                         </a>
                         <ul class="submenu">
-                                <li>
-                                    <a href="" @if($currentRouteName == 'order.platform.index') class="active" @endif>
-                                        权限列表
-                                    </a>
-                                </li>
+                            <li>
+                                <a href="{{ route('admin.order') }}" @if(in_array($currentRouteName, [
+                                    'admin.order',
+                                    'admin.order.show',
+                                    'admin.order.log',
+                                ])) class="active" @endif>
+                                    订单管理
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+
+                    <li @if(in_array($currentRouteName, [
+                        'admin.game',
+                        'admin.region',
+                        'admin.server',
+                        ])) class="open active" @endif>
+                        <a href="#" class="dropdown-toggle">
+                            <i class="fa fa-shopping-cart"></i>
+                            <span>游戏/区/服配置</span>
+                            <i class="fa fa-chevron-circle-right drop-icon"></i>
+                        </a>
+                        <ul class="submenu">
+                            <li>
+                                <a href="{{ route('admin.game') }}" @if($currentRouteName == 'admin.game') class="active" @endif>
+                                    游戏管理
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('admin.region') }}" @if($currentRouteName == 'admin.region') class="active" @endif>
+                                    游戏区管理
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('admin.server') }}" @if($currentRouteName == 'admin.server') class="active" @endif>
+                                    游戏服管理
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li @if(in_array($currentRouteName, [
+                        'admin.balance-withdraw',
+                        ])) class="open active" @endif>
+                        <a href="#" class="dropdown-toggle">
+                            <i class="fa fa-shopping-cart"></i>
+                            <span>财务</span>
+                            <i class="fa fa-chevron-circle-right drop-icon"></i>
+                        </a>
+                        <ul class="submenu">
+                            <li>
+                                <a href="{{ route('admin.balance-withdraw') }}" @if($currentRouteName == 'admin.balance-withdraw') class="active" @endif>
+                                    提现管理
+                                </a>
+                            </li>
                         </ul>
                     </li>
                 </ul>

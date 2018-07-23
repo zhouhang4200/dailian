@@ -79,7 +79,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Game Leveling
+                    丸子代练
                 </div>
             </div>
         </div>

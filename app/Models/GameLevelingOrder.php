@@ -51,7 +51,7 @@ class GameLevelingOrder extends Model
      * 订单状态说明
      * @var array
      */
-    public $statusDescribe = [
+    public static $statusDescribe = [
         1 => '未接单',
         2 => '代练中',
         3 => '待验收',
@@ -118,9 +118,9 @@ class GameLevelingOrder extends Model
      * 获取订单状态
      * @return mixed
      */
-    public  function getStatusDescribe()
+    public function getStatusDescribe()
     {
-        return $this->statusDescribe[$this->status];
+        return self::$statusDescribe[$this->status];
     }
 
     /**
@@ -348,7 +348,7 @@ class GameLevelingOrder extends Model
 
     /**
      * 关联仲裁表
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function complain()
     {
@@ -357,7 +357,7 @@ class GameLevelingOrder extends Model
 
     /**
      * 关联协商撤销表
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function consult()
     {

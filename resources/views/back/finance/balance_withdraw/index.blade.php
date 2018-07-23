@@ -143,7 +143,7 @@
             $('.complete').click(function () {
                 var id = $(this).data('id');
                 layer.confirm('同意提现？' , function (layerConfirm) {
-                    $.post("{{ route('admin.balance-withdraw.agree') }}", {id:id}, function (data) {
+                    $.post("{{ route('balance-withdraw.agree') }}", {id:id}, function (data) {
                         layer.close(layerConfirm);
                         if (data.status === 1) {
                             layer.alert('操作成功', function () {
@@ -157,7 +157,7 @@
             });
         });
         $('#export').click(function () {
-            window.location.href = "{{ route('admin.balance-withdraw.export') }}?" + $('#search-flow').serialize();
+            window.location.href = "{{ route('balance-withdraw.export') }}?" + $('#search-flow').serialize();
         });
     </script>
 @endsection

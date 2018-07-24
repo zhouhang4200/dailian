@@ -127,4 +127,27 @@ class User extends Authenticatable
     {
         $this->notify(new ResetPasswordNotification($token));
     }
+
+    /**
+     * 后台商户列表查找
+     * @param $query
+     * @param array $filters
+     * @return mixed
+     */
+    public static function scopeFilter($query, $filters = [])
+    {
+        if ($filters['id']) {
+            $query->where('id', $filters['id']);
+        }
+
+        if ($filters['name']) {
+            $query->where('name', $filters['name']);
+        }
+
+        if ($filters['phone']) {
+            $query->where('phone', $filters['phone']);
+        }
+
+        return $query;
+    }
 }

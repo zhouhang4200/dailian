@@ -27,6 +27,11 @@ $accountRoute = [
     'employee.group.edit',
     'employee.group.edit',
     'employee.group.update',
+    'real-name-certification',
+    'real-name-certification.create',
+    'real-name-certification.edit',
+    'real-name-certification.store',
+    'real-name-certification.update'
 ];
 
 $financeRoute = [
@@ -235,10 +240,12 @@ $finance = ['frontend.finance.asset', 'frontend.finance.amount-flow', 'frontend.
                             <cite>账号管理</cite>
                         </a>
                         <dl class="layui-nav-child">
+                            @if(Auth::user()->isParent())
                             <dd data-name="console"
-                                class="@if( in_array(Route::currentRouteName(), $myAccount))   layui-this  @endif" >
-                                <a href="">我的账号</a>
+                                class="@if(Route::currentRouteName() == 'real-name-certification') layui-this  @endif">
+                                <a href="{{ route('real-name-certification') }}">实名认证</a>
                             </dd>
+                            @endif
                             <dd data-name="console"
                                 class="@if(Route::currentRouteName() == 'employee.group') layui-this  @endif">
                                 <a href="{{ route('employee.group') }}">岗位管理</a>

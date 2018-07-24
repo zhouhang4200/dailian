@@ -45,7 +45,7 @@ $currentOneLevelMenu = explode('.', Route::currentRouteName())[0];
                         'admin.server',
                         ])) class="open active" @endif>
                         <a href="#" class="dropdown-toggle">
-                            <i class="fa fa-paper-plane"></i>
+                            <i class="fa fa-shopping-cart"></i>
                             <span>游戏/区/服配置</span>
                             <i class="fa fa-chevron-circle-right drop-icon"></i>
                         </a>
@@ -92,6 +92,24 @@ $currentOneLevelMenu = explode('.', Route::currentRouteName())[0];
                             <li>
                                 <a href="{{ route('admin.user-finance-report-day') }}" @if($currentRouteName == 'admin.user-finance-report-day') class="active" @endif>
                                     用户资金日报
+                                    提现管理
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li @if(in_array($currentRouteName, [
+                        'admin.user',
+                        'admin.user.show',
+                        ])) class="open active" @endif>
+                        <a href="#" class="dropdown-toggle">
+                            <i class="fa fa-shopping-cart"></i>
+                            <span>商户管理</span>
+                            <i class="fa fa-chevron-circle-right drop-icon"></i>
+                        </a>
+                        <ul class="submenu">
+                            <li>
+                                <a href="{{ route('admin.user') }}" @if($currentRouteName == 'admin.user') class="active" @endif>
+                                    商户列表
                                 </a>
                             </li>
                         </ul>

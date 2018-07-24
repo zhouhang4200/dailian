@@ -46,7 +46,7 @@ Route::prefix('server')->group(function(){
 });
 
 // 财务
-Route::prefix('finance')->namespace('Finance')->group(function () {
+Route::prefix('finance')->group(function () {
     // 余额提现管理
     Route::prefix('balance-withdraw')->group(function () {
         Route::get('/', 'BalanceWithdrawController@index')->name('admin.balance-withdraw');
@@ -66,4 +66,14 @@ Route::prefix('finance')->namespace('Finance')->group(function () {
         Route::get('/', 'UserFinanceReportDayController@index')->name('admin.user-finance-report-day');
         Route::get('export', 'UserFinanceReportDayController@export')->name('admin.user-finance-report-day.export'); // 导出
     });
+});
+
+// 商户管理
+Route::prefix('user')->group(function () {
+    // 商户列表
+    Route::get('/', 'UserController@index')->name('admin.user');
+    Route::get('show/{id}', 'UserController@show')->name('admin.user.show'); // 详情
+    Route::get('certification/{id}', 'UserController@certification')->name('admin.user.certification'); // 实名认证信息
+    Route::post('certification/pass', 'UserController@certificationPass')->name('admin.user.certification-pass'); // 实名认证通过
+    Route::post('certification/refuse', 'UserController@certificationRefuse')->name('admin.user.certification-refuse'); // 实名认证拒绝
 });

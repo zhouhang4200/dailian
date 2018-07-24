@@ -117,17 +117,13 @@
         $('#time-end').datepicker();
 
         layui.use(['layer'], function () {
-
             // 拒绝
             $('.refuse').click(function () {
                 var id = $(this).data('id');
                 layer.confirm('拒绝提现？' , function (layerConfirm) {
-
                     layer.close(layerConfirm);
-
                     layer.prompt({title: '请输入备注',formType: 2},function(value, promptIndex, elem){
                         $.post("{{ route('admin.balance-withdraw.refuse') }}", {remark:value, id:id},function (data) {
-
                             if (data.status === 1) {
                                 layer.alert('操作成功', function () {
                                     location.reload();

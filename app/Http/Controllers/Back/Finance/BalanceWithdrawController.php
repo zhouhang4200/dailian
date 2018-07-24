@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Back;
+namespace App\Http\Controllers\Back\Finance;
 
 use DB;
 use Exception;
@@ -37,6 +37,7 @@ class BalanceWithdrawController extends Controller
     /**
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
+     * @throws Exception
      */
     public function agree(Request $request)
     {
@@ -62,6 +63,7 @@ class BalanceWithdrawController extends Controller
     /**
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
+     * @throws Exception
      */
     public function refuse(Request $request)
     {

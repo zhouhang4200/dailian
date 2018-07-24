@@ -20,7 +20,7 @@ class CreateGameLevelingOrderLogsTable extends Migration
             $table->string('name', 60)->comment('操作名称');
             $table->string('description', 600)->comment('操作详情');
             $table->unsignedInteger('parent_user_id')->comment('用户父ID');
-            $table->string('game_leveling_orders_trade_no', 22)->comment('代练订单交易号');
+            $table->string('game_leveling_order_trade_no', 22)->comment('代练订单交易号');
             $table->timestamps();
         });
     }

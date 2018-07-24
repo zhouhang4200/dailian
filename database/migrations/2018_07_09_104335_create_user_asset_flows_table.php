@@ -23,6 +23,7 @@ class CreateUserAssetFlowsTable extends Migration
             $table->decimal('balance', 17 ,2)->comment('发生后余额');
             $table->decimal('frozen', 17 ,2)->comment('发生后冻结余额');
             $table->string('remark', 500)->comment('备注');
+            $table->date('date')->comment('日期');
             $table->timestamps();
         });
     }

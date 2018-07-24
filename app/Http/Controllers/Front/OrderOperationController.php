@@ -19,6 +19,7 @@ class OrderOperationController extends Controller
     /**
      * 接单
      * @return mixed
+     * @throws Exception
      */
     public function take()
     {
@@ -34,6 +35,8 @@ class OrderOperationController extends Controller
 
     /**
      * 申请完成
+     * @return mixed
+     * @throws Exception
      */
     public function applyComplete()
     {
@@ -58,6 +61,8 @@ class OrderOperationController extends Controller
 
     /**
      * 取消完成
+     * @return mixed
+     * @throws Exception
      */
     public function cancelComplete()
     {
@@ -73,6 +78,8 @@ class OrderOperationController extends Controller
 
     /**
      * 完成订单
+     * @return mixed
+     * @throws Exception
      */
     public function complete()
     {
@@ -88,6 +95,8 @@ class OrderOperationController extends Controller
 
     /**
      * 上架
+     * @return mixed
+     * @throws Exception
      */
     public function onSale()
     {
@@ -103,6 +112,8 @@ class OrderOperationController extends Controller
 
     /**
      * 下架
+     * @return mixed
+     * @throws Exception
      */
     public function offSale()
     {
@@ -116,8 +127,10 @@ class OrderOperationController extends Controller
         return response()->ajaxSuccess();
     }
 
-    /***
+    /**
      * 锁定
+     * @return mixed
+     * @throws Exception
      */
     public function lock()
     {
@@ -133,6 +146,8 @@ class OrderOperationController extends Controller
 
     /**
      * 取消锁定
+     * @return mixed
+     * @throws Exception
      */
     public function cancelLock()
     {
@@ -148,6 +163,8 @@ class OrderOperationController extends Controller
 
     /**
      * 异常
+     * @return mixed
+     * @throws Exception
      */
     public function anomaly()
     {
@@ -163,6 +180,7 @@ class OrderOperationController extends Controller
 
     /**
      * 取消异常
+     * @return mixed
      */
     public function cancelAnomaly()
     {
@@ -177,6 +195,8 @@ class OrderOperationController extends Controller
 
     /**
      * 申请撤销
+     * @return mixed
+     * @throws Exception
      */
     public function applyConsult()
     {
@@ -206,6 +226,8 @@ class OrderOperationController extends Controller
 
     /**
      * 取消撤销
+     * @return mixed
+     * @throws Exception
      */
     public function cancelConsult()
     {
@@ -221,6 +243,8 @@ class OrderOperationController extends Controller
 
     /**
      * 申请仲裁
+     * @return mixed
+     * @throws Exception
      */
     public function applyComplain()
     {
@@ -242,6 +266,8 @@ class OrderOperationController extends Controller
 
     /**
      * 取消仲裁
+     * @return mixed
+     * @throws Exception
      */
     public function cancelComplain()
     {

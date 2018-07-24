@@ -132,6 +132,7 @@ class OrderTakeController extends Controller
     /**
      * 接单方发送仲裁留言
      * @return mixed
+     * @throws Exception
      */
     public function complainMessage()
     {

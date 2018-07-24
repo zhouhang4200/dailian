@@ -99,6 +99,9 @@
         }
     });
 
+    $('#start-time').datepicker();
+    $('#end-time').datepicker();
+
     function reload() {
         setTimeout(function () {
             location.reload();

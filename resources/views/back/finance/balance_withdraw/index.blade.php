@@ -13,13 +13,13 @@
                     <div class="layui-tab-item layui-show">
                         <form id="search-flow" action="">
                             <div class="row">
-                                <div class="col-md-1">
+                                <div class="col-md-2">
                                     <div class="input-group">
                                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                         <input type="text" class="form-control" id="time-start" name="startDate" value="{{ $startDate }}">
                                     </div>
                                 </div>
-                                <div class="col-md-1">
+                                <div class="col-md-2">
                                     <div class="input-group">
                                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                         <input type="text" class="form-control" id="time-end" name="endDate" value="{{ $endDate }}">

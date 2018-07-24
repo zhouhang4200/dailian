@@ -46,13 +46,25 @@ Route::prefix('server')->group(function(){
 });
 
 // 财务
-Route::prefix('finance')->group(function () {
+Route::prefix('finance')->namespace('Finance')->group(function () {
     // 余额提现管理
     Route::prefix('balance-withdraw')->group(function () {
         Route::get('/', 'BalanceWithdrawController@index')->name('admin.balance-withdraw');
         Route::post('agree', 'BalanceWithdrawController@agree')->name('admin.balance-withdraw.agree'); // 同意
         Route::post('refuse', 'BalanceWithdrawController@refuse')->name('admin.balance-withdraw.refuse'); // 拒绝
         Route::get('export', 'BalanceWithdrawController@export')->name('admin.balance-withdraw.export'); // 导出
+    });
+
+    // 平台资金日报表
+    Route::prefix('platform-finance-report-day')->group(function () {
+        Route::get('/', 'PlatformFinanceReportDayController@index')->name('admin.platform-finance-report-day');
+        Route::get('export', 'PlatformFinanceReportDayController@export')->name('admin.platform-finance-report-day.export'); // 导出
+    });
+
+    // 用户资金日报表
+    Route::prefix('user-finance-report-day')->group(function () {
+        Route::get('/', 'UserFinanceReportDayController@index')->name('admin.user-finance-report-day');
+        Route::get('export', 'UserFinanceReportDayController@export')->name('admin.user-finance-report-day.export'); // 导出
     });
 });
 

@@ -9,6 +9,11 @@ use App\Models\RealNameCertification;
 use App\Http\Controllers\Controller;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
+/**
+ * 个人资料
+ * Class ProfileController
+ * @package App\Http\Controllers\Front
+ */
 class ProfileController extends Controller
 {
     /**
@@ -79,6 +84,7 @@ class ProfileController extends Controller
     }
 
     /**
+     * 图片上传
      * @param UploadedFile $file
      * @param $path
      * @return \Illuminate\Http\JsonResponse|mixed

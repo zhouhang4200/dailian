@@ -92,7 +92,6 @@ $currentOneLevelMenu = explode('.', Route::currentRouteName())[0];
                             <li>
                                 <a href="{{ route('admin.user-finance-report-day') }}" @if($currentRouteName == 'admin.user-finance-report-day') class="active" @endif>
                                     用户资金日报
-                                    提现管理
                                 </a>
                             </li>
                         </ul>

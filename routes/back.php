@@ -46,7 +46,7 @@ Route::prefix('server')->group(function(){
 });
 
 // 财务
-Route::prefix('finance')->group(function () {
+Route::prefix('finance')->namespace('Finance')->group(function () {
     // 余额提现管理
     Route::prefix('balance-withdraw')->group(function () {
         Route::get('/', 'BalanceWithdrawController@index')->name('admin.balance-withdraw');

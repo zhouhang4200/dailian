@@ -38,15 +38,19 @@
             // 删除
             form.on('submit(delete)', function (data) {
                 var roleId=this.getAttribute('lay-id');
-                $.post("{{ route('employee.group.delete') }}", {roleId:roleId}, function (result) {
-                    layer.msg(result.message);
-                    if (result.status == 1) {
-                        $.get("{{ route('employee.group') }}", function (result) {
-                            $('#role').html(result);
-                            form.render();
-                        }, 'json');
-                    }
-                    form.render;
+                layer.confirm('确定删除岗位吗？', {icon: 3, title:'提示'}, function(index) {
+                    $.post("{{ route('employee.group.delete') }}", {roleId: roleId}, function (result) {
+                        layer.msg(result.message, {time:1500}, function () {
+                            if (result.status == 1) {
+                                $.get("{{ route('employee.group') }}", function (result) {
+                                    $('#role').html(result);
+                                    form.render();
+                                }, 'json');
+                            }
+                            form.render;
+                            layer.closeAll();
+                        });
+                    });
                 });
                 return false;
             })

@@ -66,6 +66,12 @@ Route::prefix('finance')->namespace('Finance')->group(function () {
         Route::get('/', 'UserFinanceReportDayController@index')->name('admin.user-finance-report-day');
         Route::get('export', 'UserFinanceReportDayController@export')->name('admin.user-finance-report-day.export'); // 导出
     });
+
+    // 用户资金明细
+    Route::prefix('user-asset-flow')->group(function () {
+        Route::get('/', 'UserAssetFlowController@index')->name('admin.user-asset-flow');
+        Route::get('export', 'UserAssetFlowController@export')->name('admin.user-asset-flow.export'); // 导出
+    });
 });
 
 // 商户管理

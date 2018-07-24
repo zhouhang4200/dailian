@@ -72,6 +72,7 @@ $currentOneLevelMenu = explode('.', Route::currentRouteName())[0];
                         'admin.balance-withdraw',
                         'admin.platform-finance-report-day',
                         'admin.user-finance-report-day',
+                        'admin.user-asset-flow',
                         ])) class="open active" @endif>
                         <a href="#" class="dropdown-toggle">
                             <i class="fa  fa-money"></i>
@@ -92,6 +93,11 @@ $currentOneLevelMenu = explode('.', Route::currentRouteName())[0];
                             <li>
                                 <a href="{{ route('admin.user-finance-report-day') }}" @if($currentRouteName == 'admin.user-finance-report-day') class="active" @endif>
                                     用户资金日报
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('admin.user-asset-flow') }}" @if($currentRouteName == 'admin.user-asset-flow') class="active" @endif>
+                                    用户资金明细
                                 </a>
                             </li>
                         </ul>

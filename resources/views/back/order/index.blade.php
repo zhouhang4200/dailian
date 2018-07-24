@@ -14,25 +14,25 @@
                         <form id="search-flow" action="">
                             <div class="row">
 
-                                <div class="form-group col-md-1">
+                                <div class="form-group col-md-2">
                                     <select class="form-control" name="type">
                                         <option value="">游戏</option>
 
                                     </select>
                                 </div>
-                                <div class="form-group col-md-1">
+                                <div class="form-group col-md-2">
                                     <select class="form-control" name="status">
                                         <option value="">区</option>
 
                                     </select>
                                 </div>
-                                <div class="form-group col-md-1">
+                                <div class="form-group col-md-2">
                                     <select class="form-control" name="status">
                                         <option value="">服</option>
 
                                     </select>
                                 </div>
-                                <div class="form-group col-md-1">
+                                <div class="form-group col-md-2">
                                     <select class="form-control" name="status">
                                         <option value="">状态</option>
                                         @foreach(\App\Models\GameLevelingOrder::$statusDescribe as $key => $value)

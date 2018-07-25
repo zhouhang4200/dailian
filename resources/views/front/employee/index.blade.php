@@ -14,7 +14,7 @@
             border-color: #198cff;
             background-color: #198cff;
         }
-        a:hover{
+        td a:hover{
             color:#fff;
         }
     </style>

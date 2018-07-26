@@ -3,36 +3,34 @@
 @section('title', ' | 商户列表')
 
 @section('content')
-    <div class="row">
-        <div class="col-lg-12">
-            <ol class="breadcrumb">
-                <li class=""><span>首页 - 商户列表</span></li>
-            </ol>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="main-box">
-                <header class="main-box-header clearfix">
-                    <div class="filter-block">
-                        <form class="layui-form">
+    <div class="main-box">
+        <div class="main-box-body clearfix">
+            <div class="layui-tab layui-tab-brief" lay-filter="widgetTab">
+                <ul class="layui-tab-title">
+                    <li class="layui-this" lay-id="add">
+                        用户列表
+                    </li>
+                </ul>
+                <div class="layui-tab-content">
+                    <div class="layui-tab-item layui-show">
+                        <form class="layui-form" id="search-flow">
                             <div class="row">
-                                <div class=" col-xs-2">
+                                <div class="col-md-2">
                                     <input type="text" class="layui-input" name="id"  placeholder="账号ID" value="{{ $id }}">
                                 </div>
-                                <div class=" col-xs-2">
+                                <div class="col-md-2">
                                     <input type="text" class="layui-input" name="name"  placeholder="昵称" value="{{ $name }}">
                                 </div>
-                                <div class=" col-xs-2">
+                                <div class="col-md-2">
                                     <input type="text" class="layui-input" name="phone"  placeholder="手机号" value="{{ $phone }}">
                                 </div>
-                                <div class=" col-xs-2">
+                                <div class="col-md-2">
                                     <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="search">搜索</button>
                                 </div>
                             </div>
                         </form>
                     </div>
-                </header>
+                </div>
                 <div id="user">@include('back.user.list', ['users' => $users, 'id' => $id, 'name' => $name, 'phone' => $phone])</div>
             </div>
         </div>

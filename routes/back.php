@@ -83,3 +83,46 @@ Route::prefix('user')->group(function () {
     Route::post('certification/pass', 'UserController@certificationPass')->name('admin.user.certification-pass'); // 实名认证通过
     Route::post('certification/refuse', 'UserController@certificationRefuse')->name('admin.user.certification-refuse'); // 实名认证拒绝
 });
+
+// 公告，帮助中心
+Route::prefix('article')->group(function () {
+    // 公告中心
+    Route::prefix('notice')->group(function () {
+        Route::get('', 'ArticleController@noticeIndex')->name('admin.article.notice');
+        Route::get('create', 'ArticleController@noticeCreate')->name('admin.article.notice-create');
+        Route::post('store', 'ArticleController@noticeStore')->name('admin.article.notice-store');
+        Route::get('edit/{id}', 'ArticleController@noticeEdit')->name('admin.article.notice-edit');
+        Route::post('update', 'ArticleController@noticeUpdate')->name('admin.article.notice-update');
+        Route::post('delete', 'ArticleController@noticeDelete')->name('admin.article.notice-delete');
+        // 分类
+        Route::prefix('category')->group(function () {
+            Route::get('/', 'ArticleController@categoryNoticeIndex')->name('admin.article.category-notice');
+            Route::get('create', 'ArticleController@categoryNoticeCreate')->name('admin.article.category-notice-create');
+            Route::post('store', 'ArticleController@categoryNoticeStore')->name('admin.article.category-notice-store');
+            Route::get('edit/{id}', 'ArticleController@categoryNoticeEdit')->name('admin.article.category-notice-edit');
+            Route::post('update', 'ArticleController@categoryNoticeUpdate')->name('admin.article.category-notice-update');
+            Route::post('delete', 'ArticleController@categoryNoticeDelete')->name('admin.article.category-notice-delete');
+        });
+    });
+
+    // 帮助中心
+    Route::prefix('help')->group(function () {
+        Route::get('', 'ArticleController@helpIndex')->name('admin.article.help');
+        Route::get('create', 'ArticleController@helpCreate')->name('admin.article.help-create');
+        Route::post('store', 'ArticleController@helpStore')->name('admin.article.help-store');
+        Route::get('edit/{id}', 'ArticleController@helpEdit')->name('admin.article.help-edit');
+        Route::post('update', 'ArticleController@helpUpdate')->name('admin.article.help-update');
+        Route::post('delete', 'ArticleController@helpDelete')->name('admin.article.help-delete');
+        // 分类
+        Route::prefix('category')->group(function () {
+            Route::get('/', 'ArticleController@categoryHelpIndex')->name('admin.article.category-help');
+            Route::get('create', 'ArticleController@categoryHelpCreate')->name('admin.article.category-help-create');
+            Route::post('store', 'ArticleController@categoryHelpStore')->name('admin.article.category-help-store');
+            Route::get('edit/{id}', 'ArticleController@categoryHelpEdit')->name('admin.article.category-help-edit');
+            Route::post('update', 'ArticleController@categoryHelpUpdate')->name('admin.article.category-help-update');
+            Route::post('delete', 'ArticleController@categoryHelpDelete')->name('admin.article.category-help-delete');
+        });
+    });
+});
+
+

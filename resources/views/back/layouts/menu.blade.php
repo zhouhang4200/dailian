@@ -119,6 +119,60 @@ $currentOneLevelMenu = explode('.', Route::currentRouteName())[0];
                             </li>
                         </ul>
                     </li>
+                    <li @if(in_array($currentRouteName, [
+                        'admin.article.notice',
+                        'admin.article.notice-create',
+                        'admin.article.notice-store',
+                        'admin.article.notice-edit',
+                        'admin.article.notice-update',
+                        'admin.article.notice-delete',
+                        'admin.article.category-notice',
+                        'admin.article.category-notice-create',
+                        'admin.article.category-notice-store',
+                        'admin.article.category-notice-edit',
+                        'admin.article.category-notice-update',
+                        'admin.article.category-notice-delete',
+                        ])) class="open active" @endif>
+                        <a href="#" class="dropdown-toggle">
+                            <i class="fa fa-users"></i>
+                            <span>公告管理</span>
+                            <i class="fa fa-chevron-circle-right drop-icon"></i>
+                        </a>
+                        <ul class="submenu">
+                            <li>
+                                <a href="{{ route('admin.article.category-notice') }}" @if($currentRouteName == 'admin.article.category-notice') class="active" @endif>
+                                    公告列表
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li @if(in_array($currentRouteName, [
+                        'admin.article.help',
+                        'admin.article.help-create',
+                        'admin.article.help-store',
+                        'admin.article.help-edit',
+                        'admin.article.help-update',
+                        'admin.article.help-delete',
+                        'admin.article.category-help',
+                        'admin.article.category-help-create',
+                        'admin.article.category-help-store',
+                        'admin.article.category-help-edit',
+                        'admin.article.category-help-update',
+                        'admin.article.category-help-delete',
+                        ])) class="open active" @endif>
+                        <a href="#" class="dropdown-toggle">
+                            <i class="fa fa-users"></i>
+                            <span>帮助管理</span>
+                            <i class="fa fa-chevron-circle-right drop-icon"></i>
+                        </a>
+                        <ul class="submenu">
+                            <li>
+                                <a href="{{ route('admin.article.category-help') }}" @if($currentRouteName == 'admin.article.category-help') class="active" @endif>
+                                    帮助列表
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
         </div>

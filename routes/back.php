@@ -39,7 +39,7 @@ Route::group(['middleware' => 'auth.admin'], function () {
         Route::post('create', 'GameController@store')->name('admin.game.store');
         Route::get('update/{id}', 'GameController@edit')->name('admin.game.update');
         Route::post('update/{id}', 'GameController@update')->name('admin.game.update');
-        Route::post('delete/{id}', 'GameClassController@delete')->name('admin.game.delete');
+        Route::post('delete/{id}', 'GameController@delete')->name('admin.game.delete');
     });
 
     // 游戏区
@@ -50,6 +50,7 @@ Route::group(['middleware' => 'auth.admin'], function () {
         Route::get('update/{id}', 'RegionController@edit')->name('admin.region.update');
         Route::post('update/{id}', 'RegionController@update')->name('admin.region.update');
         Route::post('delete/{id}', 'RegionController@delete')->name('admin.region.delete');
+        Route::post('get-region-by-game-id', 'RegionController@getRegionByGameId')->name('admin.region.get-region-by-game-id');
     });
 
     // 游戏服务器
@@ -80,6 +81,16 @@ Route::group(['middleware' => 'auth.admin'], function () {
         Route::get('update/{id}', 'GameTypeController@edit')->name('admin.game-type.update');
         Route::post('update/{id}', 'GameTypeController@update')->name('admin.game-type.update');
         Route::post('delete/{id}', 'GameTypeController@delete')->name('admin.game-type.delete');
+    });
+
+    // 游戏代练类型
+    Route::prefix('game-leveling-type')->group(function(){
+        Route::get('/', 'GameLevelingTypeController@index')->name('admin.game-leveling-type');
+        Route::get('create', 'GameLevelingTypeController@create')->name('admin.game-leveling-type.create');
+        Route::post('create', 'GameLevelingTypeController@store')->name('admin.game-leveling-type.store');
+        Route::get('update/{id}', 'GameLevelingTypeController@edit')->name('admin.game-leveling-type.update');
+        Route::post('update/{id}', 'GameLevelingTypeController@update')->name('admin.game-leveling-type.update');
+        Route::post('delete/{id}', 'GameLevelingTypeController@delete')->name('admin.game-leveling-type.delete');
     });
 
     // 财务

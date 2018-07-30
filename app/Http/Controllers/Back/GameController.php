@@ -90,9 +90,9 @@ class GameController extends Controller
     /**
      * @return mixed
      */
-    public function delete()
+    public function delete($id)
     {
-        Game::destroy(request('id'));
+        Game::destroy($id);
         return response()->ajaxSuccess('删除成功');
     }
 }

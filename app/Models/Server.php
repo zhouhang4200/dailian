@@ -6,6 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Server extends Model
 {
+    public $fillable = [
+      'name',
+      'region_id',
+      'initials',
+    ];
+
     /**
      * @param $query
      * @param $condition
@@ -23,5 +29,10 @@ class Server extends Model
             $query->where('game_class_id', $condition['game_class_id']);
         }
         return $query;
+    }
+
+    public function region()
+    {
+        return $this->belongsTo(Region::class);
     }
 }

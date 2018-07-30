@@ -1,6 +1,6 @@
 @extends('back.layouts.app')
 
-@section('title', ' | 添加游戏')
+@section('title', ' | 添加游戏服')
 
 @section('css')
 
@@ -11,11 +11,9 @@
         <div class="col-lg-12">
             <div class="main-box">
                 <div class="main-box-body clearfix">
-
-
                     <div class="layui-tab layui-tab-brief" lay-filter="widgetTab">
                         <ul class="layui-tab-title">
-                            <li class="layui-this" lay-id="add">添加游戏</li>
+                            <li class="layui-this" lay-id="add">添加游戏服</li>
                         </ul>
                         <div class="layui-tab-content">
 
@@ -39,40 +37,32 @@
 
                             <div class="col-lg-12">
                                 <div class="main-box-body clearfix">
-                                    <form role="form" class="layui-form" href="{{ route('admin.game.create') }}" method="post">
+                                    <form role="form" class="layui-form" href="{{ route('admin.server.create') }}" method="post">
                                         {!! csrf_field() !!}
 
-
                                         <div class="form-group">
-                                            <label>类型</label>
-                                            <select class="form-control" lay-verify="required" name="game_type_id">
-                                                @foreach($gameTypes as $item)
+                                            <label>所属游戏</label>
+                                            <select class="form-control" lay-verify="required" name="game_id" lay-filter="chose-game">
+                                                <option value="">请选择</option>
+                                                @foreach($games as $item)
                                                     <option value="{{ $item->id }}">{{ $item->name }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
 
                                         <div class="form-group">
-                                            <label>分类</label>
-                                            <select class="form-control" lay-verify="required" name="game_class_id">
-                                                @foreach($gameClasses as $item)
-                                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                                @endforeach
+                                            <label>所属区  (添加多个请用英文逗号将多值隔开, 例如:一区,二区)</label>
+                                            <select class="form-control" lay-verify="required" name="region_id">
                                             </select>
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="exampleInputEmail1">游戏名</label>
+                                            <label for="exampleInputPassword1">服名</label>
                                             <input type="text" lay-verify="required" class="form-control" name="name">
                                         </div>
 
-                                        <div class="form-group">
-                                            <label for="exampleInputPassword1">图标</label>
-                                            <input type="text" lay-verify="required" class="form-control" name="icon">
-                                        </div>
-
                                         <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="store">确认</button>
-                                        <a  href="{{ route('admin.game') }}" type="button" class="layui-btn layui-btn-normal " >返回列表</a>
+                                        <a  href="{{ route('admin.server') }}" type="button" class="layui-btn layui-btn-normal">返回列表</a>
                                     </form>
                                 </div>
                             </div>
@@ -85,5 +75,20 @@
 @endsection
 
 @section('js')
+    <script>
+        layui.use(['form'], function(){
+            var form = layui.form,layer = layui.layer;
 
+            form.on('select(chose-game)', function(data){
+                $.post('{{ route('admin.region.get-region-by-game-id') }}', {id:data.value}, function (result) {
+                    var regionOptions = '';
+                    $.each(result.content, function (i, item) {
+                        regionOptions += '<option value="' + i + '">' + item + '</option>';
+                    });
+                    $('select[name=region_id]').html(regionOptions);
+                    form.render();
+                }, 'json');
+            });
+        });
+    </script>
 @endsection

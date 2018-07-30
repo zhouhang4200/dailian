@@ -3,22 +3,18 @@
 namespace App\Http\Controllers\Back;
 
 use App\Models\Game;
-use App\Models\Region;
+use App\Models\GameLevelingType;
 use App\Http\Controllers\Controller;
 
-/**
- * Class RegionController
- * @package App\Http\Controllers\Back
- */
-class RegionController extends Controller
+class GameLevelingTypeController extends Controller
 {
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index()
     {
-        return view('back.region.index', [
-            'regions' => Region::condition(request()->all())->paginate(),
+        return view('back.game-leveling-type.index', [
+            'gameLevelingTypes' => GameLevelingType::condition(request()->all())->paginate(),
         ]);
     }
 
@@ -27,7 +23,7 @@ class RegionController extends Controller
      */
     public function create()
     {
-        return view('back.region.create', [
+        return view('back.game-leveling-type.create', [
             'games' => Game::getAll(),
         ]);
     }
@@ -38,24 +34,23 @@ class RegionController extends Controller
     public function store()
     {
         try {
-            $regionsIds = explode(',', request('name'));
+            $typeNameArr = explode(',', request('name'));
 
-            $regions = [];
-            foreach ($regionsIds as $item) {
+            $types = [];
+            foreach ($typeNameArr as $item) {
                 $name = trim($item);
-                $regions[] = [
+                $types[] = [
                     'name' => $name,
-                    'initials' => getFirstChar($name) ?? substr($name, 0, 1),
                     'game_id' => request('game_id'),
                     'created_at' => date('Y-m-d'),
                     'updated_at' => date('Y-m-d'),
                 ];
             }
 
-            Region::insert($regions);
-            return redirect(route('admin.region.create'))->with('success', '添加成功');
+            GameLevelingType::insert($types);
+            return redirect(route('admin.game-leveling-type.create'))->with('success', '添加成功');
         } catch (\Exception $exception) {
-            return redirect(route('admin.region.create'))->with('fail', $exception->getMessage());
+            return redirect(route('admin.game-leveling-type.create'))->with('fail', $exception->getMessage());
         }
     }
 
@@ -65,9 +60,9 @@ class RegionController extends Controller
      */
     public function edit($id)
     {
-        return view('back.region.edit', [
+        return view('back.game-leveling-type.edit', [
             'games' => Game::getAll(),
-            'region' => Region::find($id),
+            'gameLevelingType' => GameLevelingType::find($id),
         ]);
     }
 
@@ -78,15 +73,14 @@ class RegionController extends Controller
     public function update($id)
     {
         try {
-            $game = Region::find($id);
+            $game = GameLevelingType::find($id);
             $game->name = request('name');
-            $game->initials = request('name');
             $game->game_id = request('game_id');
             $game->save();
 
-            return redirect(route('admin.region.update', ['id' => $id]))->with('success', '更新成功');
+            return redirect(route('admin.game-leveling-type.update', ['id' => $id]))->with('success', '更新成功');
         } catch (\Exception $exception) {
-            return redirect(route('admin.region.update', ['id' => $id]))->with('fail', $exception->getMessage());
+            return redirect(route('admin.game-leveling-type.update', ['id' => $id]))->with('fail', $exception->getMessage());
         }
     }
 
@@ -97,20 +91,7 @@ class RegionController extends Controller
     public function delete($id)
     {
         // 查找是否有对应的服务器
-        Region::destroy($id);
+        GameLevelingType::destroy($id);
         return response()->ajaxSuccess('删除成功');
     }
-
-    /**
-     * 根据传入的游戏ID获取区
-     * @param $id
-     * @return mixed
-     */
-    public function getRegionByGameId()
-    {
-        $regions = Region::where('game_id', request('id'))->pluck('name', 'id');
-
-        return response()->ajaxSuccess('获取成功', $regions);
-    }
-
 }

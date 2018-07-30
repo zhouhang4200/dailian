@@ -107,7 +107,7 @@ $currentOneLevelMenu = explode('.', Route::currentRouteName())[0];
                         'admin.article.category-notice-delete',
                         ])) class="open active" @endif>
                         <a href="#" class="dropdown-toggle">
-                            <i class="fa fa-users"></i>
+                            <i class="fa  fa-volume-up"></i>
                             <span>公告管理</span>
                             <i class="fa fa-chevron-circle-right drop-icon"></i>
                         </a>
@@ -134,7 +134,7 @@ $currentOneLevelMenu = explode('.', Route::currentRouteName())[0];
                         'admin.article.category-help-delete',
                         ])) class="open active" @endif>
                         <a href="#" class="dropdown-toggle">
-                            <i class="fa fa-users"></i>
+                            <i class="fa fa-wrench"></i>
                             <span>帮助管理</span>
                             <i class="fa fa-chevron-circle-right drop-icon"></i>
                         </a>
@@ -163,6 +163,9 @@ $currentOneLevelMenu = explode('.', Route::currentRouteName())[0];
                         'admin.game-class',
                         'admin.game-class.create',
                         'admin.game-class.update',
+                        'admin.game-leveling-type',
+                        'admin.game-leveling-type.create',
+                        'admin.game-leveling-type.update',
                         ])) class="open active" @endif>
                         <a href="#" class="dropdown-toggle">
                             <i class="fa  fa-life-ring"></i>
@@ -204,7 +207,7 @@ $currentOneLevelMenu = explode('.', Route::currentRouteName())[0];
                                 </a>
                             </li>
                             <li>
-                                <a href="{{ route('admin.server') }}" @if($currentRouteName == 'admin.server') class="active" @endif>
+                                <a href="{{ route('admin.game-leveling-type') }}" @if($currentRouteName == 'admin.game-leveling-type') class="active" @endif>
                                     游戏代练类型列表
                                 </a>
                             </li>
@@ -226,7 +229,7 @@ $currentOneLevelMenu = explode('.', Route::currentRouteName())[0];
                         'admin.admin-permission-group.update',
                         ])) class="open active" @endif>
                         <a href="#" class="dropdown-toggle">
-                            <i class="fa  fa-life-ring"></i>
+                            <i class="fa fa-share-alt"></i>
                             <span>系统管理</span>
                             <i class="fa fa-chevron-circle-right drop-icon"></i>
                         </a>

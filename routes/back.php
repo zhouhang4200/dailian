@@ -82,6 +82,8 @@ Route::prefix('user')->group(function () {
     Route::get('certification/{id}', 'UserController@certification')->name('admin.user.certification'); // 实名认证信息
     Route::post('certification/pass', 'UserController@certificationPass')->name('admin.user.certification-pass'); // 实名认证通过
     Route::post('certification/refuse', 'UserController@certificationRefuse')->name('admin.user.certification-refuse'); // 实名认证拒绝
+    Route::post('close-account', 'UserController@closeAccount')->name('admin.user.close-account'); // 封号
+    Route::post('open-account', 'UserController@openAccount')->name('admin.user.open-account'); // 解封
 });
 
 // 公告，帮助中心

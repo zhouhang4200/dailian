@@ -4,6 +4,7 @@
         <tr>
             <th>账号ID</th>
             <th>昵称</th>
+            <th>状态</th>
             <th>手机号</th>
             <th>可用余额</th>
             <th>冻结余额</th>
@@ -18,9 +19,20 @@
             <tr>
                 <td>{{ $user->id }}</td>
                 <td>{{ $user->name }}</td>
+                <td>
+                    @if($user->status == 1)
+                        正常
+                    @elseif($user->status == 2)
+                        已封号
+                    @elseif($user->status == 3)
+                        已删除
+                    @else
+                        未知
+                    @endif
+                </td>
                 <td>{{ $user->phone }}</td>
-                <td>{{ $user->userAsset->balance+0 }}</td>
-                <td>{{ $user->userAsset->frozen+0 }}</td>
+                <td>{{ $user->userAsset ? $user->userAsset->balance+0 : 0 }}</td>
+                <td>{{ $user->userAsset ? $user->userAsset->frozen+0 : 0 }}</td>
                 <td>{{ $user->created_at }}</td>
                 <td>{{ $user->last_login_at }}</td>
                 <td>
@@ -36,6 +48,11 @@
                 </td>
                 <td style="text-align: center;">
                     <a href="{{ route('admin.user.show', ['id' => $user->id])  }}" class="layui-btn layui-btn layui-btn-normal layui-btn-mini">详情</a>
+                    @if($user->status == 1)
+                        <button lay-submit="" lay-filter="close-account" class="layui-btn layui-btn-mini layui-btn-normal" data-id="{{ $user->id }}">封号</button>
+                    @elseif($user->status == 2)
+                        <button lay-submit="" lay-filter="open-account" class="layui-btn layui-btn-mini layui-btn-danger" data-id="{{ $user->id }}">解封</button>
+                    @endif
                 </td>
             </tr>
         @empty

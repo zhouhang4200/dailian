@@ -17,7 +17,7 @@ class UserFinanceReportDayController extends Controller
      */
     public function index()
     {
-        return view('back.finance.user_finance_report_day.index', [
+        return view('back.finance.user-finance-report-day.index', [
             'report' => UserFinanceReportDay::condition(request()->all())->paginate()
         ]);
     }

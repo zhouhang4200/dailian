@@ -12,6 +12,14 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Game extends Model
 {
+    public $fillable = [
+        'name',
+        'icon',
+        'initials',
+        'game_type_id',
+        'game_class_id',
+    ];
+
     /**
      * 获取所有游戏
      * @return \Illuminate\Database\Eloquent\Collection|static[]
@@ -30,6 +38,9 @@ class Game extends Model
     {
         if (isset($condition['id']) && $condition['id']) {
             $query->where('id', $condition['id']);
+        }
+        if (isset($condition['name']) && $condition['name']) {
+            $query->where('name', 'like', '%' . $condition['name'] . '%');
         }
         if (isset($condition['game_type_id']) && $condition['game_type_id']) {
             $query->where('game_type_id', $condition['game_type_id']);

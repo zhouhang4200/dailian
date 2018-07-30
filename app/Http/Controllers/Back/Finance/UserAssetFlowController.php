@@ -13,7 +13,7 @@ class UserAssetFlowController extends Controller
      */
     public function index()
     {
-        return view('back.finance.user_asset_flow.index', [
+        return view('back.finance.user-asset-flow.index', [
             'flow' => UserAssetFlow::condition(request()->all())->paginate()
         ]);
     }

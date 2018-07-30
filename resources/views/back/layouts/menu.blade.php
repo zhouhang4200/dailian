@@ -22,7 +22,7 @@ $currentOneLevelMenu = explode('.', Route::currentRouteName())[0];
                         ])) class="open active" @endif>
                         <a href="#" class="dropdown-toggle">
                             <i class="fa fa-shopping-cart"></i>
-                            <span>订单</span>
+                            <span>订单管理</span>
                             <i class="fa fa-chevron-circle-right drop-icon"></i>
                         </a>
                         <ul class="submenu">
@@ -40,33 +40,23 @@ $currentOneLevelMenu = explode('.', Route::currentRouteName())[0];
 
 
                     <li @if(in_array($currentRouteName, [
-                        'admin.game',
-                        'admin.region',
-                        'admin.server',
+                        'admin.user',
+                        'admin.user.show',
                         ])) class="open active" @endif>
                         <a href="#" class="dropdown-toggle">
-                            <i class="fa  fa-life-ring"></i>
-                            <span>游戏/区/服配置</span>
+                            <i class="fa fa-users"></i>
+                            <span>用户管理</span>
                             <i class="fa fa-chevron-circle-right drop-icon"></i>
                         </a>
                         <ul class="submenu">
                             <li>
-                                <a href="{{ route('admin.game') }}" @if($currentRouteName == 'admin.game') class="active" @endif>
-                                    游戏管理
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ route('admin.region') }}" @if($currentRouteName == 'admin.region') class="active" @endif>
-                                    游戏区管理
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ route('admin.server') }}" @if($currentRouteName == 'admin.server') class="active" @endif>
-                                    游戏服管理
+                                <a href="{{ route('admin.user') }}" @if($currentRouteName == 'admin.user') class="active" @endif>
+                                    用户列表
                                 </a>
                             </li>
                         </ul>
                     </li>
+
 
                     <li @if(in_array($currentRouteName, [
                         'admin.balance-withdraw',
@@ -76,7 +66,7 @@ $currentOneLevelMenu = explode('.', Route::currentRouteName())[0];
                         ])) class="open active" @endif>
                         <a href="#" class="dropdown-toggle">
                             <i class="fa  fa-money"></i>
-                            <span>财务</span>
+                            <span>财务管理</span>
                             <i class="fa fa-chevron-circle-right drop-icon"></i>
                         </a>
                         <ul class="submenu">
@@ -98,23 +88,6 @@ $currentOneLevelMenu = explode('.', Route::currentRouteName())[0];
                             <li>
                                 <a href="{{ route('admin.user-asset-flow') }}" @if($currentRouteName == 'admin.user-asset-flow') class="active" @endif>
                                     用户资金明细
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li @if(in_array($currentRouteName, [
-                        'admin.user',
-                        'admin.user.show',
-                        ])) class="open active" @endif>
-                        <a href="#" class="dropdown-toggle">
-                            <i class="fa fa-users"></i>
-                            <span>用户管理</span>
-                            <i class="fa fa-chevron-circle-right drop-icon"></i>
-                        </a>
-                        <ul class="submenu">
-                            <li>
-                                <a href="{{ route('admin.user') }}" @if($currentRouteName == 'admin.user') class="active" @endif>
-                                    用户列表
                                 </a>
                             </li>
                         </ul>
@@ -173,6 +146,114 @@ $currentOneLevelMenu = explode('.', Route::currentRouteName())[0];
                             </li>
                         </ul>
                     </li>
+
+                    <li @if(in_array($currentRouteName, [
+                        'admin.game',
+                        'admin.game.create',
+                        'admin.game.update',
+                        'admin.region',
+                        'admin.region.create',
+                        'admin.region.update',
+                        'admin.server',
+                        'admin.server.create',
+                        'admin.server.update',
+                        'admin.game-type',
+                        'admin.game-type.create',
+                        'admin.game-type.update',
+                        'admin.game-class',
+                        'admin.game-class.create',
+                        'admin.game-class.update',
+                        ])) class="open active" @endif>
+                        <a href="#" class="dropdown-toggle">
+                            <i class="fa  fa-life-ring"></i>
+                            <span>游戏管理</span>
+                            <i class="fa fa-chevron-circle-right drop-icon"></i>
+                        </a>
+                        <ul class="submenu">
+                            <li>
+                                <a href="{{ route('admin.game') }}" @if(in_array($currentRouteName, [
+                                'admin.game',
+                                'admin.game.create',
+                                'admin.game.update',
+                                ])) class="active" @endif>
+                                    游戏列表
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('admin.region') }}" @if(in_array($currentRouteName, [
+                                    'admin.region',
+                                    'admin.region.update',
+                                    'admin.region.create',
+                                ])) class="active" @endif>
+                                    游戏区列表
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('admin.server') }}" @if($currentRouteName == 'admin.server') class="active" @endif>
+                                    游戏服列表
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('admin.game-class') }}" @if($currentRouteName == 'admin.game-class') class="active" @endif>
+                                    游戏分类列表
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('admin.game-type') }}" @if($currentRouteName == 'admin.game-type') class="active" @endif>
+                                    游戏类型列表
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('admin.server') }}" @if($currentRouteName == 'admin.server') class="active" @endif>
+                                    游戏代练类型列表
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li @if(in_array($currentRouteName, [
+                        'admin.admin-user',
+                        'admin.admin-user.create',
+                        'admin.admin-user.update',
+                        'admin.admin-role',
+                        'admin.admin-role.create',
+                        'admin.admin-role.update',
+                        'admin.admin-permission',
+                        'admin.admin-permission.create',
+                        'admin.admin-permission.update',
+                        'admin.admin-permission-group',
+                        'admin.admin-permission-group.create',
+                        'admin.admin-permission-group.update',
+                        ])) class="open active" @endif>
+                        <a href="#" class="dropdown-toggle">
+                            <i class="fa  fa-life-ring"></i>
+                            <span>系统管理</span>
+                            <i class="fa fa-chevron-circle-right drop-icon"></i>
+                        </a>
+                        <ul class="submenu">
+                            <li>
+                                <a href="{{ route('admin.admin-user') }}" @if($currentRouteName == 'admin.admin-user') class="active" @endif>
+                                    管理员列表
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('admin.admin-role') }}" @if($currentRouteName == 'admin.admin-role') class="active" @endif>
+                                    角色管理
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('admin.admin-permission') }}" @if($currentRouteName == 'admin.admin-permission') class="active" @endif>
+                                    权限管理
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('admin.admin-permission-group') }}" @if($currentRouteName == 'admin.admin-permission-group') class="active" @endif>
+                                    权限组管理
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
                 </ul>
             </div>
         </div>

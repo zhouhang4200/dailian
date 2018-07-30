@@ -15,10 +15,11 @@ class CreateGamesTable extends Migration
     {
         Schema::create('games', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name', 60)->comment('游戏名称');
+            $table->string('name', 60)->unique()->comment('游戏名称');
             $table->string('initials', 8)->comment('首字母拼音');
             $table->tinyInteger('game_type_id')->comment('游戏类型:手游 端游');
             $table->tinyInteger('game_class_id')->comment('游戏类别: 射击 策略');
+            $table->string('icon')->comment('游戏图标');
             $table->timestamps();
         });
     }

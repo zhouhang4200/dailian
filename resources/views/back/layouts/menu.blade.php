@@ -134,7 +134,7 @@ $currentOneLevelMenu = explode('.', Route::currentRouteName())[0];
                         'admin.article.category-notice-delete',
                         ])) class="open active" @endif>
                         <a href="#" class="dropdown-toggle">
-                            <i class="fa fa-users"></i>
+                            <i class="fa fa-phone"></i>
                             <span>公告管理</span>
                             <i class="fa fa-chevron-circle-right drop-icon"></i>
                         </a>
@@ -161,7 +161,7 @@ $currentOneLevelMenu = explode('.', Route::currentRouteName())[0];
                         'admin.article.category-help-delete',
                         ])) class="open active" @endif>
                         <a href="#" class="dropdown-toggle">
-                            <i class="fa fa-users"></i>
+                            <i class="fa fa-shopping-cart"></i>
                             <span>帮助管理</span>
                             <i class="fa fa-chevron-circle-right drop-icon"></i>
                         </a>

@@ -118,3 +118,13 @@ Route::namespace('Auth')->group(function (){
     Route::get('register', 'RegisterController@showRegistrationForm')->name('register');
     Route::post('register', 'RegisterController@register');
 });
+
+// 公告中心
+Route::prefix('notice')->group(function () {
+    Route::get('', 'NoticeController@index')->name('notice');
+});
+
+// 帮助中心
+Route::prefix('help')->group(function () {
+    Route::get('', 'HelpController@index')->name('help');
+});

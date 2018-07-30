@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Back;
 
 use Exception;
-use App\Models\RealNameCertification;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\RealNameCertification;
 
 /**
  * 商户管理
@@ -100,6 +100,46 @@ class UserController extends Controller
             return response()->ajaxSuccess('审核完成，状态：拒绝！');
         } catch (Exception $e) {
             return response()->ajaxFail('拒绝失败，请点击重试');
+        }
+    }
+
+    /**
+     * 主账号封号
+     * @param Request $request
+     * @return mixed
+     */
+    public function closeAccount(Request $request)
+    {
+        try {
+            $user = User::find($request->id);
+            $user->status = 2; // 禁用
+            $user->save();
+            // 子账号封号
+            foreach ($user->children as $child) {
+                $child->status = 2;
+                $child->save();
+            }
+            return response()->ajaxSuccess('封号成功');
+        } catch (Exception $e) {
+            return response()->ajaxFail('封号失败，请点击重试');
+        }
+    }
+
+    /**
+     * 解封封号,子账号需主账号手动解封
+     * @param Request $request
+     * @return mixed
+     */
+    public function openAccount(Request $request)
+    {
+        try {
+            $user = User::find($request->id);
+            $user->status = 1; // 启用
+            $user->save();
+
+            return response()->ajaxSuccess('解封成功');
+        } catch (Exception $e) {
+            return response()->ajaxFail('解封失败，请点击重试');
         }
     }
 }

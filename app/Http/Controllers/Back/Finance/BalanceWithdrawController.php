@@ -31,7 +31,7 @@ class BalanceWithdrawController extends Controller
             $query->latest('id')->first();
         }])->paginate(20);
 
-        return view('back.finance.balance_withdraw.index', compact('startDate', 'endDate', 'type', 'status', 'tradeNo', 'userId', 'remark', 'balanceWithdraws'));
+        return view('back.finance.balance-withdraw.index', compact('startDate', 'endDate', 'type', 'status', 'tradeNo', 'userId', 'remark', 'balanceWithdraws'));
     }
 
     /**

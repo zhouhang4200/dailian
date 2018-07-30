@@ -17,7 +17,7 @@ class PlatformFinanceReportDayController extends Controller
      */
     public function index()
     {
-        return view('back.finance.platform_finance_report_day.index', [
+        return view('back.finance.platform-finance-report-day.index', [
            'report' => PlatformFinanceReportDay::condition(request()->all())->paginate()
         ]);
     }

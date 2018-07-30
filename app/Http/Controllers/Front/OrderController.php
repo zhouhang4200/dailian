@@ -33,6 +33,8 @@ class OrderController extends Controller
     /**
      * 查看验收图片
      * @param $tradeNO
+     * @return mixed
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function applyCompleteImage($tradeNO)
     {
@@ -44,7 +46,7 @@ class OrderController extends Controller
             return response()->ajaxFail('暂时没有图片');
         }
 
-        return response()->ajaxSuccess('获取成功', view()->make('front.order.apply_complete_image', [
+        return response()->ajaxSuccess('获取成功', view()->make('front.order.apply-complete-image', [
             'image' => $order->applyComplete->image,
         ])->render());
     }

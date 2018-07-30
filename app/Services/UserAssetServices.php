@@ -75,11 +75,11 @@ class UserAssetServices
         if (! in_array($subType, array_flip(config('user_asset.sub_type')))) {
             throw new Exception('子类型不存在');
         }
-        self::$type    = (int) substr($subType, 0, 1);
-        self::$subType = (int) $subType;
+        self::$type    = (int) substr(trim($subType), 0, 1);
+        self::$subType = (int) self::$type;
         self::$amount  = $amount;
         self::$tradeNO = $tradeNO;
-        self::$remark  = config('user_asset.sub_type')[$subType];
+        self::$remark  = config('user_asset.sub_type')[self::$type];
         self::$userId  = $user->parent_id;
 
         if (self::$instance === null) {

@@ -55,6 +55,7 @@ class RegionController extends Controller
             Region::insert($regions);
             return redirect(route('admin.region.create'))->with('success', '添加成功');
         } catch (\Exception $exception) {
+            request()->flash();
             return redirect(route('admin.region.create'))->with('fail', $exception->getMessage());
         }
     }

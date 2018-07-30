@@ -43,6 +43,7 @@ class GameClassController extends Controller
             ]);
             return redirect(route('admin.game-class.create'))->with('success', '添加成功');
         } catch (\Exception $exception) {
+            request()->flash();
             return redirect(route('admin.game-class.create'))->with('fail', $exception->getMessage());
         }
     }

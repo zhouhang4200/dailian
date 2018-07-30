@@ -45,15 +45,21 @@
                                         <div class="form-group">
                                             <label>所属游戏</label>
                                             <select class="form-control" lay-verify="required" name="game_id">
+                                                <option value="">请选择</option>
                                                 @foreach($games as $item)
-                                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                                    <option value="{{ $item->id }}" @if(old('game_id') == $item->id) selected @endif>{{ $item->name }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
 
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">游戏代练类型名 (添加多个请用英文逗号将多值隔开, 例如:段位,排位)</label>
-                                            <input type="text" lay-verify="required" class="form-control" name="name">
+                                            <input type="text" lay-verify="required" class="form-control" name="name" value="{{ old('name') }}">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="">手续费(%)</label>
+                                            <input type="text" lay-verify="required" class="form-control" name="poundage" value="{{ old('poundage') }}">
                                         </div>
 
                                         <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="store">确认</button>

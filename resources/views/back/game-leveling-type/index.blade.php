@@ -53,6 +53,7 @@
                             <tr>
                                 <th>所属游戏</th>
                                 <th>类型名</th>
+                                <th>手续费</th>
                                 <th>创建时间</th>
                                 <th>更新时间</th>
                                 <th>操作</th>
@@ -62,8 +63,9 @@
                             @forelse ($gameLevelingTypes as $item)
                                 <tr>
 
-                                    <td>{{ $item->game->name }}</td>
+                                    <td>{{ optional($item->game)->name }}</td>
                                     <td>{{ $item->name }}</td>
+                                    <td>{{ $item->poundage + 0 }}</td>
                                     <td>{{ $item->updated_at }}</td>
                                     <td>{{ $item->updated_at }}</td>
                                     <td>

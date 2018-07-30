@@ -43,7 +43,7 @@
                                         {!! csrf_field() !!}
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">游戏类型名</label>
-                                            <input type="text" lay-verify="required" class="form-control" name="name">
+                                            <input type="text" lay-verify="required" class="form-control" name="name" value="{{ old('name') }}">
                                         </div>
 
                                         <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="store">确认</button>

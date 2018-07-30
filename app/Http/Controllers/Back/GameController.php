@@ -50,6 +50,7 @@ class GameController extends Controller
             ]);
             return redirect(route('admin.game.create'))->with('success', '添加成功');
         } catch (\Exception $exception) {
+            request()->flash();
             return redirect(route('admin.game.create'))->with('fail', $exception->getMessage());
         }
     }
@@ -83,6 +84,7 @@ class GameController extends Controller
 
             return redirect(route('admin.game.update', ['id' => $id]))->with('success', '更新成功');
         } catch (\Exception $exception) {
+            request()->flash();
             return redirect(route('admin.game.update', ['id' => $id]))->with('fail', $exception->getMessage());
         }
     }

@@ -55,6 +55,10 @@
                                             <label for="">游戏代练类型名</label>
                                             <input type="text" lay-verify="required" class="form-control" name="name" value="{{ $gameLevelingType->name }}">
                                         </div>
+                                        <div class="form-group">
+                                            <label for="">手续费(%)</label>
+                                            <input type="text" lay-verify="required" class="form-control" name="poundage" value="{{ $gameLevelingType->poundage + 0 }}">
+                                        </div>
 
 
                                         <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="store">确认</button>

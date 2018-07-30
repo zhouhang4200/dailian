@@ -54,6 +54,7 @@ class ServerController extends Controller
             Server::insert($servers);
             return redirect(route('admin.server.create'))->with('success', '添加成功');
         } catch (\Exception $exception) {
+            request()->flash();
             return redirect(route('admin.server.create'))->with('fail', $exception->getMessage());
         }
     }

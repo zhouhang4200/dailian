@@ -42,6 +42,7 @@ class GameLevelingTypeController extends Controller
                 $types[] = [
                     'name' => $name,
                     'game_id' => request('game_id'),
+                    'poundage' => request('poundage'),
                     'created_at' => date('Y-m-d'),
                     'updated_at' => date('Y-m-d'),
                 ];
@@ -50,6 +51,7 @@ class GameLevelingTypeController extends Controller
             GameLevelingType::insert($types);
             return redirect(route('admin.game-leveling-type.create'))->with('success', '添加成功');
         } catch (\Exception $exception) {
+            request()->flash();
             return redirect(route('admin.game-leveling-type.create'))->with('fail', $exception->getMessage());
         }
     }
@@ -76,6 +78,7 @@ class GameLevelingTypeController extends Controller
             $game = GameLevelingType::find($id);
             $game->name = request('name');
             $game->game_id = request('game_id');
+            $game->poundage = request('poundage');
             $game->save();
 
             return redirect(route('admin.game-leveling-type.update', ['id' => $id]))->with('success', '更新成功');

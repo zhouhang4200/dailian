@@ -45,7 +45,7 @@
                                             <select class="form-control" lay-verify="required" name="game_id" lay-filter="chose-game">
                                                 <option value="">请选择</option>
                                                 @foreach($games as $item)
-                                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                                    <option value="{{ $item->id }}" @if(old('game_id') == $item->id) selected @endif>{{ $item->name }}</option>
                                                 @endforeach
                                             </select>
                                         </div>

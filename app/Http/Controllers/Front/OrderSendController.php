@@ -111,7 +111,7 @@ class OrderSendController extends Controller
             ->where('game_leveling_order_trade_no', $tradeNO)
             ->get();
 
-        return  view('front.order.operation_log', [
+        return  view('front.order.operation-log', [
             'operationLog' => $operationLog
         ]);
     }
@@ -124,7 +124,7 @@ class OrderSendController extends Controller
     {
         $order = GameLevelingOrder::getOrderByCondition(['trade_no' =>  $tradeNO], 2)->first();
 
-        return response()->json(view()->make('front.order.complain_info', [
+        return response()->json(view()->make('front.order.complain-info', [
             'order' => $order,
         ])->render());
     }
@@ -132,6 +132,7 @@ class OrderSendController extends Controller
     /**
      * 接单方发送仲裁留言
      * @return mixed
+     * @throws Exception
      */
     public function complainMessage()
     {

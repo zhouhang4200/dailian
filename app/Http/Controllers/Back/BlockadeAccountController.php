@@ -55,6 +55,7 @@ class BlockadeAccountController extends Controller
             $arr[$k]['nameOrId'] = $blockadeAccount->user->name.'/'.$blockadeAccount->user->id;
             $arr[$k]['reason'] = $blockadeAccount->reason;
             $arr[$k]['remark'] = $blockadeAccount->remark;
+            $arr[$k]['type'] = $blockadeAccount->type;
             $arr[$k]['start_time'] = $blockadeAccount->start_time;
             $arr[$k]['end_time'] = $blockadeAccount->end_time ?? '--';
             if ($blockadeAccount->type == 1) {
@@ -197,9 +198,14 @@ class BlockadeAccountController extends Controller
                 return response()->ajaxFail('调整时间失败,请选择结束时间或勾选永久');
             }
             $blockadeAccount = BlockadeAccount::find($request->id);
+            // 如果是封号结束的，则抛出错误
+            if ($blockadeAccount->type == 3) {
+                return response()->ajaxFail('封号已结束，如需封号请重新添加封号记录');
+            }
             $blockadeAccount->start_time = $data['start_time'];
 
-            if (isset($data['end_time']) && ! empty($data['end_time'])) {
+            if (isset($data['end_time']) && ! empty($data['end_time']) && ! isset($request->data['type'])) {
+                $blockadeAccount->type = 1;
                 $blockadeAccount->end_time = $data['end_time'];
             }
 

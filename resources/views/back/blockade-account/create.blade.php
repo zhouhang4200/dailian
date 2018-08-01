@@ -43,7 +43,7 @@
                                 <div class="layui-form-item">
                                     <label class="layui-form-label">封号结束时间</label>
                                     <div class="layui-input-inline" style="width: 380px">
-                                        <input type="text" class="form-control" id="time-end" placeholder="若为永久封号则此处为空并勾选永久封号" name="end_time" value="">
+                                        <input type="text" class="form-control" id="time-end" placeholder="" name="end_time" value="">
                                     </div>
                                     <input style="position:relative;float: left" type="checkbox" name="type" value="2">永久
                                 </div>

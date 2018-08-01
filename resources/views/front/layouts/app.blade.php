@@ -299,6 +299,31 @@ $finance = ['frontend.finance.asset', 'frontend.finance.amount-flow', 'frontend.
             return true;
         });
     });
+
+    (function () {
+        var socket=io("{{ env('SOCKET') }}");
+
+        socket.on("blockade:all", function (message) {
+            var message="<div style='padding:25px;font-size:14px; line-height:25px;letter-spacing:1px'>&nbsp;&nbsp;&nbsp;"+message+"</div>";
+            layer.open({
+                type: 1,
+                title:'提示',
+                area:'400px'
+                ,content: message
+                ,btn: '确定'
+                ,btnAlign: 'c' //按钮居中
+                ,shade: 0 //不显示遮罩
+                ,yes: function(){
+                    document.getElementById('logout-form').submit();
+                    layer.closeAll();
+                },
+                cancel:function () {
+                    document.getElementById('logout-form').submit();
+                    layer.closeAll();
+                }
+            });
+        });
+    })(window);
 </script>
 @yield('js')
 </body>

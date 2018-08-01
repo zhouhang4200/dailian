@@ -53,22 +53,16 @@
                         </form>
                     </div>
                 </div>
-                    <div class="layui-tab layui-tab-brief layui-form" lay-filter="order-list">
-                        <ul class="layui-tab-title">
-                            <li id="all" class="layui-this" lay-id="0">全部 <span  class="layui-badge layui-bg-blue wait-handle-quantity  layui-hide"></span></li>
-                            <li id="blockading" class="" lay-id="1">封号中
-                                <span class="qs-badge quantity-13 layui-hide"></span>
-                            </li>
-                            <li id="unblockade" class="" lay-id="3">封号结束
-                                <span class="qs-badge quantity-13 layui-hide"></span>
-                            </li>
-                            <li id="blockaded" class="" lay-id="2">永久封号
-                                <span class="qs-badge quantity-13 layui-hide"></span>
-                            </li>
-                        </ul>
-                    </div>
-                    <table id="blockade" lay-filter="blockade" ></table>
+                <div class="layui-tab layui-tab-brief layui-form" lay-filter="order-list">
+                    <ul class="layui-tab-title">
+                        <li id="all" class="layui-this" lay-id="0">全部</li>
+                        <li id="blockading" class="" lay-id="1">封号中</li>
+                        <li id="unblockade" class="" lay-id="3">封号结束</li>
+                        <li id="blockaded" class="" lay-id="2">永久封号</li>
+                    </ul>
                 </div>
+                <table id="blockade" lay-filter="blockade" ></table>
+            </div>
         </div>
     </div>
 
@@ -103,7 +97,7 @@
 @section('js')
     <script type="text/html" id="operation">
         <button class="layui-btn layui-btn-normal layui-btn-xs" style="width: 80px;padding: 0" data-user-id="@{{ d.user_id }}" data-id="@{{ d.id }}" lay-submit lay-filter="unblockade">解封账号</button>
-        <button class="layui-btn layui-btn-normal layui-btn-xs" style="width: 80px;padding: 0" data-id="@{{ d.id }}" lay-submit lay-filter="change-time">调整时间</button>
+        <button class="layui-btn layui-btn-normal layui-btn-xs" style="width: 80px;padding: 0" data-id="@{{ d.id }}" lay-submit data-start-time="@{{ d.start_time }}" data-end-time="@{{ d.end_time }}" data-type="@{{ d.type }}" lay-filter="change-time">调整时间</button>
     </script>
     <script>
         layui.use(['form', 'laytpl', 'element', 'table'], function(){
@@ -132,25 +126,6 @@
                 elem: '#end-time'
                 ,type: 'datetime'
             });
-            // 查找
-            form.on('submit(search)', function (data) {
-                var id=$("input[name=id]").val();
-                var name=$("input[name=name]").val();
-                var phone=$("input[name=phone]").val();
-                var s = window.location.search;
-                var page=s.getAddrVal('page');
-                $.get("{{ route('admin.user') }}", {id:id,name:name,phone:phone}, function (result) {
-                    $('#user').html(result);
-                    form.render();
-                });
-                return false;
-            }, 'json');
-
-            String.prototype.getAddrVal = String.prototype.getAddrVal||function(name){
-                var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
-                var data = this.substr(1).match(reg);
-                return data!=null?decodeURIComponent(data[2]):null;
-            }
 
             // 加载数据
             table.render({
@@ -215,8 +190,8 @@
                 var data = {};
                 if (filters == undefined) {
                     var nameOrId=$("input[name=nameOrId]").val();
-                    var startTime=$("input[name=start_time]").val();
-                    var endTime=$("input[name=end_time]").val();
+                    var startTime=$("#start_time").val();
+                    var endTime=$("#end_time").val();
                     var type=$("input[name=type]").val();
                     data={nameOrId:nameOrId,startTime:startTime,endTime:endTime,type:type};
                 } else {
@@ -264,7 +239,7 @@
                             reloadTable(data);
                             form.render();
                         });
-                    }, 'json');
+                    });
                     layer.closeAll();
                 });
                 return false;
@@ -273,6 +248,20 @@
             // 调整时间
             form.on('submit(change-time)', function (data) {
                 var id=this.getAttribute('data-id');
+                var start_time=this.getAttribute('data-start-time');
+                var end_time=this.getAttribute('data-end-time');
+                var type=this.getAttribute('data-type');
+
+                $("#start-time").val(start_time);
+                if (end_time == '--'){
+                    end_time = '';
+                }
+                $("#end-time").val(end_time);
+                if (type == 2) {
+                    $("input[name=type]").attr('checked', true);
+                    form.render();
+                }
+
                 layer.open({
                     type: 1,
                     shade: 0.2,

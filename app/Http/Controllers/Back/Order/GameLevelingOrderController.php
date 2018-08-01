@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Back;
+namespace App\Http\Controllers\Back\Order;
 
 use App\Models\GameLevelingOrder;
 use App\Http\Controllers\Controller;
@@ -11,14 +11,14 @@ use App\Models\GameLevelingOrderLog;
  * Class OrderController
  * @package App\Http\Controllers\Back
  */
-class OrderController extends Controller
+class GameLevelingOrderController extends Controller
 {
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index()
     {
-        return view('back.order.index', [
+        return view('back.order.game-leveling-order.index', [
             'orders' => GameLevelingOrder::getOrderByCondition(request()->all())->paginate(),
         ]);
     }
@@ -30,7 +30,7 @@ class OrderController extends Controller
      */
     public function show($tradeNO)
     {
-        return view('back.order.show', [
+        return view('back.order.game-leveling-order.show', [
             'order' => GameLevelingOrder::where('trade_no', $tradeNO)->firstOrFail(),
         ]);
     }
@@ -42,7 +42,7 @@ class OrderController extends Controller
      */
     public function log($tradeNO)
     {
-        return view('back.order.log', [
+        return view('back.order.game-leveling-order.log', [
             'logs' => GameLevelingOrderLog::where('game_leveling_order_trade_no', $tradeNO)->get(),
         ]);
     }

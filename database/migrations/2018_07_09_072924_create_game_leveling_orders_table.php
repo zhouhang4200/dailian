@@ -48,9 +48,9 @@ class CreateGameLevelingOrdersTable extends Migration
             $table->string('user_qq', 20)->default(0)->comment('发单用户qq');
             $table->unsignedInteger('status')->default(1)->comment('订单状态');
             $table->unsignedInteger('take_user_id')->default(0)->comment('接单用户ID');
-            $table->unsignedInteger('take_username')->nullable()->comment('接单用户名');
+            $table->string('take_username')->nullable()->comment('接单用户名');
             $table->unsignedInteger('take_parent_user_id')->default(0)->comment('接单用户父ID');
-            $table->unsignedInteger('take_parent_username')->nullable()->comment('接单用户父用户名');
+            $table->string('take_parent_username')->nullable()->comment('接单用户父用户名');
             $table->timestamp('take_at')->nullable()->comment('接单时间');
             $table->decimal('price_increase_step', 17, 2)->default(0)->comment('自动加价步长');
             $table->decimal('price_ceiling', 17, 2)->default(0)->comment('自动加价上限');

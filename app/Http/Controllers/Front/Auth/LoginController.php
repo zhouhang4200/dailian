@@ -151,9 +151,9 @@ class LoginController extends Controller
     {
         $this->guard()->logout();
 
-        $request->session()->invalidate();
+        $request->session()->regenerate();
 
-        return redirect('/login');
+        return redirect(route('login'));
     }
 
     /**

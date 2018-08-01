@@ -43,6 +43,7 @@ class GameTypeController extends Controller
             ]);
             return redirect(route('admin.game-type.create'))->with('success', '添加成功');
         } catch (\Exception $exception) {
+            request()->flash();
             return redirect(route('admin.game-type.create'))->with('fail', $exception->getMessage());
         }
     }

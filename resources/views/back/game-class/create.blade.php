@@ -42,8 +42,8 @@
                                     <form role="form" class="layui-form" href="{{ route('admin.game-class.create') }}" method="post">
                                         {!! csrf_field() !!}
                                         <div class="form-group">
-                                            <label for="exampleInputEmail1">游戏分类名</label>
-                                            <input type="text" lay-verify="required" class="form-control" name="name">
+                                            <label for="">游戏分类名</label>
+                                            <input type="text" lay-verify="required" class="form-control" name="name" value="{{ old('name') }}">
                                         </div>
 
                                         <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="store">确认</button>

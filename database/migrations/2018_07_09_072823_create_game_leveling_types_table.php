@@ -17,6 +17,7 @@ class CreateGameLevelingTypesTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('game_id')->comment('游戏ID');
             $table->string('name', 60)->comment('代练类型名称');
+            $table->decimal('poundage', 8,2)->comment('代练类型手续费');
             $table->timestamps();
         });
     }

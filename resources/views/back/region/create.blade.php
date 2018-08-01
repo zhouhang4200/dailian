@@ -1,6 +1,6 @@
 @extends('back.layouts.app')
 
-@section('title', ' | 添加游戏类型')
+@section('title', ' | 添加游戏区')
 
 @section('css')
 
@@ -15,7 +15,7 @@
 
                     <div class="layui-tab layui-tab-brief" lay-filter="widgetTab">
                         <ul class="layui-tab-title">
-                            <li class="layui-this" lay-id="add">添加游戏类型</li>
+                            <li class="layui-this" lay-id="add">添加游戏</li>
                         </ul>
                         <div class="layui-tab-content">
 
@@ -39,15 +39,25 @@
 
                             <div class="col-lg-12">
                                 <div class="main-box-body clearfix">
-                                    <form role="form" class="layui-form" href="{{ route('admin.game-type.create') }}" method="post">
+                                    <form role="form" class="layui-form" href="{{ route('admin.region.create') }}" method="post">
                                         {!! csrf_field() !!}
+
                                         <div class="form-group">
-                                            <label for="">游戏类型名</label>
+                                            <label>所属游戏</label>
+                                            <select class="form-control" lay-verify="required" name="game_id">
+                                                @foreach($games as $item)
+                                                    <option value="{{ $item->id }}" @if(old('game_id') == $item->id) selected @endif>{{ $item->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="">游戏区名  (添加多个请用英文逗号将多值隔开,例如:电信,网通)</label>
                                             <input type="text" lay-verify="required" class="form-control" name="name" value="{{ old('name') }}">
                                         </div>
 
                                         <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="store">确认</button>
-                                        <a  href="{{ route('admin.game-type') }}" type="button" class="layui-btn layui-btn-normal " >返回列表</a>
+                                        <a  href="{{ route('admin.region') }}" type="button" class="layui-btn layui-btn-normal " >返回列表</a>
                                     </form>
                                 </div>
                             </div>

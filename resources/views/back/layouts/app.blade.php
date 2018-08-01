@@ -99,9 +99,6 @@
         }
     });
 
-    $('#start-time').datepicker();
-    $('#end-time').datepicker();
-
     function reload() {
         setTimeout(function () {
             location.reload();
@@ -120,9 +117,31 @@
         }, 900);
     }
 
-    layui.use(['form', 'layedit', 'laydate'], function(){
-        var form = layui.form
-            ,layer = layui.layer;
+    layui.use(['form', 'layedit', 'laydate', 'element'], function(){
+        var form = layui.form ,layer = layui.layer, element = layui.element, laydate = layui.laydate;
+
+        laydate.render({
+            elem: '#start-time'
+        });
+        laydate.render({
+            elem: '#end-time'
+        });
+
+        form.on('submit(delete)', function(data){
+            layer.confirm('确定要删除吗?', {icon: 3, title:'提示'}, function(index){
+                $.post($(data.elem).attr('data-url'), function (result) {
+                    if (result.status == 1) {
+                        layer.msg(result.message, {time:500}, function () {
+                            location.reload()
+                        });
+                    } else {
+                        layer.msg(result.message)
+                    }
+                }, 'json');
+                layer.close(index);
+                return true;
+            });
+        });
 
         $('#admin-logout').click(function () {
             layer.confirm('确定退出吗?', {icon: 3, title:'提示'}, function(index){
@@ -131,6 +150,7 @@
                 return true;
             });
         });
+
     });
 
 </script>

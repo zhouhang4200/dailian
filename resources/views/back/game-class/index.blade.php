@@ -49,7 +49,7 @@
                         <table class="layui-table" lay-size="sm">
                             <thead>
                             <tr>
-                                <th>名字</th>
+                                <th>分类名</th>
                                 <th>创建时间</th>
                                 <th>更新时间</th>
                                 <th>操作</th>
@@ -81,25 +81,4 @@
 @endsection
 
 @section('js')
-    <script>
-        layui.use(['form', 'layedit', 'laydate'], function(){
-            var form = layui.form,layer = layui.layer;
-
-            form.on('submit(delete)', function(data){
-                layer.confirm('确定要删除吗?', {icon: 3, title:'提示'}, function(index){
-                    $.post($(data.elem).attr('data-url'), function (result) {
-                        if (result.status == 1) {
-                            layer.msg(result.message, {time:600}, function () {
-                                location.reload()
-                            });
-                        } else {
-                            layer.msg(result.message)
-                        }
-                    }, 'json');
-                    layer.close(index);
-                    return true;
-                });
-            });
-        });
-    </script>
 @endsection

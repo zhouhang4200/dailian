@@ -71,7 +71,6 @@
                             <tbody>
                             @forelse ($orders as $item)
                                 <tr>
-
                                     <td>{{ $item->trade_no }}</td>
                                     <td>{{ $item->game_name }}</td>
                                     <td>{{ $item->region_name }}</td>
@@ -87,7 +86,7 @@
                                     <td>{{ $item->created_at }}</td>
                                     <td>{{ $item->complete_at }}</td>
                                     <td>
-                                        <a href="{{ route('admin.order.show', ['trade_no' => $item->trade_no]) }}" type="button" class="layui-btn layui-btn-normal layui-btn-mini complete" data-id="">详情</a>
+                                        <a href="{{ route('admin.game-leveling-order.show', ['trade_no' => $item->trade_no]) }}" type="button" class="layui-btn layui-btn-normal layui-btn-mini complete" data-id="">详情</a>
                                     </td>
                                 </tr>
                             @empty

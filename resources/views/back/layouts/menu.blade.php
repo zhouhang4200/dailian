@@ -2,6 +2,57 @@
 $currentRouteName = Route::currentRouteName();
 $currentOneLevelMenu = explode('.', Route::currentRouteName())[0];
 
+$orderRoute = [
+    'admin.game-leveling-order',
+    'admin.game-leveling-order.show',
+    'admin.game-leveling-order.log',
+    'admin.game-leveling-order-complain',
+];
+
+$financeRoute = [
+    'admin.balance-withdraw',
+    'admin.platform-finance-report-day',
+    'admin.user-finance-report-day',
+    'admin.user-asset-flow',
+];
+
+$gameRoute = [
+    'admin.game',
+    'admin.game.create',
+    'admin.game.update',
+    'admin.region',
+    'admin.region.create',
+    'admin.region.update',
+    'admin.server',
+    'admin.server.create',
+    'admin.server.update',
+    'admin.game-type',
+    'admin.game-type.create',
+    'admin.game-type.update',
+    'admin.game-class',
+    'admin.game-class.create',
+    'admin.game-class.update',
+    'admin.game-leveling-type',
+    'admin.game-leveling-type.create',
+    'admin.game-leveling-type.update',
+];
+
+$systemRoute = [
+    'admin.admin-user',
+    'admin.admin-user.create',
+    'admin.admin-user.update',
+    'admin.admin-role',
+    'admin.admin-role.create',
+    'admin.admin-role.update',
+    'admin.admin-permission',
+    'admin.admin-permission.create',
+    'admin.admin-permission.update',
+    'admin.admin-permission-group',
+    'admin.admin-permission-group.create',
+    'admin.admin-permission-group.update',
+];
+
+
 ?>
 <div id="nav-col">
     <section id="col-left" class="col-left-nano">
@@ -15,11 +66,7 @@ $currentOneLevelMenu = explode('.', Route::currentRouteName())[0];
                         </a>
                     </li>
 
-                    <li @if(in_array($currentRouteName, [
-                        'admin.order',
-                        'admin.order.show',
-                        'admin.order.log',
-                        ])) class="open active" @endif>
+                    <li @if(in_array($currentRouteName, $orderRoute)) class="open active" @endif>
                         <a href="#" class="dropdown-toggle">
                             <i class="fa fa-shopping-cart"></i>
                             <span>订单管理</span>
@@ -27,12 +74,20 @@ $currentOneLevelMenu = explode('.', Route::currentRouteName())[0];
                         </a>
                         <ul class="submenu">
                             <li>
-                                <a href="{{ route('admin.order') }}" @if(in_array($currentRouteName, [
-                                    'admin.order',
-                                    'admin.order.show',
-                                    'admin.order.log',
+                                <a href="{{ route('admin.game-leveling-order') }}" @if(in_array($currentRouteName, [
+                                    'admin.game-leveling-order',
+                                    'admin.game-leveling-order.show',
+                                    'admin.game-leveling-order.log',
                                 ])) class="active" @endif>
-                                    订单管理
+                                    订单列表
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('admin.game-leveling-order-complain') }}" @if(in_array($currentRouteName, [
+                                    'admin.game-leveling-order-complain',
+
+                                ])) class="active" @endif>
+                                    仲裁订单
                                 </a>
                             </li>
                         </ul>
@@ -58,12 +113,7 @@ $currentOneLevelMenu = explode('.', Route::currentRouteName())[0];
                     </li>
 
 
-                    <li @if(in_array($currentRouteName, [
-                        'admin.balance-withdraw',
-                        'admin.platform-finance-report-day',
-                        'admin.user-finance-report-day',
-                        'admin.user-asset-flow',
-                        ])) class="open active" @endif>
+                    <li @if(in_array($currentRouteName, $financeRoute)) class="open active" @endif>
                         <a href="#" class="dropdown-toggle">
                             <i class="fa  fa-money"></i>
                             <span>财务管理</span>
@@ -107,7 +157,7 @@ $currentOneLevelMenu = explode('.', Route::currentRouteName())[0];
                         'admin.article.category-notice-delete',
                         ])) class="open active" @endif>
                         <a href="#" class="dropdown-toggle">
-                            <i class="fa fa-phone"></i>
+                            <i class="fa  fa-volume-up"></i>
                             <span>公告管理</span>
                             <i class="fa fa-chevron-circle-right drop-icon"></i>
                         </a>
@@ -134,7 +184,7 @@ $currentOneLevelMenu = explode('.', Route::currentRouteName())[0];
                         'admin.article.category-help-delete',
                         ])) class="open active" @endif>
                         <a href="#" class="dropdown-toggle">
-                            <i class="fa fa-shopping-cart"></i>
+                            <i class="fa fa-wrench"></i>
                             <span>帮助管理</span>
                             <i class="fa fa-chevron-circle-right drop-icon"></i>
                         </a>
@@ -147,23 +197,7 @@ $currentOneLevelMenu = explode('.', Route::currentRouteName())[0];
                         </ul>
                     </li>
 
-                    <li @if(in_array($currentRouteName, [
-                        'admin.game',
-                        'admin.game.create',
-                        'admin.game.update',
-                        'admin.region',
-                        'admin.region.create',
-                        'admin.region.update',
-                        'admin.server',
-                        'admin.server.create',
-                        'admin.server.update',
-                        'admin.game-type',
-                        'admin.game-type.create',
-                        'admin.game-type.update',
-                        'admin.game-class',
-                        'admin.game-class.create',
-                        'admin.game-class.update',
-                        ])) class="open active" @endif>
+                    <li @if(in_array($currentRouteName, $gameRoute)) class="open active" @endif>
                         <a href="#" class="dropdown-toggle">
                             <i class="fa  fa-life-ring"></i>
                             <span>游戏管理</span>
@@ -172,9 +206,9 @@ $currentOneLevelMenu = explode('.', Route::currentRouteName())[0];
                         <ul class="submenu">
                             <li>
                                 <a href="{{ route('admin.game') }}" @if(in_array($currentRouteName, [
-                                'admin.game',
-                                'admin.game.create',
-                                'admin.game.update',
+                                    'admin.game',
+                                    'admin.game.create',
+                                    'admin.game.update',
                                 ])) class="active" @endif>
                                     游戏列表
                                 </a>
@@ -204,29 +238,16 @@ $currentOneLevelMenu = explode('.', Route::currentRouteName())[0];
                                 </a>
                             </li>
                             <li>
-                                <a href="{{ route('admin.server') }}" @if($currentRouteName == 'admin.server') class="active" @endif>
+                                <a href="{{ route('admin.game-leveling-type') }}" @if($currentRouteName == 'admin.game-leveling-type') class="active" @endif>
                                     游戏代练类型列表
                                 </a>
                             </li>
                         </ul>
                     </li>
 
-                    <li @if(in_array($currentRouteName, [
-                        'admin.admin-user',
-                        'admin.admin-user.create',
-                        'admin.admin-user.update',
-                        'admin.admin-role',
-                        'admin.admin-role.create',
-                        'admin.admin-role.update',
-                        'admin.admin-permission',
-                        'admin.admin-permission.create',
-                        'admin.admin-permission.update',
-                        'admin.admin-permission-group',
-                        'admin.admin-permission-group.create',
-                        'admin.admin-permission-group.update',
-                        ])) class="open active" @endif>
+                    <li @if(in_array($currentRouteName, $systemRoute)) class="open active" @endif>
                         <a href="#" class="dropdown-toggle">
-                            <i class="fa  fa-life-ring"></i>
+                            <i class="fa fa-share-alt"></i>
                             <span>系统管理</span>
                             <i class="fa fa-chevron-circle-right drop-icon"></i>
                         </a>

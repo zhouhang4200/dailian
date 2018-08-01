@@ -182,7 +182,7 @@ $finance = ['frontend.finance.asset', 'frontend.finance.amount-flow', 'frontend.
                         </dd>
                         <hr>
                         <dd style="text-align: center;" id="logout">
-                            <a href="{{ route('admin.logout') }}" onclick="event.preventDefault();">
+                            <a href="{{ route('logout') }}" onclick="event.preventDefault();">
                                 退出
                             </a>
                         </dd>

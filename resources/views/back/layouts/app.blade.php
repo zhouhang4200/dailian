@@ -56,10 +56,10 @@
                             <ul class="dropdown-menu">
                                 <li><a href="#"><i class="fa fa-cog"></i>修改密码</a></li>
                                 <li>
-                                    <a href="#" onclick="event.preventDefault();" id="logout">
+                                    <a href="#" onclick="event.preventDefault();" id="admin-logout">
                                         <i class="fa fa-power-off"></i> 注销登录
                                     </a>
-                                    <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
+                                    <form id="admin-logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
                                         {{ csrf_field() }}
                                     </form>
                                 </li>
@@ -124,9 +124,9 @@
         var form = layui.form
             ,layer = layui.layer;
 
-        $('#logout').click(function () {
+        $('#admin-logout').click(function () {
             layer.confirm('确定退出吗?', {icon: 3, title:'提示'}, function(index){
-                document.getElementById('logout-form').submit();
+                document.getElementById('admin-logout-form').submit();
                 layer.close(index);
                 return true;
             });

@@ -150,4 +150,12 @@ class User extends Authenticatable
 
         return $query;
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function blockadeAccounts()
+    {
+        return $this->hasMany(BlockadeAccount::class);
+    }
 }

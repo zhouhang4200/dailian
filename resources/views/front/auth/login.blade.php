@@ -71,6 +71,20 @@
             }, function (result) {
                 if (result.status == 1) {
                     location.reload();
+                } else if (result.status == 3){
+                    var message="<div style='padding:25px;font-size:14px; line-height:25px;letter-spacing:1px'>&nbsp;&nbsp;&nbsp;"+result.message+"</div>";
+                    layer.open({
+                        type: 1,
+                        title:'提示',
+                        area:'400px'
+                        ,content: message
+                        ,btn: '确定'
+                        ,btnAlign: 'c' //按钮居中
+                        ,shade: 0 //不显示遮罩
+                        ,yes: function(){
+                            layer.closeAll();
+                        }
+                    });
                 } else {
                     layer.msg(result.message);
                 }

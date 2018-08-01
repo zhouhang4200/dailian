@@ -171,6 +171,7 @@
                 });
                 return false;
             });
+
             form.on('submit(subtract-money-popup)', function(data){
                 layer.confirm('您确认要扣用户ID为: ' + data.field.id  +' 商户 <br/><span style="color:red;">' + $(data.form).find("option:selected").text()  + data.field.amount + ' </span>元吗？', {icon: 3, title:'提示'}, function(index){
                     $.post("{{ route('admin.user') }}", {
@@ -185,53 +186,6 @@
                 return false;
             });
 
-            // 封号
-            form.on('submit(close-account)', function(data){
-                var id=this.getAttribute('data-id');
-                layer.confirm('您确认要封号用户: ' + id, {icon: 3, title:'提示'}, function(index){
-                    $.post("{{ route('admin.user.close-account') }}", {
-                        id:id
-                    }, function(result){
-                        layer.msg(result.message, {time:1000}, function () {
-                            var id=$("input[name=id]").val();
-                            var name=$("input[name=name]").val();
-                            var phone=$("input[name=phone]").val();
-                            var s = window.location.search;
-                            var page=s.getAddrVal('page');
-                            $.get("{{ route('admin.user') }}", {id:id,name:name,phone:phone}, function (result) {
-                                $('#user').html(result);
-                                form.render();
-                            });
-                        });
-                    }, 'json');
-                    layer.closeAll();
-                });
-                return false;
-            });
-
-            // 解除封号
-            form.on('submit(open-account)', function(data){
-                var id=this.getAttribute('data-id');
-                layer.confirm('您确认要解封用户: ' + id, {icon: 3, title:'提示'}, function(index){
-                    $.post("{{ route('admin.user.open-account') }}", {
-                        id:id
-                    }, function(result){
-                        layer.msg(result.message, {time:1000}, function () {
-                            var id=$("input[name=id]").val();
-                            var name=$("input[name=name]").val();
-                            var phone=$("input[name=phone]").val();
-                            var s = window.location.search;
-                            var page=s.getAddrVal('page');
-                            $.get("{{ route('admin.user') }}", {id:id,name:name,phone:phone}, function (result) {
-                                $('#user').html(result);
-                                form.render();
-                            });
-                        });
-                    }, 'json');
-                    layer.closeAll();
-                });
-                return false;
-            });
         });
     </script>
 @endsection

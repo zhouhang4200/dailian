@@ -182,7 +182,7 @@ $finance = ['frontend.finance.asset', 'frontend.finance.amount-flow', 'frontend.
                         </dd>
                         <hr>
                         <dd style="text-align: center;" id="logout">
-                            <a href="{{ route('admin.logout') }}" onclick="event.preventDefault();">
+                            <a href="#" onclick="event.preventDefault();">
                                 退出
                             </a>
                         </dd>
@@ -299,6 +299,30 @@ $finance = ['frontend.finance.asset', 'frontend.finance.amount-flow', 'frontend.
             return true;
         });
     });
+
+    // 监听广播
+    (function () {
+        var socket=io("{{ env('SOCKET') }}");
+        socket.on('blockade:all', function (message) {
+            layer.open({
+                type: 1,
+                title:'提示',
+                area:'400px'
+                ,content: "<div style='padding:25px;font-size:14px; line-height:25px;letter-spacing:1px'>&nbsp;&nbsp;&nbsp;"+message+"</div>"
+                ,btn: '确定'
+                ,btnAlign: 'c' //按钮居中
+                ,shade: 0 //不显示遮罩
+                ,yes: function(){
+                    document.getElementById('logout-form').submit();
+                    layer.closeAll();
+                },
+                cancel:function () {
+                    document.getElementById('logout-form').submit();
+                    layer.closeAll();
+                }
+            });
+        });
+    })(window);
 </script>
 @yield('js')
 </body>

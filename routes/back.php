@@ -120,8 +120,6 @@ Route::group(['middleware' => 'auth.admin'], function () {
         Route::get('certification/{id}', 'UserController@certification')->name('admin.user.certification'); // 实名认证信息
         Route::post('certification/pass', 'UserController@certificationPass')->name('admin.user.certification-pass'); // 实名认证通过
         Route::post('certification/refuse', 'UserController@certificationRefuse')->name('admin.user.certification-refuse'); // 实名认证拒绝
-        Route::post('close-account', 'UserController@closeAccount')->name('admin.user.close-account'); // 封号
-        Route::post('open-account', 'UserController@openAccount')->name('admin.user.open-account'); // 解封
     });
 
     // 公告，帮助中心
@@ -198,6 +196,18 @@ Route::group(['middleware' => 'auth.admin'], function () {
             Route::get('update/{id}', 'AdminPermissionGroupController@edit')->name('admin.admin-permission-group.update');
             Route::post('update/{id}', 'AdminPermissionGroupController@update')->name('admin.admin-permission-group.update');
         });
+    });
+
+    // 封号
+    Route::prefix('blockade-account')->group(function () {
+        Route::get('/', 'BlockadeAccountController@index')->name('admin.blockade-account'); // 列表页
+        Route::post('table', 'BlockadeAccountController@table')->name('admin.blockade-account.table'); // table 表单
+        Route::get('create', 'BlockadeAccountController@create')->name('admin.blockade-account.create');
+        Route::post('store', 'BlockadeAccountController@store')->name('admin.blockade-account.store');
+        Route::post('update', 'BlockadeAccountController@update')->name('admin.blockade-account.update'); // 修改
+        Route::post('count', 'BlockadeAccountController@count')->name('admin.blockade-account.count'); // 计算每种状态的个数
+        Route::post('unblockade', 'BlockadeAccountController@unblockade')->name('admin.blockade-account.unblockade'); // 解除封号
+        Route::post('time', 'BlockadeAccountController@time')->name('admin.blockade-account.time'); // 调整时间
     });
 });
 

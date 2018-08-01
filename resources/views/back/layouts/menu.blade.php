@@ -253,7 +253,25 @@ $currentOneLevelMenu = explode('.', Route::currentRouteName())[0];
                             </li>
                         </ul>
                     </li>
-
+                    <li @if(in_array($currentRouteName, [
+                        'admin.blockade-account',
+                        'admin.blockade-account.create',
+                        'admin.blockade-account.store',
+                        'admin.blockade-account.table',
+                        ])) class="open active" @endif>
+                        <a href="#" class="dropdown-toggle">
+                            <i class="fa fa-shopping-cart"></i>
+                            <span>封号管理</span>
+                            <i class="fa fa-chevron-circle-right drop-icon"></i>
+                        </a>
+                        <ul class="submenu">
+                            <li>
+                                <a href="{{ route('admin.blockade-account') }}" @if($currentRouteName == 'admin.blockade-account') class="active" @endif>
+                                    封号列表
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
         </div>

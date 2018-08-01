@@ -42,7 +42,7 @@
                                     <form role="form" class="layui-form" href="{{ route('admin.game-type.create') }}" method="post">
                                         {!! csrf_field() !!}
                                         <div class="form-group">
-                                            <label for="exampleInputEmail1">游戏类型名</label>
+                                            <label for="">游戏类型名</label>
                                             <input type="text" lay-verify="required" class="form-control" name="name" value="{{ old('name') }}">
                                         </div>
 

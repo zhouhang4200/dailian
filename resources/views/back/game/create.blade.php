@@ -46,7 +46,7 @@
                                         <div class="form-group">
                                             <label>类型</label>
                                             <select class="form-control" lay-verify="required" name="game_type_id">
-                                                <option>请选择</option>
+                                                <option value="">请选择</option>
                                                 @foreach($gameTypes as $item)
                                                     <option value="{{ $item->id }}" @if(old('game_type_id') == $item->id) @endif>{{ $item->name }}</option>
                                                 @endforeach
@@ -56,7 +56,7 @@
                                         <div class="form-group">
                                             <label>分类</label>
                                             <select class="form-control" lay-verify="required" name="game_class_id">
-                                                <option>请选择</option>
+                                                <option value="">请选择</option>
                                                 @foreach($gameClasses as $item)
                                                     <option value="{{ $item->id }}" @if(old('game_class_id') == $item->id) @endif>{{ $item->name }}</option>
                                                 @endforeach

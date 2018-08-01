@@ -12,7 +12,7 @@
         <div class="col-lg-12">
             <ol class="breadcrumb">
                 <li class=""><span>首页</span></li>
-                <li class=""><a href="{{ route('admin.order') }}"><span>平台订单</span></a></li>
+                <li class=""><a href="{{ route('admin.game-leveling-order') }}"><span>平台订单</span></a></li>
                 <li class="active"><span>订单详情</span></li>
             </ol>
         </div>
@@ -25,8 +25,8 @@
                     <div class="table-responsive">
                         <div class="layui-tab layui-tab-brief" lay-filter="detail">
                             <ul class="layui-tab-title">
-                                <li  class="layui-this"  lay-id="detail"><a href="{{ route('admin.order.show', ['trade_no' => request('trade_no')])  }}">订单内容</a></li>
-                                <li lay-id="authentication"><a href="{{ route('admin.order.log', ['trade_no' => request('trade_no')])  }}">订单日志</a></li>
+                                <li  class="layui-this"  lay-id="detail"><a href="{{ route('admin.game-leveling-order.show', ['trade_no' => request('trade_no')])  }}">订单内容</a></li>
+                                <li lay-id="authentication"><a href="{{ route('admin.game-leveling-order.log', ['trade_no' => request('trade_no')])  }}">订单日志</a></li>
                             </ul>
                             <div class="layui-tab-content">
                                 <div class="layui-tab-item layui-show content">
@@ -144,11 +144,4 @@
 @endsection
 
 @section('js')
-
-    <script>
-        layui.use(['layer', 'element', 'form'], function () {
-            var element = layui.element, form = layui.form;
-
-        });
-    </script>
 @endsection

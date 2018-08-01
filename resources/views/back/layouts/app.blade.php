@@ -99,9 +99,6 @@
         }
     });
 
-    $('#start-time').datepicker();
-    $('#end-time').datepicker();
-
     function reload() {
         setTimeout(function () {
             location.reload();
@@ -120,9 +117,15 @@
         }, 900);
     }
 
-    layui.use(['form', 'layedit', 'laydate'], function(){
-        var form = layui.form
-            ,layer = layui.layer;
+    layui.use(['form', 'layedit', 'laydate', 'element'], function(){
+        var form = layui.form ,layer = layui.layer, element = layui.element, laydate = layui.laydate;
+
+        laydate.render({
+            elem: '#start-time'
+        });
+        laydate.render({
+            elem: '#end-time'
+        });
 
         form.on('submit(delete)', function(data){
             layer.confirm('确定要删除吗?', {icon: 3, title:'提示'}, function(index){

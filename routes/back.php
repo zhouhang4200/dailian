@@ -26,10 +26,17 @@ Route::group(['middleware' => 'auth.admin'], function () {
 
 
     // 订单
-    Route::prefix('order')->group(function () {
-        Route::get('/', 'OrderController@index')->name('admin.order');
-        Route::get('show/{trade_no}', 'OrderController@show')->name('admin.order.show');
-        Route::get('log/{trade_no}', 'OrderController@log')->name('admin.order.log');
+    Route::prefix('order')->namespace('Order')->group(function () {
+        // 游戏代练订单
+        Route::prefix('game-leveling-order')->group(function (){
+            Route::get('/', 'GameLevelingOrderController@index')->name('admin.game-leveling-order');
+            Route::get('show/{trade_no}', 'GameLevelingOrderController@show')->name('admin.game-leveling-order.show');
+            Route::get('log/{trade_no}', 'GameLevelingOrderController@log')->name('admin.game-leveling-order.log');
+        });
+        // 代练订单仲裁
+        Route::prefix('game-leveling-order-complain')->group(function (){
+            Route::get('/', 'GameLevelingOrderComplainController@index')->name('admin.game-leveling-order-complain');
+        });
     });
 
     // 游戏

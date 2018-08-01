@@ -79,7 +79,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    丸子代练
+                    <a href="weixin://qq.com">丸子代练</a>
                 </div>
             </div>
         </div>

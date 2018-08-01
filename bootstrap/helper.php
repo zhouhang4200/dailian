@@ -329,3 +329,10 @@ function pinyin($zh){
     return $ret;
 }
 
+function printSql($callback)
+{
+    \DB::connection()->enableQueryLog();
+    call_user_func($callback);
+    dd(\DB::getQueryLog());
+}
+

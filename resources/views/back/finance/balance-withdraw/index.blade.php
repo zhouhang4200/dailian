@@ -154,7 +154,10 @@
             });
         });
         $('#export').click(function () {
-            window.location.href = "{{ route('admin.balance-withdraw.export') }}?" + $('#search-flow').serialize();
+            var has="{{ $balanceWithdraws }}";
+            if (has) {
+                window.location.href = "{{ route('admin.balance-withdraw.export') }}?" + $('#search-flow').serialize();
+            }
         });
     </script>
 @endsection

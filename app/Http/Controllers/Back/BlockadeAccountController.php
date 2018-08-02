@@ -66,7 +66,7 @@ class BlockadeAccountController extends Controller
             } elseif ($blockadeAccount->type == 3) {
                 $arr[$k]['left_time'] = '封号结束';
             } else {
-                $arr[$k]['left_time'] = '未知';
+                $arr[$k]['left_time'] = '未知错误';
             }
         }
 

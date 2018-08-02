@@ -96,8 +96,10 @@
 
 @section('js')
     <script type="text/html" id="operation">
+        @{{# if (d.type != 3) { }}
         <button class="layui-btn layui-btn-normal layui-btn-xs" style="width: 80px;padding: 0" data-user-id="@{{ d.user_id }}" data-id="@{{ d.id }}" lay-submit lay-filter="unblockade">解封账号</button>
         <button class="layui-btn layui-btn-normal layui-btn-xs" style="width: 80px;padding: 0" data-id="@{{ d.id }}" lay-submit data-start-time="@{{ d.start_time }}" data-end-time="@{{ d.end_time }}" data-type="@{{ d.type }}" lay-filter="change-time">调整时间</button>
+        @{{# } }}
     </script>
     <script>
         layui.use(['form', 'laytpl', 'element', 'table'], function(){

@@ -28,14 +28,14 @@ class ArticleController extends Controller
 
         $categoryId = $request->category_id;
 
-        $categories = ArticleCategory::where('parent_id', 1)->where('status', 1)->get(); // 公告
+        $categories = ArticleCategory::where('parent_id', 1)->where('status', 1)->oldest('sort')->get(); // 公告
 
-        $articles = Article::filter($filters)->latest('sort')->where('status', 1)->whereHas('articleCategory', function ($query) use ($categoryId) {
+        $articles = Article::filter($filters)->oldest('sort')->where('status', 1)->whereHas('articleCategory', function ($query) use ($categoryId) {
             $query->where('id', $categoryId);
         })->paginate();
 
         if ($request->ajax()) {
-            $articles = Article::latest('sort')->where('status', 1)->whereHas('articleCategory', function ($query) use ($categoryId) {
+            $articles = Article::oldest('sort')->where('status', 1)->whereHas('articleCategory', function ($query) use ($categoryId) {
                 $query->where('id', $categoryId);
             })->paginate();
 
@@ -70,7 +70,16 @@ class ArticleController extends Controller
 
             $data['link'] = '';
             $data['click_count'] = 0;
+            // 排序
+            $hasSameSort = Article::where('sort', $data['sort'])->first();
+            if ($hasSameSort) {
+                $otherArticles = Article::where('sort', '>=', $data['sort'])->get();
 
+                foreach ($otherArticles as $otherArticle) {
+                    $otherArticle->sort = $otherArticle->sort + 1;
+                    $otherArticle->save();
+                }
+            }
             Article::create($data);
 
             return response()->ajaxSuccess('添加成功');
@@ -104,6 +113,16 @@ class ArticleController extends Controller
         try {
             $article = Article::find($request->id);
             $data = $request->data;
+            // 排序
+            $hasSameSort = Article::where('sort', $data['sort'])->first();
+            if ($hasSameSort) {
+                $otherArticles = Article::where('sort', '>=', $data['sort'])->get();
+
+                foreach ($otherArticles as $otherArticle) {
+                    $otherArticle->sort = $otherArticle->sort + 1;
+                    $otherArticle->save();
+                }
+            }
             $article->update($data);
 
             return response()->ajaxSuccess('修改成功');
@@ -141,14 +160,14 @@ class ArticleController extends Controller
 
         $categoryId = $request->category_id;
 
-        $categories = ArticleCategory::where('parent_id', 2)->where('status', 1)->get(); // 公告
+        $categories = ArticleCategory::where('parent_id', 2)->where('status', 1)->oldest('sort')->get(); // 公告
 
-        $articles = Article::filter($filters)->latest('sort')->where('status', 1)->whereHas('articleCategory', function ($query) use ($categoryId) {
+        $articles = Article::filter($filters)->oldest('sort')->where('status', 1)->whereHas('articleCategory', function ($query) use ($categoryId) {
             $query->where('id', $categoryId);
         })->paginate();
 
         if ($request->ajax()) {
-            $articles = Article::latest('sort')->where('status', 1)->whereHas('articleCategory', function ($query) use ($categoryId) {
+            $articles = Article::oldest('sort')->where('status', 1)->whereHas('articleCategory', function ($query) use ($categoryId) {
                 $query->where('id', $categoryId);
             })->paginate();
 
@@ -181,7 +200,16 @@ class ArticleController extends Controller
             $data = $request->data;
             $data['link'] = '';
             $data['click_count'] = 0;
+            // 排序
+            $hasSameSort = Article::where('sort', $data['sort'])->first();
+            if ($hasSameSort) {
+                $otherArticles = Article::where('sort', '>=', $data['sort'])->get();
 
+                foreach ($otherArticles as $otherArticle) {
+                    $otherArticle->sort = $otherArticle->sort + 1;
+                    $otherArticle->save();
+                }
+            }
             Article::create($data);
 
             return response()->ajaxSuccess('添加成功');
@@ -215,6 +243,16 @@ class ArticleController extends Controller
         try {
             $article = Article::find($request->id);
             $data = $request->data;
+            // 排序
+            $hasSameSort = Article::where('sort', $data['sort'])->first();
+            if ($hasSameSort) {
+                $otherArticles = Article::where('sort', '>=', $data['sort'])->get();
+
+                foreach ($otherArticles as $otherArticle) {
+                    $otherArticle->sort = $otherArticle->sort + 1;
+                    $otherArticle->save();
+                }
+            }
             $article->update($data);
 
             return response()->ajaxSuccess('修改成功');
@@ -247,10 +285,10 @@ class ArticleController extends Controller
      */
     public function categoryNoticeIndex(Request $request)
     {
-        $categories = ArticleCategory::where('parent_id', 1)->oldest('sort')->latest('id')->paginate(10);
+        $categories = ArticleCategory::where('parent_id', 1)->oldest('sort')->paginate(10);
 
         if ($request->ajax()) {
-            $categories = ArticleCategory::where('parent_id', 1)->oldest('sort')->latest('id')->paginate(10);
+            $categories = ArticleCategory::where('parent_id', 1)->oldest('sort')->paginate(10);
 
             return response()->json(view('back.article.notice.category.list', compact('categories'))->render());
         };
@@ -279,7 +317,16 @@ class ArticleController extends Controller
     {
         try {
             $data = $request->data;
+            // 排序
+            $hasSameSort = ArticleCategory::where('sort', $data['sort'])->first();
+            if ($hasSameSort) {
+                $otherArticleCategories = ArticleCategory::where('sort', '>=', $data['sort'])->get();
 
+                foreach ($otherArticleCategories as $otherArticleCategory) {
+                    $otherArticleCategory->sort = $otherArticleCategory->sort + 1;
+                    $otherArticleCategory->save();
+                }
+            }
             ArticleCategory::create($data);
 
             return response()->ajaxSuccess('添加成功');
@@ -313,6 +360,16 @@ class ArticleController extends Controller
         try {
             $article = ArticleCategory::find($request->id);
             $data = $request->data;
+            // 排序
+            $hasSameSort = ArticleCategory::where('sort', $data['sort'])->first();
+            if ($hasSameSort) {
+                $otherArticleCategories = ArticleCategory::where('sort', '>=', $data['sort'])->get();
+
+                foreach ($otherArticleCategories as $otherArticleCategory) {
+                    $otherArticleCategory->sort = $otherArticleCategory->sort + 1;
+                    $otherArticleCategory->save();
+                }
+            }
             $article->update($data);
 
             return response()->ajaxSuccess('修改成功');
@@ -330,7 +387,7 @@ class ArticleController extends Controller
     {
         DB::beginTransaction();
         try {
-            $articleCategory = ArticleCategory::find($request->id);
+        $articleCategory = ArticleCategory::find($request->id);
             $articleCategory->articles()->delete();
             $articleCategory->delete();
         } catch (Exception $e) {
@@ -349,10 +406,10 @@ class ArticleController extends Controller
      */
     public function categoryHelpIndex(Request $request)
     {
-        $categories = ArticleCategory::where('parent_id', 2)->paginate(10);
+        $categories = ArticleCategory::where('parent_id', 2)->oldest('sort')->paginate(10);
 
         if ($request->ajax()) {
-            $categories = ArticleCategory::where('parent_id', 2)->paginate(10);
+            $categories = ArticleCategory::where('parent_id', 2)->oldest('sort')->paginate(10);
 
             return response()->json(view('back.article.help.category.list', compact('categories'))->render());
         };
@@ -381,7 +438,16 @@ class ArticleController extends Controller
     {
         try {
             $data = $request->data;
+            // 排序
+            $hasSameSort = ArticleCategory::where('sort', $data['sort'])->first();
+            if ($hasSameSort) {
+                $otherArticleCategories = ArticleCategory::where('sort', '>=', $data['sort'])->get();
 
+                foreach ($otherArticleCategories as $otherArticleCategory) {
+                    $otherArticleCategory->sort = $otherArticleCategory->sort + 1;
+                    $otherArticleCategory->save();
+                }
+            }
             ArticleCategory::create($data);
 
             return response()->ajaxSuccess('添加成功');
@@ -398,11 +464,11 @@ class ArticleController extends Controller
      */
     public function categoryHelpEdit(Request $request, $id)
     {
-        $categories = ArticleCategory::find($id); // 分类
+        $category = ArticleCategory::find($id); // 分类
 
         $parents = ArticleCategory::where('parent_id', 2)->get();
 
-        return view('back.article.help.category.edit', compact('categories', 'parents'));
+        return view('back.article.help.category.edit', compact('category', 'parents'));
     }
 
     /**
@@ -415,6 +481,16 @@ class ArticleController extends Controller
         try {
             $article = ArticleCategory::find($request->id);
             $data = $request->data;
+            // 排序
+            $hasSameSort = ArticleCategory::where('sort', $data['sort'])->first();
+            if ($hasSameSort) {
+                $otherArticleCategories = ArticleCategory::where('sort', '>=', $data['sort'])->get();
+
+                foreach ($otherArticleCategories as $otherArticleCategory) {
+                    $otherArticleCategory->sort = $otherArticleCategory->sort + 1;
+                    $otherArticleCategory->save();
+                }
+            }
             $article->update($data);
 
             return response()->ajaxSuccess('修改成功');

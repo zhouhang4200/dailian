@@ -20,6 +20,11 @@
     <link rel="stylesheet" type="text/css" href="/back/css/globale.css">
     <link rel="stylesheet" type="text/css" href="/back/css/layui-rewrit.css">
     <link id="layuicss-layer" rel="stylesheet" href="/front/lib/js/layui/css/modules/layer/default/layer.css" media="all">
+    <style>
+        .layui-table th{
+            font-weight: bold;
+        }
+    </style>
     @yield('css')
     <!--[if lt IE 9]>
     <script src="/back/js/html5shiv.js"></script>

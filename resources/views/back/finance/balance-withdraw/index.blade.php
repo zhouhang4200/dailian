@@ -16,13 +16,13 @@
                                 <div class="col-md-2">
                                     <div class="input-group">
                                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                        <input type="text" class="form-control" id="time-start" name="startDate" value="{{ $startDate }}">
+                                        <input type="text" class="form-control" id="start-time" name="startDate" value="{{ $startDate }}">
                                     </div>
                                 </div>
                                 <div class="col-md-2">
                                     <div class="input-group">
                                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                        <input type="text" class="form-control" id="time-end" name="endDate" value="{{ $endDate }}">
+                                        <input type="text" class="form-control" id="end-time" name="endDate" value="{{ $endDate }}">
                                     </div>
                                 </div>
                                 <div class="form-group col-md-1">
@@ -113,9 +113,6 @@
 
 @section('js')
     <script>
-        $('#time-start').datepicker();
-        $('#time-end').datepicker();
-
         layui.use(['layer'], function () {
             // 拒绝
             $('.refuse').click(function () {

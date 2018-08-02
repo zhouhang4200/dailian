@@ -133,7 +133,7 @@ class BlockadeAccountController extends Controller
             }
 
             Redis::publish('blockade', json_encode([
-                'event' => 'all',
+                'event' => $blockadeAccount->user_id,
                 'data' => $message
             ]));
 

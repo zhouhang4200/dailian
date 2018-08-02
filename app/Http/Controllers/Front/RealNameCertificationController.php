@@ -44,7 +44,7 @@ class RealNameCertificationController extends Controller
             if ($has) {
                 abort(404);
             }
-            return view('front.real_name_certification.create', compact('user'));
+            return view('front.real-name-certification.create', compact('user'));
         } else {
             abort(404);
         }
@@ -91,7 +91,7 @@ class RealNameCertificationController extends Controller
                 abort(404);
             }
 
-            return view('front.real_name_certification.edit', compact('realNameCertification'));
+            return view('front.real-name-certification.edit', compact('realNameCertification'));
         } else {
             abort(404);
         }

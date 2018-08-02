@@ -13,6 +13,15 @@
             width:60px;
         }
     </style>
+    <script>
+        (function () {
+            var socket=io("{{ env('SOCKET') }}");
+            var user_id="{{ auth()->user()->parent_id }}";
+            socket.on("certification:"+user_id, function (message) {
+                $("#status").html(message);
+            });
+        })(window);
+    </script>
 @endsection
 
 @section('main')
@@ -43,7 +52,7 @@
                             <td>{{ $realNameCertification->bank_name }}</td>
                             <td>{{ $realNameCertification->identity_card }}</td>
                             <td>{{ $realNameCertification->created_at }}</td>
-                            <td>{{ $status[$realNameCertification->status] }}</td>
+                            <td id="status">{{ $status[$realNameCertification->status] }}</td>
                                 @if($realNameCertification->status == 3)
                                     <td>{{ $realNameCertification->remark }}</td>
                                 @endif

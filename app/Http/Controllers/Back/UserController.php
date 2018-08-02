@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Back;
 
+use Redis;
 use Exception;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -76,6 +77,11 @@ class UserController extends Controller
 
             $realNameCertification->status = 2;
             $realNameCertification->save();
+            // 推送
+            Redis::publish('certification', json_encode([
+                'event' => $realNameCertification->user_id,
+                'data' => '通过'
+            ]));
 
             return response()->ajaxSuccess('审核完成，状态：通过！');
         } catch (Exception $e) {
@@ -96,6 +102,11 @@ class UserController extends Controller
             $realNameCertification->status = 3;
             $realNameCertification->remark = $request->remark;
             $realNameCertification->save();
+            // 推送
+            Redis::publish('certification', json_encode([
+                'event' => $realNameCertification->user_id,
+                'data' => '拒绝'
+            ]));
 
             return response()->ajaxSuccess('审核完成，状态：拒绝！');
         } catch (Exception $e) {

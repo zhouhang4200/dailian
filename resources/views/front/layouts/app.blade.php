@@ -76,6 +76,7 @@ $finance = ['frontend.finance.asset', 'frontend.finance.amount-flow', 'frontend.
     <link rel="stylesheet" href="/front/lib/css/admin.css" media="all">
     <link rel="stylesheet" href="/front/lib/css/new.css">
     <link id="layuicss-layer" rel="stylesheet" href="/front/lib/js/layui/css/modules/layer/default/layer.css" media="all">
+    <script src="//cdn.bootcss.com/socket.io/1.3.7/socket.io.min.js"></script>
     <style>
         .layui-layout-admin .layui-body {
             top: 50px;
@@ -276,7 +277,6 @@ $finance = ['frontend.finance.asset', 'frontend.finance.amount-flow', 'frontend.
 <script src="/js/jquery-1.11.0.min.js"></script>
 <script src="/js/encrypt.js"></script>
 <script src="/front/js/helper.js"></script>
-<script src="//cdn.bootcss.com/socket.io/1.3.7/socket.io.min.js"></script>
 <script>
     $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')}});
 

@@ -72,13 +72,13 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">*封号开始时间</label>
                     <div class="layui-input-inline">
-                        <input type="text" style="width: 270px" lay-verify="required" class="form-control" id="start-time" name="start_time" value="">
+                        <input type="text" style="width: 270px" lay-verify="required" class="form-control" id="start-times" name="start_time" value="">
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">封号结束时间</label>
                     <div class="layui-input-inline">
-                        <input type="text" style="width: 180px" class="form-control" id="end-time" placeholder="" name="end_time" value="">
+                        <input type="text" style="width: 180px" class="form-control" id="end-times" placeholder="" name="end_time" value="">
                     </div>
                     <input class="form-control"  style="position:relative;float: left;line-height: 34px" type="checkbox" name="type" value="2">永久
                 </div>
@@ -119,13 +119,13 @@
 
             //日期时间范围选择
             laydate.render({
-                elem: '#start-time'
+                elem: '#start-times'
                 ,type: 'datetime'
             });
 
             //日期时间范围选择
             laydate.render({
-                elem: '#end-time'
+                elem: '#end-times'
                 ,type: 'datetime'
             });
 
@@ -254,11 +254,11 @@
                 var end_time=this.getAttribute('data-end-time');
                 var type=this.getAttribute('data-type');
 
-                $("#start-time").val(start_time);
+                $("#start-times").val(start_time);
                 if (end_time == '--'){
                     end_time = '';
                 }
-                $("#end-time").val(end_time);
+                $("#end-times").val(end_time);
                 if (type == 2) {
                     $("input[name=type]").attr('checked', true);
                     form.render();

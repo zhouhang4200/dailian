@@ -54,11 +54,11 @@ class BalanceWithdraw extends Model
             $query->where('remark', $filters['remark']);
         }
 
-        if (isset($filters['startDate']) && ! empty($filters['startDate'])) {
+        if (isset($filters['startDate'])) {
             $query->where('created_at', '>=', $filters['startDate']);
         }
 
-        if (isset($filters['endDate']) && ! empty($filters['endDate'])) {
+        if (isset($filters['endDate'])) {
             $query->where('updated_at', '<=', $filters['endDate'].' 23:59:59');
         }
         return $query;

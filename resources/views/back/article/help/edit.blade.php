@@ -76,12 +76,6 @@
             var form = layui.form; //只有执行了这一步，部分表单元素才会自动修饰成功
             var layer = layui.layer;
 
-            form.verify({
-                number: [
-                    /^[1-9]+$/
-                    ,'填写格式不正确，必须为数字'
-                ]
-            });
             var categoryId = $("input[name=article_category_id]").val();
             // 取消按钮
             $('.cancel').click(function () {

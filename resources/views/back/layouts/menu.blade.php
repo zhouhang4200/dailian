@@ -97,6 +97,9 @@ $systemRoute = [
                     <li @if(in_array($currentRouteName, [
                         'admin.user',
                         'admin.user.show',
+                        'admin.user.certification',
+                        'admin.user.certification-list',
+                        'admin.user.certification-show'
                         ])) class="open active" @endif>
                         <a href="#" class="dropdown-toggle">
                             <i class="fa fa-users"></i>
@@ -107,6 +110,11 @@ $systemRoute = [
                             <li>
                                 <a href="{{ route('admin.user') }}" @if($currentRouteName == 'admin.user') class="active" @endif>
                                     用户列表
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('admin.user.certification') }}" @if($currentRouteName == 'admin.user.certification') class="active" @endif>
+                                    实名认证
                                 </a>
                             </li>
                         </ul>

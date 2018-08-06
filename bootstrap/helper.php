@@ -54,16 +54,16 @@ function sec2Time($seconds, $showSeconds = false)
             $t .= $value['years'] . '年';
         }
         if ($value['days'] > 0) {
-            $t .= $value['days'] . ' 天 ';
+            $t .= $value['days'] . '天';
         }
         if ($value['hours'] > 0) {
-            $t .= $value['hours'] . ' 小时 ';
+            $t .= $value['hours'] . '小时';
         }
         if ($value['minutes'] > 0) {
-            $t .= $value['minutes'] . ' 分 ';
+            $t .= $value['minutes'] . '分';
         }
         if ($value['seconds'] > 0 || $showSeconds) {
-            $t .= $value['seconds'] . ' 秒';
+            $t .= $value['seconds'] . '秒';
         }
         Return $t;
     } else {

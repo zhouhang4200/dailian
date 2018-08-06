@@ -48,11 +48,6 @@
                 </td>
                 <td style="text-align: center;">
                     <a href="{{ route('admin.user.show', ['id' => $user->id])  }}" class="layui-btn layui-btn layui-btn-normal layui-btn-mini">详情</a>
-                    @if($user->status == 1)
-                        <button lay-submit="" lay-filter="close-account" class="layui-btn layui-btn-mini layui-btn-normal" data-id="{{ $user->id }}">封号</button>
-                    @elseif($user->status == 2)
-                        <button lay-submit="" lay-filter="open-account" class="layui-btn layui-btn-mini layui-btn-danger" data-id="{{ $user->id }}">解封</button>
-                    @endif
                 </td>
             </tr>
         @empty

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Front\Auth;
 
+use Carbon\Carbon;
 use App\Models\User;
+use App\Models\BlockadeAccount;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
@@ -70,12 +72,40 @@ class LoginController extends Controller
         // 对前端转输数据进行解密
         $request['password'] = clientRSADecrypt($request->password);
 
-        // 检查账号是否被禁用
+        // 检查账号是否被禁用（主账号设置的禁用）
         $user = User::where('phone', $request->phone)->first();
 
         if ($user && \Hash::check($request['password'], $user->password)) {
+            // 检查有没有被禁用
             if ($user->status == 2) {
                 return response()->json(['status' => 0, 'message' => '您的账号已被禁用']);
+            }
+            // 检查账号是否被永久封号（后台设置的封号）
+            $blockaded = BlockadeAccount::where('user_id', $user->parent_id)->where('type', 2)->first();
+
+            if ($blockaded) {
+                return response()->json([
+                    'status' => 3,
+                    'message' => '您的账号已被封号，封号原因：'.$blockaded->reason.'，封号时间：永久，如有异议请联系客服。'
+                ]);
+            }
+            // 检查账号是否被常规封号（后台设置的封号）
+            $blockade = BlockadeAccount::where('user_id', $user->parent_id)->where('type', 1)->latest('end_time')->first();
+
+            if ($blockade) {
+                $time = bcsub(Carbon::parse($blockade->end_time)->timestamp, Carbon::now()->timestamp, 0);
+
+                if ($time > 0) {
+                    $leftTime= sec2Time($time);
+
+                    return response()->json([
+                        'status' => 3,
+                        'message' => '您的账号已被封号，封号原因：'.$blockade->reason.'，封号时间：'.$blockade->start_time.'至'.$blockade->end_time.' ，剩余时长：'.$leftTime.'，如有异议请联系客服。'
+                    ]);
+                } else { // 到时间了解封
+                    $blockade->type = 3;
+                    $blockade->save();
+                }
             }
         }
 

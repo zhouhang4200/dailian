@@ -76,6 +76,7 @@ $finance = ['frontend.finance.asset', 'frontend.finance.amount-flow', 'frontend.
     <link rel="stylesheet" href="/front/lib/css/admin.css" media="all">
     <link rel="stylesheet" href="/front/lib/css/new.css">
     <link id="layuicss-layer" rel="stylesheet" href="/front/lib/js/layui/css/modules/layer/default/layer.css" media="all">
+    <script src="//cdn.bootcss.com/socket.io/1.3.7/socket.io.min.js"></script>
     <style>
         .layui-layout-admin .layui-body {
             top: 50px;
@@ -176,7 +177,7 @@ $finance = ['frontend.finance.asset', 'frontend.finance.amount-flow', 'frontend.
                         <img src="{{ auth()->user()->avatar ?? '' }}" class="layui-nav-img">
                         <cite>{{ auth()->user()->phone }}</cite>
                     </a>
-                    <dl class="layui-nav-child">
+                    <dl class="layui-nav-child" id="parent-id" lay-user-id="{{ auth()->user()->parent_id }}">
                         <dd style="text-align: center;">
                             <a href="{{ route('home') }}">基本资料</a>
                         </dd>
@@ -210,7 +211,6 @@ $finance = ['frontend.finance.asset', 'frontend.finance.amount-flow', 'frontend.
 
                 <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu"
                     lay-filter="layadmin-system-side-menu">
-
                     <li data-name="home"
                         class="layui-nav-item @if(in_array(Route::currentRouteName(), $accountRoute)) layui-nav-itemed @endif">
                         <a href="{{ route('order.take') }}" lay-tips="账号" lay-direction="2">
@@ -256,7 +256,6 @@ $finance = ['frontend.finance.asset', 'frontend.finance.amount-flow', 'frontend.
                             </dd>
                         </dl>
                     </li>
-
                 </ul>
             </div>
         </div>
@@ -278,7 +277,6 @@ $finance = ['frontend.finance.asset', 'frontend.finance.amount-flow', 'frontend.
 <script src="/js/jquery-1.11.0.min.js"></script>
 <script src="/js/encrypt.js"></script>
 <script src="/front/js/helper.js"></script>
-<script src="//cdn.bootcss.com/socket.io/1.3.7/socket.io.min.js"></script>
 <script>
     $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')}});
 
@@ -299,6 +297,32 @@ $finance = ['frontend.finance.asset', 'frontend.finance.amount-flow', 'frontend.
             return true;
         });
     });
+
+
+    (function () {
+        var socket=io("{{ env('SOCKET') }}");
+        var user_id="{{ auth()->user()->parent_id }}";
+        socket.on("blockade:"+user_id, function (message) {
+            var message="<div style='padding:25px;font-size:14px; line-height:25px;letter-spacing:1px'>&nbsp;&nbsp;&nbsp;"+message+"</div>";
+            layer.open({
+                type: 1,
+                title:'提示',
+                area:'400px'
+                ,content: message
+                ,btn: '确定'
+                ,btnAlign: 'c' //按钮居中
+                ,shade: 0 //不显示遮罩
+                ,yes: function(){
+                    document.getElementById('logout-form').submit();
+                    layer.closeAll();
+                },
+                cancel:function () {
+                    document.getElementById('logout-form').submit();
+                    layer.closeAll();
+                }
+            });
+        });
+    })(window);
 </script>
 @yield('js')
 </body>

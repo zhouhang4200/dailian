@@ -31,9 +31,9 @@
         layui.use(['form', 'laytpl', 'element'], function(){
             var form = layui.form, layer = layui.layer;
 
-            form.on('submit(delete)', function (data) {
+            form.on('submit(category-delete)', function (data) {
                 var id=this.getAttribute('lay-id');
-                layer.confirm('您确认要删除吗', {icon: 3, title:'提示'}, function(index) {
+                layer.confirm('您确认要删除吗', {icon: 3, title:'提示',btnAlign: 'c'}, function(index) {
                     $.post("{{ route('admin.article.category-help-delete') }}", {id: id}, function (result) {
                         layer.msg(result.message, {time: 1000}, function () {
                             if (result.status == 1) {
@@ -49,15 +49,15 @@
                 });
                 return false;
             });
+
+            form.on('submit(help)', function (data) {
+                var category_id = this.getAttribute('category-id');
+                window.location.href = "{{ route('admin.article.help') }}?category_id="+category_id;
+            });
         });
 
         $('#create').click(function () {
             window.location.href = "{{ route('admin.article.category-help-create') }}";
-        });
-
-        $('#help').click(function () {
-            var category_id = this.getAttribute('category-id');
-            window.location.href = "{{ route('admin.article.help') }}?category_id="+category_id;
         });
     </script>
 @endsection

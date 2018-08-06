@@ -58,6 +58,9 @@
             margin-left: 170px;
         }
 
+        .layui-form-item .layui-input-block input{
+            width: 500px;
+        }
         .none {
             display: none;
         }

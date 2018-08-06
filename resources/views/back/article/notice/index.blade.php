@@ -52,10 +52,10 @@
         layui.use(['form', 'laytpl', 'element'], function(){
             var form = layui.form, layer = layui.layer;
 
-            form.on('submit(delete)', function (data) {
+            form.on('submit(article-delete)', function (data) {
                 var id=this.getAttribute('lay-id');
                 var categoryId = this.getAttribute('category-id');
-                layer.confirm('您确认要删除吗', {icon: 3, title:'提示'}, function(index) {
+                layer.confirm('您确认要删除吗', {icon: 3, title:'提示',btnAlign: 'c'}, function(index) {
                     $.post("{{ route('admin.article.notice-delete') }}", {id: id}, function (result) {
                         layer.msg(result.message, {time: 1000}, function () {
                             if (result.status == 1) {

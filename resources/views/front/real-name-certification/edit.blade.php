@@ -11,6 +11,9 @@
         .ident > .company > .layui-form-item > .layui-input-block {
             margin-left: 170px;
         }
+        .layui-form-item .layui-input-block input{
+            width: 500px;
+        }
 
         .ident > .company > .layui-form-item > .layui-upload > .layui-btn {
             margin-left: 30px;

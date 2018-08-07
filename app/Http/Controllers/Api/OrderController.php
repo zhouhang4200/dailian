@@ -3,19 +3,22 @@
 namespace App\Http\Controllers\Api;
 
 use DB;
+use Exception;
 use GuzzleHttp\Client;
 use App\Models\Game;
 use App\Models\Server;
 use App\Models\Region;
 use App\Models\GameLevelingType;
-use Exception;
-use App\Services\OrderServices;
+use App\Services\OrderService;
 use App\Models\GameLevelingOrder;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Exceptions\OrderServiceException;
 
 class OrderController extends Controller
 {
+    // 发单器在丸子这边的发单账号ID
+    private static $creatorUserId = 1;
     // 发单器给的key
     private static $key = '335ss6s8m8e4f5a8e2e2ls5';
     // 发单器给的IV
@@ -36,9 +39,9 @@ class OrderController extends Controller
             $orderNo = $request->order_no;
             $userId = $request->user->id;
 
-            $orderService = OrderServices::init($userId, $orderNo);
+            $orderService = OrderService::init($userId, $orderNo);
             $orderService->onSale();
-        } catch (DailianException $e) {
+        } catch (OrderServiceException $e) {
             myLog('operate-onSale', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
@@ -59,9 +62,9 @@ class OrderController extends Controller
             $orderNo = $request->order_no;
             $userId = $request->user->id;
 
-            $orderService = OrderServices::init($userId, $orderNo);
+            $orderService = OrderService::init($userId, $orderNo);
             $orderService->offSale();
-        } catch (DailianException $e) {
+        } catch (OrderServiceException $e) {
             myLog('operate-offSale', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
@@ -86,10 +89,10 @@ class OrderController extends Controller
             $order = GameLevelingOrder::where('no', $orderNo)->first();
 
             if ($order->status != 13) {
-                $orderService = OrderServices::init($userId, $orderNo);
+                $orderService = OrderService::init($userId, $orderNo);
                 $orderService->delete();
             }
-        } catch (DailianException $e) {
+        } catch (OrderServiceException $e) {
             myLog('operate-delete', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
@@ -111,9 +114,9 @@ class OrderController extends Controller
 //            $userId = $request->user->id;
 //            $images = [];
 //
-//            $orderService = OrderServices::init($userId, $orderNo);
+//            $orderService = OrderService::init($userId, $orderNo);
 //            $orderService->applyComplete($images);
-//        } catch (DailianException $e) {
+//        } catch (OrderServiceException $e) {
 //            myLog('operate-applyComplete', ['no' => $orderNo, 'message' => $e->getMessage()]);
 //            return response()->apiFail($e->getMessage());
 //        } catch (Exception $e) {
@@ -134,9 +137,9 @@ class OrderController extends Controller
 //            $orderNo = $request->order_no;
 //            $userId = $request->user->id;
 //
-//            $orderService = OrderServices::init($userId, $orderNo);
+//            $orderService = OrderService::init($userId, $orderNo);
 //            $orderService->cancelComplete();
-//        } catch (DailianException $e) {
+//        } catch (OrderServiceException $e) {
 //            myLog('operate-cancelComplete', ['no' => $orderNo, 'message' => $e->getMessage()]);
 //            return response()->apiFail($e->getMessage());
 //        } catch (Exception $e) {
@@ -157,9 +160,9 @@ class OrderController extends Controller
             $orderNo = $request->order_no;
             $userId = $request->user->id;
 
-            $orderService = OrderServices::init($userId, $orderNo);
+            $orderService = OrderService::init($userId, $orderNo);
             $orderService->complete();
-        } catch (DailianException $e) {
+        } catch (OrderServiceException $e) {
             myLog('operate-complete', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
@@ -180,9 +183,9 @@ class OrderController extends Controller
             $orderNo = $request->order_no;
             $userId = $request->user->id;
 
-            $orderService = OrderServices::init($userId, $orderNo);
+            $orderService = OrderService::init($userId, $orderNo);
             $orderService->lock();
-        } catch (DailianException $e) {
+        } catch (OrderServiceException $e) {
             myLog('operate-lock', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
@@ -203,9 +206,9 @@ class OrderController extends Controller
             $orderNo = $request->order_no;
             $userId = $request->user->id;
 
-            $orderService = OrderServices::init($userId, $orderNo);
+            $orderService = OrderService::init($userId, $orderNo);
             $orderService->cancelLock();
-        } catch (DailianException $e) {
+        } catch (OrderServiceException $e) {
             myLog('operate-cancelLock', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
@@ -226,9 +229,9 @@ class OrderController extends Controller
 //            $orderNo = $request->order_no;
 //            $userId = $request->user->id;
 //
-//            $orderService = OrderServices::init($userId, $orderNo);
+//            $orderService = OrderService::init($userId, $orderNo);
 //            $orderService->anomaly();
-//        } catch (DailianException $e) {
+//        } catch (OrderServiceException $e) {
 //            myLog('operate-anomaly', ['no' => $orderNo, 'message' => $e->getMessage()]);
 //            return response()->apiFail($e->getMessage());
 //        } catch (Exception $e) {
@@ -249,9 +252,9 @@ class OrderController extends Controller
 //            $orderNo = $request->order_no;
 //            $userId = $request->user->id;
 //
-//            $orderService = OrderServices::init($userId, $orderNo);
+//            $orderService = OrderService::init($userId, $orderNo);
 //            $orderService->cancelAnomaly();
-//        } catch (DailianException $e) {
+//        } catch (OrderServiceException $e) {
 //            myLog('operate-cancelAnomaly', ['no' => $orderNo, 'message' => $e->getMessage()]);
 //            return response()->apiFail($e->getMessage());
 //        } catch (Exception $e) {
@@ -276,9 +279,9 @@ class OrderController extends Controller
             $efficiencyDeposit = $request->efficiency_deposit; // 需要接单赔偿的效率金
             $reason = $request->reason; // 申请协商原因
 
-            $orderService = OrderServices::init($userId, $orderNo);
+            $orderService = OrderService::init($userId, $orderNo);
             $orderService->applyConsult($amount, $securityDeposit, $efficiencyDeposit, $reason);
-        } catch (DailianException $e) {
+        } catch (OrderServiceException $e) {
             myLog('operate-applyConsult', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
@@ -299,9 +302,9 @@ class OrderController extends Controller
             $orderNo = $request->order_no;
             $userId = $request->user->id;
 
-            $orderService = OrderServices::init($userId, $orderNo);
+            $orderService = OrderService::init($userId, $orderNo);
             $orderService->cancelConsult();
-        } catch (DailianException $e) {
+        } catch (OrderServiceException $e) {
             myLog('operate-cancelConsult', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
@@ -322,9 +325,9 @@ class OrderController extends Controller
             $orderNo = $request->order_no;
             $userId = $request->user->id;
 
-            $orderService = OrderServices::init($userId, $orderNo);
+            $orderService = OrderService::init($userId, $orderNo);
             $orderService->agreeConsult();
-        } catch (DailianException $e) {
+        } catch (OrderServiceException $e) {
             myLog('operate-agreeConsult', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
@@ -345,9 +348,9 @@ class OrderController extends Controller
             $orderNo = $request->order_no;
             $userId = $request->user->id;
 
-            $orderService = OrderServices::init($userId, $orderNo);
+            $orderService = OrderService::init($userId, $orderNo);
             $orderService->refuseConsult();
-        } catch (DailianException $e) {
+        } catch (OrderServiceException $e) {
             myLog('operate-agreeConsult', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
@@ -370,9 +373,9 @@ class OrderController extends Controller
             $reason = $request->reason;
             $image = $request->image;
 
-            $orderService = OrderServices::init($userId, $orderNo);
+            $orderService = OrderService::init($userId, $orderNo);
             $orderService->applyComplain($reason, $image);
-        } catch (DailianException $e) {
+        } catch (OrderServiceException $e) {
             myLog('operate-applyComplain', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
@@ -393,9 +396,9 @@ class OrderController extends Controller
             $orderNo = $request->order_no;
             $userId = $request->user->id;
 
-            $orderService = OrderServices::init($userId, $orderNo);
+            $orderService = OrderService::init($userId, $orderNo);
             $orderService->cancelComplain();
-        } catch (DailianException $e) {
+        } catch (OrderServiceException $e) {
             myLog('operate-cancelComplain', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
@@ -418,12 +421,13 @@ class OrderController extends Controller
                 throw new Exception('接收信息为空');
             }
             $decriptData = openssl_decrypt($data, 'aes-128-cbc', static::$key, false, static::$iv);
-            $decriptData = json_decode($decriptData);
-            $orderService = OrderServices::init(1, '');
+            $data = json_decode($decriptData, true);
+            $orderService = OrderService::init(static::$creatorUserId);
             $game = Game::where('name', $data['game_name'])->first();
             $region = Region::where('name', $data['game_region'])->where('game_id', $game->id)->first();
-            $server = Server::where('game_server', $data['game_server'])->where('region_id', $region->id)->first();
+            $server = Server::where('name', $data['game_serve'])->where('region_id', $region->id)->first();
             $gameLevelingType = GameLevelingType::where('game_id', $game->id)->first();
+
             $order = $orderService->create(
                 $game->id,
                 $region->id,
@@ -439,7 +443,7 @@ class OrderController extends Controller
                 $data['game_leveling_security_deposit'],
                 $data['game_leveling_efficiency_deposit'],
                 $data['game_leveling_instructions'],
-                $data['requirements'],
+                $data['game_leveling_requirements'],
                 $data['businessman_phone'],
                 $data['businessman_qq'],
                 $data['order_password']
@@ -462,20 +466,26 @@ class OrderController extends Controller
                     'body' => 'x-www-form-urlencoded',
                 ]);
                 $result = $response->getBody()->getContents();
-                myLog('callback-data', ['result' => $result]);
+                $result = json_decode($result, true);
+
                 if (! isset($result['code']) || $result['code'] != 1) {
-                    throw new Exception('回调发单器失败');
+                    throw new OrderServiceException('调用发单器回调接口失败');
                 }
             } else {
                 throw new Exception('丸子下单失败');
             }
+        } catch (OrderServiceException $e) {
+            DB::rollback();
+            myLog('place-order-api-error', ['data' => $data, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
-            DB::rollabck();
-            myLog('operate-local-place-order', ['data' => $data, 'message' => $e->getMessage()]);
+            DB::rollback();
+            myLog('place-order-local-error', ['data' => $data, 'message' => $e->getMessage()]);
             return response()->apiFail($e->getMessage());
         }
         DB::commit();
-        return response()->apiSuccess();
+        myLog('place-order-success', ['发单器结果' => $result, '从发单器获取的参数' => $data, '发送给发单器的参数' => $options]);
+        return response()->apiSuccess('下单成功', ['order_no' => $order->trade_no]);
     }
 
     /**

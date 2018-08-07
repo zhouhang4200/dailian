@@ -24,9 +24,9 @@ class AuthAdmin
         }
 
         // 如果用户ID为(1)或后台首页路由,则不进行权限判断
-        if ($request->user('admin')->id != 1 && ! $request->user('admin')->can(\Route::currentRouteName()) && \Route::currentRouteName() != 'admin') {
-            return redirect(route('admin.403'));
-        }
+//        if ($request->user('admin')->id != 1 && ! $request->user('admin')->can(\Route::currentRouteName()) && \Route::currentRouteName() != 'admin') {
+//            return redirect(route('admin.403'));
+//        }
 
         return $next($request);
     }

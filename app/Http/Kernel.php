@@ -24,6 +24,8 @@ class Kernel extends HttpKernel
         // 后台访问中间件
         'guest.admin' => \App\Http\Middleware\GuestAdmin::class,
         'auth.admin' => \App\Http\Middleware\AuthAdmin::class,
+        // api 中间件
+        'api.auth' => \App\Http\Middleware\ApiAuth::class,
     ];
 
     /**

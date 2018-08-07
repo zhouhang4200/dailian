@@ -259,30 +259,19 @@ $finance = ['frontend.finance.asset', 'frontend.finance.amount-flow', 'frontend.
 
                     <li data-name="home"
                         class="layui-nav-item @if(in_array(Route::currentRouteName(), ['help'])) layui-nav-itemed @endif">
-                        <a href="javascript:;" lay-tips="帮助中心" lay-direction="2">
+                        <a href="{{ route('help') }}" lay-tips="帮助中心" lay-direction="2">
                             <i class="layui-icon iconfont  icon-finance-o"></i>
                             <cite>帮助中心</cite>
                         </a>
-                        <dl class="layui-nav-child">
-                            <dd data-name="console"
-                                class="@if(Route::currentRouteName() == 'help') layui-this  @endif" >
-                                <a href="{{ route('help') }}">帮助中心</a>
-                            </dd>
-                        </dl>
+
                     </li>
 
                     <li data-name="home"
                         class="layui-nav-item @if(in_array(Route::currentRouteName(), ['notice'])) layui-nav-itemed @endif">
-                        <a href="javascript:;" lay-tips="公告中心" lay-direction="2">
+                        <a href="{{ route('notice') }}" lay-tips="公告中心" lay-direction="2">
                             <i class="layui-icon iconfont  icon-finance-o"></i>
                             <cite>公告中心</cite>
                         </a>
-                        <dl class="layui-nav-child">
-                            <dd data-name="console"
-                                class="@if(Route::currentRouteName() == 'notice') layui-this  @endif" >
-                                <a href="{{ route('notice') }}">公告中心</a>
-                            </dd>
-                        </dl>
                     </li>
                 </ul>
             </div>

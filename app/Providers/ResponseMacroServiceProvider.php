@@ -20,6 +20,12 @@ class ResponseMacroServiceProvider extends ServiceProvider
         Response::macro('ajaxFail', function ($message = '操作失败', $content = []) {
             return response()->json(['status' => 0, 'message' => $message, 'content' => $content], 200);
         });
+        Response::macro('apiSuccess', function ($message = '操作成功', $data = []) {
+            return response()->json(['code' => 1, 'message' => $message, 'data' => $data], 200);
+        });
+        Response::macro('apiFail', function ($message = '操作失败', $data = []) {
+            return response()->json(['code' => 0, 'message' => $message, 'data' => $data], 200);
+        });
     }
 
     /**

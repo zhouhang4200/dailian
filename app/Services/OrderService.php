@@ -612,7 +612,7 @@ class OrderService
     public function agreeConsult()
     {
         // 状态为 撤销中 可取消撤销
-        if (self::$order->status == 4) {
+        if (self::$order->status != 4) {
             throw new OrderServiceException('申请撤销失败,订单当前状态为: ' . self::$order->getStatusDescribe());
         }
         // 检测当前操作用户与发起用户是否是同一人
@@ -801,10 +801,8 @@ class OrderService
             }
             // 删除所有相关的留言
             self::$order->message()->delete();
-            // 记录订单前一个状态
-            $previousStatus = GameLevelingOrderPreviousStatus::getLatestBy(self::$order->trade_no);
             // 修改订单状态
-            self::$order->status = $previousStatus;
+            self::$order->status = GameLevelingOrderPreviousStatus::getLatestBy(self::$order->trade_no);;
             self::$order->save();
 
             // 写入订单日志

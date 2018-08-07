@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Front;
 
 use \Exception;
-use App\Services\OrderServices;
+use App\Services\OrderService;
 use App\Models\GameLevelingOrder;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -25,7 +25,7 @@ class OrderOperationController extends Controller
     {
         DB::beginTransaction();
         try {
-            OrderServices::init(request()->user()->id, request('trade_no'))->take();
+            OrderService::init(request()->user()->id, request('trade_no'))->take();
         } catch (Exception $exception) {
             return response()->ajaxFail();
         }
@@ -51,7 +51,7 @@ class OrderOperationController extends Controller
 
         DB::beginTransaction();
         try {
-            OrderServices::init(request()->user()->id, request('trade_no'))->applyComplete(array_filter($images));
+            OrderService::init(request()->user()->id, request('trade_no'))->applyComplete(array_filter($images));
         } catch (Exception $exception) {
             return response()->ajaxFail($exception->getMessage());
         }
@@ -68,7 +68,7 @@ class OrderOperationController extends Controller
     {
         DB::beginTransaction();
         try {
-            OrderServices::init(request()->user()->id, request('trade_no'))->cancelComplete();
+            OrderService::init(request()->user()->id, request('trade_no'))->cancelComplete();
         } catch (Exception $exception) {
             return response()->ajaxFail($exception->getMessage());
         }
@@ -85,7 +85,7 @@ class OrderOperationController extends Controller
     {
         DB::beginTransaction();
         try {
-            OrderServices::init(request()->user()->id, request('trade_no'))->complete();
+            OrderService::init(request()->user()->id, request('trade_no'))->complete();
         } catch (Exception $exception) {
             return response()->ajaxFail($exception->getMessage());
         }
@@ -102,7 +102,7 @@ class OrderOperationController extends Controller
     {
         DB::beginTransaction();
         try {
-            OrderServices::init(request()->user()->id, request('trade_no'))->onSale();
+            OrderService::init(request()->user()->id, request('trade_no'))->onSale();
         } catch (Exception $exception) {
             return response()->ajaxFail($exception->getMessage());
         }
@@ -119,7 +119,7 @@ class OrderOperationController extends Controller
     {
         DB::beginTransaction();
         try {
-            OrderServices::init(request()->user()->id, request('trade_no'))->offSale();
+            OrderService::init(request()->user()->id, request('trade_no'))->offSale();
         } catch (Exception $exception) {
             return response()->ajaxFail($exception->getMessage());
         }
@@ -136,7 +136,7 @@ class OrderOperationController extends Controller
     {
         DB::beginTransaction();
         try {
-            OrderServices::init(request()->user()->id, request('trade_no'))->lock();
+            OrderService::init(request()->user()->id, request('trade_no'))->lock();
         } catch (Exception $exception) {
             return response()->ajaxFail($exception->getMessage());
         }
@@ -153,7 +153,7 @@ class OrderOperationController extends Controller
     {
         DB::beginTransaction();
         try {
-            OrderServices::init(request()->user()->id, request('trade_no'))->cancelLock();
+            OrderService::init(request()->user()->id, request('trade_no'))->cancelLock();
         } catch (Exception $exception) {
             return response()->ajaxFail($exception->getMessage());
         }
@@ -170,7 +170,7 @@ class OrderOperationController extends Controller
     {
         DB::beginTransaction();
         try {
-            OrderServices::init(request()->user()->id, request('trade_no'))->anomaly();
+            OrderService::init(request()->user()->id, request('trade_no'))->anomaly();
         } catch (Exception $exception) {
             return response()->ajaxFail($exception->getMessage());
         }
@@ -185,7 +185,7 @@ class OrderOperationController extends Controller
     public function cancelAnomaly()
     {
         try {
-            OrderServices::init(request()->user()->id, request('trade_no'))->cancelAnomaly();
+            OrderService::init(request()->user()->id, request('trade_no'))->cancelAnomaly();
         } catch (Exception $exception) {
             return response()->ajaxFail($exception->getMessage());
         }
@@ -204,19 +204,15 @@ class OrderOperationController extends Controller
         $amount = request('amount');
         $deposit = request('deposit');
         $remark = request('remark');
-        $securityDeposit = 0;
-        $efficiencyDeposit = 0;
 
         DB::beginTransaction();
 
         // 拆分安全与效率保证金
-        if ($deposit > 0) {
-            $order = GameLevelingOrder::getOrderByCondition(['trade_no' => $tradeNO])->first();
-            $securityDeposit = $order->security_deposit;
-            $efficiencyDeposit = bcsub($deposit, $order->efficiency_deposit);
-        }
+        $depositResult = GameLevelingOrder::deuceDeposit($tradeNO, $deposit);
+
         try {
-            OrderServices::init(request()->user()->id, $tradeNO)->applyConsult($amount, $securityDeposit, $efficiencyDeposit, $remark);
+            OrderService::init(request()->user()->id, $tradeNO)
+                ->applyConsult($amount, $depositResult['security_deposit'], $depositResult['efficiency_deposit'], $remark);
         } catch (Exception $exception) {
             return response()->ajaxFail($exception->getMessage());
         }
@@ -233,7 +229,7 @@ class OrderOperationController extends Controller
     {
         DB::beginTransaction();
         try {
-            OrderServices::init(request()->user()->id, request('trade_no'))->cancelConsult();
+            OrderService::init(request()->user()->id, request('trade_no'))->cancelConsult();
         } catch (Exception $exception) {
             return response()->ajaxFail($exception->getMessage());
         }
@@ -255,7 +251,7 @@ class OrderOperationController extends Controller
             $images[] = base64ToImg(request('image_2'),  'complain');
             $images[] = base64ToImg(request('image_3'),  'complain');
 
-            OrderServices::init(request()->user()->id, request('trade_no'))->applyComplain(request('reason'), array_filter($images));
+            OrderService::init(request()->user()->id, request('trade_no'))->applyComplain(request('reason'), array_filter($images));
         } catch (Exception $exception) {
             return response()->ajaxFail($exception->getMessage());
         }
@@ -273,7 +269,7 @@ class OrderOperationController extends Controller
     {
         DB::beginTransaction();
         try {
-            OrderServices::init(request()->user()->id, request('trade_no'))->cancelComplain();
+            OrderService::init(request()->user()->id, request('trade_no'))->cancelComplain();
         } catch (Exception $exception) {
             return response()->ajaxFail($exception->getMessage());
         }

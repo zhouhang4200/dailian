@@ -21,9 +21,8 @@ Route::namespace('Auth')->group(function (){
 
 
 // 登录后首页
-Route::group(['middleware' => 'auth.admin'], function () {
+Route::group(['middleware' =>  ['auth.admin']], function () {
     Route::get('/', 'HomeController@index')->name('admin');
-
 
     // 订单
     Route::prefix('order')->namespace('Order')->group(function () {
@@ -36,8 +35,11 @@ Route::group(['middleware' => 'auth.admin'], function () {
         // 代练订单仲裁
         Route::prefix('game-leveling-order-complain')->group(function (){
             Route::get('/', 'GameLevelingOrderComplainController@index')->name('admin.game-leveling-order-complain');
+            Route::get('/{trade_no}', 'GameLevelingOrderComplainController@show')->name('admin.game-leveling-order-complain.show');
+            Route::post('send-message', 'GameLevelingOrderComplainController@sendMessage')->name('admin.game-leveling-order-complain.send-message');
         });
     });
+
 
     // 游戏
     Route::prefix('game')->group(function(){

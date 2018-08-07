@@ -16,10 +16,9 @@
     <link rel="stylesheet" type="text/css" href="/back/css/libs/magnific-popup.css">
     <link rel="stylesheet" type="text/css" href="/back/css/libs/datepicker.css">
     <link rel="stylesheet" type="text/css" href="/back/css/compiled/custom.css">
-    <link rel="stylesheet" type="text/css" href="/vendor/layui/css/layui.css">
+    <link rel="stylesheet" type="text/css" href="/back/layui/css/layui.css">
     <link rel="stylesheet" type="text/css" href="/back/css/globale.css">
-    <link rel="stylesheet" type="text/css" href="/back/css/layui-rewrit.css">
-    <link id="layuicss-layer" rel="stylesheet" href="/front/lib/js/layui/css/modules/layer/default/layer.css" media="all">
+    {{--<link id="layuicss-layer" rel="stylesheet" href="/front/lib/js/layui/css/modules/layer/default/layer.css" media="all">--}}
     <style>
         .layui-table th{
             font-weight: bold;
@@ -160,5 +159,6 @@
 
 </script>
 @yield('js')
+@yield('pop')
 </body>
 </html>

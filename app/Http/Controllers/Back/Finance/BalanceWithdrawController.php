@@ -8,7 +8,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Models\BalanceWithdraw;
 use App\Models\UserAssetFlow;
 use Illuminate\Http\Request;
-use App\Services\UserAssetServices;
+use App\Services\UserAssetService;
 use App\Http\Controllers\Controller;
 
 class BalanceWithdrawController extends Controller
@@ -50,7 +50,7 @@ class BalanceWithdrawController extends Controller
 
             $userAssetFlow = UserAssetFlow::where('trade_no', $balanceWithdraw->trade_no)->first();
 
-            UserAssetServices::init(35, $userAssetFlow->user_id, $userAssetFlow->amount, $userAssetFlow->trade_no)->expendFromFrozen();
+            UserAssetService::init(35, $userAssetFlow->user_id, $userAssetFlow->amount, $userAssetFlow->trade_no)->expendFromFrozen();
         }
         catch (Exception $e) {
             DB::rollback();
@@ -77,7 +77,7 @@ class BalanceWithdrawController extends Controller
 
             $userAssetFlow = UserAssetFlow::where('trade_no', $balanceWithdraw->trade_no)->first();
 
-            UserAssetServices::init(45, $userAssetFlow->user_id, $userAssetFlow->amount, $userAssetFlow->trade_no)->unfrozen();
+            UserAssetService::init(45, $userAssetFlow->user_id, $userAssetFlow->amount, $userAssetFlow->trade_no)->unfrozen();
         } catch (Exception $e) {
             DB::rollback();
             return response()->json(['status' => 0, 'message' => '失败']);

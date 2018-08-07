@@ -7,6 +7,7 @@ $orderRoute = [
     'admin.game-leveling-order.show',
     'admin.game-leveling-order.log',
     'admin.game-leveling-order-complain',
+    'admin.game-leveling-order-complain.show',
 ];
 
 $financeRoute = [

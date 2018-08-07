@@ -23,6 +23,7 @@
             <div class="main-box clearfix">
                 <div class="main-box-body clearfix">
                     <div class="table-responsive">
+
                         <div class="layui-tab layui-tab-brief" lay-filter="detail">
                             <ul class="layui-tab-title">
                                 <li  lay-id="detail"><a href="{{ route('admin.game-leveling-order.show', ['trade_no' => request('trade_no')])  }}">订单内容</a></li>
@@ -66,7 +67,6 @@
             </div>
         </div>
     </div>
-
 
     <div class="row">
 

@@ -361,7 +361,7 @@ class OrderService
      */
     public function onSale()
     {
-        if (self::$order->status != 13) {
+        if (self::$order->status != 12) {
             throw new OrderServiceException('上架失败,订单当前状态为: ' . self::$order->getStatusDescribe());
         }
         if (self::$order->parent_user_id != self::$user->parent_id) {

@@ -37,9 +37,9 @@ Route::group(['middleware' =>  ['auth.admin']], function () {
             Route::get('/', 'GameLevelingOrderComplainController@index')->name('admin.game-leveling-order-complain');
             Route::get('/{trade_no}', 'GameLevelingOrderComplainController@show')->name('admin.game-leveling-order-complain.show');
             Route::post('send-message', 'GameLevelingOrderComplainController@sendMessage')->name('admin.game-leveling-order-complain.send-message');
+            Route::post('confirm-arbitration', 'GameLevelingOrderComplainController@confirmArbitration')->name('admin.game-leveling-order-complain.confirm-arbitration');
         });
     });
-
 
     // 游戏
     Route::prefix('game')->group(function(){
@@ -142,6 +142,15 @@ Route::group(['middleware' =>  ['auth.admin']], function () {
         Route::get('certification/{id}', 'UserController@certificationShow')->name('admin.user.certification-show'); // 实名认证信息
         Route::post('certification/pass', 'UserController@certificationPass')->name('admin.user.certification-pass'); // 实名认证通过
         Route::post('certification/refuse', 'UserController@certificationRefuse')->name('admin.user.certification-refuse'); // 实名认证拒绝
+
+        // 罚款
+        Route::prefix('fine-ticket')->group(function () {
+            Route::get('/', 'FineTicketController@index')->name('admin.user.fine-ticket');
+            Route::get('create', 'FineTicketController@create');
+            Route::post('create', 'FineTicketController@store')->name('admin.user.fine-ticket.create');
+            Route::get('update', 'FineTicketController@edit');
+            Route::post('update', 'FineTicketController@update')->name('admin.user.fine-ticket.update');
+        });
     });
 
     // 公告，帮助中心

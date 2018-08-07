@@ -81,9 +81,9 @@ class GameLevelingOrderComplain extends Model
     public function complaint()
     {
         if ($this->parent_user_id == $this->order->parent_user_id) {
-            return $this->order->parent_username . ' / ' . $this->order->parent_user_id .  "(发单)";
+            return $this->order->parent_username . ' / ' . $this->order->parent_user_id .  " (发单)";
         } else {
-            return $this->order->take_parent_username . ' /' . $this->order->take_parent_user_id . ')' . "(接单)";
+            return $this->order->take_parent_username . ' / ' . $this->order->take_parent_user_id .  " (接单)";
         }
     }
 
@@ -93,9 +93,9 @@ class GameLevelingOrderComplain extends Model
     public function beComplaint()
     {
         if ($this->parent_user_id != $this->order->parent_user_id) {
-            return $this->order->parent_username . ' /' . $this->order->parent_user_id . "(发单)";
+            return $this->order->parent_username . ' / ' . $this->order->parent_user_id . " (发单)";
         } else {
-            return $this->order->take_parent_username . ' /' . $this->order->take_parent_user_id . "(接单)";
+            return $this->order->take_parent_username . ' / ' . $this->order->take_parent_user_id . " (接单)";
         }
     }
 

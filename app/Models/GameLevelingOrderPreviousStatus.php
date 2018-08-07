@@ -29,8 +29,14 @@ class GameLevelingOrderPreviousStatus extends Model
         ]);
     }
 
+    /**
+     * @param $gameLevelingOrderTradeNO
+     * @return mixed
+     */
     public static function getLatestBy($gameLevelingOrderTradeNO)
     {
-        return self::where('game_leveling_order_trade_no', $gameLevelingOrderTradeNO)->latest('id')->first();
+        $previous = self::where('game_leveling_order_trade_no', $gameLevelingOrderTradeNO)->latest('id')->first();
+        $previous->delete();
+        return $previous->status;
     }
 }

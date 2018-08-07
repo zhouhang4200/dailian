@@ -28,6 +28,6 @@ class CreateAdminPermissionAdminRoleTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('admin_permission_admin_roles');
+        Schema::dropIfExists('admin_permission_admin_role');
     }
 }

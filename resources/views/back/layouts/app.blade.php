@@ -147,6 +147,12 @@
             });
         });
 
+        // 关闭弹出窗口
+        $('body').on('click', '.close-pop', function () {
+                layer.closeAll();
+                return false;
+        });
+
         $('#admin-logout').click(function () {
             layer.confirm('确定退出吗?', {icon: 3, title:'提示'}, function(index){
                 document.getElementById('admin-logout-form').submit();
@@ -154,7 +160,6 @@
                 return true;
             });
         });
-
     });
 
 </script>

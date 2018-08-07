@@ -16,6 +16,7 @@ class CreateGameLevelingOrdersTable extends Migration
         Schema::create('game_leveling_orders', function (Blueprint $table) {
             $table->increments('id');
             $table->string('trade_no', 22)->comment('交易单号');
+            $table->string('foreign_trade_no', 60)->comment('外部交易单号');
             $table->unsignedInteger('user_id')->comment('创建订单用户ID');
             $table->string('username')->comment('创建订单用户');
             $table->unsignedInteger('parent_user_id')->comment('创建订单用户父ID');

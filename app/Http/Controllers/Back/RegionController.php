@@ -104,7 +104,6 @@ class RegionController extends Controller
 
     /**
      * 根据传入的游戏ID获取区
-     * @param $id
      * @return mixed
      */
     public function getRegionByGameId()

@@ -1,13 +1,13 @@
 @extends('back.layouts.app')
 
-@section('title', ' | 订单列表')
+@section('title', ' | 罚款管理')
 
 @section('content')
     <div class="main-box">
         <div class="main-box-body clearfix">
             <div class="layui-tab layui-tab-brief" lay-filter="widgetTab">
                 <ul class="layui-tab-title">
-                    <li class="layui-this" lay-id="add">订单列表</li>
+                    <li class="layui-this" lay-id="add">罚款管理</li>
                 </ul>
                 <div class="layui-tab-content">
 
@@ -62,30 +62,8 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @forelse ($complainOrders as $item)
+                            @forelse ($fineTickets as $item)
                                 <tr>
-
-                                    <td>{{ $item->id }}</td>
-                                    <td>
-                                        @if($item->parent_user_id == optional($item->order)->parent_user_id )
-                                            {{ optional($item->order)->parent_user_id }} <br/>
-                                            {{ optional($item->order)->parent_username }}
-                                        @else
-                                            {{ optional($item->order)->take_parent_user_id }} <br/>
-                                            {{ optional($item->order)->take_parent_username }}
-                                        @endif
-                                    </td>
-                                    <td>
-                                        @if($item->parent_user_id == optional($item->order)->parent_user_id )
-
-                                            {{ optional($item->order)->take_parent_user_id }} <br/>
-                                            {{ optional($item->order)->take_parent_username }}
-                                        @else
-                                            {{ optional($item->order)->parent_user_id }} <br/>
-                                            {{ optional($item->order)->parent_username }}
-                                        @endif
-                                    </td>
-                                    <td>{{ $item->game_leveling_order_trade_no }}</td>
                                     <td>{{ $item->reason }}</td>
                                     <td>{{ $item->remark }}</td>
                                     <td>{{ $item->created_at }}</td>
@@ -102,7 +80,7 @@
                             @endforelse
                             </tbody>
                         </table>
-                        {{ $complainOrders->appends(request()->all())->links() }}
+                        {{ $fineTickets->appends(request()->all())->links() }}
                     </div>
                 </div>
             </div>

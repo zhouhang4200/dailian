@@ -86,7 +86,6 @@ $systemRoute = [
                             <li>
                                 <a href="{{ route('admin.game-leveling-order-complain') }}" @if(in_array($currentRouteName, [
                                     'admin.game-leveling-order-complain',
-
                                 ])) class="active" @endif>
                                     仲裁订单
                                 </a>
@@ -116,6 +115,11 @@ $systemRoute = [
                             <li>
                                 <a href="{{ route('admin.user.certification') }}" @if($currentRouteName == 'admin.user.certification') class="active" @endif>
                                     实名认证
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('admin.user.fine-ticket') }}" @if($currentRouteName == 'admin.user.fine-ticket') class="active" @endif>
+                                    罚款管理
                                 </a>
                             </li>
                         </ul>

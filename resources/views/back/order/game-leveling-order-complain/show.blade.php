@@ -38,59 +38,53 @@
         <div class="">
             <form class="form-horizontal layui-form" method="POST" action="">
                 {!! csrf_field() !!}
-                <input type="hidden" name="trade_no">
+                <input type="hidden" name="trade_no" value="{{ $order->trade_no }}">
 
                 <div class="form-group">
                     <label class="col-lg-4 control-label">*需发单方支付代练费（元）</label>
                     <div class="col-lg-8">
-                        <input type="text" name="amount" lay-verify="required|number"  autocomplete="off"
-                               placeholder="请输入代练费" class="layui-input" >
+                        <input type="text" name="amount" lay-verify="required|number"  autocomplete="off" placeholder="请输入代练费" class="layui-input" >
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="col-lg-4 control-label">订单代练费（元）</label>
                     <div class="col-lg-8">
-                        <input type="text" name="order_amount" id="order_amount" lay-verify=""
-                               autocomplete="off" placeholder="" class="layui-input order_amount"  disabled>
+                        <input type="text" name="order_amount" id="order_amount"  class="layui-input order_amount"  disabled value="{{ $order->amount }}">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="col-lg-4 control-label">*需接单方赔付保证金（元）</label>
                     <div class="col-lg-8">
-                        <input type="text" name="deposit" lay-verify="required|number"
-                               autocomplete="off"
-                               placeholder="请输入保证金" class="layui-input" >
+                        <input type="text" name="deposit" lay-verify="required|number"  autocomplete="off"  placeholder="请输入保证金" class="layui-input">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="col-lg-4 control-label">订单安全保证金（元）</label>
                     <div class="col-lg-8">
-                        <input type="text" name="order_security_deposit"  lay-verify=""  autocomplete="off"
-                               placeholder="" class="layui-input safe"  disabled>
+                        <input type="text" name="order_security_deposit"  autocomplete="off"  class="layui-input safe"  disabled value="{{ $order->security_deposit }}">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="col-lg-4 control-label">订单效率保证金（元）</label>
                     <div class="col-lg-8">
-                        <input type="text" name="order_efficiency_deposit"  lay-verify=""  autocomplete="off"
-                               placeholder="" class="layui-input effect"  disabled>
+                        <input type="text" name="order_efficiency_deposit" class="layui-input"  disabled  value="{{ $order->efficiency_deposit }}">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <div class="col-lg-12">
-                        <textarea name="" class="layui-textarea" cols="30" rows="10"></textarea>
+                        <textarea name="" class="layui-textarea" cols="20" rows="5" placeholder="请输入仲裁结果说明"></textarea>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-lg-4 control-label"></label>
                     <div class="col-lg-8">
-                        <button class="btn btn-success" lay-submit lay-filter="confirm-apply-consult">确定</button>
-                        <button class="btn btn-success" lay-submit lay-filter="confirm-apply-consult">取消</button>
+                        <button class="btn btn-success" lay-submit lay-filter="confirm-arbitration">确定</button>
+                        <button class="btn btn-success close-pop">取消</button>
                     </div>
                 </div>
             </form>
@@ -111,23 +105,22 @@
             // 发送仲裁留言
             form.on('submit(send-complain-message)', function (data) {
                 var image = $('.pic-add img').attr('src');
-                if (data.field.content) {
-                    $.post("{{ route('admin.game-leveling-order-complain.send-message') }}", {
-                        'trade_no': "{{ $order->trade_no }}",
-                        'content': data.field.content,
-                        'image': image
-                    }, function (data) {
-                        if (data.status === 1) {
-                            layer.msg(data.message, {icon: 1});
-                            complainInfo();
-                        } else {
-                            layer.msg(data.message, {icon: 5});
-                            return false;
-                        }
-                    }, 'json');
-                } else {
-                    layer.msg('请输入要发送的内容', {icon: 5});
-                }
+
+                $.post("{{ route('admin.game-leveling-order-complain.send-message') }}", {
+                    'trade_no': "{{ $order->trade_no }}",
+                    'content': data.field.content,
+                    'remark': data.field.remark,
+                    'image': image
+                }, function (data) {
+                    if (data.status === 1) {
+                        layer.msg(data.message, {icon: 1});
+                        complainInfo();
+                    } else {
+                        layer.msg(data.message, {icon: 5});
+                        return false;
+                    }
+                }, 'json');
+
                 return false;
             });
 
@@ -140,7 +133,6 @@
 
             // 仲裁弹窗
             form.on('submit(arbitration-pop)', function (data) {
-                // $('input[name=trade_no]').val($(data.elem).attr('data-no'));
                 layer.open({
                     type: 1,
                     shade: 0.2,
@@ -148,6 +140,22 @@
                     area: ['550px'],
                     content: $('.arbitration-pop')
                 });
+                return false;
+            });
+            // 确认仲裁
+            form.on('submit(confirm-arbitration)', function (data) {
+                $.post('{{ route('admin.game-leveling-order-complain.confirm-arbitration') }}', {
+                    trade_no:data.field.trade_no,
+                    amount:data.field.amount,
+                    deposit:data.field.deposit
+                }, function (result) {
+                    if (result.status == 1) {
+                        layer.closeAll();
+                        layer.msg(result.message);
+                    } else {
+                        layer.msg(result.message);
+                    }
+                }, 'json');
                 return false;
             });
 

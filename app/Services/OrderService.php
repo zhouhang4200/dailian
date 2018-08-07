@@ -2,18 +2,18 @@
 
 namespace App\Services;
 
-use App\Models\AdminUser;
-use App\Models\GameLevelingOrderApplyComplete;
-use App\Models\Server;
 use \Exception;
+use App\Models\Server;
 use App\Models\User;
 use App\Models\Game;
 use App\Models\Region;
+use App\Models\AdminUser;
 use App\Models\GameLevelingType;
 use App\Models\GameLevelingOrder;
 use App\Models\GameLevelingOrderLog;
 use App\Models\GameLevelingOrderConsult;
 use App\Models\GameLevelingOrderComplain;
+use App\Models\GameLevelingOrderApplyComplete;
 use App\Models\GameLevelingOrderPreviousStatus;
 use Illuminate\Support\Facades\DB;
 use App\Exceptions\OrderServiceException;
@@ -52,7 +52,7 @@ class OrderService
     public static function init(int $userId, $gameLevelingOrderTradeNO = '', $adminUserId = 0)
     {
         if ($adminUserId != 0) {
-            if (! $user = AdminUser::find($userId)) {
+            if (! $user = AdminUser::find($adminUserId)) {
                 throw new OrderServiceException('管理员ID不存在');
             }
             self::$user = $user;
@@ -92,6 +92,7 @@ class OrderService
      * @param string $playerPhone 玩家手机
      * @param string $userQQ 发单商户QQ
      * @param string $takeOrderPassword 接单密码
+     * @param string $foreignTradeNO 外部订单号
      * @param int $source 来源 1 web 平台下单 2 api 接口下单
      * @return mixed
      * @throws Exception
@@ -115,6 +116,7 @@ class OrderService
         string $playerPhone,
         string $userQQ,
         string $takeOrderPassword,
+        string $foreignTradeNO = '',
         int $source = 1
     ){
         DB::beginTransaction();
@@ -130,6 +132,7 @@ class OrderService
             // 创建订单
             $order = GameLevelingOrder::create([
                 'trade_no' => $tradeNO,
+                'foreign_trade_no' => $foreignTradeNO,
                 'user_id' => self::$user->id,
                 'username' => self::$user->name,
                 'parent_user_id' => self::$user->parent_id,
@@ -179,7 +182,7 @@ class OrderService
     public function take()
     {
         if (self::$order->status != 1) {
-            throw new OrderServiceException('接单失败,订单当前状态为: ' . self::$order->getStatusDes());
+            throw new OrderServiceException('接单失败,订单当前状态为: ' . self::$order->getStatusDescribe());
         }
 
         DB::beginTransaction();
@@ -216,7 +219,7 @@ class OrderService
     public function delete()
     {
         if (self::$order->status != 1) {
-            throw new OrderServiceException('撤单失败,订单当前状态为: ' . self::$order->getStatusDes());
+            throw new OrderServiceException('撤单失败,订单当前状态为: ' . self::$order->getStatusDescribe());
         }
         if (self::$order->parent_user_id != self::$user->parent_id) {
             throw new OrderServiceException('该订单不属于您,您无权撤单');
@@ -224,7 +227,7 @@ class OrderService
         DB::beginTransaction();
         try {
             // 修改订单状态
-            self::$order->status = 14;
+            self::$order->status = 13;
             self::$order->save();
             // 写入订单日志
             GameLevelingOrderLog::store('撤单', self::$order->trade_no, self::$user->id, self::$user->name, self::$user->parent_id, self::$user->name . ': 进行操作 [撤单]');
@@ -245,7 +248,7 @@ class OrderService
     public function applyComplete($image = [])
     {
         if (self::$order->status != 2) {
-            throw new OrderServiceException('申请验收失败,订单当前状态为: ' . self::$order->getStatusDes());
+            throw new OrderServiceException('申请验收失败,订单当前状态为: ' . self::$order->getStatusDescribe());
         }
 
         if (self::$order->take_parent_user_id != self::$user->parent_id) {
@@ -281,7 +284,7 @@ class OrderService
     public function cancelComplete()
     {
         if (self::$order->status != 3) {
-            throw new OrderServiceException('取消验收失败,订单当前状态为: ' . self::$order->getStatusDes());
+            throw new OrderServiceException('取消验收失败,订单当前状态为: ' . self::$order->getStatusDescribe());
         }
         if (self::$order->take_parent_user_id != self::$user->parent_id) {
             throw new OrderServiceException('您不是接单方无法申请验收');
@@ -320,7 +323,7 @@ class OrderService
     public function complete()
     {
         if (self::$order->status != 3) {
-            throw new OrderServiceException('完成验收失败,订单当前状态为: ' . self::$order->getStatusDes());
+            throw new OrderServiceException('完成验收失败,订单当前状态为: ' . self::$order->getStatusDescribe());
         }
         if (self::$order->parent_user_id != self::$user->parent_id) {
             throw new OrderServiceException('您不是发单方无法完成验收');
@@ -359,7 +362,7 @@ class OrderService
     public function onSale()
     {
         if (self::$order->status != 13) {
-            throw new OrderServiceException('上架失败,订单当前状态为: ' . self::$order->getStatusDes());
+            throw new OrderServiceException('上架失败,订单当前状态为: ' . self::$order->getStatusDescribe());
         }
         if (self::$order->parent_user_id != self::$user->parent_id) {
             throw new OrderServiceException('您不是发单方无法上架该订单');
@@ -387,7 +390,7 @@ class OrderService
     public function offSale()
     {
         if (self::$order->status != 1) {
-            throw new OrderServiceException('下架失败,订单当前状态为: ' . self::$order->getStatusDes());
+            throw new OrderServiceException('下架失败,订单当前状态为: ' . self::$order->getStatusDescribe());
         }
         if (self::$order->parent_user_id != self::$user->parent_id) {
             throw new OrderServiceException('您不是发单方无法下架该订单');
@@ -396,7 +399,7 @@ class OrderService
         DB::beginTransaction();
         try {
             // 修改订单状态
-            self::$order->status = 13;
+            self::$order->status = 12;
             self::$order->save();
             // 写入订单日志
             GameLevelingOrderLog::store('下架', self::$order->trade_no, self::$user->id, self::$user->name, self::$user->parent_id, self::$user->name . ': 进行操作 [下架]');
@@ -416,7 +419,7 @@ class OrderService
     {
         // 待验收 与 异常时可以锁定
         if (! in_array(self::$order->status, [3, 6])) {
-            throw new OrderServiceException('锁定失败,订单当前状态为: ' . self::$order->getStatusDes());
+            throw new OrderServiceException('锁定失败,订单当前状态为: ' . self::$order->getStatusDescribe());
         }
         if (self::$order->parent_user_id != self::$user->parent_id) {
             throw new OrderServiceException('您不是发单方无法锁定该订单');
@@ -426,7 +429,7 @@ class OrderService
             // 订录订单前一个状态
             GameLevelingOrderPreviousStatus::store(self::$order->status, self::$order->trade_no);
             // 修改订单状态
-            self::$order->status = 13;
+            self::$order->status = 7;
             self::$order->save();
             // 写入订单日志
             GameLevelingOrderLog::store('锁定', self::$order->trade_no, self::$user->id, self::$user->name, self::$user->parent_id, self::$user->name . ': 进行操作 [锁定]');
@@ -446,7 +449,7 @@ class OrderService
     {
         // 锁定状态可以取消锁定
         if (self::$order->status != 7) {
-            throw new OrderServiceException('取消锁定失败,订单当前状态为: ' . self::$order->getStatusDes());
+            throw new OrderServiceException('取消锁定失败,订单当前状态为: ' . self::$order->getStatusDescribe());
         }
         if (self::$order->parent_user_id != self::$user->parent_id) {
             throw new OrderServiceException('您不是发单方取消锁定该订单');
@@ -456,7 +459,7 @@ class OrderService
             // 获取订单前一个状态
             $previousStatus = GameLevelingOrderPreviousStatus::getLatestBy(self::$order->trade_no);
             // 修改订单状态
-            self::$order->status = $previousStatus->status;
+            self::$order->status = $previousStatus;
             self::$order->save();
             // 写入订单日志
             GameLevelingOrderLog::store('取消锁定', self::$order->trade_no, self::$user->id, self::$user->name, self::$user->parent_id, self::$user->name . ': 进行操作 [取消锁定]');
@@ -476,7 +479,7 @@ class OrderService
     {
         // 只有代练中订单可进行异常标记
         if (self::$order->status != 2) {
-            throw new OrderServiceException('标记异常失败,订单当前状态为: ' . self::$order->getStatusDes());
+            throw new OrderServiceException('标记异常失败,订单当前状态为: ' . self::$order->getStatusDescribe());
         }
         if (self::$order->take_parent_user_id != self::$user->parent_id) {
             throw new OrderServiceException('您不是接单方无法进行异常操作');
@@ -504,7 +507,7 @@ class OrderService
     {
         // 只有异常订单可取消异常
         if (self::$order->status != 6) {
-            throw new OrderServiceException('取消异常失败,订单当前状态为: ' . self::$order->getStatusDes());
+            throw new OrderServiceException('取消异常失败,订单当前状态为: ' . self::$order->getStatusDescribe());
         }
         if (self::$order->take_parent_user_id != self::$user->parent_id) {
             throw new OrderServiceException('您不是接单方无法进行异常操作');
@@ -536,7 +539,7 @@ class OrderService
     {
         // 状态为 代练中(2)  待收验(3) 异常(6) 锁定(7) 可申请撤销
         if ( ! in_array(self::$order->status, [2, 3, 6 ,7])) {
-            throw new OrderServiceException('申请撤销失败,订单当前状态为: ' . self::$order->getStatusDes());
+            throw new OrderServiceException('申请撤销失败,订单当前状态为: ' . self::$order->getStatusDescribe());
         }
         DB::beginTransaction();
         try {
@@ -576,7 +579,7 @@ class OrderService
     {
         // 状态为 撤销中 可取消撤销
         if (self::$order->status != 4) {
-            throw new OrderServiceException('申请撤销失败,订单当前状态为: ' . self::$order->getStatusDes());
+            throw new OrderServiceException('申请撤销失败,订单当前状态为: ' . self::$order->getStatusDescribe());
         }
         // 检测当前操作用户与发起用户是否是同一人
         if (self::$order->consult->parent_user_id != self::$user->parent_id) {
@@ -590,7 +593,7 @@ class OrderService
             // 记录订单前一个状态
             $previousStatus = GameLevelingOrderPreviousStatus::getLatestBy(self::$order->trade_no);
             // 修改订单状态
-            self::$order->status = $previousStatus->status;
+            self::$order->status = $previousStatus;
             self::$order->save();
             // 写入订单日志
             GameLevelingOrderLog::store('取消撤销', self::$order->trade_no, self::$user->id, self::$user->name, self::$user->parent_id, self::$user->name . ': 进行操作 [取消撤销]');
@@ -610,7 +613,7 @@ class OrderService
     {
         // 状态为 撤销中 可取消撤销
         if (self::$order->status == 4) {
-            throw new OrderServiceException('申请撤销失败,订单当前状态为: ' . self::$order->getStatusDes());
+            throw new OrderServiceException('申请撤销失败,订单当前状态为: ' . self::$order->getStatusDescribe());
         }
         // 检测当前操作用户与发起用户是否是同一人
         if (self::$order->consult->parent_user_id == self::$user->parent_id) {
@@ -727,7 +730,7 @@ class OrderService
     {
         // 状态为 代练中(2)  待收验(3) 异常(4)
         if ( ! in_array(self::$order->status, [2, 3, 4])) {
-            throw new OrderServiceException('申请仲裁失败,订单当前状态为: ' . self::$order->getStatusDes());
+            throw new OrderServiceException('申请仲裁失败,订单当前状态为: ' . self::$order->getStatusDescribe());
         }
         DB::beginTransaction();
         try {
@@ -766,7 +769,7 @@ class OrderService
     {
         // 状态为 撤销中 可取消撤销
         if (self::$order->status != 5) {
-            throw new OrderServiceException('取消仲裁失败,订单当前状态为: ' . self::$order->getStatusDes());
+            throw new OrderServiceException('取消仲裁失败,订单当前状态为: ' . self::$order->getStatusDescribe());
         }
         // 检测当前操作用户与发起用户是否是同一人
         if (self::$order->complain->parent_user_id != self::$user->parent_id) {
@@ -801,7 +804,7 @@ class OrderService
             // 记录订单前一个状态
             $previousStatus = GameLevelingOrderPreviousStatus::getLatestBy(self::$order->trade_no);
             // 修改订单状态
-            self::$order->status = $previousStatus->status;
+            self::$order->status = $previousStatus;
             self::$order->save();
 
             // 写入订单日志
@@ -826,13 +829,13 @@ class OrderService
     {
         // 状态为 仲裁中 可取消撤销
         if (self::$order->status != 5) {
-            throw new OrderServiceException('仲裁失败,订单当前状态为: ' . self::$order->getStatusDes());
+            throw new OrderServiceException('仲裁失败,订单当前状态为: ' . self::$order->getStatusDescribe());
         }
 
         DB::beginTransaction();
         try {
             // 记录撤销数据
-            GameLevelingOrderConsult::where('game_leveling_order_trade_no', self::$order->trade_no)
+            GameLevelingOrderComplain::where('game_leveling_order_trade_no', self::$order->trade_no)
                 ->update([
                     'status' => 3,
                     'amount' => $inputAmount,
@@ -924,7 +927,7 @@ class OrderService
                 UserAssetService::init(43, self::$order->take_user_id, $securityDepositExpend, self::$order->trade_no)->unfrozen();
             }
             // 修改订单状态
-            self::$order->status = 8;
+            self::$order->status = 9;
             self::$order->save();
             // 更新仲裁数据
             

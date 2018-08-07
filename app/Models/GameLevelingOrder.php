@@ -16,6 +16,7 @@ class GameLevelingOrder extends Model
     public $fillable = [
         'source',
         'trade_no',
+        'foreign_trade_no',
         'user_id',
         'username',
         'parent_user_id',

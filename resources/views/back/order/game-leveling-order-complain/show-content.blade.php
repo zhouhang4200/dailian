@@ -5,7 +5,7 @@
             <tr>
                 <td>投诉订单 : {{ $order->trade_no }}</td>
                 <td>申请时间 : {{ $order->complain->created_at }}</td>
-                <td>处理时间 : {{ $order->complain->reason }}</td>
+                <td>处理时间 : {{ $order->complain->dispose_at }}</td>
             </tr>
             <tr>
                 <td>投诉方 : {{ $order->complain->complaint() }}</td>
@@ -89,33 +89,34 @@
             </tbody>
         </table>
     </div>
-    @if($order->status != 9)
 
-        <div class="form-horizontal layui-form">
-            <div class="form-group">
-                <label class="col-lg-1 control-label">留言说明</label>
-                <div class="col-lg-6">
-                    <textarea  name='content' style="width: 100%;min-height: 80px;" class="layui-textarea"></textarea>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-lg-1 control-label">备注</label>
-                <div class="col-lg-6">
-                    <input type="text" name="remark" class="layui-input">
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-lg-offset-1 col-lg-1">
-                    <button class="btn btn-primary" lay-submit="" lay-filter="send-complain-message"  lay-id="" lay-no="">提交</button>
-                </div>
-                <div class="col-lg-1">
-                    <button class="btn btn-danger" lay-submit="" lay-filter="arbitration-pop"  lay-id="" lay-no="">仲裁</button>
-                </div>
+    <div class="form-horizontal layui-form">
+
+        @if($order->status != 9)
+        <div class="form-group">
+            <label class="col-lg-1 control-label">留言说明</label>
+            <div class="col-lg-6">
+                <textarea  name='content' style="width: 100%;min-height: 80px;" class="layui-textarea"></textarea>
             </div>
         </div>
-
-    @endif
-
+        @endif
+        <div class="form-group">
+            <label class="col-lg-1 control-label">备注</label>
+            <div class="col-lg-6">
+                <input type="text" name="remark" class="layui-input">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-lg-offset-1 col-lg-1">
+                <button class="btn btn-primary" lay-submit="" lay-filter="send-complain-message"  lay-id="" lay-no="">提交</button>
+            </div>
+            @if($order->status != 9)
+            <div class="col-lg-1">
+                <button class="btn btn-danger" lay-submit="" lay-filter="arbitration-pop"  lay-id="" lay-no="">仲裁</button>
+            </div>
+            @endif
+        </div>
+    </div>
 @else
     暂时没有仲裁信息
 @endif

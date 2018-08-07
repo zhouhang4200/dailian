@@ -41,7 +41,7 @@ class AdminPermissionController extends Controller
            AdminPermission::create([
                'name' => request('name'),
                'route_name' => request('route_name'),
-               'admin-permission_group_id' => request('admin-permission_group_id'),
+               'admin_permission_group_id' => request('admin_permission_group_id'),
            ]);
            return redirect(route('admin.admin-permission.create'))->with('success', '添加成功');
        } catch (\Exception $exception) {
@@ -69,7 +69,7 @@ class AdminPermissionController extends Controller
             AdminPermission::where('id', $id)->update([
                 'name' => request('name'),
                 'route_name' => request('route_name'),
-                'admin-permission_group_id' => request('admin-permission_group_id'),
+                'admin_permission_group_id' => request('admin_permission_group_id'),
             ]);
             return redirect(route('admin.admin-permission.update', ['id' => $id]))->with('success', '更新成功');
         } catch (\Exception $exception) {

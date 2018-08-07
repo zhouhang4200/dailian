@@ -218,7 +218,7 @@ class OrderService
      */
     public function delete()
     {
-        if (self::$order->status != 1) {
+        if ( ! in_array(self::$order->status, [1, 12])) {
             throw new OrderServiceException('撤单失败,订单当前状态为: ' . self::$order->getStatusDescribe());
         }
         if (self::$order->parent_user_id != self::$user->parent_id) {
@@ -940,6 +940,26 @@ class OrderService
 
     // 强制撤销 (客服操作)
     public function forceArbitration()
+    {
+
+    }
+
+    public function addMoney()
+    {
+
+    }
+
+    public function addTime()
+    {
+
+    }
+
+    public function update()
+    {
+
+    }
+
+    public function updateAccountPassword()
     {
 
     }

@@ -32,6 +32,9 @@ class FineTicket extends Model
         if (isset($condition['trade_no']) && $condition['trade_no']) {
             $query->where('trade_no', $condition['trade_no']);
         }
+        if (isset($condition['status']) && $condition['status']) {
+            $query->where('status', $condition['status']);
+        }
         if (isset($condition['start_time']) && $condition['start_time']) {
 
         }

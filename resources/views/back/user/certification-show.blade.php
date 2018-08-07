@@ -94,8 +94,8 @@
                                                                 <span class="thumb-meta-time"><i class="fa fa-clock-o"></i> 身份证背面照</span>
                                                             </li>
                                                             <li class="col-md-4">
-                                                                <a href="{{ $realNameCertification->identity_card_hold or '' }}" class="photo-box image-link"
-                                                                   style="background-image: url('{{ $realNameCertification->identity_card_hold or '' }}');"></a>
+                                                                <a href="{{ $realNameCertification->identity_card_hand or '' }}" class="photo-box image-link"
+                                                                   style="background-image: url('{{ $realNameCertification->identity_card_hand or '' }}');"></a>
                                                                 <span class="thumb-meta-time"><i class="fa fa-clock-o"></i> 手持身份证的本人正面照</span>
                                                             </li>
                                                         </ul>

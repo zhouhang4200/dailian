@@ -147,10 +147,10 @@
                                 <button type="button" class="qs-btn layui-btn-normal layui-btn-small upload-images" style="margin-left: 40px;">
                                     上传图片
                                 </button>
-                                <input class="layui-upload-file" lay-verify="" name="hold_card_picture" value="">
-                                <div class="layui-upload-list" style="background-image: url({{ $realNameCertification->hold_card_picture ?? '' }})">
+                                <input class="layui-upload-file" lay-verify="" name="identity_card_hand" value="">
+                                <div class="layui-upload-list" style="background-image: url({{ $realNameCertification->identity_card_hand ?? '' }})">
                                     <img class="layui-upload-img" id="demo4">
-                                    <input type="hidden" name="hold_card_picture" value="{{ $realNameCertification->hold_card_picture ?? '' }}">
+                                    <input type="hidden" name="identity_card_hand" value="{{ $realNameCertification->identity_card_hand ?? '' }}">
                                     <p id="demoText"></p>
                                 </div>
                             </div>
@@ -199,9 +199,9 @@
                 var id=$("input[name=id]").val();
                 var identity_card_front = $("input[name=identity_card_front]").val();
                 var identity_card_back = $("input[name=identity_card_back]").val();
-                var hold_card_picture = $("input[name=hold_card_picture]").val();
+                var identity_card_hand = $("input[name=identity_card_hand]").val();
 
-                if (identity_card_front.length == 0 || identity_card_back.length == 0 || hold_card_picture.length == 0) {
+                if (identity_card_front.length == 0 || identity_card_back.length == 0 || identity_card_hand.length == 0) {
                     layer.msg('请上传相关图片', {
                         time:1500,
                         icon:5

@@ -86,7 +86,7 @@ class OrderController extends Controller
             $userId = $request->user->id;
 
             // 已经撤单的返回成功
-            $order = GameLevelingOrder::where('no', $orderNo)->first();
+            $order = GameLevelingOrder::where('trade_no', $orderNo)->first();
 
             if ($order->status != 13) {
                 $orderService = OrderService::init($userId, $orderNo);

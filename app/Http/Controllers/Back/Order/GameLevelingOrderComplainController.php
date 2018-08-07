@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers\Back\Order;
 
+use App\Services\OrderService;
+use DB;
+use Exception;
 use App\Models\GameLevelingOrder;
 use App\Http\Controllers\Controller;
 use App\Models\GameLevelingOrderComplain;
 use App\Models\GameLevelingOrderLog;
+use App\Models\GameLevelingOrderMessage;
 
 /**
  * 代练订单仲裁
@@ -33,9 +37,68 @@ class GameLevelingOrderComplainController extends Controller
      */
     public function show($tradeNO)
     {
-        return view('back.order.show', [
-            'order' => GameLevelingOrder::where('trade_no', $tradeNO)->firstOrFail(),
+        if (request()->ajax()) {
+            return response()->ajaxSuccess('成功', [
+                view()->make('back.order.game-leveling-order-complain.show-content', [
+                    'order' => GameLevelingOrder::getOrderByCondition(['trade_no' =>  $tradeNO])->first(),
+                ])->render()
+            ]);
+        }
+        return view('back.order.game-leveling-order-complain.show', [
+            'order' => GameLevelingOrder::getOrderByCondition(['trade_no' =>  $tradeNO])->first()
         ]);
+    }
+
+    /**
+     * 发送仲裁留言
+     * @return mixed
+     * @throws Exception
+     */
+    public function sendMessage()
+    {
+        $order = GameLevelingOrder::getOrderByCondition(['trade_no' => request('trade_no')])->first();
+
+        DB::beginTransaction();
+        try {
+            $message = GameLevelingOrderMessage::create([
+                'initiator' => 3,
+                'game_leveling_order_trade_no' => $order->trade_no,
+                'from_user_id' => 0,
+                'from_username' => 0,
+                'to_user_id' => 0,
+                'to_username' => 0,
+                'content' => request('content'),
+                'type' => 1,
+            ]);
+            // 存储图片
+            $image = base64ToImg(request('image'), 'complain');
+            if ($image) {
+                $image['game_leveling_order_trade_no'] = $order->trade_no;
+                $message->image()->create($image);
+            }
+        } catch (Exception $exception) {
+            return response()->ajaxFail('发送失败');
+        }
+        DB::commit();
+        return response()->ajaxSuccess('发送成功');
+    }
+
+    /**
+     * 客服仲裁
+     * @throws Exception
+     */
+    public function arbitration()
+    {
+        try {
+            // 拆分安全与效率保证金
+            $depositResult = GameLevelingOrder::deuceDeposit(request('trade_no'), request('deposit'));
+
+            OrderService::init(0, '', request()->user()->id)
+                ->arbitration(request('amount'), $depositResult['security_deposit'], $depositResult['efficiency_deposit'], request('result'));
+            return response()->ajaxSuccess('处理成功');
+        } catch (Exception $exception) {
+            return response()->ajaxFail('处理失败-原因: ' . $exception->getMessage());
+        }
     }
 
     /**

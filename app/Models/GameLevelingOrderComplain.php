@@ -75,6 +75,33 @@ class GameLevelingOrderComplain extends Model
         return $query;
     }
 
+    /**
+     * @return string
+     */
+    public function complaint()
+    {
+        if ($this->parent_user_id == $this->order->parent_user_id) {
+            return $this->order->parent_username . ' / ' . $this->order->parent_user_id .  "(发单)";
+        } else {
+            return $this->order->take_parent_username . ' /' . $this->order->take_parent_user_id . ')' . "(接单)";
+        }
+    }
+
+    /**
+     * @return string
+     */
+    public function beComplaint()
+    {
+        if ($this->parent_user_id != $this->order->parent_user_id) {
+            return $this->order->parent_username . ' /' . $this->order->parent_user_id . "(发单)";
+        } else {
+            return $this->order->take_parent_username . ' /' . $this->order->take_parent_user_id . "(接单)";
+        }
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function order()
     {
         return $this->hasOne(GameLevelingOrder::class, 'trade_no', 'game_leveling_order_trade_no');

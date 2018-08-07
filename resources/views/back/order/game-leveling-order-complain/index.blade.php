@@ -92,7 +92,7 @@
                                     <td>{{ $item->dispose_at }}</td>
                                     <td>
                                         @if($item->status == 1)
-                                            <a href="" type="button" class="layui-btn layui-btn-normal layui-btn-mini complete" data-id="">处理</a>
+                                            <a href="{{ route('admin.game-leveling-order-complain.show', ['trade_no' => $item->game_leveling_order_trade_no]) }}" type="button" class="btn btn-success" data-id="">处理</a>
                                         @elseif($item->status == 2)
                                             <a href="" type="button" class="layui-btn layui-btn-normal layui-btn-mini complete" data-id="">查看</a>
                                         @endif

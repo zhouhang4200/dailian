@@ -79,7 +79,9 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    <a href="weixin://qq.com">丸子代练</a>
+                    {{--window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx8b048cb88ea98f1d&redirect_uri='--}}
+                    {{--+ encodeURIComponent(redirect_url) + '&response_type=code&scope=snsapi_userinfo&state#wechat_redirect';/--}}
+                    <a href="https://game.weixin.qq.com/cgi-bin/comm/openlink?noticeid=90164710&appid=wxc4c0253df149f02d&url=https://qq.com#wechat_redirect">12丸子代练</a>
                 </div>
             </div>
         </div>

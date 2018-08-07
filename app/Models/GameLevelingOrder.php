@@ -347,6 +347,32 @@ class GameLevelingOrder extends Model
     }
 
     /**
+     * 平分保证金
+     * @param $tradeNO
+     * @param $deposit
+     * @return array
+     */
+    public static function deuceDeposit($tradeNO, $deposit)
+    {
+        $order = GameLevelingOrder::getOrderByCondition(['trade_no' => $tradeNO])->first();
+
+        $securityDeposit = 0;
+        $efficiencyDeposit = 0;
+        if ($deposit > $order->security_deposit) {
+            $securityDeposit =  $order->security_deposit;
+            $efficiencyDeposit =  bcsub($deposit, $order->security_deposit);
+        } else if ($deposit < $order->security_deposit || $deposit == $order->security_deposit) {
+            $securityDeposit = $deposit;
+            $efficiencyDeposit = 0;
+        }
+
+        return  [
+            'security_deposit' => $securityDeposit,
+            'efficiency_deposit' => $efficiencyDeposit,
+        ];
+    }
+
+    /**
      * 关联仲裁表
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */

@@ -51,18 +51,40 @@ class UserController extends Controller
     }
 
     /**
-     * 实名认证信息
+     * 实名认证列表
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function certification(Request $request)
+    {
+        $name = $request->name;
+        $status = $request->status;
+        $startDate = $request->startDate;
+        $endDate = $request->endDate;
+        $filters = compact('name', 'status', 'startDate', 'endDate');
+
+        $certifications = RealNameCertification::filter($filters)->oldest('status')->oldest('id')->paginate(10);
+
+        if ($request->ajax()) {
+            return response()->json(view()->make('back.user.certification-list', compact('certifications', 'status', 'name', 'startDate', 'endDate'))->render());
+        }
+
+        return view('back.user.certification', compact('certifications', 'status', 'name', 'startDate', 'endDate'));
+    }
+
+    /**
+     * 实名认证信息详情
      * @param Request $request
      * @param $id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function certification(Request $request, $id)
+    public function certificationShow(Request $request, $id)
     {
         $user = User::find($id);
 
         $realNameCertification = RealNameCertification::where('user_id', $id)->first();
 
-        return view('back.user.certification', compact('user', 'realNameCertification'));
+        return view('back.user.certification-show', compact('user', 'realNameCertification'));
     }
 
     /**

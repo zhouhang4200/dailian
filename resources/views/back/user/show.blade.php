@@ -19,7 +19,6 @@
                         <div class="layui-tab layui-tab-brief" lay-filter="detail">
                             <ul class="layui-tab-title">
                                 <li  class="layui-this"  lay-id="detail"><a href="{{ route('admin.user.show', ['id' => Route::input('id')])  }}">用户资料</a></li>
-                                <li lay-id="authentication"><a href="{{ route('admin.user.certification', ['id' => Route::input('id')])  }}">实名认证</a></li>
                                 <li lay-id="authentication"><a href="{{ route('admin.user.show', ['id' => Route::input('id')])  }}">转账信息</a></li>
                             </ul>
                             <div class="layui-tab-content">

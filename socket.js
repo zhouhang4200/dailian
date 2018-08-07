@@ -26,9 +26,11 @@ io.on('connection', function (socket) {
     })
 });
 
+// 订阅 * 任意频道
 redis.psubscribe('*', function (err, count) {
 });
 
+// 批量订阅接收来自 channel 频道的 message 信息, io.emit 将 message 发送到 channel:message.event ,io.emit('频道名', '信息')
 redis.on('pmessage', function (subscrbed, channel, message) {
     message = JSON.parse(message);
     io.emit(channel + ':' + message.event, message.data);

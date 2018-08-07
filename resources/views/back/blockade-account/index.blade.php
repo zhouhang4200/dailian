@@ -128,7 +128,6 @@
                 elem: '#end-times'
                 ,type: 'datetime'
             });
-
             // 加载数据
             table.render({
                 elem: '#blockade',
@@ -144,6 +143,7 @@
                     {field: 'left_time', title: '剩余时间', width: 170},
                     {field: 'button', title: '操作',width: 200, fixed: 'right', toolbar: '#operation'}
                 ]],
+
                 size: 'sm',
                 width:1470,
                 page: {
@@ -157,8 +157,8 @@
                     getCounts({});
                     form.render();
                 }
-            });
 
+            });
             // 监听修改
             table.on('edit(blockade)', function(obj){
                 $.post("{{ route('admin.blockade-account.update') }}", {data:obj.data}, function (result) {
@@ -206,7 +206,6 @@
                         curr: 1
                     },
                     done: function(res, curr, count){
-                        // console.log(data);
                         getCounts(data);
                         form.render();
                     }

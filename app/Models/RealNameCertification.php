@@ -17,4 +17,32 @@ class RealNameCertification extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    /**
+     * @param $query
+     * @param array $filters
+     * @return mixed
+     */
+    public static function scopeFilter($query, $filters = [])
+    {
+        if ($filters['name']) {
+            $query->whereHas('user', function ($query) use ($filters) {
+                $query->where('name', $filters['name']);
+            });
+        }
+
+        if ($filters['status']) {
+            $query->where('status', $filters['status']);
+        }
+
+        if (isset($filters['startDate'])) {
+            $query->where('created_at', '>=', $filters['startDate']);
+        }
+
+        if (isset($filters['endDate'])) {
+            $query->where('updated_at', '<=', $filters['endDate'].' 23:59:59');
+        }
+
+        return $query;
+    }
 }

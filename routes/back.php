@@ -137,7 +137,9 @@ Route::group(['middleware' =>  ['auth.admin']], function () {
         // 商户列表
         Route::get('/', 'UserController@index')->name('admin.user');
         Route::get('show/{id}', 'UserController@show')->name('admin.user.show'); // 详情
-        Route::get('certification/{id}', 'UserController@certification')->name('admin.user.certification'); // 实名认证信息
+        // 实名认证
+        Route::get('certification', 'UserController@certification')->name('admin.user.certification'); // 实名认证列表
+        Route::get('certification/{id}', 'UserController@certificationShow')->name('admin.user.certification-show'); // 实名认证信息
         Route::post('certification/pass', 'UserController@certificationPass')->name('admin.user.certification-pass'); // 实名认证通过
         Route::post('certification/refuse', 'UserController@certificationRefuse')->name('admin.user.certification-refuse'); // 实名认证拒绝
     });

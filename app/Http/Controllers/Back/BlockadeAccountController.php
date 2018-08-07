@@ -16,6 +16,10 @@ use App\Http\Controllers\Controller;
  */
 class BlockadeAccountController extends Controller
 {
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function index(Request $request)
     {
         return view('back.blockade-account.index');

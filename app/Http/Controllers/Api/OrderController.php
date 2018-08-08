@@ -416,6 +416,7 @@ class OrderController extends Controller
     }
 
     /**
+     * 接收远程传过来的图片
      * @param UploadedFile $file
      * @param $path
      * @return \Illuminate\Http\JsonResponse|mixed
@@ -460,10 +461,10 @@ class OrderController extends Controller
             $orderService = OrderService::init($userId, $orderNo);
             $orderService->cancelComplain();
         } catch (OrderServiceException $e) {
-            myLog('operate-cancelComplain', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            myLog('operate-cancelComplain-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
-            myLog('operate-local-cancelComplain', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            myLog('operate-local-cancelComplain-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail('接口异常');
         }
         return response()->apiSuccess();

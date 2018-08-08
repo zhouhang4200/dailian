@@ -12,20 +12,14 @@
         <div class="dl_nav f-cb">
             <p class="game choose">游戏：</p>
             <ul class="game_filter filter">
-                <li>全部</li>
-                <li class="islink">王者荣耀</li>
-                <li>英雄联盟</li>
-                <li>DNF</li>
-                <li>QQ飞车</li>
-                <li>决战平安京</li>
-                <li>魔兽</li>
-                <li>DOTA2</li>
-                <li>全部</li>
-                <li>王者荣耀</li>
-                <li>英雄联盟</li>
-                <li>决战平安京</li>
-                <li>魔兽</li>
-                <li>炫斗</li>
+                <li @if(request('game_id') == 0) class="islink" @endif>
+                    <a href="{{ route('order', array_merge(['game_id' => 0], request()->except('game_id'))) }}">全部</a>
+                </li>
+                @foreach($games as $item)
+                <li @if(request('game_id') == $item->id) class="islink" @endif>
+                    <a href="{{ route('order', array_merge(['game_id' => $item->id], request()->except('game_id'))) }}">{{ $item->name }}</a>
+                </li>
+                @endforeach
             </ul>
             <p class="price choose">价格：</p>
             <ul class="price_filter filter">
@@ -113,15 +107,19 @@
                         <span class="top f-ff1">顶</span>
                     </p>
                     <p class="order_number">订单号：{{ $item->trade_no }}</p>
-
                 </td>
                 <td>{{ $item->region_name }}/{{ $item->server_name }}</td>
-                <td class="price red">¥{{ $item->amount }}</td>
-                <td class="price">¥{{ $item->efficiency_deposit }}</td>
+                <td class="price red">¥ {{ $item->amount }}</td>
+                <td class="price">¥ {{ $item->efficiency_deposit }}</td>
                 <td class="price">￥{{ $item->security_deposit }}</td>
-                <td>72小时2小时</td>
+                <td>{{ $item->day ? $item->day . '天' : '' }}{{ $item->hour }}小时</td>
                 <td>
-                    <button class="layui-btn layui-btn-primary layui-btn-sm">接单</button>
+                    <button class="layui-btn layui-btn-primary layui-btn-sm"
+                            lay-submit lay-filter="take"
+                            data-trade_no="{{ $item->trade_no }}"
+                            data-take_password="{{ ! empty($item->take_password) ? true : false }}"
+                            data-guest="{{ $guest }}"
+                    >接单</button>
                 </td>
             </tr>
             @empty
@@ -129,40 +127,104 @@
             @endforelse
             </tbody>
         </table>
-        <div id="page"></div>
+        {{ $orders->appends(request()->all())->links('front.pagination.default') }}
     </div>
 </div>
 @endsection
 
+@section('pop')
+    <div id="take-pop" style="padding: 24px 0 15px 15px;display: none">
+        <form class="layui-form" action="">
+            <input type="hidden" name="trade_no">
+            <div class="layui-form-item">
+                <label class="layui-form-label">接单密码</label>
+                <div class="layui-input-inline">
+                    <input type="password" name="take_password" required  lay-verify="required" placeholder="请输入接单密码" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">支付密码</label>
+                <div class="layui-input-inline">
+                    <input type="password" name="payment_password" required lay-verify="required" placeholder="请输入支付密码" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">忘记密码</div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn layui-btn-normal" lay-submit lay-filter="confirm-take">确定</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">取消</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div id="take-no-password-pop" style="padding: 24px 0 15px 15px;display: none">
+        <form class="layui-form" action="">
+            <input type="hidden" name="trade_no">
+            <div class="layui-form-item">
+                <label class="layui-form-label">支付密码</label>
+                <div class="layui-input-inline">
+                    <input type="password" name="payment_password" required lay-verify="required" placeholder="请输入支付密码" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">忘记密码</div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn layui-btn-normal" lay-submit lay-filter="confirm-take">确定</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">取消</button>
+                </div>
+            </div>
+        </form>
+    </div>
+@endsection
+
 @section('js')
     <script>
-        layui.use(['form','laypage'], function () {
-            var form = layui.form,
-                laypage =layui.laypage,
-                layer = layui.layer;
+        layui.use(['form', 'laydate', 'element'], function () {
+            var form = layui.form ,layer = layui.layer, element = layui.element, laydate = layui.laydate;
 
-            form.on('submit(query)', function(data){
-                layer.alert(JSON.stringify(data.field), {
-                    title: '最终的提交信息'
-                })
+            form.on('submit(take)', function (data) {
+
+                if ($(data.elem).attr('data-guest')) {
+                    layer.msg('请先登录');
+                    return false;
+                }
+
+                $('input[name=trade_no]').val($(data.elem).attr('data-trade_no'));
+
+                if ($(data.elem).attr('data-trade_password')) {
+                    layer.open({
+                        type: 1,
+                        shade: 0.2,
+                        title: '接单验证',
+                        area: ['440px'],
+                        content: $('#take-pop')
+                    });
+                } else {
+                    layer.open({
+                        type: 1,
+                        shade: 0.2,
+                        title: '接单验证',
+                        area: ['440px'],
+                        content: $('#take-no-password-pop')
+                    });
+                }
                 return false;
             });
-            laypage.render({
-                elem: 'page'
-                ,count: 70 //数据总数，从服务端得到
-                ,limit:10
-                ,theme: '#198cff'
-                ,jump: function(obj, first){
-                    //obj包含了当前分页的所有参数，比如：
-                    console.log(obj.curr); //得到当前页，以便向服务端请求对应页的数据。
-                    console.log(obj.limit); //得到每页显示的条数
-
-                    //首次不执行
-                    if(!first){
-                        //do something
+            // 确认接单
+            form.on('submit(confirm-take)', function (data) {
+                $.post('{{ route('order.operation.take') }}', {
+                    trade_no:data.trade_no,
+                    payment_password:encrypt($.trim(data.payment_password)),
+                    trade_password:encrypt($.trim(data.trade_password))
+                }, function (result) {
+                    if (result.status == 0) {
+                        layer.msg(result.message);
                     }
-                }
+                }, 'json');
+                return false;
             });
-        })
+        });
     </script>
 @endsection
+
+

@@ -29,6 +29,9 @@
   color: #fff;
   border-radius: 3px;
 }
+.main .container .dl_nav .filter .islink a{
+  color: #fff;
+}
 .main .container .dl_nav .choose {
   width: 4%;
   float: left;

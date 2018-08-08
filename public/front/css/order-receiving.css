@@ -1,0 +1,121 @@
+.main {
+  padding: 30px 0;
+}
+.main .container .dl_nav {
+  border: 1px solid #e6e6e6;
+  padding: 20px 20px 0;
+}
+.main .container .dl_nav .filter {
+  width: 96%;
+  float: left;
+  margin-bottom: 20px;
+}
+.main .container .dl_nav .filter li {
+  min-width: 55px;
+  height: 20px;
+  padding: 0 5px;
+  line-height: 20px;
+  text-align: center;
+  color: #333;
+  cursor: pointer;
+  float: left;
+  margin: 0 5px;
+  white-space: nowrap;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+.main .container .dl_nav .filter .islink {
+  background-color: #198cff;
+  color: #fff;
+  border-radius: 3px;
+}
+.main .container .dl_nav .choose {
+  width: 4%;
+  float: left;
+  height: auto;
+  color: #000;
+  text-align: center;
+  font-weight: 600;
+}
+.main .container .layui-form {
+  padding: 20px 0;
+}
+.main .container .layui-form .layui-form-item {
+  margin-bottom: 0;
+}
+.main .container .layui-form .layui-form-item .layui-inline .layui-form-label {
+  min-width: 40px;
+  width: auto;
+  height: 35px;
+  text-align: left;
+  padding: 9px 10px;
+  box-sizing: border-box;
+}
+.main .container .layui-form .layui-form-item .layui-inline .layui-input-inline {
+  margin-right: 20px;
+}
+.main .container .layui-form .layui-form-item .layui-inline .layui-input-inline input {
+  height: 35px;
+}
+.main .container .layui-form .layui-form-item .layui-inline .layui-input-inline .layui-form-select dl dd.layui-this {
+  background-color: #198cff;
+}
+.main .container .layui-form .layui-form-item .layui-inline .layui-btn {
+  width: 80px;
+  height: 35px;
+  line-height: 35px;
+  font-weight: 600;
+}
+.main .container .layui-form .layui-form-item .query {
+  margin-right: 0;
+}
+.main .container .layui-table {
+  margin-top: 0;
+}
+.main .container .layui-table tbody tr td {
+  text-align: left;
+}
+.main .container .layui-table tbody tr td .item-title {
+  font-weight: 600;
+  color: #000;
+}
+.main .container .layui-table tbody tr td .item-title span {
+  display: inline-block;
+  width: 24px;
+  height: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  text-align: center;
+  line-height: 20px;
+  border-radius: 3px;
+}
+.main .container .layui-table tbody tr td .item-title .hot {
+  background-color: #ff5722;
+}
+.main .container .layui-table tbody tr td .item-title .credit {
+  background-color: #009d8e;
+}
+.main .container .layui-table tbody tr td .item-title .top {
+  background-color: #ffb800;
+}
+.main .container .layui-table tbody tr td .order_number {
+  text-indent: 10px;
+  color: #484848;
+}
+.main .container .layui-table tbody tr td .layui-btn-sm {
+  box-sizing: border-box;
+  width: 60px;
+  border-color: #198cff;
+  color: #198cff;
+  font-weight: 600;
+  font-size: 14px;
+}
+.main .container .layui-table tbody tr .price {
+  font-size: 15px;
+  font-weight: 600;
+  color: #000;
+}
+.main .container .layui-table tbody tr .red {
+  color: red;
+}

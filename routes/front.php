@@ -13,6 +13,8 @@
 
 // 首页
 Route::get('/', 'HomeController@index')->name('home');
+// 待接单列表
+Route::get('order', 'OrderController@index')->name('order');
 // 公告中心
 Route::get('notice', 'NoticeController@index')->name('notice');
 // 活动中心
@@ -42,10 +44,10 @@ Route::group(['middleware' => 'auth'], function (){
         Route::post('group/update', 'EmployeeController@groupUpdate')->name('employee.group.update'); // 岗位信息更新
         Route::post('group/delete', 'EmployeeController@groupDelete')->name('employee.group.delete'); // 岗位信息更新
     });
-    // 订单
 
+    // 订单
     Route::prefix('order')->group(function (){
-        Route::get('/', 'OrderController@index')->name('order'); // 待接单列表
+
         Route::get('apply-complete-image/{trade_no}', 'OrderController@applyCompleteImage')->name('order.apply-complete-image'); // 申请验收图片
 
         // 发单方

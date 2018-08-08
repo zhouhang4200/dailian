@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,8 +22,8 @@
             <li @if(Route::currentRouteName() == 'home') class="active" @endif>
                 <a href="{{ route('home') }}">首页</a>
             </li>
-            <li @if(Route::currentRouteName() == '2w') class="active" @endif>
-                <a href="{{ route('home') }}">接单中心</a>
+            <li @if(Route::currentRouteName() == 'order') class="active" @endif>
+                <a href="{{ route('order') }}">接单中心</a>
             </li>
             <li @if(Route::currentRouteName() == 'help') class="active" @endif>
                 <a href="{{ route('help') }}">帮助中心</a>

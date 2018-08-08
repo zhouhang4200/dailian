@@ -241,7 +241,7 @@ if (!function_exists('export')) {
             fwrite($out, chr(0xEF).chr(0xBB).chr(0xBF)); // 添加 BOM
             fputcsv($out, $title);
 
-            $callback($query, $out);
+            call_user_func($callback($query, $out));
 
             fclose($out);
         },200, [

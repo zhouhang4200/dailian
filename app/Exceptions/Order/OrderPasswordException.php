@@ -3,7 +3,7 @@
 namespace App\Exceptions\Order;
 
 
-class OrderPayPasswordException extends \Exception
+class OrderPasswordException extends \Exception
 {
     //
 }

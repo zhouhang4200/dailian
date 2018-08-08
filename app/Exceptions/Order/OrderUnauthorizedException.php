@@ -4,7 +4,7 @@ namespace App\Exceptions\Order;
 
 use Exception;
 
-class OrderNotUnauthorizedException extends Exception
+class OrderUnauthorizedException extends Exception
 {
     //
 }

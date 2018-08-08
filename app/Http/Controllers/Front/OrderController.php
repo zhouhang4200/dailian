@@ -49,7 +49,7 @@ class OrderController extends Controller
             DB::beginTransaction();
             try {
                 OrderService::init(request()->user()->id, request('trade_no'))
-                    ->take(clientRSADecrypt(request('payment_password')), clientRSADecrypt(request('take_password')));
+                    ->take(clientRSADecrypt(request('pay_password')), clientRSADecrypt(request('take_password')));
             } catch (Exception $exception) {
                 return response()->ajaxFail($exception->getMessage());
             }

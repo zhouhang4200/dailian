@@ -251,7 +251,6 @@ class OrderOperationController extends Controller
             $images[] = base64ToImg(request('image_2'),  'complain');
             $images[] = base64ToImg(request('image_3'),  'complain');
 
-            dd($images);
             OrderService::init(request()->user()->id, request('trade_no'))->applyComplain(request('reason'), array_filter($images));
         } catch (Exception $exception) {
             return response()->ajaxFail($exception->getMessage());

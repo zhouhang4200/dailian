@@ -23,9 +23,10 @@ Route::namespace('Api')->group(function () {
         Route::post('onsale', 'OrderController@onSale')->name('order.onsale'); // 上架
         Route::post('offsale', 'OrderController@offSale')->name('order.offsale'); // 下架
         Route::post('delete', 'OrderController@delete')->name('order.delete'); // 撤单
+        Route::post('lock', 'OrderController@lock')->name('order.lock'); // 锁定
+        Route::post('cancel-lock', 'OrderController@cancelLock')->name('order.cancel-lock'); // 取消锁定
+
         Route::post('complete', 'OrderController@complete')->name('order.complete'); // 完成
-        Route::post('anomaly', 'OrderController@anomaly')->name('order.anomaly'); // 异常
-        Route::post('cancel-anomaly', 'OrderController@cancelAnomaly')->name('order.cancel-anomaly'); // 取消异常
         Route::post('apply-consult', 'OrderController@applyConsult')->name('order.apply-consult'); // 申请协商
         Route::post('cancel-consult', 'OrderController@cancelConsult')->name('order.cancel-consult'); // 取消协商
         Route::post('agree-consult', 'OrderController@agreeConsult')->name('order.agree-consult'); // 同意协商

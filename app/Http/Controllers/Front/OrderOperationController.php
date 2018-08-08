@@ -31,7 +31,8 @@ class OrderOperationController extends Controller
             QsTransmitterConrtoller::take($order);
         } catch (OrderServiceException $e) {
             return response()->ajaxFail();
-        } catch (Exception $exception) {
+        } catch (Exception $e) {
+            myLog('wanzi-local-take-error', ['order_no' => $order->trade, 'message' => $e->getMessage()]);
             return response()->ajaxFail();
         }
         DB::commit();
@@ -59,6 +60,7 @@ class OrderOperationController extends Controller
             $order = OrderService::init(request()->user()->id, request('trade_no'))->applyComplete(array_filter($images));
             QsTransmitterConrtoller::applyComplete($order->trade_no);
         } catch (Exception $exception) {
+            myLog('wanzi-local-applyComplete-error', ['order_no' => $order->trade, 'message' => $e->getMessage()]);
             return response()->ajaxFail($exception->getMessage());
         }
         DB::commit();
@@ -77,6 +79,7 @@ class OrderOperationController extends Controller
             $order = OrderService::init(request()->user()->id, request('trade_no'))->cancelComplete();
             QsTransmitterConrtoller::cancelComplete($order->trade_no);
         } catch (Exception $exception) {
+            myLog('wanzi-local-cancelComplete-error', ['order_no' => $order->trade, 'message' => $e->getMessage()]);
             return response()->ajaxFail($exception->getMessage());
         }
         DB::commit();
@@ -180,6 +183,7 @@ class OrderOperationController extends Controller
             $order = OrderService::init(request()->user()->id, request('trade_no'))->anomaly();
             QsTransmitterConrtoller::anomaly($order->trade_no);
         } catch (Exception $exception) {
+            myLog('wanzi-local-anomaly-error', ['order_no' => $order->trade, 'message' => $e->getMessage()]);
             return response()->ajaxFail($exception->getMessage());
         }
         DB::commit();
@@ -196,6 +200,7 @@ class OrderOperationController extends Controller
             $order = OrderService::init(request()->user()->id, request('trade_no'))->cancelAnomaly();
             QsTransmitterConrtoller::cancelAnomaly($order->trade_no);
         } catch (Exception $exception) {
+            myLog('wanzi-local-cancelAnomaly-error', ['order_no' => $order->trade, 'message' => $e->getMessage()]);
             return response()->ajaxFail($exception->getMessage());
         }
         DB::commit();
@@ -224,6 +229,7 @@ class OrderOperationController extends Controller
                 ->applyConsult($amount, $depositResult['security_deposit'], $depositResult['efficiency_deposit'], $remark);
             QsTransmitterConrtoller::applyConsult($tradeNO, $amount, $deposit, $remark);
         } catch (Exception $exception) {
+            myLog('wanzi-local-applyConsult-error', ['order_no' => $order->trade, 'message' => $e->getMessage()]);
             return response()->ajaxFail($exception->getMessage());
         }
         DB::commit();
@@ -242,6 +248,7 @@ class OrderOperationController extends Controller
             $order = OrderService::init(request()->user()->id, request('trade_no'))->cancelConsult();
             QsTransmitterConrtoller::cancelConsult($order->trade_no);
         } catch (Exception $exception) {
+            myLog('wanzi-local-cancelConsult-error', ['order_no' => $order->trade, 'message' => $e->getMessage()]);
             return response()->ajaxFail($exception->getMessage());
         }
         DB::commit();
@@ -265,6 +272,7 @@ class OrderOperationController extends Controller
             $order = OrderService::init(request()->user()->id, request('trade_no'))->applyComplain(request('reason'), array_filter($images));
             QsTransmitterConrtoller::applyComplain($order->trade_no, request('reason'));
         } catch (Exception $exception) {
+            myLog('wanzi-local-applyComplain-error', ['order_no' => $order->trade, 'message' => $e->getMessage()]);
             return response()->ajaxFail($exception->getMessage());
         }
         DB::commit();
@@ -284,6 +292,7 @@ class OrderOperationController extends Controller
             $order = OrderService::init(request()->user()->id, request('trade_no'))->cancelComplain();
             QsTransmitterConrtoller::cancelComplain($order->trade_no);
         } catch (Exception $exception) {
+            myLog('wanzi-local-cancelComplain-error', ['order_no' => $order->trade, 'message' => $e->getMessage()]);
             return response()->ajaxFail($exception->getMessage());
         }
         DB::commit();

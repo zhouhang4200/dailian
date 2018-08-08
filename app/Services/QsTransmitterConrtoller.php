@@ -159,7 +159,7 @@ class QsTransmitterConrtoller extends Controller
      * @param GameLevelingOrder $order
      * @throws Exception
      */
-    public function take(GameLevelingOrder $order)
+    public static function take(GameLevelingOrder $order)
     {
         try {
             $options = [

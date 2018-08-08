@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 /**
  * 生成订单号
  * @return string
+ * @throws Exception
  */
 function generateOrderNo()
 {
@@ -171,6 +172,7 @@ if (!function_exists('myLog')) {
      * 自定义日志写入
      * @param $fileName
      * @param array $data
+     * @throws Exception
      */
     function myLog($fileName, $data = [])
     {
@@ -306,7 +308,7 @@ function getFirstChar($s0){
  */
 function getEncoding($data, $to){
     $encodeArr =array('UTF-8','ASCII','GBK','GB2312','BIG5','JIS','eucjp-win','sjis-win','EUC-JP');
-    $encoded=mb_detect_encoding($data, $encodeArr);
+    $encoded = mb_detect_encoding($data, $encodeArr);
     $data = mb_convert_encoding($data, $to, $encoded);
     return $data;
 }

@@ -640,6 +640,35 @@ class OrderService
     }
 
     /**
+     * 拒绝撤销
+     * @return object
+     * @throws OrderStatusException
+     * @throws Exception
+     */
+    public function rejectConsult()
+    {
+        // 状态为 撤销中 可取消撤销
+        if (self::$order->status != 4) {
+            throw new OrderStatusException('申请撤销失败,订单当前状态为: ' . self::$order->getStatusDescribe());
+        }
+
+        DB::beginTransaction();
+        try {
+            // 记录撤销数据
+            GameLevelingOrderConsult::where('game_leveling_order_trade_no', self::$order->trade_no)->update(['status' => 2]);
+            // 修改订单状态
+            self::$order->status = GameLevelingOrderPreviousStatus::getLatestBy(self::$order->trade_no);
+            self::$order->save();
+            // 写入订单日志
+            GameLevelingOrderLog::store('拒绝撤销', self::$order->trade_no, self::$user->id, self::$user->name, self::$user->parent_id, self::$user->name . ': 进行操作 [拒绝撤销]');
+        } catch (Exception $exception) {
+            throw new Exception($exception->getMessage());
+        }
+        DB::commit();
+        return self::$order;
+    }
+
+    /**
      * 同意撤销
      * @return object
      * @throws OrderStatusException

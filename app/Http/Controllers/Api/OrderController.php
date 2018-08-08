@@ -446,7 +446,8 @@ class OrderController extends Controller
                 $data['game_leveling_requirements'],
                 $data['businessman_phone'],
                 $data['businessman_qq'],
-                $data['order_password']
+                $data['order_password'],
+                $data['order_no']
             );
             // 回调
             if ($order) {

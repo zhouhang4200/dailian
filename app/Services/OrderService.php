@@ -427,7 +427,7 @@ class OrderService
         DB::beginTransaction();
         try {
             // 订录订单前一个状态
-            GameLevelingOrderPreviousStatus::store(self::$order->status, self::$order->trade_no);
+            GameLevelingOrderPreviousStatus::store(self::$order->trade_no, self::$order->status);
             // 修改订单状态
             self::$order->status = 7;
             self::$order->save();

@@ -31,18 +31,19 @@ class ApiAuth
             return response()->apiFail('app_id不正确');
         }
 
+        myLog('receive-datas', ['datas' => $request->all()]);
         // 检测 sign
         $par = $request->all();
         ksort($par);
         $str = '';
         foreach ($par  as $key => $value) {
-            if (trim($key) != 'sign') {
+            if (! in_array($key, ['sign', 'pic1', 'pic2', 'pic3'])) {
                 $str .= $key . '=' . $value . '&';
             }
         }
 
         $sign = md5(rtrim($str,  '&') . $request->user->app_secret);
-
+//        myLog('sign', ['sign' => $sign, 'str' => $str]);
         if ($sign != $request->sign) {
             return response()->apiFail('您的签名不正确');
         }

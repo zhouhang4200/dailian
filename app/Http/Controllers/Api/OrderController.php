@@ -8,6 +8,7 @@ use GuzzleHttp\Client;
 use App\Models\Game;
 use App\Models\Server;
 use App\Models\Region;
+use Illuminate\Http\UploadedFile;
 use App\Models\GameLevelingType;
 use App\Services\OrderService;
 use App\Models\GameLevelingOrder;
@@ -28,6 +29,8 @@ class OrderController extends Controller
     // 发单器那边的app_id, app_secret
     private static $appId = 'T8WsMDT4mJ5DxKJkf4fWVP5XYU00McJxxyAeoX4aPIy6jrWN70bmQltXfwof';
     private static $appSecret = 'XlDzhGb9EeiJW2r6os1CVC6bKLrikFDHgH5mVLGdVRMNyYhY7Q4QvFIL2SBx';
+    // 允许上传图片类型
+    private static $extensions = ['png', 'jpg', 'jpeg', 'gif'];
     /**
      *  上架
      * @param Request $request
@@ -186,10 +189,10 @@ class OrderController extends Controller
             $orderService = OrderService::init($userId, $orderNo);
             $orderService->lock();
         } catch (OrderServiceException $e) {
-            myLog('operate-lock', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            myLog('operate-lock-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
-            myLog('operate-local-lock', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            myLog('operate-local-lock-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail('接口异常');
         }
         return response()->apiSuccess();
@@ -209,10 +212,10 @@ class OrderController extends Controller
             $orderService = OrderService::init($userId, $orderNo);
             $orderService->cancelLock();
         } catch (OrderServiceException $e) {
-            myLog('operate-cancelLock', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            myLog('operate-cancelLock-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
-            myLog('operate-local-cancelLock', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            myLog('operate-local-cancelLock-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail('接口异常');
         }
         return response()->apiSuccess();
@@ -275,17 +278,19 @@ class OrderController extends Controller
             $orderNo = $request->order_no;
             $userId = $request->user->id;
             $amount = $request->amount; // 发单方愿意支付的代练费
-            $securityDeposit = $request->security_deposit; // 需要接单赔偿的安全金
-            $efficiencyDeposit = $request->efficiency_deposit; // 需要接单赔偿的效率金
+            $doubleDeposit = $request->double_deposit; // 需要接单赔偿的双金
+            $arr = GameLevelingOrder::deuceDeposit($orderNo, $doubleDeposit);
+            $securityDeposit = $arr['security_deposit']; // 需要接单赔偿的安全金
+            $efficiencyDeposit = $arr['efficiency_deposit']; // 需要接单赔偿的效率金
             $reason = $request->reason; // 申请协商原因
 
             $orderService = OrderService::init($userId, $orderNo);
             $orderService->applyConsult($amount, $securityDeposit, $efficiencyDeposit, $reason);
         } catch (OrderServiceException $e) {
-            myLog('operate-applyConsult', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            myLog('operate-applyConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
-            myLog('operate-local-applyConsult', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            myLog('operate-local-applyConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail('接口异常');
         }
         return response()->apiSuccess();
@@ -301,14 +306,14 @@ class OrderController extends Controller
         try {
             $orderNo = $request->order_no;
             $userId = $request->user->id;
-
+            myLog('no', ['no' => $orderNo]);
             $orderService = OrderService::init($userId, $orderNo);
             $orderService->cancelConsult();
         } catch (OrderServiceException $e) {
-            myLog('operate-cancelConsult', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            myLog('operate-cancelConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
-            myLog('operate-local-cancelConsult', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            myLog('operate-local-cancelConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail('接口异常');
         }
         return response()->apiSuccess();
@@ -371,18 +376,64 @@ class OrderController extends Controller
             $orderNo = $request->order_no;
             $userId = $request->user->id;
             $reason = $request->reason;
-            $image = $request->image;
+            $pic1 = $request->pic1;
+            $pic2 = $request->pic2;
+            $pic3 = $request->pic3;
+            $path = public_path("/resources/complain/".date('Ymd')."/");
+            if (isset($pic1) && ! empty($pic1)) {
+                $image['pic1'] = static::uploadImage($pic1, $path);
+            }
 
+            if (isset($pic2) && ! empty($pic2)) {
+                $image['pic2'] = static::uploadImage($pic2, $path);
+            }
+
+            if (isset($pic3) && ! empty($pic3)) {
+                $image['pic3'] = static::uploadImage($pic3, $path);
+            }
+
+//            myLog('image', ['image' => $image, 'pic1' => $pic1, 'pic2' => $pic2, 'pic3' => $pic3]);
             $orderService = OrderService::init($userId, $orderNo);
             $orderService->applyComplain($reason, $image);
         } catch (OrderServiceException $e) {
-            myLog('operate-applyComplain', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            myLog('operate-applyComplain-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
-            myLog('operate-local-applyComplain', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            myLog('operate-local-applyComplain-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail('接口异常');
         }
         return response()->apiSuccess();
+    }
+
+    /**
+     * @param UploadedFile $file
+     * @param $path
+     * @return \Illuminate\Http\JsonResponse|mixed
+     */
+    public static function uploadImage(UploadedFile $file, $path)
+    {
+        // 获取可传输的图片类型
+        $extension = $file->getClientOriginalExtension();
+
+        if ($extension && ! in_array(strtolower($extension), static::$extensions)) {
+            return response()->apiFail('图片类型不合法');
+        }
+        // 判断上传是否为空
+        if (! $file->isValid()) {
+            return response()->apiFail('图片为空');
+        }
+        // 不存在存储路径的时候指定路径
+        if (!file_exists($path)) {
+            mkdir($path, 0755, true);
+        }
+        // 图片随机命名
+        $randNum = rand(1, 100000000) . rand(1, 100000000);
+        $fileName = time().substr($randNum, 0, 6).'.'.$extension;
+        // 保存图片
+        $path = $file->move($path, $fileName);
+        $path = strstr($path, '/resources');
+        // 返回图片路径
+        return str_replace('\\', '/', $path);
     }
 
     /**

@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Front;
 
+use App\Models\Game;
+use App\Services\OrderService;
+use DB;
 use \Exception;
 use App\Models\GameLevelingOrder;
 use App\Http\Controllers\Controller;
@@ -21,7 +24,9 @@ class OrderController extends Controller
     {
         return view('front.order.index', [
             'orders' => GameLevelingOrder::getOrderByCondition(array_merge(request()->except('status'), ['status' => 1]))
-                ->paginate(),
+                ->paginate(1),
+            'games' => Game::getAll(),
+            'guest' => auth()->guard()->guest(),
         ]);
     }
 
@@ -38,6 +43,19 @@ class OrderController extends Controller
      */
     public function take()
     {
+        if (auth()->guard()->guest()) {
+            return response()->ajaxFail('请先登录再接单');
+        } else {
+            DB::beginTransaction();
+            try {
+                OrderService::init(request()->user()->id, request('trade_no'))
+                    ->take(clientRSADecrypt(request('payment_password')), clientRSADecrypt(request('take_password')));
+            } catch (Exception $exception) {
+                return response()->ajaxFail($exception->getMessage());
+            }
+            DB::commit();
+            return response()->ajaxSuccess('接单成功');
+        }
 
     }
 }

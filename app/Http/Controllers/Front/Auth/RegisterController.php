@@ -116,7 +116,7 @@ class RegisterController extends Controller
             return response()->json(['status' => 0, 'message' => $validator->errors()->all()[0]]);
         }
 
-        event(new Registered($user = $this->create($request->all())));
+        event(new Registered($user = $this->create($data)));
 
         $this->guard()->login($user);
 

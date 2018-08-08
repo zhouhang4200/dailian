@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="_token" content="{{ csrf_token() }}" >
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="/front/css/function.css">
@@ -47,11 +48,14 @@
 @yield('main')
 <script src="/front/lib/js/layui/layui.js"></script>
 <script src="/js/jquery-1.11.0.min.js"></script>
+<script src="/js/encrypt.js"></script>
 <script>
+    $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')}});
     layui.use(['element'], function () {
         var element = layui.element;
     })
 </script>
 @yield('js')
+@yield('pop')
 </body>
 </html>

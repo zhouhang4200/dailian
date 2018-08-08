@@ -552,11 +552,11 @@ class OrderService
      * @param $amount
      * @param $securityDeposit
      * @param $efficiencyDeposit
-     * @param $remark
+     * @param $reason
      * @return object
      * @throws Exception
      */
-    public function applyConsult($amount, $securityDeposit, $efficiencyDeposit, $remark)
+    public function applyConsult($amount, $securityDeposit, $efficiencyDeposit, $reason)
     {
         // 状态为 代练中(2)  待收验(3) 异常(6) 锁定(7) 可申请撤销
         if ( ! in_array(self::$order->status, [2, 3, 6 ,7])) {
@@ -576,7 +576,7 @@ class OrderService
                 $securityDeposit,
                 $efficiencyDeposit,
                 1,
-                $remark);
+                $reason);
             // 记录订单前一个状态
             GameLevelingOrderPreviousStatus::store(self::$order->trade_no, self::$order->status);
             // 修改订单状态

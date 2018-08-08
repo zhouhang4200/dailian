@@ -44,7 +44,7 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">*撤销理由</label>
                     <div class="layui-input-block">
-                            <textarea placeholder="请输入撤销理由" name="remark" lay-verify="required"
+                            <textarea placeholder="请输入撤销理由" name="reason" lay-verify="required"
                                       class="layui-textarea" style="width:400px"></textarea>
                     </div>
                 </div>

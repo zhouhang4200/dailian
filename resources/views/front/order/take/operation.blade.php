@@ -146,7 +146,7 @@
                 trade_no: data.field.trade_no,
                 amount: data.field.amount,
                 deposit: data.field.deposit,
-                remark: data.field.remark
+                reason: data.field.reason
             }, function (result) {
                 if (result.status) {
                     @if($type == 'list')

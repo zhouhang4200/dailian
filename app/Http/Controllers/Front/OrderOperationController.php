@@ -215,7 +215,7 @@ class OrderOperationController extends Controller
         $tradeNO = request('trade_no');
         $amount = request('amount');
         $deposit = request('deposit');
-        $remark = request('remark');
+        $reason = request('reason');
 
         DB::beginTransaction();
 
@@ -224,7 +224,7 @@ class OrderOperationController extends Controller
 
         try {
             OrderService::init(request()->user()->id, $tradeNO)
-                ->applyConsult($amount, $depositResult['security_deposit'], $depositResult['efficiency_deposit'], $remark);
+                ->applyConsult($amount, $depositResult['security_deposit'], $depositResult['efficiency_deposit'], $reason);
         } catch (Exception $exception) {
             return response()->ajaxFail($exception->getMessage());
         }

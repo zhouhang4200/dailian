@@ -18,6 +18,8 @@ class FineTicketController extends Controller
     {
         return view('back.fine-ticket.index', [
             'fineTickets' => FineTicket::condition(request()->all())->paginate(),
+            'statusCount' => FineTicket::selectRaw('status, count(1) as count')
+                ->groupBy('status')->pluck('count', 'status')->toArray(),
         ]);
     }
 

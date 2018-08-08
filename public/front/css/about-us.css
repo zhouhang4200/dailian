@@ -1,0 +1,79 @@
+.main {
+  position: relative;
+}
+.main .bg {
+  height: 240px;
+  width: 100%;
+}
+.main .bg img {
+  width: 100%;
+  height: 100%;
+}
+.main .container {
+  position: absolute;
+  left: 50%;
+  top: 140px;
+  transform: translateX(-50%);
+  background-color: #fff;
+}
+.main .container .content {
+  padding: 50px 80px;
+}
+.main .container .content h1 {
+  text-align: center;
+  color: #333;
+  font-size: 20px;
+  font-weight: 600;
+}
+.main .container .content p {
+  text-align: center;
+  color: #ccc;
+  padding: 5px 0 50px;
+}
+.main .container .content span {
+  display: block;
+  line-height: 25px;
+  color: #666;
+}
+.main .container .content #allmap {
+  width: 100%;
+  height: 320px;
+}
+.main .container .content .layui-row .layui-col-md3 .content-box {
+  border: 1px solid #f2f2f2;
+  padding: 20px 30px;
+  height: 120px;
+}
+.main .container .content .layui-row .layui-col-md3 .content-box h1 i {
+  font-size: 35px;
+  color: #198cff;
+}
+.main .container .content .layui-row .layui-col-md3 .content-box h1 .icon-HOME {
+  font-size: 40px;
+}
+.main .container .content .layui-row .layui-col-md3 .content-box h1 .icon-mail {
+  font-size: 32px;
+}
+.main .container .content .layui-row .layui-col-md3 .content-box h1 .icon-qq {
+  font-size: 38px;
+}
+.main .container .content .layui-row .layui-col-md3 .content-box span {
+  display: block;
+  color: #333;
+  text-align: center;
+  font-size: 18px;
+  padding: 10px 0;
+}
+.main .container .content .layui-row .layui-col-md3 .content-box p {
+  text-align: center;
+  font-size: 12px;
+  color: #666;
+  padding: 0;
+  line-height: 22px;
+}
+.BMap_cpyCtrl {
+  display: none;
+}
+.anchorBL {
+  display: none;
+}

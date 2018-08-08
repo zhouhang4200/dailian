@@ -11,13 +11,19 @@
 |
 */
 
-Route::get('/', function (){
-    return view('welcome');
-});
+// 首页
+Route::get('/', 'HomeController@index')->name('home');
+// 公告中心
+Route::get('notice', 'NoticeController@index')->name('notice');
+// 活动中心
+Route::get('activity', 'ActivityController@index')->name('activity');
+// 帮助
+Route::get('help', 'HelpController@index')->name('help');
+// 关于我们
+Route::get('about-us', 'AboutUsController@index')->name('about-us');
 
 // 登录后
 Route::group(['middleware' => 'auth'], function (){
-    Route::get('/home', 'HomeController@index')->name('home');
 
     // 员工 与 岗位
     Route::prefix('employee')->group(function (){
@@ -117,14 +123,4 @@ Route::namespace('Auth')->group(function (){
     });
     Route::get('register', 'RegisterController@showRegistrationForm')->name('register');
     Route::post('register', 'RegisterController@register');
-});
-
-// 公告中心
-Route::prefix('notice')->group(function () {
-    Route::get('', 'NoticeController@index')->name('notice');
-});
-
-// 帮助中心
-Route::prefix('help')->group(function () {
-    Route::get('', 'HelpController@index')->name('help');
 });

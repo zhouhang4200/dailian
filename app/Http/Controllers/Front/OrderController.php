@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Front;
 
-use App\Models\Game;
-use App\Services\OrderService;
 use DB;
 use \Exception;
+use App\Exceptions\NoSufficientBalanceException;
+use App\Services\OrderService;
+use App\Models\Game;
 use App\Models\GameLevelingOrder;
 use App\Http\Controllers\Controller;
 
@@ -38,26 +39,6 @@ class OrderController extends Controller
 
     }
 
-    /**
-     * 接单
-     */
-    public function take()
-    {
-        if (auth()->guard()->guest()) {
-            return response()->ajaxFail('请先登录再接单');
-        } else {
-            DB::beginTransaction();
-            try {
-                OrderService::init(request()->user()->id, request('trade_no'))
-                    ->take(clientRSADecrypt(request('pay_password')), clientRSADecrypt(request('take_password')));
-            } catch (Exception $exception) {
-                return response()->ajaxFail($exception->getMessage());
-            }
-            DB::commit();
-            return response()->ajaxSuccess('接单成功');
-        }
-
-    }
 
     /**
      * 查看验收图片

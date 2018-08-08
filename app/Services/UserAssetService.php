@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Exceptions\NoSufficientBalanceException;
 use Exception;
 use App\Models\User;
 use App\Models\UserAsset;
@@ -131,7 +132,7 @@ class UserAssetService
             $userAsset = UserAsset::where('user_id', self::$userId)->lockForUpdate()->first();
             // 检测余额是否够本次提现
             if ($userAsset->balance < self::$amount) {
-                throw new UserAssetServiceException('您的余额不够,请调整提现金额');
+                throw new NoSufficientBalanceException('您的余额不够,请调整提现金额');
             }
             // 获取用户认证信息
             $realNameCertification = RealNameCertification::where('user_id', self::$userId)->first();
@@ -176,7 +177,7 @@ class UserAssetService
             $userAsset = UserAsset::where('user_id', self::$userId)->lockForUpdate()->first();
             // 检测余额是否够本次提现
             if ($userAsset->balance < self::$amount) {
-                throw new UserAssetServiceException('您的余额不够');
+                throw new NoSufficientBalanceException('您的余额不够');
             }
             // 写流水
             $this->flow(bcsub($userAsset->balance, self::$amount), bcadd($userAsset->frozen, self::$amount));
@@ -207,7 +208,7 @@ class UserAssetService
             $userAsset = UserAsset::where('user_id', self::$userId)->lockForUpdate()->first();
             // 检测余额是否够本次提现
             if ($userAsset->frozen < self::$amount) {
-                throw new UserAssetServiceException('您的余额不够本次解冻');
+                throw new NoSufficientBalanceException('您的余额不够本次解冻');
             }
 
             // 检测用户相关冻结订单号总金额与需要解冻金额是否相符
@@ -230,7 +231,7 @@ class UserAssetService
             $userAsset->frozen = bcsub($userAsset->frozen, self::$amount);
             $userAsset->save();
         } catch (Exception $exception) {
-            throw new UserAssetServiceException($exception->getMessage() . $UserAssetServiceException->getLine());
+            throw new UserAssetServiceException($exception->getMessage() . $exception->getLine());
         }
         DB::commit();
         return true;
@@ -252,7 +253,7 @@ class UserAssetService
             $userAsset = UserAsset::where('user_id', self::$userId)->lockForUpdate()->first();
             // 检测余额是否够本次支出
             if ($userAsset->balance < self::$amount) {
-                throw new UserAssetServiceException('您的余额不够');
+                throw new NoSufficientBalanceException('您的余额不够');
             }
 
             // 写流水
@@ -284,7 +285,7 @@ class UserAssetService
             $userAsset = UserAsset::where('user_id', self::$userId)->lockForUpdate()->first();
             // 检测冻结余额是否够本次支出
             if ($userAsset->frozen < self::$amount) {
-                throw new UserAssetServiceException('冻结余额不够支出');
+                throw new NoSufficientBalanceException('冻结余额不够支出');
             }
 
             // 写流水

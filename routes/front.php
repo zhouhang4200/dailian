@@ -15,8 +15,6 @@
 Route::get('/', 'HomeController@index')->name('home');
 // 待接单列表
 Route::get('order', 'OrderController@index')->name('order');
-// 订单接单
-Route::post('order/operation/take', 'OrderController@take')->name('order.operation.take'); // 接单
 // 公告中心
 Route::get('notice', 'NoticeController@index')->name('notice');
 // 活动中心
@@ -62,6 +60,7 @@ Route::group(['middleware' => 'auth'], function (){
         Route::prefix('take')->group(function (){
             Route::get('/', 'OrderTakeController@index')->name('order.take'); // 接单管理视图
             Route::post('/', 'OrderTakeController@orderData'); // 接单列表数据
+
             Route::get('/{trade_no}', 'OrderTakeController@show')->name('order.take.show'); // 订单详情
             Route::get('/complain-info/{trade_no}', 'OrderTakeController@complainInfo')->name('order.take.complain-info'); // 仲裁信息
             Route::post('/complain-message', 'OrderTakeController@complainMessage')->name('order.take.complain-message'); // 发送仲裁留言
@@ -72,6 +71,7 @@ Route::group(['middleware' => 'auth'], function (){
 
         // 订单操作
         Route::prefix('operation')->group(function (){
+            Route::post('take', 'OrderOperationController@take')->name('order.operation.take'); // 接单
             Route::post('apply-complete', 'OrderOperationController@applyComplete')->name('order.operation.apply-complete'); // 申请验收
             Route::post('cancel-complete', 'OrderOperationController@cancelComplete')->name('order.operation.cancel-complete'); // 取消验收
             Route::post('complete', 'OrderOperationController@complete')->name('order.operation.complete'); // 完成

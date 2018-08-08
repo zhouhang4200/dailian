@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Exceptions;
+namespace App\Exceptions\Asset;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
-class Handler extends ExceptionHandler
+class AssetHandler extends ExceptionHandler
 {
     /**
      * A list of the exception types that are not reported.
@@ -13,6 +13,7 @@ class Handler extends ExceptionHandler
      * @var array
      */
     protected $dontReport = [
+        NoSufficientBalanceException::class // 余额不异常无需记录
     ];
 
     /**
@@ -21,8 +22,7 @@ class Handler extends ExceptionHandler
      * @var array
      */
     protected $dontFlash = [
-        'password',
-        'password_confirmation',
+
     ];
 
     /**

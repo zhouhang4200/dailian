@@ -117,7 +117,7 @@
                     <button class="layui-btn layui-btn-primary layui-btn-sm"
                             lay-submit lay-filter="take"
                             data-trade_no="{{ $item->trade_no }}"
-                            data-take_password="{{ ! empty($item->take_password) ? true : false }}"
+                            data-take_password="{{ $item->take_order_password ? 1 : 2 }}"
                             data-guest="{{ $guest }}"
                     >接单</button>
                 </td>
@@ -133,7 +133,30 @@
 @endsection
 
 @section('pop')
-
+    <div id="take-pop" style="padding: 24px 0 15px 15px;display: none">
+        <form class="layui-form" action="" method="post">
+            <input type="hidden" name="trade_no">
+            <div class="layui-form-item">
+                <label class="layui-form-label">接单密码</label>
+                <div class="layui-input-inline">
+                    <input type="password" name="take_password" required lay-verify="required" placeholder="请输入支付密码" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">支付密码</label>
+                <div class="layui-input-inline">
+                    <input type="password" name="pay_password" required lay-verify="required" placeholder="请输入支付密码" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">忘记密码</div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn layui-btn-normal" lay-submit lay-filter="confirm-take">确定</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">取消</button>
+                </div>
+            </div>
+        </form>
+    </div>
     <div id="take-no-password-pop" style="padding: 24px 0 15px 15px;display: none">
         <form class="layui-form" action="" method="post">
             <input type="hidden" name="trade_no">
@@ -168,7 +191,7 @@
 
                 $('input[name=trade_no]').val($(data.elem).attr('data-trade_no'));
 
-                if ($(data.elem).attr('data-trade_password')) {
+                if ($(data.elem).attr('data-take_password') == 1) {
                     layer.open({
                         type: 1,
                         shade: 0.2,

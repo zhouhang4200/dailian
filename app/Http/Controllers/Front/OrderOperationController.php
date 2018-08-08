@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers\Front;
 
+use App\Exceptions\Order\OrderPayPasswordException;
+use App\Exceptions\Order\OrderTakeOrderPasswordException;
 use \Exception;
+use App\Exceptions\Asset\NoSufficientBalanceException;
 use App\Services\OrderService;
 use App\Models\GameLevelingOrder;
 use Illuminate\Support\Facades\DB;
@@ -18,19 +21,26 @@ class OrderOperationController extends Controller
 {
     /**
      * 接单
-     * @return mixed
+     * @return \Illuminate\Http\JsonResponse
      * @throws Exception
      */
     public function take()
     {
         DB::beginTransaction();
         try {
-            OrderService::init(request()->user()->id, request('trade_no'))->take();
+            OrderService::init(request()->user()->id, request('trade_no'))
+                ->take(clientRSADecrypt(request('pay_password')), clientRSADecrypt(request('take_password')));
+        } catch (NoSufficientBalanceException $exception) {
+            return response()->json(['status' => 2, 'message' => $exception->getMessage()]);
+        } catch (OrderTakeOrderPasswordException $exception) {
+            return response()->json(['status' => 3, 'message' => $exception->getMessage()]);
+        } catch (OrderPayPasswordException $exception) {
+            return response()->json(['status' => 4, 'message' => $exception->getMessage()]);
         } catch (Exception $exception) {
-            return response()->ajaxFail();
+            return response()->json(['status' => 5, 'message' => '未知错误']);
         }
         DB::commit();
-        return response()->ajaxSuccess('接单成功');
+        return response()->json(['status' => 6, 'message' => '接单成功']);
     }
 
     /**

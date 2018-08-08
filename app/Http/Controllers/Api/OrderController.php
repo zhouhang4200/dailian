@@ -381,18 +381,28 @@ class OrderController extends Controller
             $pic3 = $request->pic3;
             $path = public_path("/resources/complain/".date('Ymd')."/");
             if (isset($pic1) && ! empty($pic1)) {
-                $image['pic1'] = static::uploadImage($pic1, $path);
+                $imagePath1 = static::uploadImage($pic1, $path);
+                $image['pic1']['mime_type'] = 'image/'.explode('.', $imagePath1)[1];
+                $image['pic1']['name'] = explode('/', $imagePath1)[count(explode('/', $imagePath1))-1];
+                $image['pic1']['path'] = $imagePath1;
             }
 
             if (isset($pic2) && ! empty($pic2)) {
-                $image['pic2'] = static::uploadImage($pic2, $path);
+                $imagePath2 = static::uploadImage($pic2, $path);
+                $image['pic2']['mime_type'] = 'image/'.explode('.', $imagePath2)[1];
+                $image['pic2']['name'] = explode('/', $imagePath2)[count(explode('/', $imagePath2))-1];
+                $image['pic2']['path'] = $imagePath2;
             }
 
             if (isset($pic3) && ! empty($pic3)) {
-                $image['pic3'] = static::uploadImage($pic3, $path);
+                $imagePath3 = static::uploadImage($pic3, $path);
+                $image['pic3']['mime_type'] = 'image/'.explode('.', $imagePath3)[1];
+                $image['pic3']['name'] = explode('/', $imagePath3)[count(explode('/', $imagePath3))-1];
+                $image['pic3']['path'] = $imagePath3;
             }
 
 //            myLog('image', ['image' => $image, 'pic1' => $pic1, 'pic2' => $pic2, 'pic3' => $pic3]);
+//            myLog('image', ['image' => $image, 'reason' => $reason]);
             $orderService = OrderService::init($userId, $orderNo);
             $orderService->applyComplain($reason, $image);
         } catch (OrderServiceException $e) {

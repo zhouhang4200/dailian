@@ -10,6 +10,8 @@ use App\Services\OrderService;
 use App\Models\GameLevelingOrder;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Services\QsTransmitterConrtoller;
+use App\Exceptions\OrderServiceException;
 
 /**
  * 订单操作
@@ -21,7 +23,7 @@ class OrderOperationController extends Controller
 {
     /**
      * 接单
-     * @return \Illuminate\Http\JsonResponse
+     * @return mixed
      * @throws Exception
      */
     public function take()
@@ -40,7 +42,7 @@ class OrderOperationController extends Controller
             return response()->json(['status' => 5, 'message' => '未知错误']);
         }
         DB::commit();
-        return response()->json(['status' => 6, 'message' => '接单成功']);
+        return response()->ajaxSuccess('接单成功');
     }
 
     /**

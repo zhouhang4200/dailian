@@ -430,7 +430,7 @@ class OrderService
     public function lock()
     {
         // 待验收 与 异常时可以锁定
-        if (! in_array(self::$order->status, [3, 6])) {
+        if (! in_array(self::$order->status, [2, 3, 6])) {
             throw new OrderServiceException('锁定失败,订单当前状态为: ' . self::$order->getStatusDescribe());
         }
         if (self::$order->parent_user_id != self::$user->parent_id) {

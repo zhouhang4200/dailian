@@ -22,6 +22,6 @@ class GameLevelingOrderApplyComplete extends Model
      */
     public function image()
     {
-        return $this->morphMany(Attachment::class, 'attachment', 'attachment_type', 'game_leveling_order_trade_no', 'game_leveling_order_trade_no');
+        return $this->morphMany(Attachment::class, 'attachment', 'attachment_type', 'trade_no', 'game_leveling_order_trade_no');
     }
 }

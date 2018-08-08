@@ -139,13 +139,13 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">接单密码</label>
                 <div class="layui-input-inline">
-                    <input type="password" name="take_password" required  lay-verify="required" placeholder="请输入接单密码" autocomplete="off" class="layui-input">
+                    <input type="take_password" name="take_password" required  lay-verify="required" placeholder="请输入接单密码" autocomplete="off" class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">支付密码</label>
                 <div class="layui-input-inline">
-                    <input type="password" name="payment_password" required lay-verify="required" placeholder="请输入支付密码" autocomplete="off" class="layui-input">
+                    <input type="pay_password" name="payment_password" required lay-verify="required" placeholder="请输入支付密码" autocomplete="off" class="layui-input">
                 </div>
                 <div class="layui-form-mid layui-word-aux">忘记密码</div>
             </div>
@@ -163,7 +163,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">支付密码</label>
                 <div class="layui-input-inline">
-                    <input type="password" name="payment_password" required lay-verify="required" placeholder="请输入支付密码" autocomplete="off" class="layui-input">
+                    <input type="pay_password" name="payment_password" required lay-verify="required" placeholder="请输入支付密码" autocomplete="off" class="layui-input">
                 </div>
                 <div class="layui-form-mid layui-word-aux">忘记密码</div>
             </div>
@@ -214,7 +214,7 @@
             form.on('submit(confirm-take)', function (data) {
                 $.post('{{ route('order.operation.take') }}', {
                     trade_no:data.trade_no,
-                    payment_password:encrypt($.trim(data.payment_password)),
+                    pay_password:encrypt($.trim(data.pay_password)),
                     trade_password:encrypt($.trim(data.trade_password))
                 }, function (result) {
                     if (result.status == 0) {

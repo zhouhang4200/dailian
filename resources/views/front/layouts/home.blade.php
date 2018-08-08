@@ -41,8 +41,8 @@
         </ul>
     </div>
     <div class="user">
-        <a href="#" class="register">注册</a>
-        <a href="#" class="login">登录</a>
+        <a href="{{ route('register') }}" class="register">注册</a>
+        <a href="{{ route('login') }}" class="login">登录</a>
     </div>
 </div>
 @yield('main')

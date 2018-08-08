@@ -7,6 +7,8 @@ use App\Services\OrderService;
 use App\Models\GameLevelingOrder;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Services\QsTransmitterConrtoller;
+use App\Exceptions\OrderServiceException;
 
 /**
  * 订单操作
@@ -25,7 +27,10 @@ class OrderOperationController extends Controller
     {
         DB::beginTransaction();
         try {
-            OrderService::init(request()->user()->id, request('trade_no'))->take();
+            $order = OrderService::init(request()->user()->id, request('trade_no'))->take();
+            QsTransmitterConrtoller::take($order);
+        } catch (OrderServiceException $e) {
+            return response()->ajaxFail();
         } catch (Exception $exception) {
             return response()->ajaxFail();
         }
@@ -51,7 +56,8 @@ class OrderOperationController extends Controller
 
         DB::beginTransaction();
         try {
-            OrderService::init(request()->user()->id, request('trade_no'))->applyComplete(array_filter($images));
+            $order = OrderService::init(request()->user()->id, request('trade_no'))->applyComplete(array_filter($images));
+            QsTransmitterConrtoller::applyComplete($order->trade_no);
         } catch (Exception $exception) {
             return response()->ajaxFail($exception->getMessage());
         }
@@ -68,7 +74,8 @@ class OrderOperationController extends Controller
     {
         DB::beginTransaction();
         try {
-            OrderService::init(request()->user()->id, request('trade_no'))->cancelComplete();
+            $order = OrderService::init(request()->user()->id, request('trade_no'))->cancelComplete();
+            QsTransmitterConrtoller::cancelComplete($order->trade_no);
         } catch (Exception $exception) {
             return response()->ajaxFail($exception->getMessage());
         }
@@ -170,7 +177,8 @@ class OrderOperationController extends Controller
     {
         DB::beginTransaction();
         try {
-            OrderService::init(request()->user()->id, request('trade_no'))->anomaly();
+            $order = OrderService::init(request()->user()->id, request('trade_no'))->anomaly();
+            QsTransmitterConrtoller::anomaly($order->trade_no);
         } catch (Exception $exception) {
             return response()->ajaxFail($exception->getMessage());
         }
@@ -185,7 +193,8 @@ class OrderOperationController extends Controller
     public function cancelAnomaly()
     {
         try {
-            OrderService::init(request()->user()->id, request('trade_no'))->cancelAnomaly();
+            $order = OrderService::init(request()->user()->id, request('trade_no'))->cancelAnomaly();
+            QsTransmitterConrtoller::cancelAnomaly($order->trade_no);
         } catch (Exception $exception) {
             return response()->ajaxFail($exception->getMessage());
         }
@@ -211,8 +220,9 @@ class OrderOperationController extends Controller
         $depositResult = GameLevelingOrder::deuceDeposit($tradeNO, $deposit);
 
         try {
-            OrderService::init(request()->user()->id, $tradeNO)
+            $order = OrderService::init(request()->user()->id, $tradeNO)
                 ->applyConsult($amount, $depositResult['security_deposit'], $depositResult['efficiency_deposit'], $remark);
+            QsTransmitterConrtoller::applyConsult($tradeNO, $amount, $deposit, $remark);
         } catch (Exception $exception) {
             return response()->ajaxFail($exception->getMessage());
         }
@@ -229,7 +239,8 @@ class OrderOperationController extends Controller
     {
         DB::beginTransaction();
         try {
-            OrderService::init(request()->user()->id, request('trade_no'))->cancelConsult();
+            $order = OrderService::init(request()->user()->id, request('trade_no'))->cancelConsult();
+            QsTransmitterConrtoller::cancelConsult($order->trade_no);
         } catch (Exception $exception) {
             return response()->ajaxFail($exception->getMessage());
         }
@@ -251,8 +262,8 @@ class OrderOperationController extends Controller
             $images[] = base64ToImg(request('image_2'),  'complain');
             $images[] = base64ToImg(request('image_3'),  'complain');
 
-            dd($images);
-            OrderService::init(request()->user()->id, request('trade_no'))->applyComplain(request('reason'), array_filter($images));
+            $order = OrderService::init(request()->user()->id, request('trade_no'))->applyComplain(request('reason'), array_filter($images));
+            QsTransmitterConrtoller::applyComplain($order->trade_no, request('reason'));
         } catch (Exception $exception) {
             return response()->ajaxFail($exception->getMessage());
         }
@@ -270,7 +281,8 @@ class OrderOperationController extends Controller
     {
         DB::beginTransaction();
         try {
-            OrderService::init(request()->user()->id, request('trade_no'))->cancelComplain();
+            $order = OrderService::init(request()->user()->id, request('trade_no'))->cancelComplain();
+            QsTransmitterConrtoller::cancelComplain($order->trade_no);
         } catch (Exception $exception) {
             return response()->ajaxFail($exception->getMessage());
         }

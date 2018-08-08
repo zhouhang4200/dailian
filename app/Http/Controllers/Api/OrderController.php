@@ -31,6 +31,7 @@ class OrderController extends Controller
     private static $appSecret = 'XlDzhGb9EeiJW2r6os1CVC6bKLrikFDHgH5mVLGdVRMNyYhY7Q4QvFIL2SBx';
     // 允许上传图片类型
     private static $extensions = ['png', 'jpg', 'jpeg', 'gif'];
+
     /**
      *  上架
      * @param Request $request
@@ -45,10 +46,10 @@ class OrderController extends Controller
             $orderService = OrderService::init($userId, $orderNo);
             $orderService->onSale();
         } catch (OrderServiceException $e) {
-            myLog('operate-onSale', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            myLog('operate-onSale-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
-            myLog('operate-local-onSale', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            myLog('operate-local-onSale-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail('接口异常');
         }
         return response()->apiSuccess('成功');
@@ -68,10 +69,10 @@ class OrderController extends Controller
             $orderService = OrderService::init($userId, $orderNo);
             $orderService->offSale();
         } catch (OrderServiceException $e) {
-            myLog('operate-offSale', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            myLog('operate-offSale-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
-            myLog('operate-local-offSale', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            myLog('operate-local-offSale-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail('接口异常');
         }
         return response()->apiSuccess();
@@ -96,61 +97,14 @@ class OrderController extends Controller
                 $orderService->delete();
             }
         } catch (OrderServiceException $e) {
-            myLog('operate-delete', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            myLog('operate-delete-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
-            myLog('operate-local-delete', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            myLog('operate-local-delete-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail('接口异常');
         }
         return response()->apiSuccess();
     }
-
-//    /**
-//     *  申请验收
-//     * @param Request $request
-//     * @return mixed
-//     */
-//    public function applyComplete(Request $request)
-//    {
-//        try {
-//            $orderNo = $request->order_no;
-//            $userId = $request->user->id;
-//            $images = [];
-//
-//            $orderService = OrderService::init($userId, $orderNo);
-//            $orderService->applyComplete($images);
-//        } catch (OrderServiceException $e) {
-//            myLog('operate-applyComplete', ['no' => $orderNo, 'message' => $e->getMessage()]);
-//            return response()->apiFail($e->getMessage());
-//        } catch (Exception $e) {
-//            myLog('operate-local-applyComplete', ['no' => $orderNo, 'message' => $e->getMessage()]);
-//            return response()->apiFail('接口异常');
-//        }
-//        return response()->apiSuccess();
-//    }
-//
-//    /**
-//     *  取消验收
-//     * @param Request $request
-//     * @return mixed
-//     */
-//    public function cancelComplete(Request $request)
-//    {
-//        try {
-//            $orderNo = $request->order_no;
-//            $userId = $request->user->id;
-//
-//            $orderService = OrderService::init($userId, $orderNo);
-//            $orderService->cancelComplete();
-//        } catch (OrderServiceException $e) {
-//            myLog('operate-cancelComplete', ['no' => $orderNo, 'message' => $e->getMessage()]);
-//            return response()->apiFail($e->getMessage());
-//        } catch (Exception $e) {
-//            myLog('operate-local-cancelComplete', ['no' => $orderNo, 'message' => $e->getMessage()]);
-//            return response()->apiFail('接口异常');
-//        }
-//        return response()->apiSuccess();
-//    }
 
     /**
      *  完成
@@ -166,10 +120,10 @@ class OrderController extends Controller
             $orderService = OrderService::init($userId, $orderNo);
             $orderService->complete();
         } catch (OrderServiceException $e) {
-            myLog('operate-complete', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            myLog('operate-complete-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
-            myLog('operate-local-complete', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            myLog('operate-local-complete-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail('接口异常');
         }
         return response()->apiSuccess();
@@ -220,52 +174,6 @@ class OrderController extends Controller
         }
         return response()->apiSuccess();
     }
-
-//    /**
-//     *  异常
-//     * @param Request $request
-//     * @return mixed
-//     */
-//    public function anomaly(Request $request)
-//    {
-//        try {
-//            $orderNo = $request->order_no;
-//            $userId = $request->user->id;
-//
-//            $orderService = OrderService::init($userId, $orderNo);
-//            $orderService->anomaly();
-//        } catch (OrderServiceException $e) {
-//            myLog('operate-anomaly', ['no' => $orderNo, 'message' => $e->getMessage()]);
-//            return response()->apiFail($e->getMessage());
-//        } catch (Exception $e) {
-//            myLog('operate-local-anomaly', ['no' => $orderNo, 'message' => $e->getMessage()]);
-//            return response()->apiFail('接口异常');
-//        }
-//        return response()->apiSuccess();
-//    }
-//
-//    /**
-//     *  取消异常
-//     * @param Request $request
-//     * @return mixed
-//     */
-//    public function cancelAnomaly(Request $request)
-//    {
-//        try {
-//            $orderNo = $request->order_no;
-//            $userId = $request->user->id;
-//
-//            $orderService = OrderService::init($userId, $orderNo);
-//            $orderService->cancelAnomaly();
-//        } catch (OrderServiceException $e) {
-//            myLog('operate-cancelAnomaly', ['no' => $orderNo, 'message' => $e->getMessage()]);
-//            return response()->apiFail($e->getMessage());
-//        } catch (Exception $e) {
-//            myLog('operate-local-cancelAnomaly', ['no' => $orderNo, 'message' => $e->getMessage()]);
-//            return response()->apiFail('接口异常');
-//        }
-//        return response()->apiSuccess();
-//    }
 
     /**
      *  申请协商

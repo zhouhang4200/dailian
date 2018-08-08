@@ -341,6 +341,7 @@ class UserAssetService
             'amount' => self::$amount,
             'balance' => $balance,
             'frozen' => $frozen,
+            'date' => date('Y-m-d'),
             'remark' => self::$remark,
         ]);
     }

@@ -19,6 +19,7 @@ class UserAssetFlow extends Model
         'amount',
         'balance',
         'frozen',
+        'date',
         'remark' ,
     ];
 

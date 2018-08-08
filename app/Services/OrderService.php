@@ -176,20 +176,20 @@ class OrderService
 
     /**
      * 接单
-     * @param $paymentPassword
+     * @param $payPassword
      * @param $takePassword
      * @return object
      * @throws OrderServiceException
      */
-    public function take($paymentPassword, $takePassword)
+    public function take($payPassword, $takePassword)
     {
         // 验证接单密码
         if (! empty(self::$order->take_password) && self::$order->take_password != $takePassword) {
             throw new OrderServiceException('接单密码错误');
         }
+
         // 验证支付密码
-        dd(self::$user->payment_password, $paymentPassword);
-        if (! self::$user->payment_password !=  $paymentPassword) {
+        if (! \Hash::check($payPassword, self::$user->pay_password)) {
             throw new OrderServiceException('支付密码错误');
         }
 

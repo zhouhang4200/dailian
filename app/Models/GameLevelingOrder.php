@@ -46,6 +46,8 @@ class GameLevelingOrder extends Model
         'player_qq',
         'user_qq',
         'user_phone',
+        'day',
+        'hour',
     ];
 
     /**

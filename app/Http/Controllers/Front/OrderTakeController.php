@@ -147,7 +147,7 @@ class OrderTakeController extends Controller
     {
         try {
             OrderService::init(request()->user()->id, request('trade_no'))
-                ->complainMessage(request('image'), request('content'));
+                ->sendComplainMessage(request('image'), request('content'));
         } catch (Exception $exception) {
             return response()->ajaxFail('发送失败');
         }

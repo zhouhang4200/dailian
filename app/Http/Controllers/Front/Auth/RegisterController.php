@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Front\Auth;
 
 use App\Models\User;
+use App\Models\UserAsset;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
@@ -82,7 +83,6 @@ class RegisterController extends Controller
             'phone' => $data['phone'],
             'password' => bcrypt($data['password']),
             'pay_password' => bcrypt($data['password']),
-            'avatar' => '/resources/default.jpg',
         ]);
     }
 
@@ -117,6 +117,9 @@ class RegisterController extends Controller
         }
 
         event(new Registered($user = $this->create($data)));
+
+        // 初始化用户资产
+        UserAsset::create(['user_id' => $user->id]);
 
         $this->guard()->login($user);
 

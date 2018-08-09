@@ -100,7 +100,7 @@
             var form = layui.form, layer = layui.layer, element = layui.element, laydate = layui.laydate;
 
             element.on('tab(status)', function(){
-                window.location.href="{{ route('admin.game-leveling-order-complain') }}?status=" + this.getAttribute('lay-id');
+                window.location.href="{{ route('admin.user.fine-ticket') }}?status=" + this.getAttribute('lay-id');
             });
         });
     </script>

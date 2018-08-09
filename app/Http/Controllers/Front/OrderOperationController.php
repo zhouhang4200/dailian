@@ -526,6 +526,7 @@ class OrderOperationController extends Controller
      * 申请仲裁
      * @return mixed
      * @throws Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function applyComplain()
     {
@@ -572,6 +573,7 @@ class OrderOperationController extends Controller
      * 取消仲裁
      * @return mixed
      * @throws Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function cancelComplain()
     {

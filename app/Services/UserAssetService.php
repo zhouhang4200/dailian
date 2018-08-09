@@ -329,7 +329,7 @@ class UserAssetService
         try {
             $userAsset = UserAsset::where('user_id', self::$userId)->lockForUpdate()->first();
             // 写流水
-            $this->flow(bcadd($userAsset->balance, self::$amount), $userAsset->fronzen);
+            $this->flow(bcadd($userAsset->balance, self::$amount), $userAsset->frozen);
 
             // 更新用户余额
             $userAsset->balance = bcadd($userAsset->balance, self::$amount);

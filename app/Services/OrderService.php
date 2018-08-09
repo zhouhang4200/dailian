@@ -772,11 +772,12 @@ class OrderService
                 UserAssetService::init(63, self::$order->take_user_id, $securityDepositExpend, self::$order->trade_no)->expendFromFrozen();
             }
             if ($securityDepositIncome > 0) {
-                UserAssetService::init(53, self::$order->user_id, $securityDepositExpend, self::$order->trade_no)->income();
+                UserAssetService::init(53, self::$order->user_id, $securityDepositIncome, self::$order->trade_no)->income();
             }
             if ($securityDepositUnfrozen > 0) {
-                UserAssetService::init(43, self::$order->take_user_id, $securityDepositExpend, self::$order->trade_no)->unfrozen();
+                UserAssetService::init(43, self::$order->take_user_id, $securityDepositUnfrozen, self::$order->trade_no)->unfrozen();
             }
+
             // 修改订单状态
             self::$order->status = 8;
             self::$order->save();
@@ -993,10 +994,10 @@ class OrderService
                 UserAssetService::init(63, self::$order->take_user_id, $securityDepositExpend, self::$order->trade_no)->expendFromFrozen();
             }
             if ($securityDepositIncome > 0) {
-                UserAssetService::init(53, self::$order->user_id, $securityDepositExpend, self::$order->trade_no)->income();
+                UserAssetService::init(53, self::$order->user_id, $securityDepositIncome, self::$order->trade_no)->income();
             }
             if ($securityDepositUnfrozen > 0) {
-                UserAssetService::init(43, self::$order->take_user_id, $securityDepositExpend, self::$order->trade_no)->unfrozen();
+                UserAssetService::init(43, self::$order->take_user_id, $securityDepositUnfrozen, self::$order->trade_no)->unfrozen();
             }
             // 修改订单状态
             self::$order->status = 9;
@@ -1004,7 +1005,7 @@ class OrderService
             // 更新仲裁数据
 
             // 写入订单日志
-            GameLevelingOrderLog::store('完成仲裁', self::$order->trade_no, 0, self::$user->username, 0, '客服: 进行操作 [完成仲裁]');
+            GameLevelingOrderLog::store('完成仲裁', self::$order->trade_no, 0, self::$user->name, 0, '客服: 进行操作 [完成仲裁]');
         } catch (Exception $exception) {
             throw new Exception($exception->getMessage());
         }

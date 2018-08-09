@@ -295,6 +295,7 @@ class GameLevelingOrder extends Model
      */
     public function getComplainDescribe()
     {
+
         if (! is_null($this->complain) && optional($this->complain)->status == 3) {
             if ($this->complain->initiator == 1) { // 如果发起人为发单方
 
@@ -306,6 +307,7 @@ class GameLevelingOrder extends Model
                         $this->complain->reason
                     );
                 } else {
+
                     return sprintf("对方发起仲裁, <br/> 你支付代练费用 %.2f 元, 对方支付保证金 %.2f, <br/> 原因: %s",
                         $this->complain->amount, 
                         bcadd($this->complain->security_deposit, $this->complain->efficiency_deposit),
@@ -329,7 +331,16 @@ class GameLevelingOrder extends Model
                 }
             }
         } else {
-            return '';
+            // 当前用户父Id 等于仲裁发起人
+            if ($this->complain->parent_user_id == request()->user()->parent_id) {
+                return sprintf("你发起仲裁, 原因: %s",
+                    $this->complain->reason
+                );
+            } else {
+                return sprintf("对方发起仲裁,  原因: %s",
+                    $this->complain->reason
+                );
+            }
         }
 
     }

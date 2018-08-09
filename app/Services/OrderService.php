@@ -1034,7 +1034,7 @@ class OrderService
         try {
             // 增加到的金额只能大于原来的值
             if ($amount > self::$order->amount) {
-                self::$order->save(['amount' => $amount]);
+                self::$order->update(['amount' => $amount]);
                 // 增加加款金额
                 UserAssetService::init(31, self::$user->id, bcsub($amount, self::$order->amount), self::$order->trade_no)->frozen();
             } else {
@@ -1065,7 +1065,7 @@ class OrderService
         try {
             // 如果增加的天数 大于订单原天数 或 天数相等 订单原小时数大于
             if ($day > self::$order->day || ($day == self::$order->day && $hour > self::$order->hour)) {
-                self::$order->save([
+                self::$order->update([
                     'day' => $day,
                     'hour' => $hour,
                 ]);
@@ -1195,7 +1195,7 @@ class OrderService
         }
         DB::beginTransaction();
         try {
-            self::$order->save(array_filter([
+            self::$order->update(array_filter([
                 'game_account' => $account,
                 'game_password' => $password,
             ]));

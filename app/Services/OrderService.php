@@ -968,7 +968,7 @@ class OrderService
             } else if ($inputEfficiencyDeposit == 0) { // 协商  效率保证金不用支出
                 $efficiencyDepositUnfrozen = self::$order->efficiency_deposit;
             }
-            dd($expend, $income, $unfrozen, $securityDepositExpend, $securityDepositIncome, $efficiencyDepositExpend, $efficiencyDepositIncome, $efficiencyDepositUnfrozen, $securityDepositUnfrozen);
+
             // 代练费
             if ($expend > 0) {
                 UserAssetService::init(61, self::$order->user_id, $expend, self::$order->trade_no)->expendFromFrozen();

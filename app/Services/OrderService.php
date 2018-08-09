@@ -367,7 +367,7 @@ class OrderService
                 UserAssetService::init(42, self::$order->take_user_id, self::$order->efficiency_deposit, self::$order->trade_no)->unfrozen();
             }
             // 修改订单状态
-            self::$order->status = 11;
+            self::$order->status = 10;
             self::$order->save();
             // 写入订单日志
             GameLevelingOrderLog::store('完成验收', self::$order->trade_no, self::$user->id, self::$user->name, self::$user->parent_id, self::$user->name . ': 进行操作 [完成验收]');

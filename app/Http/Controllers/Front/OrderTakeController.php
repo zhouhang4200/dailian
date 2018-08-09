@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Front;
 
+use App\Models\Server;
 use App\Services\OrderService;
 use \Exception;
 use App\Models\Game;
@@ -149,19 +150,13 @@ class OrderTakeController extends Controller
 
     /**
      * @param $tradeNO
-     *
      * @return \Illuminate\Http\JsonResponse
+     * @throws \App\Exceptions\Order\OrderUnauthorizedException
      */
     public function message($tradeNO)
     {
-        $order = GameLevelingOrder::getOrderByCondition(['trade_no' =>  $tradeNO], 2)->with([
-            'message' => function($query){
-                return $query->where('type', 2);
-            }
-        ])->first();
-
         return response()->json(view()->make('front.order.take.message', [
-            'order' => $order,
+            'messages' => OrderService::init(request()->user()->id, $tradeNO)->getMessage(),
         ])->render());
     }
 
@@ -173,21 +168,12 @@ class OrderTakeController extends Controller
      */
     public function sendMessage($tradeNO)
     {
-        $order = GameLevelingOrder::getOrderByCondition(['trade_no' =>  $tradeNO], 2)->with([
-            'message' => function($query){
-                return $query->where('type', 2);
-            }
-        ])->firstOrFail();
-
-        $order->message()->create([
-            'initiator' => 2,
-            'from_user_id' => $order->take_parent_user_id,
-            'from_username' => $order->take_parent_username,
-            'to_user_id' => $order->parent_user_id,
-            'to_username' => $order->username,
-            'content' => request('content'),
-            'type' => 2,
-        ]);
-        return response()->ajaxSuccess();
+        try {
+            OrderService::init(request()->user()->id, $tradeNO)->sendMessage(request('content'));
+        } catch (Exception $exception) {
+            return response()->ajaxFail('发送失败');
+        }
+        DB::commit();
+        return response()->ajaxSuccess('发送成功');
     }
 }

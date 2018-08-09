@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\GameLevelingOrderMessage;
 use Exception;
 use App\Exceptions\Order\OrderTimeException;
 use App\Exceptions\Order\OrderUserException;
@@ -1296,6 +1297,69 @@ class OrderService
                 $image['game_leveling_order_trade_no'] = self::$order->trade_no;
                 $message->image()->create($image);
             }
+        } catch (Exception $exception) {
+            throw new Exception($exception->getMessage());
+        }
+        DB::commit();
+        return self::$order;
+    }
+
+    /**
+     * 获取订单留言
+     * @return \Illuminate\Support\Collection
+     * @throws OrderUnauthorizedException
+     */
+    public function getMessage()
+    {
+        // 检测当前操作用户是否是发单人或接单人
+        if (! in_array(self::$user->parent_id, [self::$order->parent_user_id, self::$order->take_parent_user_id])) {
+            throw new OrderUnauthorizedException('您无权操作');
+        }
+
+        return GameLevelingOrderMessage::where('game_leveling_order_trade_no', self::$order->trade_no)
+            ->where('type', 2)
+            ->get();
+    }
+
+    /**
+     * 发送留言
+     * @param $content
+     * @return object
+     * @throws Exception
+     */
+    public function sendMessage($content)
+    {
+        // 检测当前操作用户是否是发单人或接单人
+        if (! in_array(self::$user->parent_id, [self::$order->parent_user_id, self::$order->take_parent_user_id])) {
+            throw new OrderUnauthorizedException('您无权操作');
+        }
+
+        DB::beginTransaction();
+        try {
+            if (self::$user->parent_id == self::$order->parent_user_id) {
+                GameLevelingOrderMessage::create([
+                    'initiator' => 1,
+                    'game_leveling_order_trade_no' => self::$order->trade_no,
+                    'from_user_id' => self::$order->user_id,
+                    'from_username' => self::$order->username,
+                    'to_user_id' => self::$order->take_user_id,
+                    'to_username' => self::$order->take_username,
+                    'content' => $content,
+                    'type' => 2,
+                ]);
+            } else {
+                GameLevelingOrderMessage::create([
+                    'initiator' => 2,
+                    'game_leveling_order_trade_no' => self::$order->trade_no,
+                    'from_user_id' => self::$order->take_user_id,
+                    'from_username' => self::$order->take_username,
+                    'to_user_id' => self::$order->user_id,
+                    'to_username' => self::$order->username,
+                    'content' => $content,
+                    'type' => 2,
+                ]);
+            }
+
         } catch (Exception $exception) {
             throw new Exception($exception->getMessage());
         }

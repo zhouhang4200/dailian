@@ -1,5 +1,5 @@
 <ul>
-    @foreach($order->message as $item)
+    @foreach($messages as $item)
         @if($item->from_user_id == request()->user()->parent_id)
             <li class="layim-chat-mine">
                 <div class="layim-chat-user">

@@ -1201,5 +1201,23 @@ class OrderService
         DB::commit();
         return self::$order;
     }
+
+    /**
+     * 订单详情
+     * @return object
+     * @throws Exception
+     */
+    public function detail()
+    {
+        try {
+            // 检测当前操作用户是否是发单人
+            if (self::$order->parent_user_id != self::$user->parent_id) {
+                throw new OrderUnauthorizedException('该订单不属于您,你无权操作');
+            }
+            return self::$order;
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+        }
+    }
 }
 

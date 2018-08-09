@@ -356,9 +356,9 @@ class OrderService
         DB::beginTransaction();
         try {
             // 发单方从冻结支出代练费用
-            UserAssetService::init(61, self::$orde->user_id, self::$orde->amount, self::$order->trade_no)->expendFromFrozen();
+            UserAssetService::init(61, self::$order->user_id, self::$order->amount, self::$order->trade_no)->expendFromFrozen();
             // 接单方收入代练费用
-            UserAssetService::init(61, self::$orde->take_user_id, self::$orde->amount, self::$order->trade_no)->income();
+            UserAssetService::init(61, self::$order->take_user_id, self::$order->amount, self::$order->trade_no)->income();
             // 如果存在保证金, 冻结接单方解冻保证金
             if (self::$order->security_deposit > 0) {
                 UserAssetService::init(42, self::$user->take_user_id, self::$order->security_deposit, self::$order->trade_no)->unfrozen();

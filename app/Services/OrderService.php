@@ -224,7 +224,9 @@ class OrderService
             // 保存接单人ID修改订单状态
             self::$order->status = 2;
             self::$order->take_user_id = self::$user->id;
+            self::$order->take_username = self::$user->name;
             self::$order->take_parent_user_id = self::$user->parent_id;
+            self::$order->take_parent_username = self::$user->parent->name;
             self::$order->take_at = date('Y-m-d H:i:s');
             self::$order->save();
             // 写入订单日志

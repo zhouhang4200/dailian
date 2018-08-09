@@ -5,11 +5,19 @@ namespace App\Http\Controllers\Back\Order;
 use App\Services\OrderService;
 use DB;
 use Exception;
+use App\Services\TmApiService;
 use App\Models\GameLevelingOrder;
 use App\Http\Controllers\Controller;
 use App\Models\GameLevelingOrderComplain;
 use App\Models\GameLevelingOrderLog;
 use App\Models\GameLevelingOrderMessage;
+use App\Exceptions\Order\OrderTimeException;
+use App\Exceptions\Order\OrderUserException;
+use App\Exceptions\Order\OrderMoneyException;
+use App\Exceptions\Order\OrderStatusException;
+use App\Exceptions\Order\OrderPasswordException;
+use App\Exceptions\Order\OrderAdminUserException;
+use App\Exceptions\Order\OrderUnauthorizedException;
 
 /**
  * 代练订单仲裁
@@ -96,16 +104,43 @@ class GameLevelingOrderComplainController extends Controller
      */
     public function confirmArbitration()
     {
+        DB::beginTransaction();
         try {
             // 拆分安全与效率保证金
             $depositResult = GameLevelingOrder::deuceDeposit(request('trade_no'), request('deposit'));
 
-            OrderService::init(0, request('trade_no'), request()->user('admin')->id)
+            $order = OrderService::init(0, request('trade_no'), request()->user('admin')->id)
                 ->arbitration(request('amount'), $depositResult['security_deposit'], $depositResult['efficiency_deposit'], request('result'));
-            return response()->ajaxSuccess('处理成功');
-        } catch (Exception $exception) {
-            return response()->ajaxFail('处理失败-原因: ' . $exception->getMessage());
+
+            TmApiService::arbitration(request('trade_no'), request('amount'), request('deposit'));
+
+        } catch (OrderTimeException $e) {
+            myLog('wanzi-operate-confirmArbitration-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail('处理失败-原因: ' . $e->getMessage());
+        } catch (OrderUserException $e) {
+            myLog('wanzi-operate-confirmArbitration-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail('处理失败-原因: ' . $e->getMessage());
+        } catch (OrderMoneyException $e) {
+            myLog('wanzi-operate-confirmArbitration-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail('处理失败-原因: ' . $e->getMessage());
+        } catch (OrderStatusException $e) {
+            myLog('wanzi-operate-confirmArbitration-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail('处理失败-原因: ' . $e->getMessage());
+        } catch (OrderPasswordException $e) {
+            myLog('wanzi-operate-confirmArbitration-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail('处理失败-原因: ' . $e->getMessage());
+        } catch (OrderAdminUserException $e) {
+            myLog('wanzi-operate-confirmArbitration-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail('处理失败-原因: ' . $e->getMessage());
+        } catch (OrderUnauthorizedException $e) {
+            myLog('wanzi-operate-confirmArbitration-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail('处理失败-原因: ' . $e->getMessage());
+        }catch (Exception $e) {
+            myLog('wanzi-operate-confirmArbitration-local-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail('处理失败-原因: 本地接口异常');
         }
+        DB::commit();
+        return response()->ajaxSuccess('处理成功');
     }
 
     /**

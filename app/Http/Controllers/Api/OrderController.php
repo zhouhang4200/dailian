@@ -1064,4 +1064,98 @@ class OrderController extends Controller
         }
         return response()->apiSuccess();
     }
+
+    /**
+     *  获取订单留言
+     * @param Request $request
+     * @return mixed
+     * @throws Exception
+     */
+    public static function getMessage(Request $request)
+    {
+        try {
+            $orderNo = $request->order_no;
+            $userId = $request->user->id;
+
+            $orderService = OrderService::init($userId, $orderNo);
+            $messages = $orderService->getMessage();
+
+            $data = [];
+            $initiator = ['1' => '发单方', '2' => '接单方', '3' => '工作人员'];
+            foreach($messages as $k => $message) {
+                $data[$k]['sender'] = $initiator[$message->initiator];
+                $data[$k]['id'] = $message->id;
+                $data[$k]['send_content'] = $message->content;
+                $data[$k]['send_time'] = $message->created_at->toDateTimeString();
+            }
+        } catch (OrderTimeException $e) {
+            myLog('operate-getMessage-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderUserException $e) {
+            myLog('operate-getMessage-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderMoneyException $e) {
+            myLog('operate-getMessage-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderStatusException $e) {
+            myLog('operate-getMessage-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderPasswordException $e) {
+            myLog('operate-getMessage-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderAdminUserException $e) {
+            myLog('operate-getMessage-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderUnauthorizedException $e) {
+            myLog('operate-getMessage-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (Exception $e) {
+            myLog('operate-local-getMessage-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail('接单平台接口异常');
+        }
+        return response()->apiSuccess('操作成功', $data);
+    }
+
+    /**
+     *  发送留言
+     * @param Request $request
+     * @return mixed
+     * @throws Exception
+     */
+    public static function sendMessage(Request $request)
+    {
+        try {
+            $orderNo = $request->order_no;
+            $userId = $request->user->id;
+            $message = $request->message;
+
+            $orderService = OrderService::init($userId, $orderNo);
+            $order = $orderService->sendMessage($message);
+        } catch (OrderTimeException $e) {
+            myLog('operate-sendMessage-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderUserException $e) {
+            myLog('operate-sendMessage-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderMoneyException $e) {
+            myLog('operate-sendMessage-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderStatusException $e) {
+            myLog('operate-sendMessage-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderPasswordException $e) {
+            myLog('operate-sendMessage-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderAdminUserException $e) {
+            myLog('operate-sendMessage-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderUnauthorizedException $e) {
+            myLog('operate-sendMessage-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (Exception $e) {
+            myLog('operate-local-sendMessage-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail('接单平台接口异常');
+        }
+        return response()->apiSuccess();
+    }
 }

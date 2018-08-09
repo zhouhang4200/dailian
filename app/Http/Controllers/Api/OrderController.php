@@ -634,7 +634,11 @@ class OrderController extends Controller
             $game = Game::where('name', $data['game_name'])->first();
             $region = Region::where('name', $data['game_region'])->where('game_id', $game->id)->first();
             $server = Server::where('name', $data['game_serve'])->where('region_id', $region->id)->first();
-            $gameLevelingType = GameLevelingType::where('game_id', $game->id)->first();
+            $gameLevelingType = GameLevelingType::where('game_id', $game->id)->where('name', $data['game_leveling_type'])->first();
+            // 如果没有找到代练类型
+            if (! $gameLevelingType) {
+                $gameLevelingType = GameLevelingType::where('game_id', $game->id)->first();
+            }
 
             $order = $orderService->create(
                 $game->id,

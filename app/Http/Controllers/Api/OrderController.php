@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Exceptions\Order\OrderImageException;
 use DB;
 use Exception;
 use GuzzleHttp\Client;
@@ -969,5 +970,21 @@ class OrderController extends Controller
         }
         DB::commit();
         return response()->apiSuccess();
+    }
+
+    /**
+     * 获取完成图片
+     */
+    public function applyCompleteImage()
+    {
+        try {
+            $completeImage = OrderService::init(request()->user->id, request('order_no'))->applyCompleteImage();
+
+
+        } catch (OrderImageException $exception) {
+
+        } catch (Exception $exception) {
+
+        }
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Exceptions\Order\OrderImageException;
 use Exception;
 use App\Exceptions\Order\OrderTimeException;
 use App\Exceptions\Order\OrderUserException;
@@ -1225,12 +1226,25 @@ class OrderService
         }
     }
 
+    /**
+     * 获取订单申请验收图片
+     * @return mixed
+     * @throws Exception
+     */
     public function applyCompleteImage()
     {
-        if (is_null(self::$order->applyComplete)) {
-//            throw
+        try {
+            // 检测当前操作用户是否是发单人
+            if (! in_array(self::$user->parent_id, [self::$order->parent_user_id, self::$order->take_parent_user_id])) {
+                throw new OrderUnauthorizedException('您无权操作');
+            }
+            if (is_null(self::$order->applyComplete)) {
+                throw new OrderImageException('暂时没有验收图片');
+            }
+            return self::$order->applyComplete->image;
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
         }
-        self::$order->applyComplete->image;
     }
 }
 

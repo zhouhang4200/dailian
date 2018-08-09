@@ -361,10 +361,10 @@ class OrderService
             UserAssetService::init(51, self::$order->take_user_id, self::$order->amount, self::$order->trade_no)->income();
             // 如果存在保证金, 冻结接单方解冻保证金
             if (self::$order->security_deposit > 0) {
-                UserAssetService::init(43, self::$user->take_user_id, self::$order->security_deposit, self::$order->trade_no)->unfrozen();
+                UserAssetService::init(43, self::$order->take_user_id, self::$order->security_deposit, self::$order->trade_no)->unfrozen();
             }
             if (self::$order->efficiency_deposit > 0) {
-                UserAssetService::init(42, self::$user->take_user_id, self::$order->efficiency_deposit, self::$order->trade_no)->unfrozen();
+                UserAssetService::init(42, self::$order->take_user_id, self::$order->efficiency_deposit, self::$order->trade_no)->unfrozen();
             }
             // 修改订单状态
             self::$order->status = 11;
@@ -1223,6 +1223,14 @@ class OrderService
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
         }
+    }
+
+    public function applyCompleteImage()
+    {
+        if (is_null(self::$order->applyComplete)) {
+//            throw
+        }
+        self::$order->applyComplete->image;
     }
 }
 

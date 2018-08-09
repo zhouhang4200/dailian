@@ -84,7 +84,7 @@ Route::group(['middleware' => 'auth'], function (){
             Route::post('apply-consult', 'OrderOperationController@applyConsult')->name('order.operation.apply-consult'); // 申请撤销
             Route::post('cancel-consult', 'OrderOperationController@cancelConsult')->name('order.operation.cancel-consult'); // 取消撤销
             Route::post('agree-consult', 'OrderOperationController@agreeConsult')->name('order.operation.agree-consult'); // 同意撤销
-            Route::post('reject-consult', 'OrderOperationController@rejectConsult')->name('order.operation.reject-agree-consult'); // 不同意撤销
+            Route::post('reject-consult', 'OrderOperationController@rejectConsult')->name('order.operation.reject-consult'); // 不同意撤销
             Route::post('apply-complain', 'OrderOperationController@applyComplain')->name('order.operation.apply-complain'); // 申请仲裁
             Route::post('cancel-complain', 'OrderOperationController@cancelComplain')->name('order.operation.cancel-complain'); // 取消仲裁
         });

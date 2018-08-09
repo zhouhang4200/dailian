@@ -202,6 +202,24 @@
         }, 'json');
         return false;
     });
+    // 不同意撤销
+    form.on('submit(reject-consult)', function (data) {
+        $.post('{{ route('order.operation.reject-consult') }}', {trade_no: $(data.elem).attr('data-no')}, function (result) {
+            if (result.status) {
+                @if($type == 'list')
+                    layer.msg(result.message);
+                    reloadOrderList();
+                @else
+                    layer.msg(result.message,{time:500}, function(){
+                    location.reload();
+                    });
+                @endif
+            } else {
+                layer.alert(result.message);
+            }
+        }, 'json');
+        return false;
+    });
     // 申请仲裁
     form.on('submit(apply-complain)', function (data) {
         // 打开申请仲裁弹窗

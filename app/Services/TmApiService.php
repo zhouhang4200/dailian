@@ -366,7 +366,7 @@ class TmApiService
      * @param $orderNo
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public static function refuseConsult($orderNo)
+    public static function rejectConsult($orderNo)
     {
         try {
             $options = [

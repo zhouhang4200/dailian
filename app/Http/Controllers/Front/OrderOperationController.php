@@ -436,6 +436,7 @@ class OrderOperationController extends Controller
      * 申请撤销
      * @return mixed
      * @throws Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function applyConsult()
     {
@@ -486,6 +487,7 @@ class OrderOperationController extends Controller
      * 取消撤销
      * @return mixed
      * @throws Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function cancelConsult()
     {
@@ -493,6 +495,87 @@ class OrderOperationController extends Controller
         try {
             $order = OrderService::init(request()->user()->id, request('trade_no'))->cancelConsult();
             TmApiService::cancelConsult($order->trade_no);
+        } catch (OrderTimeException $e) {
+            myLog('wanzi-operate-cancelConsult-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderUserException $e) {
+            myLog('wanzi-operate-cancelConsult-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderMoneyException $e) {
+            myLog('wanzi-operate-cancelConsult-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderStatusException $e) {
+            myLog('wanzi-operate-cancelConsult-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderPasswordException $e) {
+            myLog('wanzi-operate-cancelConsult-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderAdminUserException $e) {
+            myLog('wanzi-operate-cancelConsult-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderUnauthorizedException $e) {
+            myLog('wanzi-operate-cancelConsult-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (Exception $e) {
+            myLog('wanzi-operate-cancelConsult-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        }
+        DB::commit();
+        return response()->ajaxSuccess();
+    }
+
+    /**
+     * 同意撤销
+     * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function agreeConsult()
+    {
+        DB::beginTransaction();
+        try {
+            $order = OrderService::init(request()->user()->id, request('trade_no'))->agreeConsult();
+            TmApiService::agreeConsult($order->trade_no);
+        } catch (OrderTimeException $e) {
+            myLog('wanzi-operate-cancelConsult-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderUserException $e) {
+            myLog('wanzi-operate-cancelConsult-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderMoneyException $e) {
+            myLog('wanzi-operate-cancelConsult-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderStatusException $e) {
+            myLog('wanzi-operate-cancelConsult-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderPasswordException $e) {
+            myLog('wanzi-operate-cancelConsult-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderAdminUserException $e) {
+            myLog('wanzi-operate-cancelConsult-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderUnauthorizedException $e) {
+            myLog('wanzi-operate-cancelConsult-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (Exception $e) {
+            myLog('wanzi-operate-cancelConsult-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        }
+        DB::commit();
+        return response()->ajaxSuccess();
+    }
+
+
+    /**
+     * 不同意撤销
+     * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function rejectConsult()
+    {
+        DB::beginTransaction();
+        try {
+            $order = OrderService::init(request()->user()->id, request('trade_no'))->rejectConsult();
+            TmApiService::rejectConsult($order->trade_no);
         } catch (OrderTimeException $e) {
             myLog('wanzi-operate-cancelConsult-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
             return response()->ajaxFail($e->getMessage());

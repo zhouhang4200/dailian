@@ -4,6 +4,7 @@ namespace App\Services;
 
 use DB;
 use Exception;
+use App\Models\User;
 use GuzzleHttp\Client;
 use App\Models\Game;
 use App\Models\Server;
@@ -79,7 +80,7 @@ class TmApiService
             ]);
             $result =  $response->getBody()->getContents();
             // 发送日志
-            myLog('qs-request-result', ['地址' => $url,'信息' => $options,'结果' => $result]);
+//            myLog('qs-request-result', ['地址' => $url,'信息' => $options,'结果' => $result]);
 
             if (! isset($result) || empty($result)) {
                 throw new OrderStatusException('请求返回数据不存在');
@@ -99,10 +100,10 @@ class TmApiService
             }
             return json_decode($result, true);
         } catch (OrderStatusException $e) {
-            myLog('tmapi-reback-request-error', ['方法' => '请求', '原因' => $e->getMessage()]);
+//            myLog('tmapi-reback-request-error', ['方法' => '请求', '原因' => $e->getMessage()]);
             throw new OrderStatusException($e->getMessage());
         } catch (Exception $e) {
-            myLog('tmapi-local-request-error', ['方法' => '请求', '原因' => $e->getMessage()]);
+//            myLog('tmapi-local-request-error', ['方法' => '请求', '原因' => $e->getMessage()]);
             throw new Exception($e->getMessage());
         }
     }
@@ -131,7 +132,7 @@ class TmApiService
             $result = $response->getBody()->getContents();
 
             // 发送日志
-            myLog('qs-request-result', ['地址' => $url,'信息' => $options,'结果' => $result]);
+//            myLog('qs-request-result', ['地址' => $url,'信息' => $options,'结果' => $result]);
 
             if (! isset($result) || empty($result)) {
                 throw new OrderStatusException('请求返回数据不存在');
@@ -151,10 +152,10 @@ class TmApiService
             }
             return json_decode($result, true);
         } catch (OrderStatusException $e) {
-            myLog('tmapi-reback-request-error', ['方法' => '请求', '原因' => $e->getMessage()]);
+//            myLog('tmapi-reback-request-error', ['方法' => '请求', '原因' => $e->getMessage()]);
             throw new OrderStatusException($e->getMessage());
         } catch (Exception $e) {
-            myLog('tmapi-local-request-error', ['方法' => '请求', '原因' => $e->getMessage()]);
+//            myLog('tmapi-local-request-error', ['方法' => '请求', '原因' => $e->getMessage()]);
             throw new Exception($e->getMessage());
         }
     }
@@ -167,13 +168,14 @@ class TmApiService
     public static function take(GameLevelingOrder $order)
     {
         try {
+            $user = User::find($order->take_parent_user_id);
             $options = [
-                'order_no' => $order->foreign_order_no,
+                'order_no' => $order->trade_no,
                 'app_id' => static::$appId,
                 'timestamp' => time(),
-                'hatchet_man_qq' => $order->user->qq,
-                'hatchet_man_phone' => $order->user->phone,
-                'hatchet_man_name' => $order->user->name,
+                'hatchet_man_qq' => $user->qq ?? '0',
+                'hatchet_man_phone' => $user->phone,
+                'hatchet_man_name' => $user->name ?? '空',
             ];
             $sign = static::getSign($options);
             $options['sign'] = $sign;

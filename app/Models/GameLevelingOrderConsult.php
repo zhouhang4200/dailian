@@ -57,4 +57,12 @@ class GameLevelingOrderConsult extends Model
             'reason' => $reason,
         ]);
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'id', 'take_user_id');
+    }
 }

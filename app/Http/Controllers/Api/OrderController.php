@@ -698,6 +698,41 @@ class OrderController extends Controller
         return response()->apiSuccess('下单成功', ['order_no' => $order->trade_no]);
     }
 
+    public static function detail(Request $request)
+    {
+        try {
+            $orderNo = $request->order_no;
+            $userId = $request->user->id;
+
+            $orderService = OrderService::init($userId, $orderNo);
+            $orderService->detail();
+        } catch (OrderTimeException $e) {
+            myLog('operate-detail-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderUserException $e) {
+            myLog('operate-detail-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderMoneyException $e) {
+            myLog('operate-detail-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderStatusException $e) {
+            myLog('operate-detail-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderPasswordException $e) {
+            myLog('operate-detail-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderAdminUserException $e) {
+            myLog('operate-detail-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderUnauthorizedException $e) {
+            myLog('operate-detail-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (Exception $e) {
+            myLog('operate-local-detail-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail('接口异常');
+        }
+        return response()->apiSuccess();
+    }
     /**
      * 合成发单器的sign
      * @param $options

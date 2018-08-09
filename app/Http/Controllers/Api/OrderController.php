@@ -74,7 +74,7 @@ class OrderController extends Controller
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
             myLog('operate-local-onSale-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail('接口异常');
+            return response()->apiFail('接单平台接口异常');
         }
         return response()->apiSuccess('成功');
     }
@@ -115,7 +115,7 @@ class OrderController extends Controller
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
             myLog('operate-local-offSale-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail('接口异常');
+            return response()->apiFail('接单平台接口异常');
         }
         return response()->apiSuccess();
     }
@@ -161,7 +161,7 @@ class OrderController extends Controller
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
             myLog('operate-local-delete-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail('接口异常');
+            return response()->apiFail('接单平台接口异常');
         }
         return response()->apiSuccess();
     }
@@ -202,7 +202,7 @@ class OrderController extends Controller
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
             myLog('operate-local-complete-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail('接口异常');
+            return response()->apiFail('接单平台接口异常');
         }
         return response()->apiSuccess();
     }
@@ -243,7 +243,7 @@ class OrderController extends Controller
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
             myLog('operate-local-lock-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail('接口异常');
+            return response()->apiFail('接单平台接口异常');
         }
         return response()->apiSuccess();
     }
@@ -284,7 +284,7 @@ class OrderController extends Controller
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
             myLog('operate-local-cancelLock-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail('接口异常');
+            return response()->apiFail('接单平台接口异常');
         }
         return response()->apiSuccess();
     }
@@ -331,7 +331,7 @@ class OrderController extends Controller
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
             myLog('operate-local-applyConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail('接口异常');
+            return response()->apiFail('接单平台接口异常');
         }
         return response()->apiSuccess();
     }
@@ -372,7 +372,7 @@ class OrderController extends Controller
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
             myLog('operate-local-cancelConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail('接口异常');
+            return response()->apiFail('接单平台接口异常');
         }
         return response()->apiSuccess();
     }
@@ -413,7 +413,7 @@ class OrderController extends Controller
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
             myLog('operate-local-agreeConsult', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail('接口异常');
+            return response()->apiFail('接单平台接口异常');
         }
         return response()->apiSuccess();
     }
@@ -454,7 +454,7 @@ class OrderController extends Controller
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
             myLog('operate-local-refuseConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail('接口异常');
+            return response()->apiFail('接单平台接口异常');
         }
         return response()->apiSuccess();
     }
@@ -522,7 +522,7 @@ class OrderController extends Controller
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
             myLog('operate-local-applyComplain-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail('接口异常');
+            return response()->apiFail('接单平台接口异常');
         }
         return response()->apiSuccess();
     }
@@ -595,7 +595,7 @@ class OrderController extends Controller
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
             myLog('operate-local-cancelComplain-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail('接口异常');
+            return response()->apiFail('接单平台接口异常');
         }
         return response()->apiSuccess();
     }
@@ -605,7 +605,8 @@ class OrderController extends Controller
      * @param Request $request
      * @return bool
      */
-    public function placeOrder(Request $request) {
+    public function placeOrder(Request $request)
+    {
         DB::beginTransaction();
         try {
             $data = $request->data;
@@ -698,6 +699,12 @@ class OrderController extends Controller
         return response()->apiSuccess('下单成功', ['order_no' => $order->trade_no]);
     }
 
+    /**
+     * 详情
+     * @param Request $request
+     * @return mixed
+     * @throws Exception
+     */
     public static function detail(Request $request)
     {
         try {
@@ -705,7 +712,15 @@ class OrderController extends Controller
             $userId = $request->user->id;
 
             $orderService = OrderService::init($userId, $orderNo);
-            $orderService->detail();
+            $order = $orderService->detail();
+            $data = [
+                'order_no' => $order->trade_no,
+                'amount' => $order->amount,
+                'game_name' => $order->game_name,
+                'region_name' => $order->region_name,
+                'server_name' => $order->server_name,
+                'title' => $order->title,
+            ];
         } catch (OrderTimeException $e) {
             myLog('operate-detail-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail($e->getMessage());
@@ -729,16 +744,18 @@ class OrderController extends Controller
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
             myLog('operate-local-detail-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail('接口异常');
+            return response()->apiFail('接单平台接口异常');
         }
-        return response()->apiSuccess();
+        return response()->apiSuccess('成功', $data);
     }
+
     /**
      * 合成发单器的sign
      * @param $options
      * @return string
      */
-    public function generateSign($options) {
+    public function generateSign($options)
+    {
         ksort($options);
         $str = '';
         foreach ($options as $key => $value) {

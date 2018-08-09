@@ -16,11 +16,16 @@ class CreateGameLevelingOrdersTable extends Migration
         Schema::create('game_leveling_orders', function (Blueprint $table) {
             $table->increments('id');
             $table->string('trade_no', 22)->comment('交易单号');
+            $table->unsignedInteger('status')->default(1)->comment('订单状态');
             $table->string('foreign_trade_no', 60)->comment('外部交易单号');
             $table->unsignedInteger('user_id')->comment('创建订单用户ID');
             $table->string('username')->comment('创建订单用户');
             $table->unsignedInteger('parent_user_id')->comment('创建订单用户父ID');
             $table->string('parent_username')->comment('创建订单用户父');
+            $table->unsignedInteger('take_user_id')->default(0)->comment('接单用户ID');
+            $table->string('take_username')->nullable()->comment('接单用户名');
+            $table->unsignedInteger('take_parent_user_id')->default(0)->comment('接单用户父ID');
+            $table->string('take_parent_username')->nullable()->comment('接单用户父用户名');
             $table->unsignedTinyInteger('order_type_id')->comment('订单类型');
             $table->unsignedInteger('game_type_id')->comment('游戏类型ID');
             $table->unsignedInteger('game_class_id')->comment('游戏类别ID');
@@ -48,11 +53,6 @@ class CreateGameLevelingOrdersTable extends Migration
             $table->string('player_qq', 20)->default(0)->comment('玩家QQ');
             $table->string('user_phone', 20)->default(0)->comment('发单用户电话');
             $table->string('user_qq', 20)->default(0)->comment('发单用户qq');
-            $table->unsignedInteger('status')->default(1)->comment('订单状态');
-            $table->unsignedInteger('take_user_id')->default(0)->comment('接单用户ID');
-            $table->string('take_username')->nullable()->comment('接单用户名');
-            $table->unsignedInteger('take_parent_user_id')->default(0)->comment('接单用户父ID');
-            $table->string('take_parent_username')->nullable()->comment('接单用户父用户名');
             $table->timestamp('take_at')->nullable()->comment('接单时间');
             $table->decimal('price_increase_step', 17, 2)->default(0)->comment('自动加价步长');
             $table->decimal('price_ceiling', 17, 2)->default(0)->comment('自动加价上限');

@@ -255,7 +255,7 @@ class GameLevelingOrder extends Model
 
                 // 当前用户父Id 等于撤销发起人
                 if ($this->consult->parent_user_id == request()->user()->parent_id) {
-                    return sprintf("你发起撤销, <br/> 你支付代练费用 %.2f 元, 对方支付保证金 %.2f, <br/> 原因: %s",
+                    return sprintf("您发起撤销, <br/> 你支付代练费用 %.2f 元, 对方支付保证金 %.2f, <br/> 原因: %s",
                         $this->consult->amount, 
                         bcadd($this->consult->security_deposit, $this->consult->efficiency_deposit),
                         $this->consult->reason
@@ -270,7 +270,7 @@ class GameLevelingOrder extends Model
             } else if ($this->consult->initiator == 2) {  // 如果发起人为接单方
 
                 if ($this->consult->parent_user_id == request()->user()->parent_id) {
-                    return sprintf("你发起撤销, <br/> 对方支付代练费用 %.2f 元, 你支付保证金 %.2f, <br/> 原因: %s",
+                    return sprintf("您发起撤销, <br/> 对方支付代练费用 %.2f 元, 你支付保证金 %.2f, <br/> 原因: %s",
                         $this->consult->amount, 
                         bcadd($this->consult->security_deposit, $this->consult->efficiency_deposit),
                         $this->consult->reason
@@ -303,13 +303,13 @@ class GameLevelingOrder extends Model
                     return sprintf("你发起仲裁, <br/> 你支付代练费用 %.2f 元, 对方支付保证金 %.2f, <br/> 原因: %s",
                         $this->complain->amount, 
                         bcadd($this->complain->security_deposit, $this->complain->efficiency_deposit),
-                        $this->complain->remart 
+                        $this->complain->reason
                     );
                 } else {
                     return sprintf("对方发起仲裁, <br/> 你支付代练费用 %.2f 元, 对方支付保证金 %.2f, <br/> 原因: %s",
                         $this->complain->amount, 
                         bcadd($this->complain->security_deposit, $this->complain->efficiency_deposit),
-                        $this->complain->remark
+                        $this->complain->reason
                     );
                 }
             } else if ($this->complain->initiator == 2) {  // 如果发起人为接单方
@@ -318,13 +318,13 @@ class GameLevelingOrder extends Model
                     return sprintf("你发起仲裁 <br/> 对方支付代练费用 %.2f 元, 你支付保证金 %.2f, <br/> 原因: %s",
                         $this->complain->amount, 
                         bcadd($this->complain->security_deposit, $this->complain->efficiency_deposit),
-                        $this->complain->remart
+                        $this->complain->reason
                     );
                 } else {
                     return sprintf("对方发起仲裁, <br/> 你支付代练费用 %.2f 元, 对方支付保证金 %.2f, <br/> 原因: %s",
                         $this->complain->amount, 
                         bcadd($this->complain->security_deposit, $this->complain->efficiency_deposit),
-                        $this->complain->remart
+                        $this->complain->reason
                     );
                 }
             }

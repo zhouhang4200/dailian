@@ -578,7 +578,7 @@ class OrderOperationController extends Controller
         DB::beginTransaction();
         try {
             $order = OrderService::init(request()->user()->id, request('trade_no'))->cancelComplain();
-            TmApiService::applyComplain($order->trade_no);
+            TmApiService::cancelComplain($order->trade_no);
         } catch (OrderTimeException $e) {
             myLog('wanzi-operate-cancelComplain-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
             return response()->ajaxFail($e->getMessage());

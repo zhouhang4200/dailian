@@ -1020,4 +1020,48 @@ class OrderController extends Controller
         }
         return response()->apiSuccess('操作成功', $data);
     }
+
+    /**
+     *  添加仲裁证据
+     * @param Request $request
+     * @return mixed
+     * @throws Exception
+     */
+    public static function complainMessage(Request $request)
+    {
+        try {
+            $orderNo = $request->order_no;
+            $userId = $request->user->id;
+            $image = $request->image;
+            $reason = $request->reason;
+
+            $orderService = OrderService::init($userId, $orderNo);
+            $order = $orderService->complainMessage($image, $reason);
+        } catch (OrderTimeException $e) {
+            myLog('operate-complainMessage-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderUserException $e) {
+            myLog('operate-complainMessage-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderMoneyException $e) {
+            myLog('operate-complainMessage-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderStatusException $e) {
+            myLog('operate-complainMessage-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderPasswordException $e) {
+            myLog('operate-complainMessage-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderAdminUserException $e) {
+            myLog('operate-complainMessage-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderUnauthorizedException $e) {
+            myLog('operate-complainMessage-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (Exception $e) {
+            myLog('operate-local-complainMessage-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail('接单平台接口异常');
+        }
+        return response()->apiSuccess();
+    }
 }

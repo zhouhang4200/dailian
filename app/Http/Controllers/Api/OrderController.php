@@ -445,7 +445,7 @@ class OrderController extends Controller
             $userId = $request->user->id;
 
             $orderService = OrderService::init($userId, $orderNo);
-            $orderService->refuseConsult();
+            $orderService->rejectConsult();
         } catch (OrderTimeException $e) {
             myLog('operate-refuseConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail($e->getMessage());

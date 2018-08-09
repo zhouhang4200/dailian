@@ -712,11 +712,11 @@ class OrderService
             $efficiencyDepositIncome= 0;
             // 接单人 解冻效率保证金
             $efficiencyDepositUnfrozen = 0;
-
+            // 1 2  amount 8 s 5 e 5
             if (self::$order->amount == self::$order->consult->amount) { // 协商 代练费全额支出
                 $expend = self::$order->amount;
                 $income = self::$order->amount;
-            } else if (self::$order->consult->amount > 0) { // 协商 代练费部分支出
+            } else if (self::$order->consult->amount > 0) { // 协商 代练费部分支出 1 1
                 $expend = self::$order->consult->amount;
                 $income = self::$order->consult->amount;
                 $unfrozen = bcsub(self::$order->amount, self::$order->consult->amount);

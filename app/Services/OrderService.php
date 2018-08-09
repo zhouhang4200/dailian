@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Exceptions\Order\OrderComplainException;
 use App\Models\GameLevelingOrderMessage;
 use Exception;
 use App\Exceptions\Order\OrderTimeException;
@@ -1249,6 +1250,24 @@ class OrderService
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
         }
+    }
+
+    /**
+     * 获取仲裁信息
+     * @return object
+     * @throws Exception
+     */
+    public function getComplainInfo()
+    {
+        // 检测当前操作用户是否是发单人或接单人
+        if (! in_array(self::$user->parent_id, [self::$order->parent_user_id, self::$order->take_parent_user_id])) {
+            throw new OrderUnauthorizedException('您无权操作');
+        }
+        if (is_null(self::$order->complain)) {
+
+            throw new OrderComplainException('暂时没有仲裁信息');
+        }
+        return self::$order;
     }
 
     /**

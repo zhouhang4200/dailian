@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Front;
 
+use App\Exceptions\Order\OrderComplainException;
 use App\Models\Server;
 use App\Services\OrderService;
 use \Exception;
@@ -120,14 +121,20 @@ class OrderTakeController extends Controller
 
     /**
      * 接单方查看仲裁信息
+     * @param $tradeNO
      * @return \Illuminate\Http\JsonResponse
+     * @throws Exception
      */
     public function complainInfo($tradeNO)
     {
-        $order = GameLevelingOrder::getOrderByCondition(['trade_no' =>  $tradeNO], 2)->first();
+        $complainInfo = null;
+        try {
+            $complainInfo = OrderService::init(request()->user()->id, $tradeNO)->getComplainInfo();
+        } catch (OrderComplainException $exception) {
 
+        }
         return response()->json(view()->make('front.order.take.complain-info', [
-            'order' => $order,
+            'order' => $complainInfo,
         ])->render());
     }
 

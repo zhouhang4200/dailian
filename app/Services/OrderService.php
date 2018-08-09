@@ -683,9 +683,9 @@ class OrderService
     public function agreeConsult()
     {
         // 状态为 撤销中 可取消撤销
-        if (self::$order->status != 4) {
-            throw new OrderStatusException('申请撤销失败,订单当前状态为: ' . self::$order->getStatusDescribe());
-        }
+//        if (self::$order->status != 4) {
+//            throw new OrderStatusException('申请撤销失败,订单当前状态为: ' . self::$order->getStatusDescribe());
+//        }
         // 检测当前操作用户与发起用户是否是同一人
         if (self::$order->consult->parent_user_id == self::$user->parent_id) {
             throw new OrderUnauthorizedException('您不能同意自己发起的撤销');
@@ -772,11 +772,12 @@ class OrderService
                 UserAssetService::init(63, self::$order->take_user_id, $securityDepositExpend, self::$order->trade_no)->expendFromFrozen();
             }
             if ($securityDepositIncome > 0) {
-                UserAssetService::init(53, self::$order->user_id, $securityDepositExpend, self::$order->trade_no)->income();
+                UserAssetService::init(53, self::$order->user_id, $securityDepositIncome, self::$order->trade_no)->income();
             }
             if ($securityDepositUnfrozen > 0) {
-                UserAssetService::init(43, self::$order->take_user_id, $securityDepositExpend, self::$order->trade_no)->unfrozen();
+                UserAssetService::init(43, self::$order->take_user_id, $securityDepositUnfrozen, self::$order->trade_no)->unfrozen();
             }
+
             // 修改订单状态
             self::$order->status = 8;
             self::$order->save();
@@ -900,9 +901,9 @@ class OrderService
     public function arbitration($inputAmount, $inputSecurityDeposit, $inputEfficiencyDeposit, $inputResult)
     {
         // 状态为 仲裁中 可取消撤销
-        if (self::$order->status != 5) {
-            throw new OrderStatusException('仲裁失败,订单当前状态为: ' . self::$order->getStatusDescribe());
-        }
+//        if (self::$order->status != 5) {
+//            throw new OrderStatusException('仲裁失败,订单当前状态为: ' . self::$order->getStatusDescribe());
+//        }
 
         DB::beginTransaction();
         try {
@@ -967,7 +968,7 @@ class OrderService
             } else if ($inputEfficiencyDeposit == 0) { // 协商  效率保证金不用支出
                 $efficiencyDepositUnfrozen = self::$order->efficiency_deposit;
             }
-
+            dd($expend, $income, $unfrozen, $securityDepositExpend, $securityDepositIncome, $efficiencyDepositExpend, $efficiencyDepositIncome, $efficiencyDepositUnfrozen, $securityDepositUnfrozen);
             // 代练费
             if ($expend > 0) {
                 UserAssetService::init(61, self::$order->user_id, $expend, self::$order->trade_no)->expendFromFrozen();
@@ -1004,7 +1005,7 @@ class OrderService
             // 更新仲裁数据
 
             // 写入订单日志
-            GameLevelingOrderLog::store('完成仲裁', self::$order->trade_no, 0, self::$user->username, 0, '客服: 进行操作 [完成仲裁]');
+            GameLevelingOrderLog::store('完成仲裁', self::$order->trade_no, 0, self::$user->name, 0, '客服: 进行操作 [完成仲裁]');
         } catch (Exception $exception) {
             throw new Exception($exception->getMessage());
         }

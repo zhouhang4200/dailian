@@ -382,9 +382,6 @@
                                             <button class="qs-btn qs-btn-sm" style="width: 80px;" data-no="{{ $order->trade_no }}" lay-submit lay-filter="cancel-complain">取消仲裁</button>
                                         @endif
 
-                                        @if ($order->getStatusDescribe() == '仲裁中' && optional($order->complain)->initiator == 1)
-                                            <button class="qs-btn qs-btn-sm" style="width: 80px;" data-no="{{ $order->trade_no }}" lay-submit lay-filter="cancel-complain">取消仲裁</button>
-                                        @endif
 
                                         @if ($order->getStatusDescribe() == '异常')
                                         <button class="qs-btn qs-btn-sm" style="width: 80px;" data-no="{{ $order->trade_no }}" lay-submit lay-filter="cancel-anomaly">取消异常</button>

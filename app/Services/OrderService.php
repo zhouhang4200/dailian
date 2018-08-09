@@ -1034,9 +1034,10 @@ class OrderService
         try {
             // 增加到的金额只能大于原来的值
             if ($amount > self::$order->amount) {
-                self::$order->update(['amount' => $amount]);
                 // 增加加款金额
                 UserAssetService::init(31, self::$user->id, bcsub($amount, self::$order->amount), self::$order->trade_no)->frozen();
+
+                self::$order->update(['amount' => $amount]);
             } else {
                 throw new OrderMoneyException('代练金额只可增加');
             }

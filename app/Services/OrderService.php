@@ -1003,7 +1003,7 @@ class OrderService
             // 更新仲裁数据
             
             // 写入订单日志
-            GameLevelingOrderLog::store('完成仲裁', self::$order->trade_no, 0, self::$user->name, 0, '客服: 进行操作 [完成仲裁]');
+            GameLevelingOrderLog::store('完成仲裁', self::$order->trade_no, 0, self::$user->username, 0, '客服: 进行操作 [完成仲裁]');
         } catch (Exception $exception) {
            throw new Exception($exception->getMessage());
         }

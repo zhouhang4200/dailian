@@ -2,11 +2,11 @@
 
 namespace App\Services;
 
-use App\Exceptions\Order\OrderImageException;
 use Exception;
 use App\Exceptions\Order\OrderTimeException;
 use App\Exceptions\Order\OrderUserException;
 use App\Exceptions\Order\OrderMoneyException;
+use App\Exceptions\Order\OrderImageException;
 use App\Exceptions\Order\OrderStatusException;
 use App\Exceptions\Order\OrderPasswordException;
 use App\Exceptions\Order\OrderAdminUserException;
@@ -1237,7 +1237,7 @@ class OrderService
     public function applyCompleteImage()
     {
         try {
-            // 检测当前操作用户是否是发单人
+            // 检测当前操作用户是否是发单人或接单人
             if (! in_array(self::$user->parent_id, [self::$order->parent_user_id, self::$order->take_parent_user_id])) {
                 throw new OrderUnauthorizedException('您无权操作');
             }
@@ -1248,6 +1248,59 @@ class OrderService
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
         }
+    }
+
+    /**
+     * 发送仲裁留言
+     * @param $imageFile
+     * @param $content
+     * @return object
+     * @throws Exception
+     */
+    public function complainMessage($imageFile, $content)
+    {
+        // 检测当前操作用户是否是发单人或接单人
+        if (! in_array(self::$user->parent_id, [self::$order->parent_user_id, self::$order->take_parent_user_id])) {
+            throw new OrderUnauthorizedException('您无权操作');
+        }
+
+        DB::beginTransaction();
+        try {
+            if (self::$user->parent_id == self::$order->parent_user_id) {
+                $message = GameLevelingOrderMessage::create([
+                    'initiator' => 1,
+                    'game_leveling_order_trade_no' => self::$order->trade_no,
+                    'from_user_id' => self::$order->user_id,
+                    'from_username' => self::$order->username,
+                    'to_user_id' => self::$order->take_user_id,
+                    'to_username' => self::$order->take_username,
+                    'content' => $content,
+                    'type' => 1,
+                ]);
+            } else {
+                $message = GameLevelingOrderMessage::create([
+                    'initiator' => 2,
+                    'game_leveling_order_trade_no' => self::$order->trade_no,
+                    'from_user_id' => self::$order->take_user_id,
+                    'from_username' => self::$order->take_username,
+                    'to_user_id' => self::$order->user_id,
+                    'to_username' => self::$order->username,
+                    'content' => $content,
+                    'type' => 1,
+                ]);
+            }
+
+            // 存储图片
+            $image = base64ToImg($imageFile, 'complain');
+            if ($image) {
+                $image['game_leveling_order_trade_no'] = self::$order->trade_no;
+                $message->image()->create($image);
+            }
+        } catch (Exception $exception) {
+            throw new Exception($exception->getMessage());
+        }
+        DB::commit();
+        return self::$order;
     }
 }
 

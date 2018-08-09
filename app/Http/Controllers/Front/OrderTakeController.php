@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Front;
 
+use App\Services\OrderService;
 use \Exception;
 use App\Models\Game;
 use App\Models\GameLevelingOrder;
@@ -136,26 +137,9 @@ class OrderTakeController extends Controller
      */
     public function complainMessage()
     {
-        $order = GameLevelingOrder::getOrderByCondition(['trade_no' => request('trade_no')], 2)->first();
-
-        DB::beginTransaction();
         try {
-            $message = GameLevelingOrderMessage::create([
-                'initiator' => 2,
-                'game_leveling_order_trade_no' => $order->trade_no,
-                'from_user_id' => $order->take_user_id,
-                'from_username' => $order->take_username,
-                'to_user_id' => $order->user_id,
-                'to_username' => $order->username,
-                'content' => request('content'),
-                'type' => 1,
-            ]);
-            // 存储图片
-            $image = base64ToImg(request('image'), 'complain');
-            if ($image) {
-                $image['game_leveling_order_trade_no'] = $order->trade_no;
-                $message->image()->create($image);
-            }
+            OrderService::init(request()->user()->id, request('trade_no'))
+                ->complainMessage(request('image'), request('content'));
         } catch (Exception $exception) {
             return response()->ajaxFail('发送失败');
         }

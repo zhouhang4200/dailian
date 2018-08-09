@@ -30,7 +30,7 @@ Route::namespace('Api')->group(function () {
         Route::post('apply-consult', 'OrderController@applyConsult'); // 申请协商
         Route::post('cancel-consult', 'OrderController@cancelConsult'); // 取消协商
         Route::post('agree-consult', 'OrderController@agreeConsult'); // 同意协商
-        Route::post('refuse-consult', 'OrderController@refuseConsult'); // 不同意协商
+        Route::post('reject-consult', 'OrderController@rejectConsult'); // 不同意协商
         Route::post('apply-complain', 'OrderController@applyComplain'); // 申请仲裁
         Route::post('cancel-complain', 'OrderController@cancelComplain'); // 取消仲裁
     });

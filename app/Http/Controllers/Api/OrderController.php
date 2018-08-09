@@ -423,7 +423,7 @@ class OrderController extends Controller
      * @param Request $request
      * @return mixed
      */
-    public function refuseConsult(Request $request)
+    public function rejectConsult(Request $request)
     {
         try {
             $orderNo = $request->order_no;

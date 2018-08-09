@@ -13,7 +13,13 @@ use App\Models\GameLevelingType;
 use App\Services\OrderService;
 use App\Models\GameLevelingOrder;
 use Illuminate\Http\Request;
-use App\Exceptions\OrderServiceException;
+use App\Exceptions\Order\OrderTimeException;
+use App\Exceptions\Order\OrderUserException;
+use App\Exceptions\Order\OrderMoneyException;
+use App\Exceptions\Order\OrderStatusException;
+use App\Exceptions\Order\OrderPasswordException;
+use App\Exceptions\Order\OrderAdminUserException;
+use App\Exceptions\Order\OrderUnauthorizedException;
 
 /**
  * 丸子调千手的操作类
@@ -76,7 +82,7 @@ class TmApiService
             myLog('qs-request-result', ['地址' => $url,'信息' => $options,'结果' => $result]);
 
             if (! isset($result) || empty($result)) {
-                throw new OrderServiceException('请求返回数据不存在');
+                throw new OrderStatusException('请求返回数据不存在');
             }
 
             if (isset($result) && ! empty($result)) {
@@ -87,16 +93,16 @@ class TmApiService
                     if (isset($arrResult['code']) && $arrResult['code'] != 1) {
                         $message = $arrResult['message'] ?? '发单器接口返回错误';
 
-                        throw new OrderServiceException($message);
+                        throw new OrderStatusException($message);
                     }
                 }
             }
             return json_decode($result, true);
-        } catch (OrderServiceException $e) {
-            myLog('reback-request-error', ['方法' => '请求', '原因' => $e->getMessage()]);
-            throw new OrderServiceException($e->getMessage());
+        } catch (OrderStatusException $e) {
+            myLog('tmapi-reback-request-error', ['方法' => '请求', '原因' => $e->getMessage()]);
+            throw new OrderStatusException($e->getMessage());
         } catch (Exception $e) {
-            myLog('local-request-error', ['方法' => '请求', '原因' => $e->getMessage()]);
+            myLog('tmapi-local-request-error', ['方法' => '请求', '原因' => $e->getMessage()]);
             throw new Exception($e->getMessage());
         }
     }
@@ -128,7 +134,7 @@ class TmApiService
             myLog('qs-request-result', ['地址' => $url,'信息' => $options,'结果' => $result]);
 
             if (! isset($result) || empty($result)) {
-                throw new OrderServiceException('请求返回数据不存在');
+                throw new OrderStatusException('请求返回数据不存在');
             }
 
             if (isset($result) && ! empty($result)) {
@@ -139,16 +145,16 @@ class TmApiService
                     if (isset($arrResult['code']) && $arrResult['code'] != 1) {
                         $message = $arrResult['message'] ?? '发单器接口返回错误';
 
-                        throw new OrderServiceException($message);
+                        throw new OrderStatusException($message);
                     }
                 }
             }
             return json_decode($result, true);
-        } catch (OrderServiceException $e) {
-            myLog('reback-request-error', ['方法' => '请求', '原因' => $e->getMessage()]);
-            throw new OrderServiceException($e->getMessage());
+        } catch (OrderStatusException $e) {
+            myLog('tmapi-reback-request-error', ['方法' => '请求', '原因' => $e->getMessage()]);
+            throw new OrderStatusException($e->getMessage());
         } catch (Exception $e) {
-            myLog('local-request-error', ['方法' => '请求', '原因' => $e->getMessage()]);
+            myLog('tmapi-local-request-error', ['方法' => '请求', '原因' => $e->getMessage()]);
             throw new Exception($e->getMessage());
         }
     }

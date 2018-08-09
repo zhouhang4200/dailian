@@ -2,16 +2,19 @@
 
 namespace App\Http\Controllers\Front;
 
-use \Exception;
+use Exception;
+use App\Exceptions\Order\OrderTimeException;
+use App\Exceptions\Order\OrderUserException;
+use App\Exceptions\Order\OrderMoneyException;
+use App\Exceptions\Order\OrderStatusException;
 use App\Exceptions\Order\OrderPasswordException;
-use App\Exceptions\Order\OrderTakeOrderPasswordException;
-use App\Exceptions\Asset\UserAssetBalanceException;
+use App\Exceptions\Order\OrderAdminUserException;
+use App\Exceptions\Order\OrderUnauthorizedException;
 use App\Services\OrderService;
 use App\Models\GameLevelingOrder;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\TmApiService;
-use App\Exceptions\OrderServiceException;
 
 /**
  * 订单操作
@@ -33,13 +36,29 @@ class OrderOperationController extends Controller
             $order = OrderService::init(request()->user()->id, request('trade_no'))
                 ->take(clientRSADecrypt(request('pay_password')), clientRSADecrypt(request('take_password')));
             TmApiService::take($order);
-        } catch (UserAssetBalanceException $exception) {
-            return response()->json(['status' => 2, 'message' => $exception->getMessage()]);
-        } catch (OrderTakeOrderPasswordException $exception) {
-            return response()->json(['status' => 3, 'message' => $exception->getMessage()]);
-        } catch (OrderPasswordException $exception) {
-            return response()->json(['status' => 4, 'message' => $exception->getMessage()]);
-        } catch (Exception $exception) {
+        } catch (OrderTimeException $e) {
+            myLog('wanzi-operate-take-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderUserException $e) {
+            myLog('wanzi-operate-take-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderMoneyException $e) {
+            myLog('wanzi-operate-take-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderStatusException $e) {
+            myLog('wanzi-operate-take-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderPasswordException $e) {
+            myLog('wanzi-operate-take-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderAdminUserException $e) {
+            myLog('wanzi-operate-take-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderUnauthorizedException $e) {
+            myLog('wanzi-operate-take-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (Exception $e) {
+            myLog('wanzi-operate-take-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
             return response()->json(['status' => 5, 'message' => '未知错误']);
         }
         DB::commit();
@@ -64,9 +83,31 @@ class OrderOperationController extends Controller
 
         DB::beginTransaction();
         try {
-            OrderService::init(request()->user()->id, request('trade_no'))->applyComplete(array_filter($images));
-        } catch (Exception $exception) {
-            return response()->ajaxFail($exception->getMessage());
+            $order = OrderService::init(request()->user()->id, request('trade_no'))->applyComplete(array_filter($images));
+        } catch (OrderTimeException $e) {
+            myLog('wanzi-operate-applyComplete-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderUserException $e) {
+            myLog('wanzi-operate-applyComplete-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderMoneyException $e) {
+            myLog('wanzi-operate-applyComplete-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderStatusException $e) {
+            myLog('wanzi-operate-applyComplete-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderPasswordException $e) {
+            myLog('wanzi-operate-applyComplete-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderAdminUserException $e) {
+            myLog('wanzi-operate-applyComplete-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderUnauthorizedException $e) {
+            myLog('wanzi-operate-applyComplete-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (Exception $e) {
+            myLog('wanzi-operate-applyComplete-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
         }
         DB::commit();
         return response()->ajaxSuccess('提交验收成功');
@@ -81,9 +122,31 @@ class OrderOperationController extends Controller
     {
         DB::beginTransaction();
         try {
-            OrderService::init(request()->user()->id, request('trade_no'))->cancelComplete();
-        } catch (Exception $exception) {
-            return response()->ajaxFail($exception->getMessage());
+            $order = OrderService::init(request()->user()->id, request('trade_no'))->cancelComplete();
+        } catch (OrderTimeException $e) {
+            myLog('wanzi-operate-cancelComplete-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderUserException $e) {
+            myLog('wanzi-operate-cancelComplete-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderMoneyException $e) {
+            myLog('wanzi-operate-cancelComplete-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderStatusException $e) {
+            myLog('wanzi-operate-cancelComplete-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderPasswordException $e) {
+            myLog('wanzi-operate-cancelComplete-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderAdminUserException $e) {
+            myLog('wanzi-operate-cancelComplete-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderUnauthorizedException $e) {
+            myLog('wanzi-operate-cancelComplete-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (Exception $e) {
+            myLog('wanzi-operate-cancelComplete-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
         }
         DB::commit();
         return response()->ajaxSuccess('取消验收成功');
@@ -98,9 +161,31 @@ class OrderOperationController extends Controller
     {
         DB::beginTransaction();
         try {
-            OrderService::init(request()->user()->id, request('trade_no'))->complete();
-        } catch (Exception $exception) {
-            return response()->ajaxFail($exception->getMessage());
+            $order = OrderService::init(request()->user()->id, request('trade_no'))->complete();
+        } catch (OrderTimeException $e) {
+            myLog('wanzi-operate-complete-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderUserException $e) {
+           myLog('wanzi-operate-complete-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderMoneyException $e) {
+           myLog('wanzi-operate-complete-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderStatusException $e) {
+           myLog('wanzi-operate-complete-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderPasswordException $e) {
+           myLog('wanzi-operate-complete-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderAdminUserException $e) {
+           myLog('wanzi-operate-complete-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderUnauthorizedException $e) {
+           myLog('wanzi-operate-complete-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (Exception $e) {
+            myLog('wanzi-operate-complete-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
         }
         DB::commit();
         return response()->ajaxSuccess();
@@ -115,9 +200,31 @@ class OrderOperationController extends Controller
     {
         DB::beginTransaction();
         try {
-            OrderService::init(request()->user()->id, request('trade_no'))->onSale();
-        } catch (Exception $exception) {
-            return response()->ajaxFail($exception->getMessage());
+            $order = OrderService::init(request()->user()->id, request('trade_no'))->onSale();
+        } catch (OrderTimeException $e) {
+            myLog('wanzi-operate-onSale-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderUserException $e) {
+            myLog('wanzi-operate-onSale-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderMoneyException $e) {
+            myLog('wanzi-operate-onSale-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderStatusException $e) {
+            myLog('wanzi-operate-onSale-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderPasswordException $e) {
+            myLog('wanzi-operate-onSale-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderAdminUserException $e) {
+            myLog('wanzi-operate-onSale-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderUnauthorizedException $e) {
+            myLog('wanzi-operate-onSale-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (Exception $e) {
+            myLog('wanzi-operate-onSale-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
         }
         DB::commit();
         return response()->ajaxSuccess();
@@ -132,9 +239,31 @@ class OrderOperationController extends Controller
     {
         DB::beginTransaction();
         try {
-            OrderService::init(request()->user()->id, request('trade_no'))->offSale();
-        } catch (Exception $exception) {
-            return response()->ajaxFail($exception->getMessage());
+            $order = OrderService::init(request()->user()->id, request('trade_no'))->offSale();
+        } catch (OrderTimeException $e) {
+            myLog('wanzi-operate-offSale-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderUserException $e) {
+            myLog('wanzi-operate-offSale-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderMoneyException $e) {
+            myLog('wanzi-operate-offSale-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderStatusException $e) {
+            myLog('wanzi-operate-offSale-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderPasswordException $e) {
+            myLog('wanzi-operate-offSale-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderAdminUserException $e) {
+            myLog('wanzi-operate-offSale-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderUnauthorizedException $e) {
+            myLog('wanzi-operate-offSale-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (Exception $e) {
+            myLog('wanzi-operate-offSale-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
         }
         DB::commit();
         return response()->ajaxSuccess();
@@ -149,9 +278,31 @@ class OrderOperationController extends Controller
     {
         DB::beginTransaction();
         try {
-            OrderService::init(request()->user()->id, request('trade_no'))->lock();
-        } catch (Exception $exception) {
-            return response()->ajaxFail($exception->getMessage());
+            $order = OrderService::init(request()->user()->id, request('trade_no'))->lock();
+        } catch (OrderTimeException $e) {
+            myLog('wanzi-operate-lock-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderUserException $e) {
+            myLog('wanzi-operate-lock-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderMoneyException $e) {
+            myLog('wanzi-operate-lock-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderStatusException $e) {
+            myLog('wanzi-operate-lock-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderPasswordException $e) {
+            myLog('wanzi-operate-lock-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderAdminUserException $e) {
+            myLog('wanzi-operate-lock-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderUnauthorizedException $e) {
+            myLog('wanzi-operate-lock-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (Exception $e) {
+            myLog('wanzi-operate-lock-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
         }
         DB::commit();
         return response()->ajaxSuccess();
@@ -166,9 +317,31 @@ class OrderOperationController extends Controller
     {
         DB::beginTransaction();
         try {
-            OrderService::init(request()->user()->id, request('trade_no'))->cancelLock();
-        } catch (Exception $exception) {
-            return response()->ajaxFail($exception->getMessage());
+            $order = OrderService::init(request()->user()->id, request('trade_no'))->cancelLock();
+        } catch (OrderTimeException $e) {
+            myLog('wanzi-operate-cancelLock-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderUserException $e) {
+            myLog('wanzi-operate-cancelLock-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderMoneyException $e) {
+            myLog('wanzi-operate-cancelLock-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderStatusException $e) {
+            myLog('wanzi-operate-cancelLock-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderPasswordException $e) {
+            myLog('wanzi-operate-cancelLock-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderAdminUserException $e) {
+            myLog('wanzi-operate-cancelLock-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderUnauthorizedException $e) {
+            myLog('wanzi-operate-cancelLock-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (Exception $e) {
+            myLog('wanzi-operate-cancelLock-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
         }
         DB::commit();
         return response()->ajaxSuccess();
@@ -183,9 +356,31 @@ class OrderOperationController extends Controller
     {
         DB::beginTransaction();
         try {
-            OrderService::init(request()->user()->id, request('trade_no'))->anomaly();
-        } catch (Exception $exception) {
-            return response()->ajaxFail($exception->getMessage());
+            $order = OrderService::init(request()->user()->id, request('trade_no'))->anomaly();
+        } catch (OrderTimeException $e) {
+            myLog('wanzi-operate-anomaly-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderUserException $e) {
+            myLog('wanzi-operate-anomaly-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderMoneyException $e) {
+            myLog('wanzi-operate-anomaly-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderStatusException $e) {
+            myLog('wanzi-operate-anomaly-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderPasswordException $e) {
+            myLog('wanzi-operate-anomaly-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderAdminUserException $e) {
+            myLog('wanzi-operate-anomaly-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderUnauthorizedException $e) {
+            myLog('wanzi-operate-anomaly-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (Exception $e) {
+            myLog('wanzi-operate-anomaly-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
         }
         DB::commit();
         return response()->ajaxSuccess();
@@ -198,9 +393,31 @@ class OrderOperationController extends Controller
     public function cancelAnomaly()
     {
         try {
-            OrderService::init(request()->user()->id, request('trade_no'))->cancelAnomaly();
-        } catch (Exception $exception) {
-            return response()->ajaxFail($exception->getMessage());
+            $order = OrderService::init(request()->user()->id, request('trade_no'))->cancelAnomaly();
+        } catch (OrderTimeException $e) {
+            myLog('wanzi-operate-cancelAnomaly-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderUserException $e) {
+            myLog('wanzi-operate-cancelAnomaly-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderMoneyException $e) {
+            myLog('wanzi-operate-cancelAnomaly-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderStatusException $e) {
+            myLog('wanzi-operate-cancelAnomaly-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderPasswordException $e) {
+            myLog('wanzi-operate-cancelAnomaly-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderAdminUserException $e) {
+            myLog('wanzi-operate-cancelAnomaly-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderUnauthorizedException $e) {
+            myLog('wanzi-operate-cancelAnomaly-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (Exception $e) {
+            myLog('wanzi-operate-cancelAnomaly-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
         }
         DB::commit();
         return response()->ajaxSuccess();
@@ -224,10 +441,32 @@ class OrderOperationController extends Controller
         $depositResult = GameLevelingOrder::deuceDeposit($tradeNO, $deposit);
 
         try {
-            OrderService::init(request()->user()->id, $tradeNO)
+            $order = OrderService::init(request()->user()->id, $tradeNO)
                 ->applyConsult($amount, $depositResult['security_deposit'], $depositResult['efficiency_deposit'], $reason);
-        } catch (Exception $exception) {
-            return response()->ajaxFail($exception->getMessage());
+        } catch (OrderTimeException $e) {
+            myLog('wanzi-operate-applyConsult-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderUserException $e) {
+            myLog('wanzi-operate-applyConsult-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderMoneyException $e) {
+            myLog('wanzi-operate-applyConsult-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderStatusException $e) {
+            myLog('wanzi-operate-applyConsult-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderPasswordException $e) {
+            myLog('wanzi-operate-applyConsult-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderAdminUserException $e) {
+            myLog('wanzi-operate-applyConsult-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderUnauthorizedException $e) {
+            myLog('wanzi-operate-applyConsult-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (Exception $e) {
+            myLog('wanzi-operate-applyConsult-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
         }
         DB::commit();
         return response()->ajaxSuccess();
@@ -242,9 +481,31 @@ class OrderOperationController extends Controller
     {
         DB::beginTransaction();
         try {
-            OrderService::init(request()->user()->id, request('trade_no'))->cancelConsult();
-        } catch (Exception $exception) {
-            return response()->ajaxFail($exception->getMessage());
+            $order = OrderService::init(request()->user()->id, request('trade_no'))->cancelConsult();
+        } catch (OrderTimeException $e) {
+            myLog('wanzi-operate-cancelConsult-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderUserException $e) {
+            myLog('wanzi-operate-cancelConsult-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderMoneyException $e) {
+            myLog('wanzi-operate-cancelConsult-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderStatusException $e) {
+            myLog('wanzi-operate-cancelConsult-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderPasswordException $e) {
+            myLog('wanzi-operate-cancelConsult-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderAdminUserException $e) {
+            myLog('wanzi-operate-cancelConsult-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderUnauthorizedException $e) {
+            myLog('wanzi-operate-cancelConsult-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (Exception $e) {
+            myLog('wanzi-operate-cancelConsult-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
         }
         DB::commit();
         return response()->ajaxSuccess();
@@ -264,9 +525,31 @@ class OrderOperationController extends Controller
             $images[] = base64ToImg(request('image_2'),  'complain');
             $images[] = base64ToImg(request('image_3'),  'complain');
 
-            OrderService::init(request()->user()->id, request('trade_no'))->applyComplain(request('reason'), array_filter($images));
-        } catch (Exception $exception) {
-            return response()->ajaxFail($exception->getMessage());
+            $order = OrderService::init(request()->user()->id, request('trade_no'))->applyComplain(request('reason'), array_filter($images));
+        } catch (OrderTimeException $e) {
+            myLog('wanzi-operate-applyComplain-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderUserException $e) {
+            myLog('wanzi-operate-applyComplain-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderMoneyException $e) {
+            myLog('wanzi-operate-applyComplain-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderStatusException $e) {
+            myLog('wanzi-operate-applyComplain-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderPasswordException $e) {
+            myLog('wanzi-operate-applyComplain-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderAdminUserException $e) {
+            myLog('wanzi-operate-applyComplain-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderUnauthorizedException $e) {
+            myLog('wanzi-operate-applyComplain-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (Exception $e) {
+            myLog('wanzi-operate-applyComplain-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
         }
         DB::commit();
         return response()->ajaxSuccess();
@@ -282,13 +565,34 @@ class OrderOperationController extends Controller
     {
         DB::beginTransaction();
         try {
-            OrderService::init(request()->user()->id, request('trade_no'))->cancelComplain();
-        } catch (Exception $exception) {
-            return response()->ajaxFail($exception->getMessage());
+            $order = OrderService::init(request()->user()->id, request('trade_no'))->cancelComplain();
+        } catch (OrderTimeException $e) {
+            myLog('wanzi-operate-cancelComplain-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderUserException $e) {
+             myLog('wanzi-operate-cancelComplain-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderMoneyException $e) {
+             myLog('wanzi-operate-cancelComplain-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderStatusException $e) {
+             myLog('wanzi-operate-cancelComplain-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderPasswordException $e) {
+             myLog('wanzi-operate-cancelComplain-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderAdminUserException $e) {
+             myLog('wanzi-operate-cancelComplain-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (OrderUnauthorizedException $e) {
+             myLog('wanzi-operate-cancelComplain-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
+        } catch (Exception $e) {
+            myLog('wanzi-operate-cancelComplain-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->ajaxFail($e->getMessage());
         }
         DB::commit();
 
         return response()->ajaxSuccess();
     }
-
 }

@@ -216,7 +216,7 @@ class OrderService
                 UserAssetService::init(33, self::$user->id, self::$order->amount, self::$order->trade_no)->frozen();
             }
             if (self::$order->efficiency_deposit > 0) {
-                UserAssetService::init(34, self::$user->id, self::$order->amount, self::$order->trade_no)->frozen();
+                UserAssetService::init(32, self::$user->id, self::$order->amount, self::$order->trade_no)->frozen();
             }
             // 冻结发单方对应订单金额
             UserAssetService::init(31, self::$order->user_id, self::$order->amount, self::$order->trade_no)->frozen();
@@ -358,13 +358,13 @@ class OrderService
             // 发单方从冻结支出代练费用
             UserAssetService::init(61, self::$orde->user_id, self::$orde->amount, self::$order->trade_no)->expendFromFrozen();
             // 接单方收入代练费用
-            UserAssetService::init(61, self::$orde->take_user_id, self::$orde->amount, self::$order->trade_no)->income();
+            UserAssetService::init(51, self::$orde->take_user_id, self::$orde->amount, self::$order->trade_no)->income();
             // 如果存在保证金, 冻结接单方解冻保证金
             if (self::$order->security_deposit > 0) {
-                UserAssetService::init(42, self::$user->take_user_id, self::$order->security_deposit, self::$order->trade_no)->unfrozen();
+                UserAssetService::init(43, self::$user->take_user_id, self::$order->security_deposit, self::$order->trade_no)->unfrozen();
             }
             if (self::$order->efficiency_deposit > 0) {
-                UserAssetService::init(43, self::$user->take_user_id, self::$order->efficiency_deposit, self::$order->trade_no)->unfrozen();
+                UserAssetService::init(42, self::$user->take_user_id, self::$order->efficiency_deposit, self::$order->trade_no)->unfrozen();
             }
             // 修改订单状态
             self::$order->status = 11;
@@ -716,7 +716,7 @@ class OrderService
             if (self::$order->amount == self::$order->consult->amount) { // 协商 代练费全额支出
                 $expend = self::$order->amount;
                 $income = self::$order->amount;
-            } else if (self::$order->consult->amount > 0) { // 协商 代练费部分支出 1 1
+            } else if (self::$order->consult->amount > 0) { // 协商 代练费部分支出 1 1 4
                 $expend = self::$order->consult->amount;
                 $income = self::$order->consult->amount;
                 $unfrozen = bcsub(self::$order->amount, self::$order->consult->amount);

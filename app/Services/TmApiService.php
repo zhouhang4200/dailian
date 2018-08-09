@@ -350,6 +350,7 @@ class TmApiService
             $options = [
                 'order_no' => $orderNo,
                 'app_id' => static::$appId,
+                'api_service' => 0,
                 'timestamp' => time(),
             ];
             $sign = static::getSign($options);

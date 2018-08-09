@@ -38,6 +38,8 @@ class OrderController extends Controller
     private static $appSecret = 'XlDzhGb9EeiJW2r6os1CVC6bKLrikFDHgH5mVLGdVRMNyYhY7Q4QvFIL2SBx';
     // 允许上传图片类型
     private static $extensions = ['png', 'jpg', 'jpeg', 'gif'];
+    // 本地网站地址
+    private static $url = 'http://www.dailian.com';
 
     /**
      * 合成发单器的sign
@@ -712,7 +714,7 @@ class OrderController extends Controller
         } catch (Exception $e) {
             DB::rollback();
             myLog('place-order-local-error', ['data' => $data, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
+            return response()->apiFail('接单平台接口异常');
         }
         DB::commit();
         myLog('place-order-success', ['发单器结果' => $result, '从发单器获取的参数' => $data, '发送给发单器的参数' => $options]);
@@ -966,7 +968,7 @@ class OrderController extends Controller
         } catch (Exception $e) {
             DB::rollback();
             myLog('operate-update-local-error', ['data' => $data, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
+            return response()->apiFail('接单平台接口异常');
         }
         DB::commit();
         return response()->apiSuccess();
@@ -975,16 +977,47 @@ class OrderController extends Controller
     /**
      * 获取完成图片
      */
-    public function applyCompleteImage()
+    public function applyCompleteImage(Request $request)
     {
         try {
-            $completeImage = OrderService::init(request()->user->id, request('order_no'))->applyCompleteImage();
+            $orderNo = $request->order_no;
+            $userId = $request->user->id;
 
+            $orderService = OrderService::init($userId, $orderNo);
+            $images = $orderService->applyCompleteImage();
+            $order = GameLevelingOrder::where('trade_no', $orderNo)->first();
 
-        } catch (OrderImageException $exception) {
-
-        } catch (Exception $exception) {
-
+            $data = [];
+            foreach ($images as $k => $image) {
+                $data[$k]['username'] = $order->take_username ?? '';
+                $data[$k]['created_at'] = $order->created_at->toDateTimeString();
+                $data[$k]['url'] = static::$url.$image->path;
+            }
+        } catch (OrderTimeException $e) {
+            myLog('operate-applyCompleteImage-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderUserException $e) {
+            myLog('operate-applyCompleteImage-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderMoneyException $e) {
+            myLog('operate-applyCompleteImage-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderStatusException $e) {
+            myLog('operate-applyCompleteImage-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderPasswordException $e) {
+            myLog('operate-applyCompleteImage-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderAdminUserException $e) {
+            myLog('operate-applyCompleteImage-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderUnauthorizedException $e) {
+            myLog('operate-applyCompleteImage-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (Exception $e) {
+            myLog('operate-applyCompleteImage-local-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail('接单平台接口异常');
         }
+        return response()->apiSuccess('操作成功', $data);
     }
 }

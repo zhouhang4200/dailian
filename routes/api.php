@@ -37,6 +37,7 @@ Route::namespace('Api')->group(function () {
         Route::post('add-time', 'OrderController@addTime'); // 加时
         Route::post('add-money', 'OrderController@addMoney'); // 加价
         Route::post('update-account-password', 'OrderController@updateAccountPassword'); // 修改账号密码
+        Route::post('apply-complete-image', 'OrderController@applyCompleteImage'); // 完成的截图
     });
     Route::post('update', 'OrderController@update'); // 修改订单
     Route::post('place-order', 'OrderController@placeOrder'); // 下单

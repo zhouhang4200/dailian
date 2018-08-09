@@ -33,6 +33,7 @@ Route::namespace('Api')->group(function () {
         Route::post('reject-consult', 'OrderController@rejectConsult'); // 不同意协商
         Route::post('apply-complain', 'OrderController@applyComplain'); // 申请仲裁
         Route::post('cancel-complain', 'OrderController@cancelComplain'); // 取消仲裁
+        Route::post('detail', 'OrderController@detail'); // 详情
     });
     Route::post('place-order', 'OrderController@placeOrder'); // 下单
 });

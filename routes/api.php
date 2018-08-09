@@ -39,6 +39,8 @@ Route::namespace('Api')->group(function () {
         Route::post('update-account-password', 'OrderController@updateAccountPassword'); // 修改账号密码
         Route::post('apply-complete-image', 'OrderController@applyCompleteImage'); // 完成的截图
         Route::post('complain-message', 'OrderController@complainMessage'); // 仲裁证据
+        Route::post('get-message', 'OrderController@getMessage'); // 获取留言
+        Route::post('send-message', 'OrderController@sendMessage'); // 发送留言
     });
     Route::post('update', 'OrderController@update'); // 修改订单
     Route::post('place-order', 'OrderController@placeOrder'); // 下单

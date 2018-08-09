@@ -1258,7 +1258,7 @@ class OrderService
      * @return object
      * @throws Exception
      */
-    public function complainMessage($imageFile, $content)
+    public function sendComplainMessage($imageFile, $content)
     {
         // 检测当前操作用户是否是发单人或接单人
         if (! in_array(self::$user->parent_id, [self::$order->parent_user_id, self::$order->take_parent_user_id])) {

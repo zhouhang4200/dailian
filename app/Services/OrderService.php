@@ -214,10 +214,10 @@ class OrderService
         try {
             // 如果存在保证金, 冻结接单方对应的保证金
             if (self::$order->security_deposit > 0) {
-                UserAssetService::init(33, self::$user->id, self::$order->amount, self::$order->trade_no)->frozen();
+                UserAssetService::init(33, self::$user->id, self::$order->security_deposit, self::$order->trade_no)->frozen();
             }
             if (self::$order->efficiency_deposit > 0) {
-                UserAssetService::init(32, self::$user->id, self::$order->amount, self::$order->trade_no)->frozen();
+                UserAssetService::init(32, self::$user->id, self::$order->efficiency_deposit, self::$order->trade_no)->frozen();
             }
             // 冻结发单方对应订单金额
             UserAssetService::init(31, self::$order->user_id, self::$order->amount, self::$order->trade_no)->frozen();

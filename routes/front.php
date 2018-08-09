@@ -88,11 +88,26 @@ Route::group(['middleware' => 'auth'], function (){
             Route::post('cancel-complain', 'OrderOperationController@cancelComplain')->name('order.operation.cancel-complain'); // 取消仲裁
         });
     });
+
     // 财务
-    Route::prefix('finance')->group(function (){
-        Route::get('/', 'FinanceController@index')->name('finance');
-        Route::get('asset-flow-export', 'FinanceController@assetFlowExport')->name('finance.asset-flow-export');
+    Route::prefix('finance')->namespace('Finance')->group(function (){
+        // 资金流水
+        Route::prefix('asset-flow')->group(function (){
+            Route::get('/', 'AssetFlowController@index')->name('finance.asset-flow');
+            Route::get('export', 'AssetFlowController@export')->name('finance.asset-flow.export');
+        });
+        // 提现
+        Route::prefix('balance-withdraw')->group(function (){
+            Route::get('/', 'BalanceWithdrawController@index')->name('finance.balance-withdraw');
+            Route::get('export', 'BalanceWithdrawController@export')->name('finance.balance-withdraw.export');
+        });
+        // 提现
+        Route::prefix('finance-report-day')->group(function (){
+            Route::get('/', 'FinanceReportDayController@index')->name('finance.finance-report-day');
+            Route::get('export', 'FinanceReportDayController@export')->name('finance.finance-report-day.export');
+        });
     });
+
     // 个人资料
     Route::prefix('profile')->group(function (){
         Route::get('/', 'ProfileController@index')->name('profile');

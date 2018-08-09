@@ -86,7 +86,7 @@
                         <td>{{ $item->id }}</td>
                         <td>{{ $item->trade_no }}</td>
                         <td>{{ config('user_asset.type')[$item->type] }}</td>
-                        <td>{{ $item->fee + 0 }}</td>
+                        <td>{{ $item->amount + 0 }}</td>
                         <td>{{ $item->balance + 0 }}</td>
                         <td>{{ config('user_asset.sub_type')[$item->sub_type] }}</td>
                         <td>{{ $item->created_at }}</td>
@@ -113,7 +113,7 @@
         });
 
         $('#export').click(function () {
-            window.location.href = "{{ route('finance.asset-flow-export') }}?" + $('#search').serialize();
+            window.location.href = "{{ route('finance.asset-flow.export') }}?" + $('#search').serialize();
         });
     </script>
 @endsection

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Front;
+namespace App\Http\Controllers\Front\Finance;
 
 use App\Models\UserAssetFlow;
 use App\Http\Controllers\Controller;
@@ -10,7 +10,7 @@ use App\Http\Controllers\Controller;
  *
  * @package App\Http\Controllers\Front
  */
-class FinanceController extends Controller
+class AssetFlowController extends Controller
 {
     /**
      * 用户资金流水
@@ -18,15 +18,16 @@ class FinanceController extends Controller
      */
     public function index()
     {
-        return view('front.finance.index', [
-           'assetFlow' => UserAssetFlow::condition(request()->all())->paginate()
+        return view('front.finance.asset-flow.index', [
+           'assetFlow' => UserAssetFlow::condition(array_merge(request()->except('user_id'), ['user_id' => request()->user()->parent_id]))
+               ->paginate()
         ]);
     }
 
     /**
      * 资金流水导出
      */
-    public function assetFlowExport()
+    public function export()
     {
         $query = UserAssetFlow::condition(request()->all());
 

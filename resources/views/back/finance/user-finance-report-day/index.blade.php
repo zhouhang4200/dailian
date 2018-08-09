@@ -54,7 +54,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @forelse ($report as $item)
+                            @forelse ($reports as $item)
                                 <tr>
                                     <td>{{ $item->date }}</td>
                                     <td>{{ $item->user_id }}</td>
@@ -71,7 +71,7 @@
                             @endforelse
                             </tbody>
                         </table>
-                        {{ $report->appends(request()->all())->links() }}
+                        {{ $reports->appends(request()->all())->links() }}
                     </div>
                 </div>
             </div>

@@ -16,31 +16,31 @@
                                 <div class="col-md-2">
                                     <div class="input-group">
                                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                        <input type="text" class="form-control" id="start-time" name="startDate" value="{{ $startDate }}">
+                                        <input type="text" class="form-control" id="start-time" name="start_time" value="{{ request('start_time') }}">
                                     </div>
                                 </div>
                                 <div class="col-md-2">
                                     <div class="input-group">
                                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                        <input type="text" class="form-control" id="end-time" name="endDate" value="{{ $endDate }}">
+                                        <input type="text" class="form-control" id="end-time" name="end_time" value="{{ request('end_time') }}">
                                     </div>
                                 </div>
                                 <div class="form-group col-md-1">
                                     <select class="form-control" name="status">
                                         <option value="">所有状态</option>
-                                        @foreach (config('balance_withdraw.status') as $key => $value)
-                                            <option value="{{ $key }}" {{ $key == $status ? 'selected' : '' }}>{{ $key }}. {{ $value }}</option>
+                                        @foreach (config('user_asset.withdraw_status') as $key => $value)
+                                            <option value="{{ $key }}" {{ $key == request('status') ? 'selected' : '' }}>{{ $key }}. {{ $value }}</option>
                                         @endforeach
                                     </select>
                                 </div>
                                 <div class="col-md-2">
-                                    <input type="text" class="form-control" placeholder="相关单号" name="tradeNo" value="{{ $tradeNo }}">
+                                    <input type="text" class="form-control" placeholder="相关单号" name="trade_no" value="{{ request('trade_no') }}">
                                 </div>
                                 <div class="col-md-1">
-                                    <input type="text" class="form-control" placeholder="用户ID" name="userId" value="{{ $userId }}">
+                                    <input type="text" class="form-control" placeholder="用户ID" name="user_id" value="{{ request('user_id') }}">
                                 </div>
                                 <div class="col-md-2">
-                                    <input type="text" class="form-control" placeholder="拒绝原因" name="remark" value="{{ $remark }}">
+                                    <input type="text" class="form-control" placeholder="拒绝原因" name="remark" value="{{ request('remark') }}">
                                 </div>
                                 <div class="col-md-2">
                                     <button class="btn btn-primary" type="submit">搜索</button>
@@ -72,13 +72,13 @@
                                 <tr>
                                     <td>{{ $balanceWithdraw->trade_no }}</td>
                                     <td>{{ $balanceWithdraw->user_id }}</td>
-                                    <td>{{ $balanceWithdraw->userAssetFlows[0]->balance }}</td>
-                                    <td>{{ $balanceWithdraw->userAssetFlows[0]->frozen }}</td>
+                                    <td>{{ optional(optional($balanceWithdraw->userAssetFlows)[0])->balance }}</td>
+                                    <td>{{ optional(optional($balanceWithdraw->userAssetFlows)[0])->frozen }}</td>
                                     <td>{{ $balanceWithdraw->real_name ?? '' }}</td>
                                     <td>{{ $balanceWithdraw->bank_name ?? '' }}</td>
                                     <td>{{ $balanceWithdraw->bank_card ?? '' }}</td>
                                     <td>{{ $balanceWithdraw->amount+0 }}</td>
-                                    <td>{{ config('balance_withdraw.status')[$balanceWithdraw->status] }}</td>
+                                    <td>{{ config('user_asset.withdraw_status')[$balanceWithdraw->status] }}</td>
                                     <td>{{ $balanceWithdraw->remark ?? '--' }}</td>
                                     <td>{{ $balanceWithdraw->created_at }}</td>
                                     <td>{{ $balanceWithdraw->updated_at }}</td>
@@ -95,14 +95,7 @@
                             @endforelse
                             </tbody>
                         </table>
-                        {{ $balanceWithdraws->appends(compact(
-                            'userId',
-                            'status',
-                            'tradeNo',
-                            'startDate',
-                            'endDate',
-                            'remark'
-                           ))->links() }}
+                        {{ $balanceWithdraws->appends(request()->all())->links() }}
                     </div>
                 </div>
             </div>
@@ -153,6 +146,7 @@
                 });
             });
         });
+
         $('#export').click(function () {
             var has="{{ $balanceWithdraws }}";
             if (has) {

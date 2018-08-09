@@ -6,15 +6,15 @@ use App\Models\UserAssetFlow;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class UserAssetFlowController extends Controller
+class AssetFlowController extends Controller
 {
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index()
     {
-        return view('back.finance.user-asset-flow.index', [
-            'flow' => UserAssetFlow::condition(request()->all())->paginate()
+        return view('back.finance.asset-flow.index', [
+            'flows' => UserAssetFlow::condition(request()->all())->paginate()
         ]);
     }
 

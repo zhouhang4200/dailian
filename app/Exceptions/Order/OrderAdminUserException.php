@@ -2,8 +2,9 @@
 
 namespace App\Exceptions\Order;
 
+use Exception;
 
-class OrderAdminUserException extends \Exception
+class OrderAdminUserException extends Exception
 {
     //
 }

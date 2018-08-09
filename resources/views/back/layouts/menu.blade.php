@@ -14,7 +14,7 @@ $financeRoute = [
     'admin.balance-withdraw',
     'admin.platform-finance-report-day',
     'admin.user-finance-report-day',
-    'admin.user-asset-flow',
+    'admin.asset-flow',
 ];
 
 $gameRoute = [
@@ -149,7 +149,7 @@ $systemRoute = [
                                 </a>
                             </li>
                             <li>
-                                <a href="{{ route('admin.user-asset-flow') }}" @if($currentRouteName == 'admin.user-asset-flow') class="active" @endif>
+                                <a href="{{ route('admin.asset-flow') }}" @if($currentRouteName == 'admin.asset-flow') class="active" @endif>
                                     用户资金明细
                                 </a>
                             </li>

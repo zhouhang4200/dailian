@@ -1,23 +1,22 @@
 <?php
 
-namespace App\Http\Controllers\Back\Finance;
+namespace App\Http\Controllers\Front\Finance;
 
 use App\Models\UserFinanceReportDay;
 use App\Http\Controllers\Controller;
 
 /**
- * 用户资金日报表
- * Class UserFinanceReportDay
- * @package App\Http\Controllers\Back
+ * Class FinanceReportDayController
+ * @package App\Http\Controllers\Front\Finance
  */
-class UserFinanceReportDayController extends Controller
+class FinanceReportDayController extends Controller
 {
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index()
     {
-        return view('back.finance.user-finance-report-day.index', [
+        return view('front.finance.finance-report-day.index', [
             'reports' => UserFinanceReportDay::condition(request()->all())->paginate()
         ]);
     }

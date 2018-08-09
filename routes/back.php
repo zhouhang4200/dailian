@@ -125,9 +125,9 @@ Route::group(['middleware' =>  ['auth.admin']], function () {
         });
 
         // 用户资金明细
-        Route::prefix('user-asset-flow')->group(function () {
-            Route::get('/', 'UserAssetFlowController@index')->name('admin.user-asset-flow');
-            Route::get('export', 'UserAssetFlowController@export')->name('admin.user-asset-flow.export'); // 导出
+        Route::prefix('asset-flow')->group(function () {
+            Route::get('/', 'AssetFlowController@index')->name('admin.asset-flow');
+            Route::get('export', 'AssetFlowController@export')->name('admin.asset-flow.export'); // 导出
         });
 
     });

@@ -24,7 +24,7 @@ class BalanceWithdraw extends Model
     ];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function userAssetFlows()
     {
@@ -33,33 +33,27 @@ class BalanceWithdraw extends Model
 
     /**
      * @param $query
-     * @param array $filters
+     * @param $conditions
      * @return mixed
      */
-    public static function scopeFilter($query, $filters = [])
+    public static function scopeCondition($query, $conditions)
     {
-        if (isset($filters['status']) && ! empty($filters['status'])) {
-            $query->where('status', $filters['status']);
+        if (isset($conditions['user_id']) && ! empty($conditions['user_id'])) {
+            $query->where('user_id', $conditions['user_id']);
+        }
+        if (isset($conditions['status']) && ! empty($conditions['status'])) {
+            $query->where('status', $conditions['status']);
+        }
+        if (isset($conditions['trade_no']) && ! empty($conditions['trade_no'])) {
+            $query->where('status', $conditions['trade_no']);
         }
 
-        if (isset($filters['tradeNo']) && ! empty($filters['tradeNo'])) {
-            $query->where('trade_no', $filters['tradeNo']);
+        if (isset($conditions['start_time'])) {
+            $query->where('created_at', '>=', $conditions['start_time']);
         }
 
-        if (isset($filters['userId']) && ! empty($filters['userId'])) {
-            $query->where('user_id', $filters['userId']);
-        }
-
-        if (isset($filters['remark']) && ! empty($filters['remark'])) {
-            $query->where('remark', $filters['remark']);
-        }
-
-        if (isset($filters['startDate'])) {
-            $query->where('created_at', '>=', $filters['startDate']);
-        }
-
-        if (isset($filters['endDate'])) {
-            $query->where('updated_at', '<=', $filters['endDate'].' 23:59:59');
+        if (isset($conditions['end_time'])) {
+            $query->$conditions('updated_at', '<=', $conditions['end_time'].' 23:59:59');
         }
         return $query;
     }

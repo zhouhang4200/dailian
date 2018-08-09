@@ -4,9 +4,8 @@ namespace App\Http\Controllers\Back\Finance;
 
 use DB;
 use Exception;
-use Maatwebsite\Excel\Facades\Excel;
-use App\Models\BalanceWithdraw;
 use App\Models\UserAssetFlow;
+use App\Models\BalanceWithdraw;
 use Illuminate\Http\Request;
 use App\Services\UserAssetService;
 use App\Http\Controllers\Controller;
@@ -14,24 +13,15 @@ use App\Http\Controllers\Controller;
 class BalanceWithdrawController extends Controller
 {
     /**
-     * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function index(Request $request)
+    public function index()
     {
-        $startDate = $request->startDate;
-        $endDate = $request->endDate;
-        $status = $request->status;
-        $tradeNo = $request->tradeNo;
-        $userId = $request->userId;
-        $remark = $request->remark;
-
-        $filters = compact('startDate', 'endDate', 'status', 'tradeNo', 'userId', 'remark');
-        $balanceWithdraws = BalanceWithdraw::filter($filters)->with(['userAssetFlows' =>  function ($query) {
+        $balanceWithdraws = BalanceWithdraw::condition(request()->all())->with(['userAssetFlows' =>  function ($query) {
             $query->latest('id')->first();
         }])->paginate(20);
 
-        return view('back.finance.balance-withdraw.index', compact('startDate', 'endDate', 'type', 'status', 'tradeNo', 'userId', 'remark', 'balanceWithdraws'));
+        return view('back.finance.balance-withdraw.index', ['balanceWithdraws' => $balanceWithdraws,]);
     }
 
     /**
@@ -88,24 +78,27 @@ class BalanceWithdrawController extends Controller
 
     /**
      * 提现导出
+     * @throws Exception;
      */
-    public function export(Request $request)
+    public function export()
     {
         try {
-            $startDate = $request->startDate;
-            $endDate = $request->endDate;
-            $status = $request->status;
-            $tradeNo = $request->tradeNo;
-            $userId = $request->userId;
-            $remark = $request->remark;
-
-            $filters = compact('startDate', 'endDate', 'status', 'tradeNo', 'userId', 'remark');
-
             $title = [
-                '提现单号', '主账号', '当前余额', '当前冻结', '姓名', '开户行', '卡号', '提现金额', '类型', '管理员备注', '创建时间', '更新时间',
+                '提现单号',
+                '主账号',
+                '当前余额',
+                '当前冻结',
+                '姓名',
+                '开户行',
+                '卡号',
+                '提现金额',
+                '类型',
+                '管理员备注',
+                '创建时间',
+                '更新时间',
             ];
 
-            $query = BalanceWithdraw::filter($filters)->with(['userAssetFlows' =>  function ($query) {
+            $query = BalanceWithdraw::condition(request()->all())->with(['userAssetFlows' =>  function ($query) {
                 $query->latest('id')->first();
             }]);
 
@@ -121,7 +114,7 @@ class BalanceWithdrawController extends Controller
                             $exportData->bank_name,
                             $exportData->bank_card,
                             $exportData->amount+0,
-                            config('balance_withdraw.status')[$exportData->status],
+                            config('user_asset.withdraw_status')[$exportData->status],
                             $exportData->remark ?? '--',
                             $exportData->created_at,
                             $exportData->updated_at,

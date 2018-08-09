@@ -41,6 +41,10 @@ class UserAssetFlow extends Model
     public static function scopeCondition($query, $condition)
     {
 
+        if (isset($condition['user_id']) && $condition['user_id']) {
+            $query->where('user_id', $condition['user_id']);
+        }
+
         if (isset($condition['type']) && $condition['type']) {
             $query->where('type', $condition['type']);
         }

@@ -201,6 +201,10 @@ class OrderService
             throw new OrderPasswordException('支付密码错误');
         }
 
+        if (self::$user->parent_id == self::$order->parent_user_id) {
+            throw new OrderUserException('您不可以接自己发的单');
+        }
+
         if (self::$order->status != 1) {
             throw new OrderStatusException('接单失败,订单当前状态为: ' . self::$order->getStatusDescribe());
         }

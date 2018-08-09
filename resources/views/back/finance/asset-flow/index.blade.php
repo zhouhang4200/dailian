@@ -37,13 +37,13 @@
                                 <div class="col-md-2">
                                     <div class="input-group">
                                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                        <input type="text" class="form-control" id="start-time" name="start_time" value="{{ request('start_time') }}">
+                                        <input type="text" class="form-control" id="start-time" name="start_time" autocomplete="off"  value="{{ request('start_time') }}">
                                     </div>
                                 </div>
                                 <div class="col-md-2">
                                     <div class="input-group">
                                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                        <input type="text" class="form-control" id="end-time" name="end_time" value="{{ request('end_time') }}">
+                                        <input type="text" class="form-control" id="end-time" name="end_time" autocomplete="off" value="{{ request('end_time') }}">
                                     </div>
                                 </div>
 
@@ -68,7 +68,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @forelse ($flow as $item)
+                            @forelse ($flows as $item)
                                 <tr>
                                     <td>{{ $item->user_id }}</td>
                                     <td>{{ config('user_asset.type')[$item->type] }}</td>
@@ -83,7 +83,7 @@
                             @endforelse
                             </tbody>
                         </table>
-                        {{ $flow->appends(request()->all())->links() }}
+                        {{ $flows->appends(request()->all())->links() }}
                     </div>
                 </div>
             </div>
@@ -94,7 +94,7 @@
 @section('js')
     <script>
         $('#export').click(function () {
-            window.location.href = "{{ route('admin.user-asset-flow.export') }}?" + $('#search-flow').serialize();
+            window.location.href = "{{ route('admin.asset-flow.export') }}?" + $('#search-flow').serialize();
         });
 
         layui.use(['layer'], function () {

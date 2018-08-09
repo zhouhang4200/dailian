@@ -10,7 +10,7 @@ use App\Services\OrderService;
 use App\Models\GameLevelingOrder;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Services\QsTransmitterConrtoller;
+use App\Services\TmApiService;
 use App\Exceptions\OrderServiceException;
 
 /**
@@ -30,8 +30,9 @@ class OrderOperationController extends Controller
     {
         DB::beginTransaction();
         try {
-            OrderService::init(request()->user()->id, request('trade_no'))
+            $order = OrderService::init(request()->user()->id, request('trade_no'))
                 ->take(clientRSADecrypt(request('pay_password')), clientRSADecrypt(request('take_password')));
+            TmApiService::take($order);
         } catch (UserAssetBalanceException $exception) {
             return response()->json(['status' => 2, 'message' => $exception->getMessage()]);
         } catch (OrderTakeOrderPasswordException $exception) {

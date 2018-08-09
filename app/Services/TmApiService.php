@@ -13,7 +13,6 @@ use App\Models\GameLevelingType;
 use App\Services\OrderService;
 use App\Models\GameLevelingOrder;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Exceptions\OrderServiceException;
 
 /**
@@ -21,7 +20,7 @@ use App\Exceptions\OrderServiceException;
  * Class QsTransmitterConrtoller
  * @package App\Services
  */
-class QsTransmitterConrtoller extends Controller
+class TmApiService
 {
     // 发单平台的app_id
     private static $appId = 'T8WsMDT4mJ5DxKJkf4fWVP5XYU00McJxxyAeoX4aPIy6jrWN70bmQltXfwof';

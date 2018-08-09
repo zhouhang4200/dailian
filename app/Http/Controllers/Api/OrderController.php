@@ -14,7 +14,13 @@ use App\Services\OrderService;
 use App\Models\GameLevelingOrder;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Exceptions\OrderServiceException;
+use App\Exceptions\Order\OrderTimeException;
+use App\Exceptions\Order\OrderUserException;
+use App\Exceptions\Order\OrderMoneyException;
+use App\Exceptions\Order\OrderStatusException;
+use App\Exceptions\Order\OrderPasswordException;
+use App\Exceptions\Order\OrderAdminUserException;
+use App\Exceptions\Order\OrderUnauthorizedException;
 
 class OrderController extends Controller
 {
@@ -45,7 +51,25 @@ class OrderController extends Controller
 
             $orderService = OrderService::init($userId, $orderNo);
             $orderService->onSale();
-        } catch (OrderServiceException $e) {
+        } catch (OrderTimeException $e) {
+            myLog('operate-onSale-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderUserException $e) {
+            myLog('operate-onSale-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderMoneyException $e) {
+            myLog('operate-onSale-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderStatusException $e) {
+            myLog('operate-onSale-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderPasswordException $e) {
+            myLog('operate-onSale-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderAdminUserException $e) {
+            myLog('operate-onSale-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderUnauthorizedException $e) {
             myLog('operate-onSale-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
@@ -68,7 +92,25 @@ class OrderController extends Controller
 
             $orderService = OrderService::init($userId, $orderNo);
             $orderService->offSale();
-        } catch (OrderServiceException $e) {
+        } catch (OrderTimeException $e) {
+            myLog('operate-offSale-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderUserException $e) {
+            myLog('operate-offSale-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderMoneyException $e) {
+            myLog('operate-offSale-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderStatusException $e) {
+            myLog('operate-offSale-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderPasswordException $e) {
+            myLog('operate-offSale-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderAdminUserException $e) {
+            myLog('operate-offSale-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderUnauthorizedException $e) {
             myLog('operate-offSale-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
@@ -96,7 +138,25 @@ class OrderController extends Controller
                 $orderService = OrderService::init($userId, $orderNo);
                 $orderService->delete();
             }
-        } catch (OrderServiceException $e) {
+        } catch (OrderTimeException $e) {
+            myLog('operate-delete-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderUserException $e) {
+            myLog('operate-delete-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderMoneyException $e) {
+            myLog('operate-delete-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderStatusException $e) {
+            myLog('operate-delete-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderPasswordException $e) {
+            myLog('operate-delete-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderAdminUserException $e) {
+            myLog('operate-delete-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderUnauthorizedException $e) {
             myLog('operate-delete-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
@@ -119,7 +179,25 @@ class OrderController extends Controller
 
             $orderService = OrderService::init($userId, $orderNo);
             $orderService->complete();
-        } catch (OrderServiceException $e) {
+        } catch (OrderTimeException $e) {
+            myLog('operate-complete-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderUserException $e) {
+            myLog('operate-complete-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderMoneyException $e) {
+            myLog('operate-complete-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderStatusException $e) {
+            myLog('operate-complete-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderPasswordException $e) {
+            myLog('operate-complete-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderAdminUserException $e) {
+            myLog('operate-complete-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderUnauthorizedException $e) {
             myLog('operate-complete-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
@@ -142,7 +220,25 @@ class OrderController extends Controller
 
             $orderService = OrderService::init($userId, $orderNo);
             $orderService->lock();
-        } catch (OrderServiceException $e) {
+        } catch (OrderTimeException $e) {
+            myLog('operate-lock-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderUserException $e) {
+            myLog('operate-lock-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderMoneyException $e) {
+            myLog('operate-lock-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderStatusException $e) {
+            myLog('operate-lock-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderPasswordException $e) {
+            myLog('operate-lock-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderAdminUserException $e) {
+            myLog('operate-lock-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderUnauthorizedException $e) {
             myLog('operate-lock-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
@@ -165,7 +261,25 @@ class OrderController extends Controller
 
             $orderService = OrderService::init($userId, $orderNo);
             $orderService->cancelLock();
-        } catch (OrderServiceException $e) {
+        } catch (OrderTimeException $e) {
+            myLog('operate-cancelLock-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderUserException $e) {
+            myLog('operate-cancelLock-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderMoneyException $e) {
+            myLog('operate-cancelLock-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderStatusException $e) {
+            myLog('operate-cancelLock-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderPasswordException $e) {
+            myLog('operate-cancelLock-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderAdminUserException $e) {
+            myLog('operate-cancelLock-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderUnauthorizedException $e) {
             myLog('operate-cancelLock-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
@@ -194,7 +308,25 @@ class OrderController extends Controller
 
             $orderService = OrderService::init($userId, $orderNo);
             $orderService->applyConsult($amount, $securityDeposit, $efficiencyDeposit, $reason);
-        } catch (OrderServiceException $e) {
+        } catch (OrderTimeException $e) {
+            myLog('operate-applyConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderUserException $e) {
+            myLog('operate-applyConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderMoneyException $e) {
+            myLog('operate-applyConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderStatusException $e) {
+            myLog('operate-applyConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderPasswordException $e) {
+            myLog('operate-applyConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderAdminUserException $e) {
+            myLog('operate-applyConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderUnauthorizedException $e) {
             myLog('operate-applyConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
@@ -217,7 +349,25 @@ class OrderController extends Controller
             myLog('no', ['no' => $orderNo]);
             $orderService = OrderService::init($userId, $orderNo);
             $orderService->cancelConsult();
-        } catch (OrderServiceException $e) {
+        } catch (OrderTimeException $e) {
+            myLog('operate-cancelConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderUserException $e) {
+            myLog('operate-cancelConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderMoneyException $e) {
+            myLog('operate-cancelConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderStatusException $e) {
+            myLog('operate-cancelConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderPasswordException $e) {
+            myLog('operate-cancelConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderAdminUserException $e) {
+            myLog('operate-cancelConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderUnauthorizedException $e) {
             myLog('operate-cancelConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
@@ -240,8 +390,26 @@ class OrderController extends Controller
 
             $orderService = OrderService::init($userId, $orderNo);
             $orderService->agreeConsult();
-        } catch (OrderServiceException $e) {
-            myLog('operate-agreeConsult', ['no' => $orderNo, 'message' => $e->getMessage()]);
+        } catch (OrderTimeException $e) {
+            myLog('operate-agreeConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderUserException $e) {
+            myLog('operate-agreeConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderMoneyException $e) {
+            myLog('operate-agreeConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderStatusException $e) {
+            myLog('operate-agreeConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderPasswordException $e) {
+            myLog('operate-agreeConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderAdminUserException $e) {
+            myLog('operate-agreeConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderUnauthorizedException $e) {
+            myLog('operate-agreeConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
             myLog('operate-local-agreeConsult', ['no' => $orderNo, 'message' => $e->getMessage()]);
@@ -263,11 +431,29 @@ class OrderController extends Controller
 
             $orderService = OrderService::init($userId, $orderNo);
             $orderService->refuseConsult();
-        } catch (OrderServiceException $e) {
-            myLog('operate-agreeConsult', ['no' => $orderNo, 'message' => $e->getMessage()]);
+        } catch (OrderTimeException $e) {
+            myLog('operate-refuseConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderUserException $e) {
+            myLog('operate-refuseConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderMoneyException $e) {
+            myLog('operate-refuseConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderStatusException $e) {
+            myLog('operate-refuseConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderPasswordException $e) {
+            myLog('operate-refuseConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderAdminUserException $e) {
+            myLog('operate-refuseConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderUnauthorizedException $e) {
+            myLog('operate-refuseConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
-            myLog('operate-local-agreeConsult', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            myLog('operate-local-refuseConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail('接口异常');
         }
         return response()->apiSuccess();
@@ -313,7 +499,25 @@ class OrderController extends Controller
 //            myLog('image', ['image' => $image, 'reason' => $reason]);
             $orderService = OrderService::init($userId, $orderNo);
             $orderService->applyComplain($reason, $image);
-        } catch (OrderServiceException $e) {
+        } catch (OrderTimeException $e) {
+            myLog('operate-applyComplain-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderUserException $e) {
+            myLog('operate-applyComplain-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderMoneyException $e) {
+            myLog('operate-applyComplain-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderStatusException $e) {
+            myLog('operate-applyComplain-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderPasswordException $e) {
+            myLog('operate-applyComplain-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderAdminUserException $e) {
+            myLog('operate-applyComplain-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderUnauthorizedException $e) {
             myLog('operate-applyComplain-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
@@ -368,7 +572,25 @@ class OrderController extends Controller
 
             $orderService = OrderService::init($userId, $orderNo);
             $orderService->cancelComplain();
-        } catch (OrderServiceException $e) {
+        } catch (OrderTimeException $e) {
+            myLog('operate-cancelComplain-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderUserException $e) {
+            myLog('operate-cancelComplain-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderMoneyException $e) {
+            myLog('operate-cancelComplain-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderStatusException $e) {
+            myLog('operate-cancelComplain-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderPasswordException $e) {
+            myLog('operate-cancelComplain-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderAdminUserException $e) {
+            myLog('operate-cancelComplain-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderUnauthorizedException $e) {
             myLog('operate-cancelComplain-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
@@ -445,9 +667,26 @@ class OrderController extends Controller
             } else {
                 throw new Exception('丸子下单失败');
             }
-        } catch (OrderServiceException $e) {
-            DB::rollback();
-            myLog('place-order-api-error', ['data' => $data, 'message' => $e->getMessage()]);
+        } catch (OrderTimeException $e) {
+            myLog('place-order-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderUserException $e) {
+            myLog('place-order-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderMoneyException $e) {
+            myLog('place-order-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderStatusException $e) {
+            myLog('place-order-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderPasswordException $e) {
+            myLog('place-order-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderAdminUserException $e) {
+            myLog('place-order-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderUnauthorizedException $e) {
+            myLog('place-order-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
             DB::rollback();

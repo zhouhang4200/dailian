@@ -39,6 +39,21 @@ class OrderController extends Controller
     private static $extensions = ['png', 'jpg', 'jpeg', 'gif'];
 
     /**
+     * 合成发单器的sign
+     * @param $options
+     * @return string
+     */
+    public function generateSign($options)
+    {
+        ksort($options);
+        $str = '';
+        foreach ($options as $key => $value) {
+            $str .= $key . '=' . $value . '&';
+        }
+        return md5(rtrim($str,  '&') . static::$appSecret);
+    }
+
+    /**
      *  上架
      * @param Request $request
      * @return mixed
@@ -750,17 +765,205 @@ class OrderController extends Controller
     }
 
     /**
-     * 合成发单器的sign
-     * @param $options
-     * @return string
+     *  加时
+     * @param Request $request
+     * @return mixed
+     * @throws Exception
      */
-    public function generateSign($options)
+    public static function addTime(Request $request)
     {
-        ksort($options);
-        $str = '';
-        foreach ($options as $key => $value) {
-            $str .= $key . '=' . $value . '&';
+        try {
+            $orderNo = $request->order_no;
+            $userId = $request->user->id;
+            $day = $request->day;
+            $hour = $request->hour;
+
+            $orderService = OrderService::init($userId, $orderNo);
+            $order = $orderService->addTime($day, $hour);
+        } catch (OrderTimeException $e) {
+            myLog('operate-addTime-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderUserException $e) {
+            myLog('operate-addTime-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderMoneyException $e) {
+            myLog('operate-addTime-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderStatusException $e) {
+            myLog('operate-addTime-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderPasswordException $e) {
+            myLog('operate-addTime-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderAdminUserException $e) {
+            myLog('operate-addTime-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderUnauthorizedException $e) {
+            myLog('operate-addTime-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (Exception $e) {
+            myLog('operate-local-addTime-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail('接单平台接口异常');
         }
-        return md5(rtrim($str,  '&') . static::$appSecret);
+        return response()->apiSuccess();
+    }
+
+    /**
+     *  加价
+     * @param Request $request
+     * @return mixed
+     * @throws Exception
+     */
+    public static function addMoney(Request $request)
+    {
+        try {
+            $orderNo = $request->order_no;
+            $userId = $request->user->id;
+            $amount = $request->amount;
+
+            $orderService = OrderService::init($userId, $orderNo);
+            $order = $orderService->addMoney($amount);
+        } catch (OrderTimeException $e) {
+            myLog('operate-addMoney-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderUserException $e) {
+            myLog('operate-addMoney-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderMoneyException $e) {
+            myLog('operate-addMoney-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderStatusException $e) {
+            myLog('operate-addMoney-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderPasswordException $e) {
+            myLog('operate-addMoney-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderAdminUserException $e) {
+            myLog('operate-addMoney-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderUnauthorizedException $e) {
+            myLog('operate-addMoney-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (Exception $e) {
+            myLog('operate-local-addMoney-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail('接单平台接口异常');
+        }
+        return response()->apiSuccess();
+    }
+
+    /**
+     *  修改账号密码
+     * @param Request $request
+     * @return mixed
+     * @throws Exception
+     */
+    public static function updateAccountPassword(Request $request)
+    {
+        try {
+            $orderNo = $request->order_no;
+            $userId = $request->user->id;
+            $account = $request->account;
+            $password = $request->password;
+
+            $orderService = OrderService::init($userId, $orderNo);
+            $order = $orderService->updateAccountPassword($account, $password);
+        } catch (OrderTimeException $e) {
+            myLog('operate-updateAccountPassword-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderUserException $e) {
+            myLog('operate-updateAccountPassword-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderMoneyException $e) {
+            myLog('operate-updateAccountPassword-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderStatusException $e) {
+            myLog('operate-updateAccountPassword-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderPasswordException $e) {
+            myLog('operate-updateAccountPassword-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderAdminUserException $e) {
+            myLog('operate-updateAccountPassword-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderUnauthorizedException $e) {
+            myLog('operate-updateAccountPassword-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (Exception $e) {
+            myLog('operate-local-updateAccountPassword-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail('接单平台接口异常');
+        }
+        return response()->apiSuccess();
+    }
+
+    /**
+     * 修改订单
+     * @param Request $request
+     * @return bool
+     */
+    public function update(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            $data = $request->data;
+            if (! isset($data) || ! $data) {
+                throw new Exception('接收信息为空');
+            }
+            $decriptData = openssl_decrypt($data, 'aes-128-cbc', static::$key, false, static::$iv);
+            $data = json_decode($decriptData, true);
+            $orderNo = $data['order_no'];
+            $orderService = OrderService::init(static::$creatorUserId, $orderNo);
+            $game = Game::where('name', $data['game_name'])->first();
+            $region = Region::where('name', $data['game_region'])->where('game_id', $game->id)->first();
+            $server = Server::where('name', $data['game_serve'])->where('region_id', $region->id)->first();
+            $gameLevelingType = GameLevelingType::where('game_id', $game->id)->first();
+
+            $order = $orderService->update(
+                $game->id,
+                $region->id,
+                $server->id,
+                $data['game_leveling_title'],
+                $data['game_account'],
+                $data['game_password'],
+                $data['game_role'],
+                $data['game_leveling_day'],
+                $data['game_leveling_hour'],
+                $gameLevelingType->id,
+                $data['game_leveling_price'],
+                $data['game_leveling_security_deposit'],
+                $data['game_leveling_efficiency_deposit'],
+                $data['game_leveling_instructions'],
+                $data['game_leveling_requirements'],
+                $data['businessman_phone'],
+                $data['businessman_qq'],
+                $data['order_password']
+            );
+        } catch (OrderTimeException $e) {
+            myLog('operate-update-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderUserException $e) {
+            myLog('operate-update-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderMoneyException $e) {
+            myLog('operate-update-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderStatusException $e) {
+            myLog('operate-update-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderPasswordException $e) {
+            myLog('operate-update-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderAdminUserException $e) {
+            myLog('operate-update-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderUnauthorizedException $e) {
+            myLog('operate-update-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (Exception $e) {
+            DB::rollback();
+            myLog('operate-update-local-error', ['data' => $data, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        }
+        DB::commit();
+        return response()->apiSuccess();
     }
 }

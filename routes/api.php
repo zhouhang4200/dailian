@@ -34,6 +34,8 @@ Route::namespace('Api')->group(function () {
         Route::post('apply-complain', 'OrderController@applyComplain'); // 申请仲裁
         Route::post('cancel-complain', 'OrderController@cancelComplain'); // 取消仲裁
         Route::post('detail', 'OrderController@detail'); // 详情
+        Route::post('add-time', 'OrderController@addTime'); // 加时
+        Route::post('add-money', 'OrderController@addMoney'); // 加价
     });
     Route::post('place-order', 'OrderController@placeOrder'); // 下单
 });

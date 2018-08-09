@@ -84,6 +84,7 @@ class OrderOperationController extends Controller
         DB::beginTransaction();
         try {
             $order = OrderService::init(request()->user()->id, request('trade_no'))->applyComplete(array_filter($images));
+            TmApiService::applyComplete($order->trade_no);
         } catch (OrderTimeException $e) {
             myLog('wanzi-operate-applyComplete-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
             return response()->ajaxFail($e->getMessage());
@@ -123,6 +124,7 @@ class OrderOperationController extends Controller
         DB::beginTransaction();
         try {
             $order = OrderService::init(request()->user()->id, request('trade_no'))->cancelComplete();
+            TmApiService::cancelComplete($order->trade_no);
         } catch (OrderTimeException $e) {
             myLog('wanzi-operate-cancelComplete-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
             return response()->ajaxFail($e->getMessage());
@@ -162,6 +164,7 @@ class OrderOperationController extends Controller
         DB::beginTransaction();
         try {
             $order = OrderService::init(request()->user()->id, request('trade_no'))->complete();
+            TmApiService::complete($order->trade_no);
         } catch (OrderTimeException $e) {
             myLog('wanzi-operate-complete-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
             return response()->ajaxFail($e->getMessage());
@@ -201,6 +204,7 @@ class OrderOperationController extends Controller
         DB::beginTransaction();
         try {
             $order = OrderService::init(request()->user()->id, request('trade_no'))->onSale();
+            TmApiService::onSale($order->trade_no);
         } catch (OrderTimeException $e) {
             myLog('wanzi-operate-onSale-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
             return response()->ajaxFail($e->getMessage());
@@ -240,6 +244,7 @@ class OrderOperationController extends Controller
         DB::beginTransaction();
         try {
             $order = OrderService::init(request()->user()->id, request('trade_no'))->offSale();
+            TmApiService::offSale($order->trade_no);
         } catch (OrderTimeException $e) {
             myLog('wanzi-operate-offSale-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
             return response()->ajaxFail($e->getMessage());
@@ -279,6 +284,7 @@ class OrderOperationController extends Controller
         DB::beginTransaction();
         try {
             $order = OrderService::init(request()->user()->id, request('trade_no'))->lock();
+            TmApiService::lock($order->trade_no);
         } catch (OrderTimeException $e) {
             myLog('wanzi-operate-lock-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
             return response()->ajaxFail($e->getMessage());
@@ -318,6 +324,7 @@ class OrderOperationController extends Controller
         DB::beginTransaction();
         try {
             $order = OrderService::init(request()->user()->id, request('trade_no'))->cancelLock();
+            TmApiService::cancelLock($order->trade_no);
         } catch (OrderTimeException $e) {
             myLog('wanzi-operate-cancelLock-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
             return response()->ajaxFail($e->getMessage());
@@ -357,6 +364,7 @@ class OrderOperationController extends Controller
         DB::beginTransaction();
         try {
             $order = OrderService::init(request()->user()->id, request('trade_no'))->anomaly();
+            TmApiService::anomaly($order->trade_no);
         } catch (OrderTimeException $e) {
             myLog('wanzi-operate-anomaly-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
             return response()->ajaxFail($e->getMessage());
@@ -394,6 +402,7 @@ class OrderOperationController extends Controller
     {
         try {
             $order = OrderService::init(request()->user()->id, request('trade_no'))->cancelAnomaly();
+            TmApiService::cancelAnomaly($order->trade_no);
         } catch (OrderTimeException $e) {
             myLog('wanzi-operate-cancelAnomaly-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
             return response()->ajaxFail($e->getMessage());
@@ -443,6 +452,7 @@ class OrderOperationController extends Controller
         try {
             $order = OrderService::init(request()->user()->id, $tradeNO)
                 ->applyConsult($amount, $depositResult['security_deposit'], $depositResult['efficiency_deposit'], $reason);
+            TmApiService::applyConsult($order->trade_no, $amount, $deposit, $reason);
         } catch (OrderTimeException $e) {
             myLog('wanzi-operate-applyConsult-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
             return response()->ajaxFail($e->getMessage());
@@ -482,6 +492,7 @@ class OrderOperationController extends Controller
         DB::beginTransaction();
         try {
             $order = OrderService::init(request()->user()->id, request('trade_no'))->cancelConsult();
+            TmApiService::cancelConsult($order->trade_no);
         } catch (OrderTimeException $e) {
             myLog('wanzi-operate-cancelConsult-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
             return response()->ajaxFail($e->getMessage());
@@ -526,6 +537,7 @@ class OrderOperationController extends Controller
             $images[] = base64ToImg(request('image_3'),  'complain');
 
             $order = OrderService::init(request()->user()->id, request('trade_no'))->applyComplain(request('reason'), array_filter($images));
+            TmApiService::applyComplain($order->trade_no, request('reason'));
         } catch (OrderTimeException $e) {
             myLog('wanzi-operate-applyComplain-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
             return response()->ajaxFail($e->getMessage());
@@ -566,6 +578,7 @@ class OrderOperationController extends Controller
         DB::beginTransaction();
         try {
             $order = OrderService::init(request()->user()->id, request('trade_no'))->cancelComplain();
+            TmApiService::applyComplain($order->trade_no);
         } catch (OrderTimeException $e) {
             myLog('wanzi-operate-cancelComplain-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
             return response()->ajaxFail($e->getMessage());

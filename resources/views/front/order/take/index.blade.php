@@ -262,7 +262,7 @@
         @{{ d.receiving_time }}
     </script>
     <script type="text/html" id="dayHours">
-        @{{ d.day }} 天 @{{ d.hours }} 小时
+        @{{ d.day }} 天 @{{ d.hour }} 小时
     </script>
     <script type="text/html" id="titleTemplate">
         <span class="tips" lay-tips="@{{ d.title  }}">@{{ d.title }}</span>

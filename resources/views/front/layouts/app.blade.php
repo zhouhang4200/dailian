@@ -318,7 +318,10 @@ $finance = ['frontend.finance.asset', 'frontend.finance.amount-flow', 'frontend.
     }).use('index');
 
     layui.use(['form', 'layedit', 'laydate', 'element'], function(){
-        var form = layui.form, layer = layui.layer, element = layui.element;
+        var form = layui.form, layer = layui.layer, element = layui.element, laydate = layui.laydate;
+
+        laydate.render({elem: '#start-time'});
+        laydate.render({elem: '#end-time'});
     });
 
     $('#logout').click(function () {

@@ -16,7 +16,7 @@ class CreateAdminUsersTable extends Migration
     {
         Schema::create('admin_users', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('username')->unique()->comment('账号');
+            $table->string('name')->unique()->comment('账号');
             $table->string('password', 120)->comment('密码');
             $table->unsignedTinyInteger('status')->default(1)->comment('状态 1 启用 2 禁用');
             $table->timestamps();

@@ -35,10 +35,10 @@
                     <div class="layui-inline">
                         <label class="layui-form-mid">时间：</label>
                         <div class="layui-input-inline" style="">
-                            <input type="text" class="layui-input" id="time-start"  autocomplete="off" name="start_time" value="{{ request('start_time') }}" placeholder="开始时间">
+                            <input type="text" class="layui-input" id="start-time"  autocomplete="off" name="start_time" value="{{ request('start_time') }}" placeholder="开始时间">
                         </div>
                         <div class="layui-input-inline" style="">
-                            <input type="text" class="layui-input" id="time-end" autocomplete="off" name="end_time" value="{{ request('end_time') }}" placeholder="结束时间">
+                            <input type="text" class="layui-input" id="end-time" autocomplete="off" name="end_time" value="{{ request('end_time') }}" placeholder="结束时间">
                         </div>
                         <button class="qs-btn layui-btn-normal" type="submit">查询</button>
                         <button class="qs-btn layui-btn-normal" type="button" id="export">导出</button>
@@ -83,13 +83,6 @@
     </div>
 @section('js')
     <script>
-        layui.use(['laydate', 'form'], function () {
-            var laydate = layui.laydate;
-
-            laydate.render({elem: '#time-start'});
-            laydate.render({elem: '#time-end'});
-        });
-
         $('#export').click(function () {
             window.location.href = "{{ route('finance.balance-withdraw.export') }}?" + $('#search').serialize();
         });

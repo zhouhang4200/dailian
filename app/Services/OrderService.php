@@ -1238,18 +1238,16 @@ class OrderService
      */
     public function applyCompleteImage()
     {
-        try {
-            // 检测当前操作用户是否是发单人或接单人
-            if (! in_array(self::$user->parent_id, [self::$order->parent_user_id, self::$order->take_parent_user_id])) {
-                throw new OrderUnauthorizedException('您无权操作');
-            }
-            if (is_null(self::$order->applyComplete)) {
-                throw new OrderImageException('暂时没有验收图片');
-            }
-            return self::$order->applyComplete->image;
-        } catch (Exception $e) {
-            throw new Exception($e->getMessage());
+
+        // 检测当前操作用户是否是发单人或接单人
+        if (! in_array(self::$user->parent_id, [self::$order->parent_user_id, self::$order->take_parent_user_id])) {
+            throw new OrderUnauthorizedException('您无权操作');
         }
+        if (is_null(self::$order->applyComplete)) {
+            throw new OrderImageException('暂时没有验收图片');
+        }
+        return self::$order->applyComplete->image;
+
     }
 
     /**
@@ -1291,6 +1289,7 @@ class OrderService
                     'initiator' => 1,
                     'game_leveling_order_trade_no' => self::$order->trade_no,
                     'from_user_id' => self::$order->user_id,
+                    'from_parent_user_id' => self::$order->parenet_user_id,
                     'from_username' => self::$order->username,
                     'to_user_id' => self::$order->take_user_id,
                     'to_username' => self::$order->take_username,
@@ -1302,6 +1301,7 @@ class OrderService
                     'initiator' => 2,
                     'game_leveling_order_trade_no' => self::$order->trade_no,
                     'from_user_id' => self::$order->take_user_id,
+                    'from_parent_user_id' => self::$order->take_parent_user_id,
                     'from_username' => self::$order->take_username,
                     'to_user_id' => self::$order->user_id,
                     'to_username' => self::$order->username,
@@ -1361,6 +1361,7 @@ class OrderService
                     'game_leveling_order_trade_no' => self::$order->trade_no,
                     'from_user_id' => self::$order->user_id,
                     'from_username' => self::$order->username,
+                    'from_parent_user_id' => self::$order->parent_user_id,
                     'to_user_id' => self::$order->take_user_id,
                     'to_username' => self::$order->take_username,
                     'content' => $content,
@@ -1372,6 +1373,7 @@ class OrderService
                     'game_leveling_order_trade_no' => self::$order->trade_no,
                     'from_user_id' => self::$order->take_user_id,
                     'from_username' => self::$order->take_username,
+                    'from_parent_user_id' => self::$order->take_parent_user_id,
                     'to_user_id' => self::$order->user_id,
                     'to_username' => self::$order->username,
                     'content' => $content,

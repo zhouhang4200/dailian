@@ -135,11 +135,11 @@
                             <div class="layui-form-item last-item">
                                 <label class="layui-form-label">发布时间</label>
                                 <div class="layui-input-block">
-                                    <input type="text"  class="layui-input qsdate" id="test-laydate-start" name="start_time" placeholder="开始日期">
+                                    <input type="text"  class="layui-input qsdate" id="start-time" autocomplete="off" name="start_time" placeholder="开始日期">
                                     <div class="layui-form-mid">
                                         -
                                     </div>
-                                    <input type="text" class="layui-input qsdate" id="test-laydate-end" name="end_time" placeholder="结束日期">
+                                    <input type="text" class="layui-input qsdate" id="end-time"  autocomplete="off" name="end_time" placeholder="结束日期">
                                 </div>
                             </div>
                         </div>
@@ -251,7 +251,7 @@
     </script>
     <script type="text/html" id="gameTemplate">
         @{{ d.game_name }} <br>
-        @{{ d.region_name }} / @{{ d.serve_name }}
+        @{{ d.region_name }} / @{{ d.server_name }}
     </script>
     <script type="text/html" id="accountPasswordTemplate">
         @{{ d.game_account }} <br/>
@@ -262,7 +262,7 @@
         @{{ d.receiving_time }}
     </script>
     <script type="text/html" id="dayHours">
-        @{{ d.day }} 天 @{{ d.hours }} 小时
+        @{{ d.day }} 天 @{{ d.hour }} 小时
     </script>
     <script type="text/html" id="titleTemplate">
         <span class="tips" lay-tips="@{{ d.title  }}">@{{ d.title }}</span>
@@ -271,7 +271,7 @@
         <style>
             .layui-table-view .layui-table[lay-size=sm] td .laytable-cell-@{{ d  }}-no,
             .layui-table-view .layui-table[lay-size=sm] td .laytable-cell-@{{ d  }}-status_text,
-            .layui-table-view .layui-table[lay-size=sm] td .laytable-cell-@{{ d  }}-game_name,
+            .layui-table-view .layui-table[lay-size=sm] td .laytable-cell-@{{ d  }}-game_info,
             .layui-table-view .layui-table[lay-size=sm] td .laytable-cell-@{{ d  }}-account_password,
             .layui-table-view .layui-table[lay-size=sm] td .laytable-cell-@{{ d  }}-receiving_time,
             .layui-table-view .layui-table[lay-size=sm] td .laytable-cell-@{{ d  }}-hatchet_man_qq,

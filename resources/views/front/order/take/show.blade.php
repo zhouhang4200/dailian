@@ -540,6 +540,7 @@
                             layer.msg(data.message, {icon: 5});
                             return false;
                         }
+                        $('textarea[name=content]').val('');
                     }, 'json');
                 } else {
                     layer.msg('请输入要发送的内容', {icon: 5});
@@ -572,7 +573,7 @@
                 indicator: 'none'
             });
             $('#carousel-btn').click(function () {
-                $.get("{{ route('order.apply-complete-image', ['trade_no' => $order->trade_no]) }}", function (result) {
+                $.get("{{ route('order.operation.apply-complete-image', ['trade_no' => $order->trade_no]) }}", function (result) {
                     if (result.status === 1) {
                         $('#carousel').html(result.content);
                         layer.open({

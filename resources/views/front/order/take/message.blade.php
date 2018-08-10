@@ -1,9 +1,9 @@
 <ul>
     @foreach($messages as $item)
-        @if($item->from_user_id == request()->user()->parent_id)
+        @if($item->from_parent_user_id == request()->user()->parent_id)
             <li class="layim-chat-mine">
                 <div class="layim-chat-user">
-                    <img src="/front/images/service_avatar.jpg">
+                    <img src="/front/images/customer_avatar.jpg">
                     <cite>
                         <i>{{ $item->created_at }}</i>您
                     </cite>

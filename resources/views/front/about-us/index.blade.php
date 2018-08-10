@@ -11,7 +11,7 @@
         <div class="bg">
             <img src="/front/images/about_us.jpg" alt="">
         </div>
-        <div class="container f-cb">
+        <div class="container f-cb" style="height: 650px">
             <div class="content">
                 <h1>公司介绍</h1>
                 <p>Company introduction</p>

@@ -48,6 +48,7 @@ class GameLevelingOrder extends Model
         'user_phone',
         'day',
         'hour',
+        'complete_at',
     ];
 
     /**

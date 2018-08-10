@@ -48,7 +48,6 @@ Route::group(['middleware' => 'auth'], function (){
     // 订单
     Route::prefix('order')->group(function (){
 
-        Route::get('apply-complete-image/{trade_no}', 'OrderController@applyCompleteImage')->name('order.apply-complete-image'); // 申请验收图片
 
         // 发单方
         Route::prefix('send')->group(function (){
@@ -87,6 +86,8 @@ Route::group(['middleware' => 'auth'], function (){
             Route::post('reject-consult', 'OrderOperationController@rejectConsult')->name('order.operation.reject-consult'); // 不同意撤销
             Route::post('apply-complain', 'OrderOperationController@applyComplain')->name('order.operation.apply-complain'); // 申请仲裁
             Route::post('cancel-complain', 'OrderOperationController@cancelComplain')->name('order.operation.cancel-complain'); // 取消仲裁
+            Route::get('apply-complete-image/{trade_no}', 'OrderOperationController@applyCompleteImage')->name('order.operation.apply-complete-image'); // 申请验收图片
+
         });
     });
 

@@ -572,7 +572,7 @@
                 indicator: 'none'
             });
             $('#carousel-btn').click(function () {
-                $.get("{{ route('order.apply-complete-image', ['trade_no' => $order->trade_no]) }}", function (result) {
+                $.get("{{ route('order.operation.apply-complete-image', ['trade_no' => $order->trade_no]) }}", function (result) {
                     if (result.status === 1) {
                         $('#carousel').html(result.content);
                         layer.open({

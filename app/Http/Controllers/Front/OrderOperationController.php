@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Front;
 
+use App\Exceptions\Order\OrderImageException;
 use Exception;
 use App\Exceptions\Order\OrderTimeException;
 use App\Exceptions\Order\OrderUserException;
@@ -692,5 +693,24 @@ class OrderOperationController extends Controller
         DB::commit();
 
         return response()->ajaxSuccess();
+    }
+
+    /**
+     * 查看验收图片
+     * @param $tradeNO
+     * @return mixed
+     * @throws Exception
+     */
+    public function applyCompleteImage($tradeNO)
+    {
+        try {
+            $images = OrderService::init(request()->user()->id, $tradeNO)->applyCompleteImage();
+        } catch (OrderImageException $imageException) {
+            return response()->ajaxFail('暂时没有图片');
+        }
+
+        return response()->ajaxSuccess('获取成功', view()->make('front.order.apply-complete-image', [
+            'image' => $images,
+        ])->render());
     }
 }

@@ -1238,18 +1238,16 @@ class OrderService
      */
     public function applyCompleteImage()
     {
-        try {
-            // 检测当前操作用户是否是发单人或接单人
-            if (! in_array(self::$user->parent_id, [self::$order->parent_user_id, self::$order->take_parent_user_id])) {
-                throw new OrderUnauthorizedException('您无权操作');
-            }
-            if (is_null(self::$order->applyComplete)) {
-                throw new OrderImageException('暂时没有验收图片');
-            }
-            return self::$order->applyComplete->image;
-        } catch (Exception $e) {
-            throw new Exception($e->getMessage());
+
+        // 检测当前操作用户是否是发单人或接单人
+        if (! in_array(self::$user->parent_id, [self::$order->parent_user_id, self::$order->take_parent_user_id])) {
+            throw new OrderUnauthorizedException('您无权操作');
         }
+        if (is_null(self::$order->applyComplete)) {
+            throw new OrderImageException('暂时没有验收图片');
+        }
+        return self::$order->applyComplete->image;
+
     }
 
     /**

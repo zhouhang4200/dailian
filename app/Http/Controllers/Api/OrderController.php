@@ -1036,7 +1036,7 @@ class OrderController extends Controller
             $reason = $request->reason;
 
             $orderService = OrderService::init($userId, $orderNo);
-            $order = $orderService->complainMessage($image, $reason);
+            $order = $orderService->sendComplainMessage($image, $reason);
         } catch (OrderTimeException $e) {
             myLog('operate-complainMessage-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail($e->getMessage());

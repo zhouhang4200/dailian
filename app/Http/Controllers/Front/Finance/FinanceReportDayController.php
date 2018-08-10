@@ -39,7 +39,8 @@ class FinanceReportDayController extends Controller
             '理论结余',
             '实际结余',
             '差异',
-        ], '用户资金日报表', $query, function ($query, $out){
+        ],
+            '用户资金日报表', $query, function ($query, $out){
             $query->chunk(100, function ($items) use ($out) {
                 foreach ($items as $item) {
                     $data = [

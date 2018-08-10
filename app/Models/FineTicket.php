@@ -48,5 +48,4 @@ class FineTicket extends Model
     {
         return $this->hasMany(UserAsset::class, 'trade_no', 'trade_no');
     }
-
 }

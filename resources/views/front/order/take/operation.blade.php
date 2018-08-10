@@ -48,7 +48,7 @@
             image_2:pic2,
             image_3:pic3
         }, function (result) {
-            if (result.status) {
+            if (result.status == 1) {
                 @if($type == 'list')
                     layer.msg(result.message);
                     reloadOrderList();

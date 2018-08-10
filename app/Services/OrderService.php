@@ -373,6 +373,7 @@ class OrderService
             }
             // 修改订单状态
             self::$order->status = 10;
+            self::$order->complete_at = date('Y-m-d H:i:s');
             self::$order->save();
             // 写入订单日志
             GameLevelingOrderLog::store('完成验收', self::$order->trade_no, self::$user->id, self::$user->name, self::$user->parent_id, self::$user->name . ': 进行操作 [完成验收]');
@@ -784,6 +785,7 @@ class OrderService
 
             // 修改订单状态
             self::$order->status = 8;
+            self::$order->complete_at = date('Y-m-d H:i:s');
             self::$order->save();
             // 写入订单日志
             GameLevelingOrderLog::store('同意撤销', self::$order->trade_no, self::$user->id, self::$user->name, self::$user->parent_id, self::$user->name . ': 进行操作 [同意撤销]');
@@ -1005,6 +1007,7 @@ class OrderService
             }
             // 修改订单状态
             self::$order->status = 9;
+            self::$order->complete_at = date('Y-m-d H:i:s');
             self::$order->save();
             // 更新仲裁数据
 

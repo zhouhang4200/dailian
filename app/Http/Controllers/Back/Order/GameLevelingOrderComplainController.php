@@ -73,6 +73,7 @@ class GameLevelingOrderComplainController extends Controller
                     'initiator' => 3,
                     'game_leveling_order_trade_no' => $order->trade_no,
                     'from_user_id' => 0,
+                    'from_parent_user_id' => 0,
                     'from_username' => 0,
                     'to_user_id' => 0,
                     'to_username' => 0,

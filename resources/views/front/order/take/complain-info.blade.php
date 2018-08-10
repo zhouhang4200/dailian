@@ -51,7 +51,7 @@
         <tbody>
             @forelse($order->message as $msg)
             <tr>
-                <td>{{ $msg->from_user_id == request()->user()->parent_id ? '您' : '对方'}}</td>
+                <td>{{ $msg->initiator == 3 ? '客服' : ($msg->from_parent_user_id == request()->user()->parent_id ? '您' : '对方') }}</td>
                 <td>{{ $msg->content }}</td>
                 <td>{{ $msg->created_at }}</td>
                 <td class="">

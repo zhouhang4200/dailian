@@ -251,7 +251,7 @@
     </script>
     <script type="text/html" id="gameTemplate">
         @{{ d.game_name }} <br>
-        @{{ d.region_name }} / @{{ d.serve_name }}
+        @{{ d.region_name }} / @{{ d.server_name }}
     </script>
     <script type="text/html" id="accountPasswordTemplate">
         @{{ d.game_account }} <br/>
@@ -271,7 +271,7 @@
         <style>
             .layui-table-view .layui-table[lay-size=sm] td .laytable-cell-@{{ d  }}-no,
             .layui-table-view .layui-table[lay-size=sm] td .laytable-cell-@{{ d  }}-status_text,
-            .layui-table-view .layui-table[lay-size=sm] td .laytable-cell-@{{ d  }}-game_name,
+            .layui-table-view .layui-table[lay-size=sm] td .laytable-cell-@{{ d  }}-game_info,
             .layui-table-view .layui-table[lay-size=sm] td .laytable-cell-@{{ d  }}-account_password,
             .layui-table-view .layui-table[lay-size=sm] td .laytable-cell-@{{ d  }}-receiving_time,
             .layui-table-view .layui-table[lay-size=sm] td .laytable-cell-@{{ d  }}-hatchet_man_qq,

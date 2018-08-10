@@ -1289,7 +1289,7 @@ class OrderService
                     'initiator' => 1,
                     'game_leveling_order_trade_no' => self::$order->trade_no,
                     'from_user_id' => self::$order->user_id,
-                    'from_parent_user_id' => self::$order->parenet_user_id,
+                    'from_parent_user_id' => self::$order->parent_user_id,
                     'from_username' => self::$order->username,
                     'to_user_id' => self::$order->take_user_id,
                     'to_username' => self::$order->take_username,

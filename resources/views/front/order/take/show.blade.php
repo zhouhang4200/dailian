@@ -527,6 +527,13 @@
                 }
                 return false;
             });
+
+            // 关闭留言
+            form.on('submit(cancel)', function (data) {
+                layer.closeAll();
+                return false;
+            });
+
             // 发送普通留言
             form.on('submit(send-message)', function (data) {
                 if (data.field.content) {

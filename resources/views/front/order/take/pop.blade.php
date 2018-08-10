@@ -232,7 +232,7 @@
                     </div>
                     <div class="layim-chat-bottom">
                         <div class="layim-chat-send">
-                            <span class="qs-btn opt-btn cancel">关闭</span>
+                            <span class="qs-btn opt-btn cancel" lay-submit="" lay-filter="cancel">关闭</span>
                             <span class="qs-btn opt-btn layim-send-btn" lay-submit="" lay-filter="send-message">发送</span>
                         </div>
                     </div>

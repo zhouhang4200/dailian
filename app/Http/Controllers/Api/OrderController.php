@@ -1195,8 +1195,8 @@ class OrderController extends Controller
                     $data['image']['pic3'] = static::$url.$image->path;
                 }
             }
-            if (isset($order->message)) {
-                foreach ($order->message as $k => $message) {
+            if (isset($order->complain->message)) {
+                foreach ($order->complain->message as $k => $message) {
                     $data['message'][$k]['pic'] = '';
                     $data['message'][$k]['who'] = $message->initiator;
                     $data['message'][$k]['created_at'] = $message->created_at->toDateTimeString();

@@ -81,7 +81,8 @@ class GameLevelingOrder extends Model
         if ($who == 1) {
             $build = self::with('complain', 'consult')->where('parent_user_id', request()->user()->parent_id);
         } else if ($who == 2) {
-            $build = self::with('complain', 'consult')->where('take_parent_user_id', request()->user()->parent_id);
+            $build = self::with('complain', 'consult')->where('take_parent_user_id', request()->user()->parent_id)
+                ->orderBy('id', 'desc');
         } else {
             $build = self::with('complain', 'consult');
         }

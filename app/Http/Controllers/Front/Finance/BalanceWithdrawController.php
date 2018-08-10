@@ -20,7 +20,7 @@ class BalanceWithdrawController extends Controller
     }
 
     /**
-     * 资金流水导出
+     * 提现导出
      */
     public function export()
     {

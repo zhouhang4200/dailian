@@ -115,4 +115,14 @@ class GameLevelingOrderComplain extends Model
     {
         return $this->morphMany(Attachment::class, 'attachment', 'attachment_type', 'trade_no', 'game_leveling_order_trade_no');
     }
+
+    /**
+     * 关联留言表
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function messages()
+    {
+        return $this->hasMany(GameLevelingOrderMessage::class, 'game_leveling_order_trade_no', 'game_leveling_order_trade_no')
+            ->whereRaw('game_leveling_order_messages.type = 1');
+    }
 }

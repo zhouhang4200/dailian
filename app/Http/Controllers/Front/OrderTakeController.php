@@ -58,7 +58,7 @@ class OrderTakeController extends Controller
                 'game_role',
                 'amount',
                 'day',
-                'hours',
+                'hour',
                 'security_deposit',
                 'efficiency_deposit',
                 'created_at',

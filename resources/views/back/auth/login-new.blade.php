@@ -39,17 +39,17 @@
                     <div class="col-12">
                         <form class="form-horizontal m-t-20" id="loginform"  method="POST" action="{{ route('admin.login') }}">
                             {{ csrf_field() }}
-                            <div class="input-group mb-3 {{ $errors->has('username') ? ' has-error' : '' }}">
+                            <div class="input-group mb-3 {{ $errors->has('name') ? ' has-error' : '' }}">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="basic-addon1"><i class="fa fa-user"></i></span>
                                 </div>
 
-                                <input type="text" class="form-control form-control-lg" name="username" placeholder="账号"
-                                       value="{{ old('username') }}" required autofocus>
+                                <input type="text" class="form-control form-control-lg" name="name" placeholder="账号"
+                                       value="{{ old('name') }}" required autofocus>
 
-                                @if ($errors->has('username'))
+                                @if ($errors->has('name'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('username') }}</strong>
+                                        <strong>{{ $errors->first('name') }}</strong>
                                     </span>
                                 @endif
                             </div>

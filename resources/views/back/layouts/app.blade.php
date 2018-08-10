@@ -55,7 +55,7 @@
                         <li class="dropdown profile-dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 {{--<img src="/img/samples/scarlet-159.png" alt=""/>--}}
-                                <span class="hidden-xs">{{ request()->user('admin')->username }}</span> <b class="caret"></b>
+                                <span class="hidden-xs">{{ request()->user('admin')->name }}</span> <b class="caret"></b>
                             </a>
                             <ul class="dropdown-menu">
                                 <li><a href="#"><i class="fa fa-cog"></i>修改密码</a></li>

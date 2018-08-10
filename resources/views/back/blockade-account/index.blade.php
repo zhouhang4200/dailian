@@ -165,8 +165,7 @@
                     layer.msg(result.message, {time:1000})
                 });
             });
-
-            // 添加
+                // 添加
             $('.create').click(function () {
                 window.location.href="{{ route('admin.blockade-account.create') }}";
             });

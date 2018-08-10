@@ -1,0 +1,2 @@
+[10-Aug-2018 11:42:09 Asia/Shanghai] PHP Fatal error:  Cannot use [] for reading in D:\phpStudy\WWW\dailian\app\Http\Controllers\Api\OrderController.php on line 1185
+[10-Aug-2018 11:42:21 Asia/Shanghai] PHP Fatal error:  Cannot use [] for reading in D:\phpStudy\WWW\dailian\app\Http\Controllers\Api\OrderController.php on line 1185

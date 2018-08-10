@@ -713,7 +713,7 @@ class OrderController extends Controller
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
             DB::rollback();
-            myLog('place-order-local-error', ['data' => $data, 'message' => $e->getMessage()]);
+            myLog('place-order-local-error', ['data' => $data, 'message' => $e->getMessage(), 'line' => $e->getLine()]);
             return response()->apiFail('接单平台接口异常');
         }
         DB::commit();
@@ -1179,11 +1179,36 @@ class OrderController extends Controller
             $data['created_at'] = $complain->created_at->toDateTimeString();
             $data['content'] = $complain->reason;
             $data['arbitration_id'] = $complain->id;
-            $data['image'] = $complain->image();
-            foreach ($data['image'] as $k => $image) {
-                $data['image'] = $image->path;
+            $images = $complain->image;
+            $data['image']['pic1'] = '';
+            $data['image']['pic2'] = '';
+            $data['image']['pic3'] = '';
+
+            foreach($images as $k => $image) {
+                if ($k == 0) {
+                    $data['image']['pic1'] = static::$url.$image->path;
+                }
+                if ($k == 1) {
+                    $data['image']['pic2'] = static::$url.$image->path;
+                }
+                if ($k == 1) {
+                    $data['image']['pic3'] = static::$url.$image->path;
+                }
             }
-            myLog('info', ['info' => $data]);
+            if (isset($order->message)) {
+                foreach ($order->message as $k => $message) {
+                    $data['message'][$k]['pic'] = '';
+                    $data['message'][$k]['who'] = $message->initiator;
+                    $data['message'][$k]['created_at'] = $message->created_at->toDateTimeString();
+                    $data['message'][$k]['content'] = $message->content;
+                    if (isset($message->image)) {
+                        foreach ($message->image as $k1 => $image) {
+                            $data['message'][$k]['pic'] = static::$url.$image->path;
+                        }
+                    }
+                }
+            }
+//            myLog('info', ['info' => $data]);
         } catch (OrderTimeException $e) {
             myLog('operate-getComplainInfo-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail($e->getMessage());
@@ -1207,8 +1232,8 @@ class OrderController extends Controller
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
             myLog('operate-local-getComplainInfo-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail('接单平台接口异常');
         }
-        return response()->apiFail('接单平台接口异常');
-        return response()->apiSuccess();
+        return response()->apiSuccess('成功', $data);
     }
 }

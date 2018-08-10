@@ -322,7 +322,13 @@ $finance = ['frontend.finance.asset', 'frontend.finance.amount-flow', 'frontend.
 
         laydate.render({elem: '#start-time'});
         laydate.render({elem: '#end-time'});
+
+        $(document).on('click', '.cancel', function () {
+            layer.closeAll();
+        });
     });
+
+
 
     $('#logout').click(function () {
         layer.confirm('确定退出吗?', {icon: 3, title:'提示'}, function(index){

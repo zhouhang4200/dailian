@@ -111,7 +111,7 @@ class GameLevelingOrder extends Model
         }
 
         if (isset($condition['end_time']) && $condition['end_time']) {
-            $build->where('created_at', '>=',$condition['end_time']);
+            $build->where('created_at', '<=',$condition['end_time'] . ' 23:59:59');
         }
 
         return $build;

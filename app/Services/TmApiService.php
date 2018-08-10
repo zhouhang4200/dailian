@@ -46,6 +46,7 @@ class TmApiService
         'agreeConsult' => 'http://www.test.com/api/partner/order/agree-revoke', // 同意协商
         'refuseConsult' => 'http://www.test.com/api/partner/order/refuse-revoke', // 不同意协商
         'arbitration' =>  'http://www.test.com/api/partner/order/force-arbitration', // 客服仲裁
+        'cancelComplete' => 'http://www.test.com/api/partner/order/cancel-complete', // 取消验收
     ];
 
     /**
@@ -406,6 +407,28 @@ class TmApiService
             $options['sign'] = $sign;
             // 发送
             static::normalRequest($options, static::$url['arbitration']);
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+        }
+    }
+
+    /**
+     *  取消验收
+     * @param $orderNo
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public static function cancelComplete($orderNo)
+    {
+        try {
+            $options = [
+                'order_no' => $orderNo,
+                'app_id' => static::$appId,
+                'timestamp' => time(),
+            ];
+            $sign = static::getSign($options);
+            $options['sign'] = $sign;
+            // 发送
+            static::normalRequest($options, static::$url['cancelComplete']);
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
         }

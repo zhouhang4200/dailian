@@ -1208,7 +1208,6 @@ class OrderController extends Controller
                     }
                 }
             }
-//            myLog('info', ['info' => $data]);
         } catch (OrderTimeException $e) {
             myLog('operate-getComplainInfo-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail($e->getMessage());

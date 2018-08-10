@@ -46,6 +46,9 @@
     </div>
 </div>
 @yield('main')
+<div class="" style="height: 35px;line-height: 35px;width:100%;background-color:#2b2d36;color:#fff;position: absolute;bottom: 0">
+    <div style="width: 600px;text-align: center;margin: 0 auto;font-size: 12px">版权所有 2010-2018 武汉一起玩网络科技有限公司 鄂ICP备 15007777号-1 鄂网文 ( 2016 ) 1126-22 号 </div>
+</div>
 <script src="/front/lib/js/layui/layui.js"></script>
 <script src="/js/jquery-1.11.0.min.js"></script>
 <script src="/js/encrypt.js"></script>

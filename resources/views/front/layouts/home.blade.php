@@ -13,7 +13,7 @@
     <title>丸子代练 @yield('title')</title>
 </head>
 
-<body style="position: relative">
+<body>
 <div class="header">
     <div class="logo">
         <img src="/front/images/logo.png" alt="">
@@ -46,7 +46,8 @@
     </div>
 </div>
 @yield('main')
-<div class="" style="height: 40px;line-height: 40px;width:100%;background-color:#2b2d36;color:#fff;position: absolute;bottom: 0">
+<div class="layui-clear"></div>
+<div class="" style="height: 40px;line-height: 40px;width:100%;background-color:#2b2d36;color:#fff;bottom: 0">
     <div style="width: 600px;text-align: center;margin: 0 auto;font-size: 12px">版权所有 2010-2018 武汉一游玩网络科技有限公司 鄂ICP备 15007777号-1 鄂网文 ( 2016 ) 1126-22 号 </div>
 </div>
 <script src="/front/lib/js/layui/layui.js"></script>
@@ -56,7 +57,8 @@
     $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')}});
     layui.use(['element'], function () {
         var element = layui.element;
-    })
+    });
+    $('.main').height($(document).height() - 90);
 </script>
 @yield('js')
 @yield('pop')

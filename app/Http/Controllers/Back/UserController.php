@@ -80,9 +80,8 @@ class UserController extends Controller
      */
     public function certificationShow(Request $request, $id)
     {
-        $user = User::find($id);
-
-        $realNameCertification = RealNameCertification::where('user_id', $id)->first();
+        $realNameCertification = RealNameCertification::find($id);
+        $user = User::find($realNameCertification->user_id);
 
         return view('back.user.certification-show', compact('user', 'realNameCertification'));
     }

@@ -118,11 +118,12 @@ class ProfileController extends Controller
      */
     public function avatarUpdate(Request $request)
     {
-        if (Auth::user()->isParent()) {
-            $user = Auth::user();
-        } else {
-            $user = Auth::user()->parent;
-        }
+//        if (Auth::user()->isParent()) {
+//            $user = Auth::user();
+//        } else {
+//            $user = Auth::user()->parent;
+//        }
+        $user = Auth::user();
         $user->avatar = $request->data['avatar'];
 
         if (empty($user->avatar)) {

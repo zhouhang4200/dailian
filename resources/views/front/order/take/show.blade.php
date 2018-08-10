@@ -540,6 +540,7 @@
                             layer.msg(data.message, {icon: 5});
                             return false;
                         }
+                        $('textarea[name=content]').val('');
                     }, 'json');
                 } else {
                     layer.msg('请输入要发送的内容', {icon: 5});

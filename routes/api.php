@@ -25,7 +25,6 @@ Route::namespace('Api')->group(function () {
         Route::post('delete', 'OrderController@delete'); // 撤单
         Route::post('lock', 'OrderController@lock'); // 锁定
         Route::post('cancel-lock', 'OrderController@cancelLock'); // 取消锁定
-
         Route::post('complete', 'OrderController@complete'); // 完成
         Route::post('apply-consult', 'OrderController@applyConsult'); // 申请协商
         Route::post('cancel-consult', 'OrderController@cancelConsult'); // 取消协商
@@ -41,6 +40,7 @@ Route::namespace('Api')->group(function () {
         Route::post('complain-message', 'OrderController@complainMessage'); // 仲裁证据
         Route::post('get-message', 'OrderController@getMessage'); // 获取留言
         Route::post('send-message', 'OrderController@sendMessage'); // 发送留言
+        Route::post('get-complain-info', 'OrderController@getComplainInfo'); // 仲裁详情
     });
     Route::post('update', 'OrderController@update'); // 修改订单
     Route::post('place-order', 'OrderController@placeOrder'); // 下单

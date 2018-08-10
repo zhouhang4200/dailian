@@ -37,7 +37,7 @@ class ApiAuth
         ksort($par);
         $str = '';
         foreach ($par  as $key => $value) {
-            if (! in_array($key, ['sign', 'pic1', 'pic2', 'pic3'])) {
+            if (! in_array($key, ['sign', 'pic1', 'pic2', 'pic3', 'image'])) {
                 $str .= $key . '=' . $value . '&';
             }
         }

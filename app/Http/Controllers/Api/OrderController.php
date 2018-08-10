@@ -713,11 +713,11 @@ class OrderController extends Controller
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
             DB::rollback();
-            myLog('place-order-local-error', ['data' => $data, 'message' => $e->getMessage()]);
+            myLog('place-order-local-error', ['data' => $data, 'message' => $e->getMessage(), 'line' => $e->getLine()]);
             return response()->apiFail('接单平台接口异常');
         }
         DB::commit();
-        myLog('place-order-success', ['发单器结果' => $result, '从发单器获取的参数' => $data, '发送给发单器的参数' => $options]);
+//        myLog('place-order-success', ['发单器结果' => $result, '从发单器获取的参数' => $data, '发送给发单器的参数' => $options]);
         return response()->apiSuccess('下单成功', ['order_no' => $order->trade_no]);
     }
 
@@ -1157,5 +1157,83 @@ class OrderController extends Controller
             return response()->apiFail('接单平台接口异常');
         }
         return response()->apiSuccess();
+    }
+
+    /**
+     *  获取仲裁信息
+     * @param Request $request
+     * @return mixed
+     * @throws Exception
+     */
+    public static function getComplainInfo(Request $request)
+    {
+        try {
+            $orderNo = $request->order_no;
+            $userId = $request->user->id;
+
+            $orderService = OrderService::init($userId, $orderNo);
+            $order = $orderService->getComplainInfo();
+            $data = [];
+            $complain = $order->complain;
+            $data['who'] = $complain->initiator;
+            $data['created_at'] = $complain->created_at->toDateTimeString();
+            $data['content'] = $complain->reason;
+            $data['arbitration_id'] = $complain->id;
+            $images = $complain->image;
+            $data['image']['pic1'] = '';
+            $data['image']['pic2'] = '';
+            $data['image']['pic3'] = '';
+
+            foreach($images as $k => $image) {
+                if ($k == 0) {
+                    $data['image']['pic1'] = static::$url.$image->path;
+                }
+                if ($k == 1) {
+                    $data['image']['pic2'] = static::$url.$image->path;
+                }
+                if ($k == 1) {
+                    $data['image']['pic3'] = static::$url.$image->path;
+                }
+            }
+            if (isset($order->message)) {
+                foreach ($order->message as $k => $message) {
+                    $data['message'][$k]['pic'] = '';
+                    $data['message'][$k]['who'] = $message->initiator;
+                    $data['message'][$k]['created_at'] = $message->created_at->toDateTimeString();
+                    $data['message'][$k]['content'] = $message->content;
+                    if (isset($message->image)) {
+                        foreach ($message->image as $k1 => $image) {
+                            $data['message'][$k]['pic'] = static::$url.$image->path;
+                        }
+                    }
+                }
+            }
+//            myLog('info', ['info' => $data]);
+        } catch (OrderTimeException $e) {
+            myLog('operate-getComplainInfo-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderUserException $e) {
+            myLog('operate-getComplainInfo-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderMoneyException $e) {
+            myLog('operate-getComplainInfo-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderStatusException $e) {
+            myLog('operate-getComplainInfo-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderPasswordException $e) {
+            myLog('operate-getComplainInfo-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderAdminUserException $e) {
+            myLog('operate-getComplainInfo-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (OrderUnauthorizedException $e) {
+            myLog('operate-getComplainInfo-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail($e->getMessage());
+        } catch (Exception $e) {
+            myLog('operate-local-getComplainInfo-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+            return response()->apiFail('接单平台接口异常');
+        }
+        return response()->apiSuccess('成功', $data);
     }
 }

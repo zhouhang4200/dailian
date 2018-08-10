@@ -16,6 +16,7 @@ class GameLevelingOrderMessage extends Model
         'initiator',
         'game_leveling_order_trade_no',
         'from_user_id',
+        'from_parent_user_id',
         'from_username',
         'to_user_id',
         'to_username',

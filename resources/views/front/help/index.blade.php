@@ -14,8 +14,12 @@
         <div class="container">
             <div class="layui-tab">
                 <ul class="layui-tab-title">
-                    @forelse($categories as $category)
-                        <li class="layui-this">{!! $category->name !!}</li>
+                    @forelse($categories as $k => $category)
+                        @if($k == 0)
+                            <li class="layui-this">{!! $category->name !!}</li>
+                        @else
+                            <li>{!! $category->name !!}</li>
+                        @endif
                     @empty
                     @endforelse
                 </ul>

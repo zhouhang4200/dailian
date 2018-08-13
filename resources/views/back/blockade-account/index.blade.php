@@ -46,7 +46,7 @@
                                     <input type="text" class="layui-input" id="end_time" name="end_time"  placeholder="结束时间" value="">
                                 </div>
                                 <div class="col-md-2">
-                                    <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="search">搜索</button>
+                                    <button class="btn btn-success" lay-submit="" lay-filter="search">搜索</button>
                                     <button type="button" class="layui-btn layui-btn-normal create" >添加</button>
                                 </div>
                             </div>
@@ -85,7 +85,7 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label"></label>
                     <div class="layui-input-inline">
-                        <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="update-time">确认</button>
+                        <button class="btn btn-success" lay-submit="" lay-filter="update-time">确认</button>
                         <button type="button" class="layui-btn layui-btn-normal cancel" >取消</button>
                     </div>
                 </div>

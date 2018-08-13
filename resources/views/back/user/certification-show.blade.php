@@ -149,10 +149,10 @@
                                                             </div>
                                                             <div class="layui-form-item">
                                                                 <div class="layui-input-block">
-                                                                    <button type="button" class="layui-btn layui-btn-normal" lay-submit="" id="pass"
+                                                                    <button type="button" class="btn btn-success" lay-submit="" id="pass"
                                                                             lay-filter="">通过
                                                                     </button>
-                                                                    <button type="button" class="layui-btn layui-btn-normal" lay-submit="" id="refuse"
+                                                                    <button type="button" class="btn btn-success" lay-submit="" id="refuse"
                                                                             lay-filter="">拒绝
                                                                     </button>
                                                                 </div>

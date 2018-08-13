@@ -54,7 +54,7 @@
                                             <input type="text" lay-verify="required" class="form-control" name="name" value="{{ $region->name }}">
                                         </div>
 
-                                        <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="store">确认</button>
+                                        <button class="btn btn-success" lay-submit="" lay-filter="store">确认</button>
                                         <a  href="{{ route('admin.region') }}" type="button" class="layui-btn layui-btn-normal " ><r>返回列表</r></a>
                                     </form>
                                 </div>

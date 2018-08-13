@@ -9,7 +9,7 @@ class GameLevelingType extends Model
     public  $fillable = [
       'name',
       'game_id',
-
+      'poundage',
     ];
 
     /**

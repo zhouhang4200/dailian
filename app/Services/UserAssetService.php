@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Models\GameLevelingOrder;
+use App\Models\GameLevelingType;
 use Exception;
 use App\Exceptions\UserAsset\UserAssetTypeException;
 use App\Exceptions\UserAsset\UserAssetUserException;
@@ -115,8 +117,9 @@ class UserAssetService
             $userAsset = UserAsset::where('user_id', self::$userId)->lockForUpdate()->first();
             // 写流水
             $this->flow(bcadd($userAsset->balance, self::$amount), $userAsset->frozen);
-            // 更新用户余额
+            // 更新用户余额 与总充值金额
             $userAsset->balance = bcadd($userAsset->balance, self::$amount);
+            $userAsset->total_recharge = bcadd($userAsset->total_recharge, self::$amount);
             $userAsset->save();
         } catch (Exception $exception) {
             throw new Exception($exception->getMessage());
@@ -137,18 +140,20 @@ class UserAssetService
             throw new UserAssetTypeException('请检查传入的子类型是否正确');
         }
 
+        $userAsset = UserAsset::where('user_id', self::$userId)->lockForUpdate()->first();
+        // 检测余额是否够本次提现
+        if ($userAsset->balance < self::$amount) {
+            throw new UserAssetBalanceException('您的余额不够,请调整提现金额');
+        }
+        // 获取用户认证信息
+        $realNameCertification = RealNameCertification::where('user_id', self::$userId)->first();
+        if (! $realNameCertification) {
+            throw new UserAssetUserException('您的账号没有进行实名认证无法进行提现');
+        }
+
         DB::beginTransaction();
         try {
-            $userAsset = UserAsset::where('user_id', self::$userId)->lockForUpdate()->first();
-            // 检测余额是否够本次提现
-            if ($userAsset->balance < self::$amount) {
-                throw new UserAssetBalanceException('您的余额不够,请调整提现金额');
-            }
-            // 获取用户认证信息
-            $realNameCertification = RealNameCertification::where('user_id', self::$userId)->first();
-            if (! $realNameCertification) {
-                throw new UserAssetUserException('您的账号没有进行实名认证无法进行提现');
-            }
+
             // 写流水
             $this->flow(bcsub($userAsset->balance, self::$amount), bcadd($userAsset->frozen, self::$amount));
             // 生成提现单
@@ -184,12 +189,15 @@ class UserAssetService
             throw new UserAssetTypeException('请检查传入的子类型是否正确');
         }
         DB::beginTransaction();
+
+        $userAsset = UserAsset::where('user_id', self::$userId)->lockForUpdate()->first();
+
+        // 检测余额是否够本次提现
+        if ($userAsset->balance < self::$amount) {
+            throw new UserAssetBalanceException('您的余额不够');
+        }
+
         try {
-            $userAsset = UserAsset::where('user_id', self::$userId)->lockForUpdate()->first();
-            // 检测余额是否够本次提现
-            if ($userAsset->balance < self::$amount) {
-                throw new UserAssetBalanceException('您的余额不够');
-            }
             // 写流水
             $this->flow(bcsub($userAsset->balance, self::$amount), bcadd($userAsset->frozen, self::$amount));
             // 更新用户余额与冻结金额
@@ -214,26 +222,27 @@ class UserAssetService
         if (self::$type != 4) {
             throw new UserAssetTypeException('请检查传入的子类型是否正确');
         }
-
         DB::beginTransaction();
+
+        $userAsset = UserAsset::where('user_id', self::$userId)->lockForUpdate()->first();
+        // 检测余额是否够本次提现
+        if ($userAsset->frozen < self::$amount) {
+            throw new UserAssetBalanceException('您的余额不够本次解冻');
+        }
+
+        // 检测用户相关冻结订单号总金额与需要解冻金额是否相符
+        $frozen = UserAssetFlow::where('user_id', self::$userId)
+            ->where('trade_no', self::$tradeNO)->where('type', 3)->first();
+
+        if (is_null($frozen)) {
+            throw new UserAssetRecordException('不存在相关的冻结记录');
+        }
+
+        if ($frozen->amount < self::$amount) {
+            throw new UserAssetMoneyException('解冻金额大于冻结金额');
+        }
+
         try {
-            $userAsset = UserAsset::where('user_id', self::$userId)->lockForUpdate()->first();
-            // 检测余额是否够本次提现
-            if ($userAsset->frozen < self::$amount) {
-                throw new UserAssetBalanceException('您的余额不够本次解冻');
-            }
-
-            // 检测用户相关冻结订单号总金额与需要解冻金额是否相符
-            $frozen = UserAssetFlow::where('user_id', self::$userId)
-                ->where('trade_no', self::$tradeNO)->where('type', 3)->first();
-
-            if (is_null($frozen)) {
-                throw new UserAssetRecordException('不存在相关的冻结记录');
-            }
-
-            if ($frozen->amount < self::$amount) {
-                throw new UserAssetMoneyException('解冻金额大于冻结金额');
-            }
 
             // 写流水
             $this->flow(bcadd($userAsset->balance, self::$amount), bcsub($userAsset->frozen, self::$amount));
@@ -297,6 +306,8 @@ class UserAssetService
         try {
             $userAsset = UserAsset::where('user_id', self::$userId)->lockForUpdate()->first();
             // 检测冻结余额是否够本次支出
+
+            myLog('ex', ['冻结' => $userAsset->frozen, '金额' => self::$amount, '用户ID' => self::$userId]);
             if ($userAsset->frozen < self::$amount) {
                 throw new UserAssetBalanceException('冻结余额不够支出');
             }

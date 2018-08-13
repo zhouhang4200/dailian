@@ -25,7 +25,7 @@
                                     <input type="text" class="layui-input" name="phone"  placeholder="手机号" value="{{ $phone }}">
                                 </div>
                                 <div class="col-md-2">
-                                    <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="search">搜索</button>
+                                    <button class="btn btn-success" lay-submit="" lay-filter="search">搜索</button>
                                 </div>
                             </div>
                         </form>

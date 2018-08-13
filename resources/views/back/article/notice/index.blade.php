@@ -22,8 +22,8 @@
                                     <input type="text" class="layui-input" name="title"  placeholder="标题" value="{{ $title }}">
                                 </div>
                                 <div class="col-md-2">
-                                    <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="search">搜索</button>
-                                    <button class="layui-btn layui-btn-normal" type="button" id="create" category-id="{{ $categoryId }}">新增</button>
+                                    <button class="btn btn-success" lay-submit="" lay-filter="search">搜索</button>
+                                    <button class="btn btn-success" type="button" id="create" category-id="{{ $categoryId }}">新增</button>
                                 </div>
                             </div>
                         </form>

@@ -47,7 +47,8 @@ class AdminUserController extends Controller
     {
         try {
             $adminUser = AdminUser::create([
-                'username' => request('username'),
+                'name' => request('name'),
+                'email' => request('email'),
                 'password' => request('password'),
             ]);
             $adminUser->saveRoles(request('roles'));
@@ -79,7 +80,8 @@ class AdminUserController extends Controller
     {
         try {
             $adminUser = AdminUser::find($id);
-            $adminUser->username = request('username');
+            $adminUser->name = request('name');
+            $adminUser->email = request('email');
             $adminUser->password = request('password');
             $adminUser->save();
 

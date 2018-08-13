@@ -78,7 +78,7 @@
                                             </div>
                                         </div>
 
-                                        <button class="layui-btn layui-btn-normal" type="submit" >确认</button>
+                                        <button class="btn btn-success" type="submit" >确认</button>
                                         <a  href="{{ route('admin.admin-permission-group') }}" type="button" class="layui-btn layui-btn-normal " >取消</a>
                                     </form>
                                 </div>

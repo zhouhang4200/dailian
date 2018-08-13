@@ -59,6 +59,9 @@
         var element = layui.element;
     });
     $('.main').height($(document).height() - 90);
+    $(window).resize(function () {
+        $('.main').height($(document).height() - 90);
+    });
 </script>
 @yield('js')
 @yield('pop')

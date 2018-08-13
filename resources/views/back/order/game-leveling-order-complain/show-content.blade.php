@@ -1,4 +1,4 @@
-@if(in_array(optional($order->complain)->status, [1, 3]))
+@if(in_array(optional($order->complain)->status, [1, 2]))
     <div class="layui-form">
         <table class="layui-table">
             <tbody>

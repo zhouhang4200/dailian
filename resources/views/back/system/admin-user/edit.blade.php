@@ -44,7 +44,11 @@
 
                                         <div class="form-group">
                                             <label for="">用户名</label>
-                                            <input type="text" lay-verify="required" class="form-control" name="username" value="{{ $adminUser->username }}">
+                                            <input type="text" lay-verify="required" class="form-control" name="name" value="{{ $adminUser->name }}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="">Email</label>
+                                            <input type="email" lay-verify="required" class="form-control" name="email" value="{{ $adminUser->email }}">
                                         </div>
                                         <div class="form-group">
                                             <label for="">密码</label>
@@ -77,7 +81,7 @@
                                             </div>
                                         </div>
 
-                                        <button class="layui-btn layui-btn-normal" type="submit" >确认</button>
+                                        <button class="btn btn-success" type="submit" >确认</button>
                                         <a  href="{{ route('admin.admin-permission-group') }}" type="button" class="layui-btn layui-btn-normal " >取消</a>
                                     </form>
                                 </div>

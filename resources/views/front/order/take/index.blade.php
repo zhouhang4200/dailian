@@ -377,7 +377,7 @@
                 }
             });
             // 订单表格重载
-            function reloadOrderList(parameter) {
+            function reloadOrderList(parameter, type) {
                 var condition = {};
                 if (parameter == undefined) {
                     var formCondition = $('form').serializeArray();
@@ -387,6 +387,7 @@
                 } else {
                     condition = parameter;
                 }
+                console.log(parameter);
                 //执行重载
                 table.reload('order-list', {
                     where: condition,

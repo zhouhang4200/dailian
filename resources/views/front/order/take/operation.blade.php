@@ -20,7 +20,7 @@
 
     // 申请验收
     form.on('submit(apply-complete)', function (data) {
-        $('input[name=trade_no]').val($(data.elem).attr('data-no'));
+        $('.apply-complete-pop input[name=trade_no]').val($(data.elem).attr('data-no'));
         layer.open({
             type: 1,
             shade: 0.2,
@@ -49,6 +49,7 @@
             image_3:pic3
         }, function (result) {
             if (result.status == 1) {
+                layer.closeAll();
                 @if($type == 'list')
                     layer.msg(result.message);
                     reloadOrderList();
@@ -64,7 +65,6 @@
         }, 'json');
         return false;
     });
-
 
     // 取消验收
     form.on('submit(cancel-complete)', function (data) {
@@ -126,7 +126,7 @@
     // 申请撤销
     form.on('submit(apply-consult)', function (data) {
         // 打开协商撤销弹窗
-        $('input[name=trade_no]').val($(data.elem).attr('data-no'));
+        $('.consult-pop input[name=trade_no]').val($(data.elem).attr('data-no'));
         $('input[name=order_amount]').val($(data.elem).attr('data-amount'));
         $('input[name=order_security_deposit]').val($(data.elem).attr('data-security_deposit'));
         $('input[name=order_efficiency_deposit]').val($(data.elem).attr('data-efficiency_deposit'));
@@ -148,7 +148,8 @@
                 deposit: data.field.deposit,
                 reason: data.field.reason
             }, function (result) {
-                if (result.status) {
+                if (result.status == 1) {
+                    layer.closeAll();
                     @if($type == 'list')
                         layer.msg(result.message);
                         reloadOrderList();
@@ -187,7 +188,8 @@
     // 同意撤销
     form.on('submit(agree-consult)', function (data) {
         $.post('{{ route('order.operation.agree-consult') }}', {trade_no: $(data.elem).attr('data-no')}, function (result) {
-            if (result.status) {
+            if (result.status == 1) {
+                layer.closeAll();
                 @if($type == 'list')
                     layer.msg(result.message);
                     reloadOrderList();
@@ -223,7 +225,7 @@
     // 申请仲裁
     form.on('submit(apply-complain)', function (data) {
         // 打开申请仲裁弹窗
-        $('input[name=trade_no]').val($(data.elem).attr('data-no'));
+        $('.complain-pop input[name=trade_no]').val($(data.elem).attr('data-no'));
         layer.open({
             type: 1,
             shade: 0.2,

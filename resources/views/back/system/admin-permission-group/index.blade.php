@@ -19,8 +19,8 @@
                                     <input type="text" class="layui-input" name="name"  placeholder="分组名" value="{{ request('name') }}">
                                 </div>
                                 <div class="col-md-2">
-                                    <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="search">搜索</button>
-                                    <a href="{{ route('admin.admin-permission-group.create') }}" class="layui-btn layui-btn-normal" type="button" id="create" >新增</a>
+                                    <button class="btn btn-success" lay-submit="" lay-filter="search">搜索</button>
+                                    <a href="{{ route('admin.admin-permission-group.create') }}" class="btn btn-success" type="button" id="create" >新增</a>
                                 </div>
                             </div>
                         </form>

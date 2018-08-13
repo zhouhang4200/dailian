@@ -25,7 +25,7 @@
                                     <input type="text" class="layui-input" id="end-time" name="end_time"  autocomplete="off" placeholder="结束时间" value="{{ request('end_time') }}">
                                 </div>
                                 <div class="col-md-2">
-                                    <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="search">搜索</button>
+                                    <button class="btn btn-success" lay-submit="" lay-filter="search">搜索</button>
                                 </div>
                             </div>
                         </form>
@@ -35,7 +35,7 @@
                 <div class="layui-tab-content">
                     <div class="layui-tab-item layui-show">
 
-                        <div class="layui-tab" lay-filter="status">
+                        <div class="layui-tab layui-tab-brief layui-form" lay-filter="status">
                             <ul class="layui-tab-title">
                                 <li @if(request('status') == 0) class="layui-this" @endif lay-id="0">全部</li>
                                 <li @if(request('status') == 1) class="layui-this" @endif lay-id="1">待处理

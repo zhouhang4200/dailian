@@ -148,8 +148,8 @@ Route::group(['middleware' =>  ['auth.admin']], function () {
             Route::get('/', 'FineTicketController@index')->name('admin.user.fine-ticket');
             Route::get('create', 'FineTicketController@create');
             Route::post('create', 'FineTicketController@store')->name('admin.user.fine-ticket.create');
-            Route::get('update', 'FineTicketController@edit');
-            Route::post('update', 'FineTicketController@update')->name('admin.user.fine-ticket.update');
+            Route::post('unfrozen', 'FineTicketController@unfrozen')->name('admin.user.fine-ticket.unfrozen');
+            Route::post('fine', 'FineTicketController@fine')->name('admin.user.fine-ticket.fine');
         });
     });
 

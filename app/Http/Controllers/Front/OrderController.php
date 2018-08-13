@@ -2,14 +2,9 @@
 
 namespace App\Http\Controllers\Front;
 
-use DB;
-use \Exception;
-use App\Exceptions\NoSufficientBalanceException;
-use App\Services\OrderService;
 use App\Models\Game;
 use App\Models\GameLevelingOrder;
 use App\Http\Controllers\Controller;
-
 
 /**
  * Class OrderController
@@ -38,7 +33,4 @@ class OrderController extends Controller
     {
 
     }
-
-
-
 }

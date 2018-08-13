@@ -17,6 +17,7 @@ class CreateAdminUsersTable extends Migration
         Schema::create('admin_users', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->unique()->comment('账号');
+            $table->string('email', 60)->unique()->comment('邮箱');
             $table->string('password', 120)->comment('密码');
             $table->unsignedTinyInteger('status')->default(1)->comment('状态 1 启用 2 禁用');
             $table->timestamps();
@@ -24,7 +25,8 @@ class CreateAdminUsersTable extends Migration
 
         DB::table('admin_users')->insert([
             [
-                'username' => '超级管理员',
+                'name' => '超级管理员',
+                'email' => '442962403@qq.com',
                 'password' => bcrypt('admin')
             ],
         ]);

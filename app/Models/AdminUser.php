@@ -15,7 +15,9 @@ class AdminUser extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'username', 'password'
+        'name',
+        'email',
+        'password'
     ];
 
     /**
@@ -37,10 +39,6 @@ class AdminUser extends Authenticatable
         if (isset($condition['name']) && $condition['name']) {
             $query->where('name', 'like', '%' . $condition['name'] . '%');
         }
-        if (isset($condition['username']) && $condition['username']) {
-            $query->where('username', 'like', '%' . $condition['username'] . '%');
-        }
-
         return $query;
     }
 

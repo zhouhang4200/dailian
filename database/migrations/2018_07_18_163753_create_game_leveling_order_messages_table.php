@@ -18,6 +18,7 @@ class CreateGameLevelingOrderMessagesTable extends Migration
             $table->string('game_leveling_order_trade_no')->comment('交易单号');
             $table->unsignedInteger('initiator')->comment('留言发送人 1 发单方 2 接单方 3 平台工作人员');
             $table->unsignedInteger('from_user_id')->comment('留言发送人ID');
+            $table->unsignedInteger('from_parent_user_id')->comment('留言发送人父ID');
             $table->string('from_username')->comment('留言发送人名字');
             $table->unsignedInteger('to_user_id')->comment('留言接收人ID');
             $table->string('to_username')->comment('留言接收人名字');

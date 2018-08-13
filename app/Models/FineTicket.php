@@ -42,10 +42,10 @@ class FineTicket extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function userAssetFlows()
+    public function user()
     {
-        return $this->hasMany(UserAsset::class, 'trade_no', 'trade_no');
+        return $this->belongsTo(User::class);
     }
 }

@@ -458,7 +458,7 @@
                     </tr>
                     <tr>
                         <td>仲裁结果</td>
-                        <td>{!! $order->getStatusDescribe() !!}</td>
+                        <td>{!! $order->getComplainResult() !!}</td>
                     </tr>
                     <tr>
                         <td>获得代练费</td>

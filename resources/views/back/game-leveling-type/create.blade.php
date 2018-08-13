@@ -62,7 +62,7 @@
                                             <input type="text" lay-verify="required" class="form-control" name="poundage" value="{{ old('poundage') }}">
                                         </div>
 
-                                        <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="store">确认</button>
+                                        <button class="btn btn-success" lay-submit="" lay-filter="store">确认</button>
                                         <a  href="{{ route('admin.game-leveling-type') }}" type="button" class="layui-btn layui-btn-normal " >返回列表</a>
                                     </form>
                                 </div>

@@ -1,16 +1,7 @@
 <?php
-$userPermissions = [];
-$homeRoute = [
-    'home-punishes.index',
-    'frontend.index',
-];
 
-$workbenchRoute = [
-    'frontend.workbench.index',
-    'frontend.workbench.leveling.wait',
-    'frontend.workbench.leveling.create',
-    'frontend.workbench.leveling.index',
-    'frontend.workbench.leveling.complaints',
+$orderRoute = [
+    'order.take',
 ];
 
 $accountRoute = [
@@ -40,30 +31,6 @@ $financeRoute = [
     'finance.finance-report-day',
 ];
 
-$settingRoute = [
-    'frontend.setting.receiving-control.index',
-    'frontend.setting.api-risk-management.index',
-    'frontend.setting.skin.index',
-    'frontend.setting.automatically-grab.goods',
-    'frontend.setting.sms.index',
-    'frontend.setting.tb-auth.index',
-    'frontend.setting.sending-assist.auto-markup',
-    'frontend.setting.tb-auth.store',
-    'frontend.setting.order-send-channel.index',
-];
-
-$goodsRoute = [
-    'frontend.goods.index',
-];
-
-$myAccount = ['home-accounts.edit', 'home-accounts.index'];
-$stationManagement = ['station.create', 'station.index', 'station.edit'];
-$employeeManagement = ['staff-management.index', 'staff-management.edit', 'staff-management.create'];
-$blacklist = ['hatchet-man-blacklist.index', 'hatchet-man-blacklist.create', 'hatchet-man-blacklist.edit'];
-$finance = ['frontend.finance.asset', 'frontend.finance.amount-flow', 'frontend.finance.asset-daily',
-        'frontend.finance.withdraw-order', 'frontend.finance.order-report.index', 'frontend.statistic.employee',
-        'frontend.statistic.order', 'frontend.statistic.sms'
-];
 ?>
 <!DOCTYPE html>
 <html>
@@ -214,16 +181,27 @@ $finance = ['frontend.finance.asset', 'frontend.finance.amount-flow', 'frontend.
                 <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu"
                     lay-filter="layadmin-system-side-menu">
                     <li data-name="home"
-                        class="layui-nav-item @if(in_array(Route::currentRouteName(), $accountRoute)) layui-nav-itemed @endif">
-                        <a href="{{ route('order.take') }}" lay-tips="账号" lay-direction="2">
+                        class="layui-nav-item @if(in_array(Route::currentRouteName(), $orderRoute)) layui-nav-itemed @endif">
+                        <a href="javascript:;" lay-tips="接单管理" lay-direction="2">
                             <i class="layui-icon iconfont  icon-group-o"></i>
                             <cite>接单管理</cite>
                         </a>
+                        <dl class="layui-nav-child">
+                            <dd data-name="console"
+                                class="@if(Route::currentRouteName() == '') layui-this  @endif" >
+                                <a href="{{ route('order.take') }}">接单中心</a>
+                            </dd>
+                        </dl>
+                        <dl class="layui-nav-child">
+                            <dd data-name="console"
+                                class="@if(Route::currentRouteName() == 'order.take') layui-this  @endif" >
+                                <a href="{{ route('order.take') }}">已接订单</a>
+                            </dd>
+                        </dl>
                     </li>
 
-                    <li data-name="home"
-                        class="layui-nav-item @if(in_array(Route::currentRouteName(), $financeRoute)) layui-nav-itemed @endif">
-                        <a href="javascript:;" lay-tips="账号" lay-direction="2">
+                    <li data-name="home" class="layui-nav-item @if(in_array(Route::currentRouteName(), $financeRoute)) layui-nav-itemed @endif">
+                        <a href="javascript:;" lay-tips="财务管理" lay-direction="2">
                             <i class="layui-icon iconfont  icon-finance-o"></i>
                             <cite>财务管理</cite>
                         </a>
@@ -249,7 +227,7 @@ $finance = ['frontend.finance.asset', 'frontend.finance.amount-flow', 'frontend.
 
                     <li data-name="home"
                         class="layui-nav-item @if(in_array(Route::currentRouteName(), $accountRoute)) layui-nav-itemed @endif">
-                        <a href="javascript:;" lay-tips="账号" lay-direction="2">
+                        <a href="javascript:;" lay-tips="账号管理" lay-direction="2">
                             <i class="layui-icon iconfont  icon-group-o"></i>
                             <cite>账号管理</cite>
                         </a>

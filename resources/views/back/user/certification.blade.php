@@ -33,7 +33,7 @@
                                     <input type="text" class="layui-input" id="endDate" name="endDate"  placeholder="结束时间" value="{{ $endDate }}">
                                 </div>
                                 <div class="col-md-2">
-                                    <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="search">搜索</button>
+                                    <button class="btn btn-success" lay-submit="" lay-filter="search">搜索</button>
                                 </div>
                             </div>
                         </form>

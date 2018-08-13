@@ -28,7 +28,6 @@
             <img src="/front/images/index_banner.jpg" alt="">
         </div>
         <div class="container">
-
         </div>
     </div>
 @endsection
@@ -37,7 +36,11 @@
 <script>
     layui.use(['element'], function () {
         var element = layui.element;
-    })
+    });
+    $('.main').height($(document).height() - 200);
+    $(window).resize(function () {
+        $('.main').height($(document).height() - 200);
+    });
 </script>
 @section('js')
 @endsection

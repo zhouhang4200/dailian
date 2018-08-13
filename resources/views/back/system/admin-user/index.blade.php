@@ -14,11 +14,11 @@
                         <form class="layui-form">
                             <div class="row">
                                 <div class="col-md-2">
-                                    <input type="text" class="layui-input" name="username"  placeholder="用户名" value="{{ request('username') }}">
+                                    <input type="text" class="layui-input" name="name"  placeholder="用户名" value="{{ request('name') }}">
                                 </div>
                                 <div class="col-md-2">
-                                    <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="search">搜索</button>
-                                    <a href="{{ route('admin.admin-user.create') }}" class="layui-btn layui-btn-normal" type="button" id="create" >新增</a>
+                                    <button class="btn btn-success" lay-submit="" lay-filter="search">搜索</button>
+                                    <a href="{{ route('admin.admin-user.create') }}" class="btn btn-success" type="button" id="create" >新增</a>
                                 </div>
                             </div>
                         </form>
@@ -31,6 +31,7 @@
                         <tr role="row">
                             <th>ID</th>
                             <th>账号</th>
+                            <th>邮箱</th>
                             <th>角色</th>
                             <th>操作</th>
                         </tr>
@@ -39,7 +40,8 @@
                         @foreach($admins as $item)
                             <tr role="row" class="odd even">
                                 <td>{{ $item->id }}</td>
-                                <td>{{ $item->username }}</td>
+                                <td>{{ $item->name }}</td>
+                                <td>{{ $item->email }}</td>
                                 <td>{{ implode(',', $item->cachedRoles()->pluck('name', 'id')->toArray()) }}</td>
                                 <td>
                                     <a href="{{ route('admin.admin-user.update', ['id' => $item->id]) }}" class="layui-btn layui-btn-normal layui-btn-mini">

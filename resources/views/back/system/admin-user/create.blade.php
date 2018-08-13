@@ -44,7 +44,11 @@
 
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">账号</label>
-                                            <input type="text" lay-verify="required" class="form-control" name="username">
+                                            <input type="text" lay-verify="required" class="form-control" name="name">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">邮箱</label>
+                                            <input type="email" lay-verify="required" class="form-control" name="email">
                                         </div>
 
                                         <div class="form-group">
@@ -78,7 +82,7 @@
                                             </div>
                                         </div>
 
-                                        <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="store">确认</button>
+                                        <button class="btn btn-success" lay-submit="" lay-filter="store">确认</button>
                                         <a  href="{{ route('admin.admin-user') }}" type="button" class="layui-btn layui-btn-normal " >取消</a>
                                     </form>
                                 </div>

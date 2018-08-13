@@ -52,6 +52,7 @@ class GameLevelingOrderComplainController extends Controller
                 ])->render()
             ]);
         }
+//        dd(GameLevelingOrder::getOrderByCondition(['trade_no' =>  $tradeNO])->first());
         return view('back.order.game-leveling-order-complain.show', [
             'order' => GameLevelingOrder::getOrderByCondition(['trade_no' =>  $tradeNO])->first()
         ]);
@@ -102,6 +103,7 @@ class GameLevelingOrderComplainController extends Controller
     /**
      * 客服仲裁
      * @throws Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function confirmArbitration()
     {

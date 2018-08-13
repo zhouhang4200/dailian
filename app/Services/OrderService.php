@@ -371,6 +371,11 @@ class OrderService
             if (self::$order->efficiency_deposit > 0) {
                 UserAssetService::init(42, self::$order->take_user_id, self::$order->efficiency_deposit, self::$order->trade_no)->unfrozen();
             }
+            // 获取费率类型
+            $gameLevelingType = GameLevelingType::find(self::$order->game_leveling_type_id);
+            // 支出收入手费
+            UserAssetService::init(64, self::$order->take_user_id, bcmul(self::$order->amount, bcdiv($gameLevelingType->poundage, 100)), self::$order->trade_no)->expendFromBalance();
+
             // 修改订单状态
             self::$order->status = 10;
             self::$order->complete_at = date('Y-m-d H:i:s');
@@ -742,8 +747,8 @@ class OrderService
             }
 
             if (self::$order->efficiency_deposit == self::$order->consult->efficiency_deposit) { // 协商 效率保证金全额支出
-                $efficiencyDepositIncome = self::$order->security_deposit;
-                $efficiencyDepositExpend = self::$order->security_deposit;
+                $efficiencyDepositIncome = self::$order->efficiency_deposit;
+                $efficiencyDepositExpend = self::$order->efficiency_deposit;
             } else if (self::$order->consult->efficiency_deposit > 0) { // 协商 效率保证金部分支出
                 $efficiencyDepositIncome = self::$order->consult->efficiency_deposit;
                 $efficiencyDepositExpend= self::$order->consult->efficiency_deposit;
@@ -752,12 +757,17 @@ class OrderService
                 $efficiencyDepositUnfrozen = self::$order->efficiency_deposit;
             }
 
+            // 获取费率类型
+            $gameLevelingType = GameLevelingType::find(self::$order->game_leveling_type_id);
+
             // 代练费
             if ($expend > 0) {
                 UserAssetService::init(61, self::$order->user_id, $expend, self::$order->trade_no)->expendFromFrozen();
             }
             if ($income > 0) {
                 UserAssetService::init(51, self::$order->take_user_id, $income, self::$order->trade_no)->income();
+                // 支出收入手费
+                UserAssetService::init(64, self::$order->take_user_id, bcmul($income, bcdiv($gameLevelingType->poundage, 100)), self::$order->trade_no)->expendFromBalance();
             }
             if ($unfrozen > 0) {
                 UserAssetService::init(41, self::$order->user_id, $unfrozen, self::$order->trade_no)->unfrozen();
@@ -768,6 +778,8 @@ class OrderService
             }
             if ($efficiencyDepositIncome > 0) {
                 UserAssetService::init(52, self::$order->user_id, $efficiencyDepositIncome, self::$order->trade_no)->income();
+                // 支出收入手费
+                UserAssetService::init(64, self::$order->user_id, bcmul($efficiencyDepositIncome, bcdiv($gameLevelingType->poundage, 100)), self::$order->trade_no)->expendFromBalance();
             }
             if ($efficiencyDepositUnfrozen > 0) {
                 UserAssetService::init(42, self::$order->take_user_id, $efficiencyDepositUnfrozen, self::$order->trade_no)->unfrozen();
@@ -778,6 +790,8 @@ class OrderService
             }
             if ($securityDepositIncome > 0) {
                 UserAssetService::init(53, self::$order->user_id, $securityDepositIncome, self::$order->trade_no)->income();
+                // 支出收入手费
+                UserAssetService::init(64, self::$order->user_id, bcmul($securityDepositIncome, bcdiv($gameLevelingType->poundage, 100)), self::$order->trade_no)->expendFromBalance();
             }
             if ($securityDepositUnfrozen > 0) {
                 UserAssetService::init(43, self::$order->take_user_id, $securityDepositUnfrozen, self::$order->trade_no)->unfrozen();
@@ -916,11 +930,12 @@ class OrderService
             // 记录撤销数据
             GameLevelingOrderComplain::where('game_leveling_order_trade_no', self::$order->trade_no)
                 ->update([
-                    'status' => 3,
+                    'status' => 2,
                     'amount' => $inputAmount,
                     'security_deposit' => $inputSecurityDeposit,
                     'efficiency_deposit' => $inputEfficiencyDeposit,
                     'result' => $inputResult,
+                    'dispose_at' => date('Y-m-d H:i:s'),
                 ]);
 
             // 发单人 支出代练费
@@ -965,8 +980,8 @@ class OrderService
             }
 
             if (self::$order->efficiency_deposit == $inputEfficiencyDeposit) { // 协商 效率保证金全额支出
-                $efficiencyDepositIncome = self::$order->security_deposit;
-                $efficiencyDepositExpend = self::$order->security_deposit;
+                $efficiencyDepositIncome = self::$order->efficiency_deposit;
+                $efficiencyDepositExpend = self::$order->efficiency_deposit;
             } else if ($inputEfficiencyDeposit > 0) { // 协商 效率保证金部分支出
                 $efficiencyDepositIncome = $inputEfficiencyDeposit;
                 $efficiencyDepositExpend= $inputEfficiencyDeposit;
@@ -975,22 +990,30 @@ class OrderService
                 $efficiencyDepositUnfrozen = self::$order->efficiency_deposit;
             }
 
+            // 获取费率类型
+            $gameLevelingType = GameLevelingType::find(self::$order->game_leveling_type_id);
+
             // 代练费
             if ($expend > 0) {
                 UserAssetService::init(61, self::$order->user_id, $expend, self::$order->trade_no)->expendFromFrozen();
             }
             if ($income > 0) {
                 UserAssetService::init(51, self::$order->take_user_id, $income, self::$order->trade_no)->income();
+                // 支出收入手费
+                UserAssetService::init(64, self::$order->take_user_id, bcmul($income, bcdiv($gameLevelingType->poundage, 100)), self::$order->trade_no)->expendFromBalance();
             }
             if ($unfrozen > 0) {
                 UserAssetService::init(41, self::$order->user_id, $unfrozen, self::$order->trade_no)->unfrozen();
             }
+
             // 效率保证金
             if ($efficiencyDepositExpend > 0) {
                 UserAssetService::init(62, self::$order->take_user_id, $efficiencyDepositExpend, self::$order->trade_no)->expendFromFrozen();
             }
             if ($efficiencyDepositIncome > 0) {
                 UserAssetService::init(52, self::$order->user_id, $efficiencyDepositIncome, self::$order->trade_no)->income();
+                // 支出收入手费
+                UserAssetService::init(64, self::$order->user_id, bcmul($efficiencyDepositIncome, bcdiv($gameLevelingType->poundage, 100)), self::$order->trade_no)->expendFromBalance();
             }
             if ($efficiencyDepositUnfrozen > 0) {
                 UserAssetService::init(42, self::$order->take_user_id, $efficiencyDepositUnfrozen, self::$order->trade_no)->unfrozen();
@@ -1001,6 +1024,8 @@ class OrderService
             }
             if ($securityDepositIncome > 0) {
                 UserAssetService::init(53, self::$order->user_id, $securityDepositIncome, self::$order->trade_no)->income();
+                // 支出收入手费
+                UserAssetService::init(64, self::$order->user_id, bcmul($securityDepositIncome, bcdiv($gameLevelingType->poundage, 100)), self::$order->trade_no)->expendFromBalance();
             }
             if ($securityDepositUnfrozen > 0) {
                 UserAssetService::init(43, self::$order->take_user_id, $securityDepositUnfrozen, self::$order->trade_no)->unfrozen();

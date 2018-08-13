@@ -90,9 +90,10 @@ class BlockadeAccountController extends Controller
     public function update(Request $request)
     {
         $data = $request->data;
+
         try {
             $blockadeAccount = BlockadeAccount::find($data['id']);
-            $blockadeAccount->remark = $data['remark'];
+            $blockadeAccount->remark = htmlentities($data['remark']);
             $blockadeAccount->save();
 
             return response()->ajaxSuccess('修改成功');

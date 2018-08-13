@@ -54,14 +54,14 @@ return [
             'engine' => null,
         ],
 
-        'temp' => [
+        'market' => [
             'driver' => 'mysql',
-            'host' => env('DB_HOST1', '127.0.0.1'),
-            'port' => env('DB_PORT1', '3306'),
-            'database' => env('DB_DATABASE1', 'temp'),
-            'username' => env('DB_USERNAME1', 'root'),
-            'password' => env('DB_PASSWORD1', ''),
-            'unix_socket' => env('DB_SOCKET1', ''),
+            'host' => env('DB_HOST_MARKET', '127.0.0.1'),
+            'port' => env('DB_PORT_MARKET', '3306'),
+            'database' => env('DB_DATABASE_MARKET', 'temp'),
+            'username' => env('DB_USERNAME_MARKET', 'root'),
+            'password' => env('DB_PASSWORD_MARKET', ''),
+            'unix_socket' => env('DB_SOCKET', ''),
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
             'prefix' => '',

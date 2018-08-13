@@ -194,18 +194,22 @@ $financeRoute = [
                             <i class="layui-icon iconfont  icon-group-o"></i>
                             <cite>接单管理</cite>
                         </a>
+                        @if(Auth::user()->could('order.take'))
                         <dl class="layui-nav-child">
                             <dd data-name="console"
                                 class="@if(Route::currentRouteName() == '') layui-this  @endif" >
                                 <a href="{{ route('order.take') }}">接单中心</a>
                             </dd>
                         </dl>
+                        @endif
+                        @if(Auth::user()->could('order.take'))
                         <dl class="layui-nav-child">
                             <dd data-name="console"
                                 class="@if(Route::currentRouteName() == 'order.take') layui-this  @endif" >
                                 <a href="{{ route('order.take') }}">已接订单</a>
                             </dd>
                         </dl>
+                            @endif
                     </li>
 
                     <li data-name="home" class="layui-nav-item @if(in_array(Route::currentRouteName(), $financeRoute)) layui-nav-itemed @endif">
@@ -213,24 +217,30 @@ $financeRoute = [
                             <i class="layui-icon iconfont  icon-finance-o"></i>
                             <cite>财务管理</cite>
                         </a>
+                        @if(Auth::user()->could('finance.asset-flow'))
                         <dl class="layui-nav-child">
                             <dd data-name="console"
                                 class="@if(Route::currentRouteName() == 'finance.asset-flow') layui-this  @endif" >
                                 <a href="{{ route('finance.asset-flow') }}">资金明细</a>
                             </dd>
                         </dl>
+                        @endif
+                        @if(Auth::user()->could('finance.balance-withdraw'))
                         <dl class="layui-nav-child">
                             <dd data-name="console"
                                 class="@if(Route::currentRouteName() == 'finance.balance-withdraw') layui-this  @endif" >
                                 <a href="{{ route('finance.balance-withdraw') }}">我的提现</a>
                             </dd>
                         </dl>
+                        @endif
+                        @if(Auth::user()->could('finance.finance-report-day'))
                         <dl class="layui-nav-child">
                             <dd data-name="console"
                                 class="@if(Route::currentRouteName() == 'finance.finance-report-day') layui-this  @endif" >
                                 <a href="{{ route('finance.finance-report-day') }}">资金日报</a>
                             </dd>
                         </dl>
+                            @endif
                     </li>
 
                     <li data-name="home"

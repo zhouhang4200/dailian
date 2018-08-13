@@ -15,7 +15,7 @@ class Permission
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle($request, Closure $next, $permission)
     {
         if (Auth::guest()) {
             abort(403);

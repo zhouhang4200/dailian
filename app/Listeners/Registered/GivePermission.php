@@ -2,6 +2,7 @@
 
 namespace App\Listeners\Registered;
 
+use App\Models\Role;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;

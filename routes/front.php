@@ -29,7 +29,7 @@ Route::group(['middleware' => 'auth'], function (){
 
     // 员工 与 岗位
     Route::prefix('employee')->group(function (){
-        Route::get('/', 'EmployeeController@index')->name('employee'); // 员工列表
+        Route::get('/', 'EmployeeController@index')->name('employee')->middleware('permission:employee'); // 员工列表
         Route::get('create', 'EmployeeController@create')->name('employee.create'); // 员工添加视图
         Route::post('store', 'EmployeeController@store')->name('employee.store'); // 员工保存
         Route::get('edit/{id}', 'EmployeeController@edit')->name('employee.edit'); // 员工编辑视图
@@ -37,7 +37,7 @@ Route::group(['middleware' => 'auth'], function (){
         Route::post('delete', 'EmployeeController@delete')->name('employee.delete'); // 员工删除
         Route::post('forbidden', 'EmployeeController@forbidden')->name('employee.forbidden'); // 员工删除
 
-        Route::get('group', 'EmployeeController@group')->name('employee.group'); // 岗位列表
+        Route::get('group', 'EmployeeController@group')->name('employee.group')->middleware('permission:employee.group'); // 岗位列表
         Route::get('group/create', 'EmployeeController@groupCreate')->name('employee.group.create'); // 岗位添加视图
         Route::post('group/store', 'EmployeeController@groupStore')->name('employee.group.store'); // 岗位保存
         Route::get('group/edit/{id}', 'EmployeeController@groupEdit')->name('employee.group.edit'); // 岗位编辑视图
@@ -57,10 +57,10 @@ Route::group(['middleware' => 'auth'], function (){
 
         // 接单方
         Route::prefix('take')->group(function (){
-            Route::get('/', 'OrderTakeController@index')->name('order.take'); // 接单管理视图
+            Route::get('/', 'OrderTakeController@index')->name('order.take')->middleware('permission:order.take'); // 接单管理视图
             Route::post('/', 'OrderTakeController@orderData'); // 接单列表数据
 
-            Route::get('/{trade_no}', 'OrderTakeController@show')->name('order.take.show'); // 订单详情
+            Route::get('/{trade_no}', 'OrderTakeController@show')->name('order.take.show')->middleware('permission:order.take.show'); // 订单详情
             Route::get('/complain-info/{trade_no}', 'OrderTakeController@complainInfo')->name('order.take.complain-info'); // 仲裁信息
             Route::post('/complain-message', 'OrderTakeController@complainMessage')->name('order.take.complain-message'); // 发送仲裁留言
             Route::get('/operation-log/{trade_no}', 'OrderTakeController@operationLog')->name('order.take.operation-log'); // 订单操作日志
@@ -95,21 +95,21 @@ Route::group(['middleware' => 'auth'], function (){
     Route::prefix('finance')->namespace('Finance')->group(function (){
         // 资金流水
         Route::prefix('asset-flow')->group(function (){
-            Route::get('/', 'AssetFlowController@index')->name('finance.asset-flow');
+            Route::get('/', 'AssetFlowController@index')->name('finance.asset-flow')->middleware('permission:finance.asset-flow');
             Route::get('export', 'AssetFlowController@export')->name('finance.asset-flow.export');
         });
         // 提现
         Route::prefix('recharge')->group(function (){
-            Route::get('/', 'RechargeController@index')->name('finance.recharge');
+            Route::get('/', 'RechargeController@index')->name('finance.recharge')->middleware('permission:finance.recharge');
         });
         // 提现
         Route::prefix('balance-withdraw')->group(function (){
-            Route::get('/', 'BalanceWithdrawController@index')->name('finance.balance-withdraw');
+            Route::get('/', 'BalanceWithdrawController@index')->name('finance.balance-withdraw')->middleware('permission:finance.balance-withdraw');
             Route::get('export', 'BalanceWithdrawController@export')->name('finance.balance-withdraw.export');
         });
         // 资金日报表
         Route::prefix('finance-report-day')->group(function (){
-            Route::get('/', 'FinanceReportDayController@index')->name('finance.finance-report-day');
+            Route::get('/', 'FinanceReportDayController@index')->name('finance.finance-report-day')->middleware('permission:finance.finance-report-day');
             Route::get('export', 'FinanceReportDayController@export')->name('finance.finance-report-day.export');
         });
     });

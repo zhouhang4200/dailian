@@ -84,9 +84,10 @@
         <div class="layui-card-body">
             <div class="user-info" style="height: 250px;">
                 <div id="user-img" class="info-img fl"
-                      style="float:left;width:80px;height:100px;background-image:url('{{ $user->avatar }}');background-size: cover !important;background-position: center !important;margin-bottom:3px;">
+                     style="float: left; width: 80px; height: 80px; margin-bottom: 3px; background-size: cover !important; background-position: center center !important; background-image: url({{ $user->avatar }});"
+                      >
                     <button class="qs-btn layui-btn-normal layui-btn-mini" id="avatar-edit"
-                            style="width:100%;padding:0;margin-top:115px;">修改头像
+                            style="width:100%;padding:0;margin-top:85px;">修改头像
                     </button>
                     @if(Auth::user()->isParent())
                         <button class="qs-btn layui-btn-normal layui-btn-mini" id="profit-edit"

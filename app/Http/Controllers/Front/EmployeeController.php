@@ -78,7 +78,7 @@ class EmployeeController extends Controller
         $data['password'] = bcrypt(clientRSADecrypt($request->password));
         $data['pay_password'] = bcrypt(clientRSADecrypt($request->pay_password));
         $data['parent_id'] = Auth::user()->parent_id;
-        $data['avatar'] = "/frontend/v1/images/default-avatar.png";
+        $data['avatar'] = "/front/images/default_avatar.png";
         $data['email'] = '';
         $roleIds = $request->roles ?: [];
 

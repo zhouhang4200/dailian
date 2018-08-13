@@ -137,4 +137,57 @@ class ProfileController extends Controller
         }
         return response()->json(['status' => 0, 'message' => '修改失败!']);
     }
+
+    /**
+     * 修改密码
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function changePassword()
+    {
+        $oldPassword = clientRSADecrypt(request('old_password'));
+        $newPassword = clientRSADecrypt(request('password'));
+
+        $currentUser = request()->user();
+        if (! \Hash::check($oldPassword, $currentUser->password)) {
+            return response()->json(['status' => 0, 'message' => '原密码错误']);
+        }
+        $currentUser->password = bcrypt($newPassword);
+        $currentUser->save();
+
+        return response()->json(['status' => 1, 'message' => '修改成功']);
+    }
+
+    /**
+     * 设置密码
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function setPayPassword()
+    {
+        $newPassword = clientRSADecrypt(request('password'));
+
+        $currentUser = request()->user();
+        $currentUser->pay_password = bcrypt($newPassword);
+        $currentUser->save();
+
+        return response()->json(['status' => 1, 'message' => '设置成功']);
+    }
+
+    /**
+     * 修改支付密码
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function changePayPassword()
+    {
+        $oldPayPassword = clientRSADecrypt(request('old_password'));
+        $newPayPassword = clientRSADecrypt(request('password'));
+
+        $currentUser = request()->user();
+        if (! \Hash::check($oldPayPassword, $currentUser->pay_password)) {
+            return response()->json(['status' => 0, 'message' => '原支付密码错误']);
+        }
+        $currentUser->pay_password = bcrypt($newPayPassword);
+        $currentUser->save();
+
+        return response()->json(['status' => 1, 'message' => '修改成功']);
+    }
 }

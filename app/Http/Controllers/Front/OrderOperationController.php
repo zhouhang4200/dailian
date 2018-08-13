@@ -36,7 +36,7 @@ class OrderOperationController extends Controller
         try {
             $order = OrderService::init(request()->user()->id, request('trade_no'))
                 ->take(clientRSADecrypt(request('pay_password')), clientRSADecrypt(request('take_password')));
-//            TmApiService::take($order);
+            TmApiService::take($order);
         } catch (OrderTimeException $e) {
             myLog('wanzi-operate-take-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
             return response()->ajaxFail($e->getMessage());
@@ -86,7 +86,7 @@ class OrderOperationController extends Controller
         DB::beginTransaction();
         try {
             $order = OrderService::init(request()->user()->id, request('trade_no'))->applyComplete(array_filter($images));
-//            TmApiService::applyComplete($order->trade_no);
+            TmApiService::applyComplete($order->trade_no);
         } catch (OrderTimeException $e) {
             myLog('wanzi-operate-applyComplete-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
             return response()->ajaxFail($e->getMessage());
@@ -127,7 +127,7 @@ class OrderOperationController extends Controller
         DB::beginTransaction();
         try {
             $order = OrderService::init(request()->user()->id, request('trade_no'))->cancelComplete();
-//            TmApiService::cancelComplete($order->trade_no);
+            TmApiService::cancelComplete($order->trade_no);
         } catch (OrderTimeException $e) {
             myLog('wanzi-operate-cancelComplete-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
             return response()->ajaxFail($e->getMessage());
@@ -457,7 +457,7 @@ class OrderOperationController extends Controller
         try {
             $order = OrderService::init(request()->user()->id, $tradeNO)
                 ->applyConsult($amount, $depositResult['security_deposit'], $depositResult['efficiency_deposit'], $reason);
-//            TmApiService::applyConsult($order->trade_no, $amount, $deposit, $reason);
+            TmApiService::applyConsult($order->trade_no, $amount, $deposit, $reason);
         } catch (OrderTimeException $e) {
             myLog('wanzi-operate-applyConsult-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
             return response()->ajaxFail($e->getMessage());
@@ -498,7 +498,7 @@ class OrderOperationController extends Controller
         DB::beginTransaction();
         try {
             $order = OrderService::init(request()->user()->id, request('trade_no'))->cancelConsult();
-//            TmApiService::cancelConsult($order->trade_no);
+            TmApiService::cancelConsult($order->trade_no);
         } catch (OrderTimeException $e) {
             myLog('wanzi-operate-cancelConsult-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
             return response()->ajaxFail($e->getMessage());

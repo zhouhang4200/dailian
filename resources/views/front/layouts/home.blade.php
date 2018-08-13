@@ -46,7 +46,10 @@
             <a href="{{ route('login') }}" class="login">登录</a>
         @else
             <a href="{{ route('register') }}" class="register" style="width: auto;color:#fff;background-color: #323436">欢迎回来！ {{ auth()->user()->name }}&nbsp; | &nbsp;</a>
-             <a href="{{ route('login') }}" class="login" style="width: auto;background-color: #323436">[退出登录]</a>
+             <a href="javascript:" class="logout" style="width: auto;background-color: #323436;color:#fff">[退出登录]</a>
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                {{ csrf_field() }}
+            </form>
         @endif
 
     </div>
@@ -61,8 +64,16 @@
 <script src="/js/encrypt.js"></script>
 <script>
     $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')}});
-    layui.use(['element'], function () {
-        var element = layui.element;
+    layui.use(['form', 'layedit', 'laydate', 'element'], function(){
+        var form = layui.form, layer = layui.layer, element = layui.element, laydate = layui.laydate;
+
+        $('.logout').click(function () {
+            layer.confirm('确定退出吗?', {icon: 3, title:'提示'}, function(index){
+                document.getElementById('logout-form').submit();
+                layer.close(index);
+                return true;
+            });
+        });
     });
     $('.main').height($(document).height() - 90);
     $(window).resize(function () {

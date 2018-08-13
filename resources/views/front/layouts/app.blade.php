@@ -150,6 +150,14 @@ $financeRoute = [
                         <dd style="text-align: center;">
                             <a href="{{ route('profile') }}">基本资料</a>
                         </dd>
+                        <hr/>
+                        <dd style="text-align: center;">
+                            <a href="javascript:" id="change-password">修改登录密码</a>
+                        </dd>
+                        <hr>
+                        <dd style="text-align: center;">
+                            <a href="javascript:" id="change-pay-password">修改支付密码</a>
+                        </dd>
                         <hr>
                         <dd style="text-align: center;" id="logout">
                             <a href="{{ route('logout') }}" onclick="event.preventDefault();">
@@ -305,12 +313,12 @@ $financeRoute = [
         laydate.render({elem: '#start-time'});
         laydate.render({elem: '#end-time'});
 
+        @include('front.profile.password-js')
+
         $(document).on('click', '.cancel', function () {
             layer.closeAll();
         });
     });
-
-
 
     $('#logout').click(function () {
         layer.confirm('确定退出吗?', {icon: 3, title:'提示'}, function(index){
@@ -319,7 +327,6 @@ $financeRoute = [
             return true;
         });
     });
-
 
     (function () {
         var socket=io("{{ env('SOCKET') }}");
@@ -349,4 +356,5 @@ $financeRoute = [
 @yield('js')
 </body>
 @yield('pop')
+@include('front.profile.password')
 </html>

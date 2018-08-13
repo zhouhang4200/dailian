@@ -41,8 +41,14 @@
         </ul>
     </div>
     <div class="user">
-        <a href="{{ route('register') }}" class="register">注册</a>
-        <a href="{{ route('login') }}" class="login">登录</a>
+        @if (auth()->guard()->guest())
+            <a href="{{ route('register') }}" class="register">注册</a>
+            <a href="{{ route('login') }}" class="login">登录</a>
+        @else
+            <a href="{{ route('register') }}" class="register" style="width: auto;color:#fff;background-color: #323436">欢迎回来！ {{ auth()->user()->name }}&nbsp; | &nbsp;</a>
+             <a href="{{ route('login') }}" class="login" style="width: auto;background-color: #323436">[退出登录]</a>
+        @endif
+
     </div>
 </div>
 @yield('main')

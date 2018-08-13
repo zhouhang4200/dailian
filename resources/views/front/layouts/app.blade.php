@@ -316,7 +316,6 @@ $financeRoute = [
         });
     });
 
-
     $('#logout').click(function () {
         layer.confirm('确定退出吗?', {icon: 3, title:'提示'}, function(index){
             document.getElementById('logout-form').submit();

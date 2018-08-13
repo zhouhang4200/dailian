@@ -17,31 +17,49 @@ $('#change-pay-password').click(function () {
     return false;
 });
 
-form.on('submit(confirm-change-password)', function(){
+form.on('submit(confirm-change-password)', function(data){
     $.post('{{ route('profile.change-password') }}', {
-        'old_password':data.field.old_password,
-        'password':data.field.password,
-        'repeat_password':data.field.repeat_password
+        'old_password':encrypt(data.field.old_password),
+        'password':encrypt(data.field.password),
+        'repeat_password':encrypt(data.field.repeat_password)
     }, function(result){
-
-    }, 'json')
+        if (result.status == 1) {
+            layer.closeAll();
+            layer.msg(result.message);
+        } else {
+            layer.msg(result.message);
+        }
+    }, 'json');
+    return false;
 });
 
-form.on('submit(confirm-set-pay-password)', function(){
+form.on('submit(confirm-set-pay-password)', function(data){
     $.post('{{ route('profile.set-pay-password') }}', {
-        'password':data.field.password,
-        'repeat_password':data.field.repeat_password
+        'password':encrypt(data.field.password),
+        'repeat_password':encrypt(data.field.repeat_password)
     }, function(result){
-
-    }, 'json')
+        if (result.status == 1) {
+            layer.closeAll();
+            layer.msg(result.message);
+        } else {
+            layer.msg(result.message);
+        }
+    }, 'json');
+    return false;
 });
 
-form.on('submit(confirm-change-pay-password)', function(){
+form.on('submit(confirm-change-pay-password)', function(data){
     $.post('{{ route('profile.change-pay-password') }}', {
-        'old_pay_password':data.field.old_pay_password,
-        'pay_password':data.field.pay_password,
-        'repeat_pay_password':data.field.repeat_pay_password
+        'old_password':encrypt(data.field.old_password),
+        'password':encrypt(data.field.password),
+        'repeat_pay_password':encrypt(data.field.repeat_password)
     }, function(result){
-
-    }, 'json')
+        if (result.status == 1) {
+            layer.closeAll();
+            layer.msg(result.message);
+        } else {
+            layer.msg(result.message);
+        }
+    }, 'json');
+    return false;
 });

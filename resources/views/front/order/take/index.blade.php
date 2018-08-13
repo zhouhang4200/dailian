@@ -341,6 +341,7 @@
                 elem: '#order-list',
                 url: '{{ route('order.take') }}',
                 method: 'post',
+                where:{_token:$('meta[name="_token"]').attr('content')},
                 cols: [[
                     {field: 'trade_no', title: '订单号', width: 260, templet: '#noTemplate', style:"height: 40px;line-height: 20px;"},
                     {field: 'status_des', title: '订单状态', width: 95, style:"height: 40px;line-height: 20;", templet:'#statusTemplate' },

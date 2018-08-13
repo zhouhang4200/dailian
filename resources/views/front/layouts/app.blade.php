@@ -238,14 +238,18 @@ $financeRoute = [
                                 <a href="{{ route('real-name-certification') }}">实名认证</a>
                             </dd>
                             @endif
+                            @if(Auth::user()->could('employee.group'))
                             <dd data-name="console"
                                 class="@if(Route::currentRouteName() == 'employee.group') layui-this  @endif">
                                 <a href="{{ route('employee.group') }}">岗位管理</a>
                             </dd>
+                            @endif
+                            @if(Auth::user()->could('employee'))
                             <dd data-name="console"
                                 class="@if(Route::currentRouteName() == 'employee') layui-this  @endif">
                                 <a href="{{ route('employee') }}">员工管理</a>
                             </dd>
+                            @endif
                         </dl>
                     </li>
 

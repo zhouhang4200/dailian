@@ -16,6 +16,9 @@ class EventServiceProvider extends ServiceProvider
         'Illuminate\Auth\Events\Login' => [
             'App\Listeners\Login\WriteLoginData',
         ],
+        'Illuminate\Auth\Events\Registered' => [
+            'App\Listeners\Registered\GivePermission',
+        ],
     ];
 
     /**

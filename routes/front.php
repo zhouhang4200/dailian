@@ -48,7 +48,6 @@ Route::group(['middleware' => 'auth'], function (){
     // 订单
     Route::prefix('order')->group(function (){
 
-
         // 发单方
         Route::prefix('send')->group(function (){
             Route::get('/', 'OrderSendController@index')->name('order.send'); // 发单管理视图
@@ -99,11 +98,15 @@ Route::group(['middleware' => 'auth'], function (){
             Route::get('export', 'AssetFlowController@export')->name('finance.asset-flow.export');
         });
         // 提现
+        Route::prefix('recharge')->group(function (){
+            Route::get('/', 'RechargeController@index')->name('finance.recharge');
+        });
+        // 提现
         Route::prefix('balance-withdraw')->group(function (){
             Route::get('/', 'BalanceWithdrawController@index')->name('finance.balance-withdraw');
             Route::get('export', 'BalanceWithdrawController@export')->name('finance.balance-withdraw.export');
         });
-        // 提现
+        // 资金日报表
         Route::prefix('finance-report-day')->group(function (){
             Route::get('/', 'FinanceReportDayController@index')->name('finance.finance-report-day');
             Route::get('export', 'FinanceReportDayController@export')->name('finance.finance-report-day.export');
@@ -117,6 +120,9 @@ Route::group(['middleware' => 'auth'], function (){
         Route::post('update', 'ProfileController@update')->name('profile.update');
         Route::post('avatar/show', 'ProfileController@avatarShow')->name('profile.avatar-show'); // layui后台返回头像路径到页面
         Route::post('avatar/update', 'ProfileController@avatarUpdate')->name('profile.avatar-update'); // 上传头像
+        Route::post('change-password', 'ProfileController@changePassword')->name('profile.change-password'); // 修改密码
+        Route::post('set-pay-password', 'ProfileController@setPayPassword')->name('profile.set-pay-password'); // 设置支付密码
+        Route::post('change-pay-password', 'ProfileController@changePayPassword')->name('profile.change-pay-password'); // 修改支付密码
     });
     // 实名认证
     Route::prefix('real-name-certification')->group(function () {

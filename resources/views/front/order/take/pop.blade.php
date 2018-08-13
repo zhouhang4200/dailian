@@ -75,7 +75,7 @@
                                 <span class=" btn-file" style="padding: 0;">
                                     <span class="fileinput-new"></span>
                                     <span class="fileinput-exists"></span>
-                                    <input type="file" name="pic1" id="picID" accept="image/gif,image/jpeg,image/x-png" />
+                                    <input type="file" name="pic1"  accept="image/gif,image/jpeg,image/x-png" />
                                 </span>
                             <a href="javascript:;" class="fileinput-exists" data-dismiss="fileinput" style="padding: 0;">
                                 <i class="iconfont icon-shanchu4"></i>
@@ -93,7 +93,7 @@
                                 <span class="btn-file" style="padding: 0;">
                                     <span class="fileinput-new"></span>
                                     <span class="fileinput-exists"></span>
-                                    <input type="file" name="pic1" id="picID" accept="image/gif,image/jpeg,image/x-png" />
+                                    <input type="file" name="pic1"  accept="image/gif,image/jpeg,image/x-png" />
                                 </span>
                             <a href="javascript:;" class="fileinput-exists" data-dismiss="fileinput" style="padding: 0;">
                                 <i class="iconfont icon-shanchu4"></i>
@@ -111,7 +111,7 @@
                                <span class="btn-file" style="padding: 0;">
                                     <span class="fileinput-new"></span>
                                     <span class="fileinput-exists"></span>
-                                    <input type="file" name="pic1" id="picID" accept="image/gif,image/jpeg,image/x-png" />
+                                    <input type="file" name="pic1"  accept="image/gif,image/jpeg,image/x-png" />
                                </span>
                             <a href="javascript:;" class="fileinput-exists" data-dismiss="fileinput" style="padding: 0;">
                                 <i class="iconfont icon-shanchu4"></i>
@@ -129,7 +129,7 @@
         </div>
         <div class="layui-form-item">
             <div class="layui-input-block">
-                <button class="qs-btn layui-btn-normal" id="submit" lay-submit lay-filter="confirm-apply-complain">确认
+                <button class="qs-btn layui-btn-normal"  lay-submit lay-filter="confirm-apply-complain">确认
                 </button>
                 <span cancel class="qs-btn  layui-btn-normal cancel">取消</span>
             </div>
@@ -153,7 +153,7 @@
                                 <span class=" btn-file" style="padding: 0;">
                                     <span class="fileinput-new"></span>
                                     <span class="fileinput-exists"></span>
-                                    <input type="file" name="pic1" id="picID" accept="image/gif,image/jpeg,image/x-png" />
+                                    <input type="file" name="pic1"  accept="image/gif,image/jpeg,image/x-png" />
                                 </span>
                             <a href="javascript:;" class="fileinput-exists" data-dismiss="fileinput" style="padding: 0;">
                                 <i class="iconfont icon-shanchu4"></i>
@@ -171,7 +171,7 @@
                                 <span class="btn-file" style="padding: 0;">
                                     <span class="fileinput-new"></span>
                                     <span class="fileinput-exists"></span>
-                                    <input type="file" name="pic1" id="picID" accept="image/gif,image/jpeg,image/x-png" />
+                                    <input type="file" name="pic1"  accept="image/gif,image/jpeg,image/x-png" />
                                 </span>
                             <a href="javascript:;" class="fileinput-exists" data-dismiss="fileinput" style="padding: 0;">
                                 <i class="iconfont icon-shanchu4"></i>
@@ -189,7 +189,7 @@
                                <span class="btn-file" style="padding: 0;">
                                     <span class="fileinput-new"></span>
                                     <span class="fileinput-exists"></span>
-                                    <input type="file" name="pic1" id="picID" accept="image/gif,image/jpeg,image/x-png" />
+                                    <input type="file" name="pic1"  accept="image/gif,image/jpeg,image/x-png" />
                                </span>
                             <a href="javascript:;" class="fileinput-exists" data-dismiss="fileinput" style="padding: 0;">
                                 <i class="iconfont icon-shanchu4"></i>
@@ -201,7 +201,7 @@
         </div>
         <div class="layui-form-item">
             <div class="layui-input-block">
-                <button class="qs-btn layui-btn-normal" id="submit" lay-submit lay-filter="confirm-apply-complete">确认
+                <button class="qs-btn layui-btn-normal"  lay-submit lay-filter="confirm-apply-complete">确认
                 </button>
                 <span cancel class="qs-btn  layui-btn-normal cancel">取消</span>
             </div>

@@ -137,4 +137,19 @@ class ProfileController extends Controller
         }
         return response()->json(['status' => 0, 'message' => '修改失败!']);
     }
+
+    public function changePassword()
+    {
+
+    }
+
+    public function setPayPassword()
+    {
+
+    }
+
+    public function changePayPassword()
+    {
+
+    }
 }

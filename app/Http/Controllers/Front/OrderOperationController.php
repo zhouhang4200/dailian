@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Front;
 
 use App\Exceptions\Order\OrderImageException;
 use Exception;
+use App\Exceptions\UserAsset\UserAssetBalanceException;
 use App\Exceptions\Order\OrderTimeException;
 use App\Exceptions\Order\OrderUserException;
 use App\Exceptions\Order\OrderMoneyException;
@@ -58,6 +59,9 @@ class OrderOperationController extends Controller
         } catch (OrderUnauthorizedException $e) {
             myLog('wanzi-operate-take-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
             return response()->ajaxFail($e->getMessage());
+        } catch (UserAssetBalanceException $e) {
+            myLog('wanzi-operate-take-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
+            return response()->json(['status' => 5, 'message' => $e->getMessage()]);
         } catch (Exception $e) {
             myLog('wanzi-operate-take-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
             return response()->json(['status' => 5, 'message' => '未知错误']);

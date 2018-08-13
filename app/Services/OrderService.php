@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Exceptions\Order\OrderComplainException;
 use App\Models\GameLevelingOrderMessage;
 use Exception;
+use App\Exceptions\UserAsset\UserAssetBalanceException;
 use App\Exceptions\Order\OrderTimeException;
 use App\Exceptions\Order\OrderUserException;
 use App\Exceptions\Order\OrderMoneyException;
@@ -233,6 +234,8 @@ class OrderService
             self::$order->save();
             // 写入订单日志
             GameLevelingOrderLog::store('接单', self::$order->trade_no, self::$user->id, self::$user->name, self::$user->parent_id, self::$user->name . ': 进行操作 [接单]');
+        } catch (UserAssetBalanceException $e) {
+            throw new UserAssetBalanceException($e->getMessage());
         } catch (Exception $exception) {
             throw new Exception($exception->getMessage());
         }

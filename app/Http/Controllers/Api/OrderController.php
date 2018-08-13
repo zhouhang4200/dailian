@@ -1191,7 +1191,7 @@ class OrderController extends Controller
                 if ($k == 1) {
                     $data['image']['pic2'] = static::$url.$image->path;
                 }
-                if ($k == 1) {
+                if ($k == 2) {
                     $data['image']['pic3'] = static::$url.$image->path;
                 }
             }

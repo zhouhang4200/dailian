@@ -18,7 +18,7 @@ $('#change-pay-password').click(function () {
 });
 
 form.on('submit(confirm-change-password)', function(){
-    $.post('route('profile.confirm-change-password')', {
+    $.post('{{ route('profile.change-password') }}', {
         'old_password':data.field.old_password,
         'password':data.field.password,
         'repeat_password':data.field.repeat_password
@@ -28,7 +28,7 @@ form.on('submit(confirm-change-password)', function(){
 });
 
 form.on('submit(confirm-set-pay-password)', function(){
-    $.post('route('profile.confirm-set-pay-password')', {
+    $.post('{{ route('profile.set-pay-password') }}', {
         'password':data.field.password,
         'repeat_password':data.field.repeat_password
     }, function(result){
@@ -37,7 +37,7 @@ form.on('submit(confirm-set-pay-password)', function(){
 });
 
 form.on('submit(confirm-change-pay-password)', function(){
-    $.post('route('profile.confirm-change-pay-password')', {
+    $.post('{{ route('profile.change-pay-password') }}', {
         'old_pay_password':data.field.old_pay_password,
         'pay_password':data.field.pay_password,
         'repeat_pay_password':data.field.repeat_pay_password

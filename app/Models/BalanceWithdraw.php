@@ -16,6 +16,8 @@ class BalanceWithdraw extends Model
         'user_id',
         'trade_no',
         'amount',
+        'real_amount',
+        'poundage',
         'real_name',
         'bank_card',
         'bank_name' ,

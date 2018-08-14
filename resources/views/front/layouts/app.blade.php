@@ -27,7 +27,8 @@ $accountRoute = [
 
 $financeRoute = [
     'finance.asset-flow',
-    'finance.balance-withdraw',
+    'finance.balance-withdraw.record',
+    'finance.balance-recharge.record',
     'finance.finance-report-day',
 ];
 
@@ -215,22 +216,29 @@ $financeRoute = [
                         </a>
                         <dl class="layui-nav-child">
                             <dd data-name="console"
+                                class="@if(Route::currentRouteName() == 'finance.finance-report-day') layui-this  @endif" >
+                                <a href="{{ route('finance.finance-report-day') }}">资金日报</a>
+                            </dd>
+                        </dl>
+                        <dl class="layui-nav-child">
+                            <dd data-name="console"
                                 class="@if(Route::currentRouteName() == 'finance.asset-flow') layui-this  @endif" >
                                 <a href="{{ route('finance.asset-flow') }}">资金明细</a>
                             </dd>
                         </dl>
                         <dl class="layui-nav-child">
                             <dd data-name="console"
-                                class="@if(Route::currentRouteName() == 'finance.balance-withdraw') layui-this  @endif" >
-                                <a href="{{ route('finance.balance-withdraw') }}">我的提现</a>
+                                class="@if(Route::currentRouteName() == 'finance.balance-withdraw.record') layui-this  @endif" >
+                                <a href="{{ route('finance.balance-withdraw.record') }}">提现记录</a>
                             </dd>
                         </dl>
                         <dl class="layui-nav-child">
                             <dd data-name="console"
-                                class="@if(Route::currentRouteName() == 'finance.finance-report-day') layui-this  @endif" >
-                                <a href="{{ route('finance.finance-report-day') }}">资金日报</a>
+                                class="@if(Route::currentRouteName() == 'finance.balance-recharge.record') layui-this  @endif" >
+                                <a href="{{ route('finance.balance-recharge.record') }}">充值记录</a>
                             </dd>
                         </dl>
+
                     </li>
 
                     <li data-name="home"

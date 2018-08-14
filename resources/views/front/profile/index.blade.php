@@ -185,19 +185,19 @@
                         {{ $user->userAsset ? $user->userAsset->frozen + 0 : 0 }}
                     </div>
                     <div class="blocked-balances">累计加款：
-                        0
+                        {{ $user->userAsset ? $user->userAsset->total_recharge + 0 : 0 }}
                     </div>
                     <div class="blocked-balances">累计提现：
-                        0
+                        {{ $user->userAsset ? $user->userAsset->total_withdraw + 0 : 0 }}
                     </div>
                     <div class="blocked-balances">累计收入：
-                        0
+                        {{ $user->userAsset ? $user->userAsset->total_income + 0 : 0 }}
                     </div>
                     <div class="blocked-balances">累计支出：
-                        0
+                        {{ $user->userAsset ? $user->userAsset->total_expend + 0 : 0 }}
                     </div>
-                    <button class="qs-btn layui-btn-normal layui-btn-custom-mini charge" lay-filter="charge" lay-submit="">余额充值</button>
-                    <button id="withdraw" class="qs-btn qs-btn-normal qs-btn-custom-mini" type="button" >余额提现</button>
+                    <a href="{{ route('finance.balance-recharge') }}" class="qs-btn" style="color: #fff">余额充值</a>
+                    <a href="{{ route('finance.balance-withdraw') }}" class="qs-btn" style="color: #fff">余额提现</a>
                 </div>
             </div>
         </div>

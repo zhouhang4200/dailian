@@ -338,3 +338,17 @@ function printSql($callback)
     dd(\DB::getQueryLog());
 }
 
+/*
+ * 文件转base64输出
+ */
+function fileToBase64($file){
+    $base64File = '';
+    if(file_exists($file)){
+        $mimeType= mime_content_type($file);
+        $base64Data = base64_encode(file_get_contents($file));
+        $base64File = 'data:'.$mimeType.';base64,'.$base64Data;
+//        unlink($file);
+    }
+    return $base64File;
+}
+

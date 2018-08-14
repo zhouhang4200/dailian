@@ -15,6 +15,7 @@
 Route::get('/', 'HomeController@index')->name('home');
 // 待接单列表
 Route::get('order', 'OrderController@index')->name('order');
+Route::post('order/get-server', 'OrderController@getServers')->name('order.get-server');
 // 公告中心
 Route::get('notice', 'NoticeController@index')->name('notice');
 // 活动中心
@@ -98,13 +99,19 @@ Route::group(['middleware' => 'auth'], function (){
             Route::get('/', 'AssetFlowController@index')->name('finance.asset-flow');
             Route::get('export', 'AssetFlowController@export')->name('finance.asset-flow.export');
         });
-        // 提现
-        Route::prefix('recharge')->group(function (){
-            Route::get('/', 'RechargeController@index')->name('finance.recharge');
+        // 余额充值
+        Route::prefix('balance-recharge')->group(function (){
+            Route::get('/', 'BalanceRechargeController@index')->name('finance.balance-recharge');
+            Route::get('record', 'BalanceRechargeController@record')->name('finance.balance-recharge.record');
+            Route::get('pay', 'BalanceRechargeController@pay')->name('finance.balance-recharge.pay');
+            Route::get('pay-success', 'BalanceRechargeController@paySuccess')->name('finance.balance-recharge.pay-success');
+            Route::get('export', 'BalanceRechargeController@export')->name('finance.balance-recharge.export');
         });
-        // 提现
+        // 余额提现
         Route::prefix('balance-withdraw')->group(function (){
             Route::get('/', 'BalanceWithdrawController@index')->name('finance.balance-withdraw');
+            Route::post('/', 'BalanceWithdrawController@store');
+            Route::get('record', 'BalanceWithdrawController@record')->name('finance.balance-withdraw.record');
             Route::get('export', 'BalanceWithdrawController@export')->name('finance.balance-withdraw.export');
         });
         // 资金日报表
@@ -133,6 +140,16 @@ Route::group(['middleware' => 'auth'], function (){
         Route::get('edit', 'RealNameCertificationController@edit')->name('real-name-certification.edit');
         Route::post('update', 'RealNameCertificationController@update')->name('real-name-certification.update');
         Route::post('image/update', 'RealNameCertificationController@imageUpdate')->name('real-name-certification.image-update');
+    });
+});
+
+// 余额充值回调
+
+Route::prefix('finance')->namespace('Finance')->group(function () {
+    // 余额充值
+    Route::prefix('balance-recharge')->group(function () {
+        Route::any('alipay-notify', 'BalanceRechargeController@alipayNotify')->name('finance.balance-recharge.alipay-notify');
+        Route::any('wechat-notify', 'BalanceRechargeController@wechatNotify')->name('finance.balance-recharge.wechat-notify');
     });
 });
 

@@ -32,37 +32,38 @@
         </div>
         <form class="layui-form" action="">
             <div class="layui-form-item">
+                <input type="hidden" name="game_id" value="{{ request('game_id') }}">
                 <div class="layui-inline">
                     <label class="layui-form-label">区</label>
                     <div class="layui-input-inline">
-                        <select name="qu" lay-filter="qu">
+                        <select name="region_id" lay-filter="region">
                             <option value="">请选择</option>
-                            <option value="0">一区</option>
-                            <option value="1">二区</option>
-                            <option value="2">三区</option>
+                            @foreach($regions as $item)
+                                <option value="{{ $item->id }}" @if($item->id == request('region_id')) selected @endif>{{ $item->name }}</option>
+                            @endforeach
+
                         </select>
                     </div>
                 </div>
                 <div class="layui-inline">
                     <label class="layui-form-label">服</label>
                     <div class="layui-input-inline">
-                        <select name="fu" lay-filter="fu">
+                        <select name="server_id" lay-filter="server">
                             <option value="">请选择</option>
-                            <option value="0">写作</option>
-                            <option value="1" selected="">阅读</option>
-                            <option value="2">游戏</option>
-                            <option value="3">音乐</option>
-                            <option value="4">旅行</option>
+                            @foreach($servers as $item)
+                                <option value="{{ $item->id }}" @if($item->id == request('server_id')) selected @endif>{{ $item->name }}</option>
+                            @endforeach
                         </select>
                     </div>
                 </div>
                 <div class="layui-inline">
                     <label class="layui-form-label">代练类型</label>
                     <div class="layui-input-inline">
-                        <select name="dl_type" lay-filter="dl_type">
+                        <select name="game_leveling_type_id" lay-filter="">
                             <option value="">请选择</option>
-                            <option value="0">写作</option>
-                            <option value="1" selected="">阅读</option>
+                            @foreach($gameLevelingTypes as $item)
+                                <option value="{{ $item->id }}" @if($item->id == request('game_leveling_type_id')) selected @endif>{{ $item->name }}</option>
+                            @endforeach
                         </select>
                     </div>
                 </div>
@@ -220,6 +221,17 @@
                     layer.msg(result.message);
                 }, 'json');
                 return false;
+            });
+            form.on('select(region)', function (data) {
+                $.post('{{ route('order.get-server') }}', {region_id:data.value}, function (result) {
+                    if (result.status) {
+                        $('[name=server_id]').empty();
+                        $.each(result.content, function (i, v) {
+                            $('[name=server_id]').append("<option>" + v.name + "</option>")
+                        });
+                        form.render()
+                    }
+                }, 'json');
             });
         });
     </script>

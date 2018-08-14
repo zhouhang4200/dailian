@@ -120,6 +120,48 @@ class GameLevelingOrder extends Model
     }
 
     /**
+     * @param $query
+     * @param $condition
+     * @return mixed
+     */
+    public static function scopeCondition($query, $condition)
+    {
+        if (isset($condition['parent_user_id']) && $condition['parent_user_id']) {
+            $query->where('parent_user_id', $condition['parent_user_id']);
+        }
+
+        if (isset($condition['take_parent_user_id']) && $condition['take_parent_user_id']) {
+            $query->where('take_parent_user_id', $condition['take_parent_user_id']);
+        }
+
+        if (isset($condition['game_leveling_type_id']) && $condition['game_leveling_type_id']) {
+            $query->where('game_leveling_type_id', $condition['game_leveling_type_id']);
+        }
+
+        if (isset($condition['status']) && $condition['status']) {
+            $query->where('status', $condition['status']);
+        }
+
+        if (isset($condition['trade_no']) && $condition['trade_no']) {
+            $query->where('trade_no', $condition['trade_no']);
+        }
+
+        if (isset($condition['game_id']) && $condition['game_id']) {
+            $query->where('game_id', $condition['game_id']);
+        }
+
+        if (isset($condition['start_time']) && $condition['start_time']) {
+            $query->where('created_at', '>=',$condition['start_time']);
+        }
+
+        if (isset($condition['end_time']) && $condition['end_time']) {
+            $query->where('created_at', '<=',$condition['end_time'] . ' 23:59:59');
+        }
+
+        return $query;
+    }
+
+    /**
      * 获取订单状态
      * @return mixed
      */

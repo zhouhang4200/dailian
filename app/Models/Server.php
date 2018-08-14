@@ -28,6 +28,10 @@ class Server extends Model
         if (isset($condition['game_class_id']) && $condition['game_class_id']) {
             $query->where('game_class_id', $condition['game_class_id']);
         }
+
+        if (isset($condition['region_id']) && $condition['region_id']) {
+            $query->where('region_id', $condition['region_id']);
+        }
         return $query;
     }
 

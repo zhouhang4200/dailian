@@ -53,7 +53,7 @@ class BalanceWithdraw extends Model
         }
 
         if (isset($conditions['end_time'])) {
-            $query->$conditions('updated_at', '<=', $conditions['end_time'].' 23:59:59');
+            $query->$conditions('created_at', '<=', $conditions['end_time'].' 23:59:59');
         }
         return $query;
     }

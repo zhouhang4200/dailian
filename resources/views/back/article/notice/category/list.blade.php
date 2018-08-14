@@ -16,7 +16,7 @@
                 <td>{{ $category->status == 1 ? '是' : '否' }}</td>
                 <td>
                     <a type="button" class="layui-btn layui-btn-normal edit" href="{{ route('admin.article.category-notice-edit', ['id' => $category->id]) }}" data-id="{{ $category->id }}">编辑</a>
-                    <button lay-submit="" lay-filter="notice" type="button" class="btn btn-success"  category-id="{{ $category->id }}">公告管理</button>
+                    <button lay-submit="" lay-filter="notice" type="button" class="layui-btn layui-btn-normal"  category-id="{{ $category->id }}">公告管理</button>
                     <button lay-submit="" lay-filter="category-delete" class="layui-btn layui-btn-danger" lay-id="{{ $category->id }}">删除</button>
                 </td>
             </tr>

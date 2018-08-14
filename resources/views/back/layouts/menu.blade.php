@@ -125,6 +125,33 @@ $systemRoute = [
                         </ul>
                     </li>
 
+                    <li @if(in_array($currentRouteName, [
+                        'admin.permission',
+                        'admin.permission.update',
+                        'admin.permission.store',
+                        'admin.permission.delete',
+                        'admin.role',
+                        'admin.role.update',
+                        'admin.role.store',
+                        'admin.role.delete',
+                        'admin.user-role',
+                        'admin.user-role.update',
+                        'admin.user-role.store',
+                        'admin.user-role.delete',
+                    ])) class="open active" @endif>
+                        <a href="#" class="dropdown-toggle">
+                            <i class="fa  fa-money"></i>
+                            <span>权限管理</span>
+                            <i class="fa fa-chevron-circle-right drop-icon"></i>
+                        </a>
+                        <ul class="submenu">
+                            <li>
+                                <a href="{{ route('admin.permission') }}" @if($currentRouteName == 'admin.permission') class="active" @endif>
+                                    权限列表
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
 
                     <li @if(in_array($currentRouteName, $financeRoute)) class="open active" @endif>
                         <a href="#" class="dropdown-toggle">

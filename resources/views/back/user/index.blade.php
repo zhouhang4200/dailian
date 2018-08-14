@@ -186,6 +186,11 @@
                 return false;
             });
 
+            form.on('submit(detail)', function(data){
+                var id=this.getAttribute('lay-id');
+                window.location.href="{{ route('admin.user.show') }}?id="+id;
+                return false;
+            });
         });
     </script>
 @endsection

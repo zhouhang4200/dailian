@@ -7,7 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Permission extends Model
 {
     public $timestamps = false;
-    protected $fillable = ['name', 'alias', 'module_id'];
+
+    protected $fillable = ['name', 'alias', 'module_name'];
 
     public function users()
     {

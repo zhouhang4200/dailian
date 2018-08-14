@@ -107,7 +107,7 @@ Route::group(['middleware' => 'auth'], function (){
             Route::get('pay-success', 'BalanceRechargeController@paySuccess')->name('finance.balance-recharge.pay-success');
             Route::get('export', 'BalanceRechargeController@export')->name('finance.balance-recharge.export');
         });
-        // 余额提现
+        // 提现
         Route::prefix('balance-withdraw')->group(function (){
             Route::get('/', 'BalanceWithdrawController@index')->name('finance.balance-withdraw');
             Route::post('/', 'BalanceWithdrawController@store');

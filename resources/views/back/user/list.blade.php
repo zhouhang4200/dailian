@@ -47,7 +47,7 @@
                     @endif
                 </td>
                 <td style="text-align: center;">
-                    <a href="{{ route('admin.user.show', ['id' => $user->id])  }}" class="layui-btn layui-btn layui-btn-normal layui-btn-mini">详情</a>
+                    <button lay-id="{{ $user->id }}" class="layui-btn layui-btn layui-btn-normal layui-btn-mini" lay-submit="" lay-filter="detail">详情</button>
                 </td>
             </tr>
         @empty

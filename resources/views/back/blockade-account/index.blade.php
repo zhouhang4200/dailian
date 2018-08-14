@@ -47,7 +47,7 @@
                                 </div>
                                 <div class="col-md-2">
                                     <button class="btn btn-success" lay-submit="" lay-filter="search">搜索</button>
-                                    <button type="button" class="layui-btn layui-btn-normal create" >添加</button>
+                                    <button type="button" class="btn btn-success create">添加</button>
                                 </div>
                             </div>
                         </form>

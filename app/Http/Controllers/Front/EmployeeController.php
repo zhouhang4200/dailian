@@ -67,9 +67,15 @@ class EmployeeController extends Controller
      */
     public function store(Request $request)
     {
+        // 判断手机号位数是否正确
+        $isRight = strlen($request->data['phone']);
+
+        if ($isRight != 11) {
+            return response()->json(['status' => 0, 'message' => '请输入正确的手机号']);
+        }
+
         // 判断手机号是否唯一
         $isSingle = User::where('phone', $request->data['phone'])->withTrashed()->first();
-
         if ($isSingle) {
             return response()->json(['status' => 0, 'message' => '账号已存在']);
         }
@@ -78,7 +84,7 @@ class EmployeeController extends Controller
         $data['password'] = bcrypt(clientRSADecrypt($request->password));
         $data['pay_password'] = bcrypt(clientRSADecrypt($request->pay_password));
         $data['parent_id'] = Auth::user()->parent_id;
-        $data['avatar'] = "/frontend/v1/images/default-avatar.png";
+        $data['avatar'] = "/front/images/default_avatar.png";
         $data['email'] = '';
         $roleIds = $request->roles ?: [];
 

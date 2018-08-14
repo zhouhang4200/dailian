@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\Permission;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -26,6 +27,7 @@ class Kernel extends HttpKernel
         'auth.admin' => \App\Http\Middleware\AuthAdmin::class,
         // api 中间件
         'api.auth' => \App\Http\Middleware\ApiAuth::class,
+        'permission' => \App\Http\Middleware\Permission::class,
     ];
 
     /**

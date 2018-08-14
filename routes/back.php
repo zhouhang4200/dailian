@@ -136,7 +136,7 @@ Route::group(['middleware' =>  ['auth.admin']], function () {
     Route::prefix('user')->group(function () {
         // 商户列表
         Route::get('/', 'UserController@index')->name('admin.user');
-        Route::get('show/{id}', 'UserController@show')->name('admin.user.show'); // 详情
+        Route::get('show', 'UserController@show')->name('admin.user.show'); // 详情
         // 实名认证
         Route::get('certification', 'UserController@certification')->name('admin.user.certification'); // 实名认证列表
         Route::get('certification/{id}', 'UserController@certificationShow')->name('admin.user.certification-show'); // 实名认证信息
@@ -239,6 +239,33 @@ Route::group(['middleware' =>  ['auth.admin']], function () {
         Route::post('count', 'BlockadeAccountController@count')->name('admin.blockade-account.count'); // 计算每种状态的个数
         Route::post('unblockade', 'BlockadeAccountController@unblockade')->name('admin.blockade-account.unblockade'); // 解除封号
         Route::post('time', 'BlockadeAccountController@time')->name('admin.blockade-account.time'); // 调整时间
+    });
+
+    // 商户权限
+    Route::prefix('rbac')->namespace('Rbac')->group(function () {
+        // 权限
+        Route::prefix('permission')->group(function () {
+            Route::get('/', 'PermissionController@index')->name('admin.permission');
+            Route::post('store', 'PermissionController@store')->name('admin.permission.store');
+            Route::post('update', 'PermissionController@update')->name('admin.permission.update');
+            Route::post('delete', 'PermissionController@delete')->name('admin.permission.delete');
+        });
+        // 角色
+        Route::prefix('role')->group(function () {
+            Route::get('/', 'RoleController@index')->name('admin.role');
+            Route::get('create', 'RoleController@create')->name('admin.role.create');
+            Route::get('edit', 'RoleController@edit')->name('admin.role.edit');
+            Route::post('store', 'RoleController@store')->name('admin.role.store');
+            Route::post('update', 'RoleController@update')->name('admin.role.update');
+            Route::post('delete', 'RoleController@delete')->name('admin.role.delete');
+        });
+        // 商户角色
+        Route::prefix('user-role')->group(function () {
+            Route::get('/', 'UserRoleController@index')->name('admin.user-role');
+            Route::post('store', 'UserRoleController@store')->name('admin.user-role.store');
+            Route::post('update', 'UserRoleController@update')->name('admin.user-role.update');
+            Route::post('delete', 'UserRoleController@delete')->name('admin.user-role.delete');
+        });
     });
 });
 

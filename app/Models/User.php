@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Auth;
+use Cache;
 use App\Notifications\ResetPasswordNotification;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
@@ -160,5 +161,46 @@ class User extends Authenticatable
     public function blockadeAccounts()
     {
         return $this->hasMany(BlockadeAccount::class);
+    }
+
+    /**
+     *  判断当前登录人是否有权限
+     * @param $permission
+     * @return bool|mixed
+     */
+    public function could($permission)
+    {
+        $userHasPermissions = $this->getUserPermissions() ? $this->getUserPermissions()->pluck('name')->toArray() : [];
+
+        // 如果是数组
+        if (is_array($permission)) {
+            foreach ($permission as $value) {
+                // 如果有权限,判断当前页面权限是否在登录人权限中
+                if (in_array($value, $userHasPermissions)) {
+                    return $value;
+                }
+            }
+        } else {
+            // 如果有权限,判断当前页面权限是否在登录人权限中
+            if (in_array($permission, $userHasPermissions)) {
+                return $permission;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUserPermissions()
+    {
+        $key = 'permission:user:'.$this->id;
+
+        return Cache::rememberForever($key, function () {
+            return $this->load('roles', 'roles.permissions')
+                    ->roles->flatMap(function ($role) {
+                        return $role->permissions;
+                    })->sort()->values();
+        });
     }
 }

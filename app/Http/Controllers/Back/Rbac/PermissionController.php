@@ -41,7 +41,12 @@ class PermissionController extends Controller
         $data['name'] = $request->data['name'];
         $data['alias'] = $request->data['alias'];
         $data['module_name'] = $request->data['module_name'];
+        // 是否重复添加
+        $has = Permission::where('name', $request->data['name'])->first();
 
+        if ($has) {
+            return response()->ajaxFail('失败!您已添加过该权限!');
+        }
         Permission::create($data);
         // 创建默认角色
         $role = Role::where('user_id', 0)->first();

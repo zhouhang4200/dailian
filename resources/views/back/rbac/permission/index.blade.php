@@ -136,21 +136,28 @@
                                 url: "{{ route('admin.permission.store') }}",
                                 data:{data:data.field},
                                 success: function (data) {
-                                    layer.msg(data.message);
-                                    if (page) {
-                                        $.get("{{ route('admin.permission') }}?page="+page, function (result) {
-                                            $('#permission-list').html(result);
-                                            form.render();
-                                        }, 'json');
-                                    } else {
-                                        $.get("{{ route('admin.permission') }}", function (result) {
-                                            $('#permission-list').html(result);
-                                            form.render();
-                                        }, 'json');
-                                    }
+                                    layer.msg(data.message, {time:1500}, function () {
+                                        if (data.status == 1) {
+                                            layer.closeAll();
+                                            if (page) {
+                                                $.get("{{ route('admin.permission') }}?page="+page, function (result) {
+                                                    $('#permission-list').html(result);
+                                                    form.render();
+                                                }, 'json');
+                                            } else {
+                                                $.get("{{ route('admin.permission') }}", function (result) {
+                                                    $('#permission-list').html(result);
+                                                    form.render();
+                                                }, 'json');
+                                            }
+                                        } else {
+
+                                        }
+                                    });
+
                                 }
                             });
-                            layer.closeAll();
+
                             return false;
                         });
                         return false;
@@ -211,23 +218,24 @@
                         var id=this.getAttribute('lay-id');
                         var s = window.location.search; //先截取当前url中“?”及后面的字符串
                         var page=s.getAddrVal('page');
+                        layer.confirm('确认要删除吗', {icon: 3, title: '提示',btnAlign: 'c'}, function (index) {
+                            $.post("{{ route('admin.permission.delete') }}", {id: id}, function (result) {
+                                layer.msg(result.message);
 
-                        $.post("{{ route('admin.permission.delete') }}", {id:id}, function (result) {
-                            layer.msg(result.message);
-
-                            if (page) {
-                                $.get("{{ route('admin.permission') }}?page="+page, function (result) {
-                                    $('#permission-list').html(result);
-                                    form.render();
-                                }, 'json');
-                            } else {
-                                $.get("{{ route('admin.permission') }}", function (result) {
-                                    $('#permission-list').html(result);
-                                    form.render();
-                                }, 'json');
-                            }
-                        })
-                        return false;
+                                if (page) {
+                                    $.get("{{ route('admin.permission') }}?page=" + page, function (result) {
+                                        $('#permission-list').html(result);
+                                        form.render();
+                                    }, 'json');
+                                } else {
+                                    $.get("{{ route('admin.permission') }}", function (result) {
+                                        $('#permission-list').html(result);
+                                        form.render();
+                                    }, 'json');
+                                }
+                            })
+                        });
+                            return false;
                     });
 
                     String.prototype.getAddrVal = String.prototype.getAddrVal||function(name){

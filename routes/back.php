@@ -136,7 +136,7 @@ Route::group(['middleware' =>  ['auth.admin']], function () {
     Route::prefix('user')->group(function () {
         // 商户列表
         Route::get('/', 'UserController@index')->name('admin.user');
-        Route::get('show/{id}', 'UserController@show')->name('admin.user.show'); // 详情
+        Route::get('show', 'UserController@show')->name('admin.user.show'); // 详情
         // 实名认证
         Route::get('certification', 'UserController@certification')->name('admin.user.certification'); // 实名认证列表
         Route::get('certification/{id}', 'UserController@certificationShow')->name('admin.user.certification-show'); // 实名认证信息

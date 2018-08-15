@@ -40,9 +40,14 @@ class RealNameCertificationController extends Controller
         if (Auth::user()->isParent()) {
             $user = Auth::user();
             // 如果已经提交过实名认证，则不能再次填写实名认证
-            $has = RealNameCertification::where('user_id', $user->id)->first();
-            if ($has) {
-                abort(404);
+            $realNameCertification = RealNameCertification::where('user_id', $user->id)->first();
+            if ($realNameCertification) {
+                if ($realNameCertification->status == 1) {
+                    return view('front.real-name-certification.edit', compact('realNameCertification'));
+                } else {
+                    $realNameCertification = RealNameCertification::where('user_id', Auth::user()->id)->with('user')->first();
+                    return view('front.real-name-certification.index', compact('realNameCertification'));
+                }
             }
             return view('front.real-name-certification.create', compact('user'));
         } else {
@@ -86,9 +91,10 @@ class RealNameCertificationController extends Controller
     {
         if (Auth::user()->isParent()) {
             $realNameCertification = RealNameCertification::where('user_id', Auth::user()->id)->first();
-            // 不存在记录，或不是自己的记录，或已经通过的,请求修改路由跳到404
+            // 不存在记录，或不是自己的记录，或已经通过的,跳到列表页
             if ($request->id != $realNameCertification->id || empty($realNameCertification) || $realNameCertification->status == 2){
-                abort(404);
+                $realNameCertification = RealNameCertification::where('user_id', Auth::user()->id)->with('user')->first();
+                return view('front.real-name-certification.index', compact('realNameCertification'));
             }
 
             return view('front.real-name-certification.edit', compact('realNameCertification'));
@@ -110,7 +116,8 @@ class RealNameCertificationController extends Controller
             $realNameCertification = RealNameCertification::where('user_id', Auth::user()->id)->first();
             // 不存在记录，或不是自己的记录，或已经通过的,请求修改路由跳到404
             if ($request->id != $realNameCertification->id || empty($realNameCertification) || $realNameCertification->status == 2){
-                abort(404);
+                $realNameCertification = RealNameCertification::where('user_id', Auth::user()->id)->with('user')->first();
+                return view('front.real-name-certification.index', compact('realNameCertification'));
             }
 
             $data = $request->data ?? [];

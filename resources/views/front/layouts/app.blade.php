@@ -188,6 +188,7 @@ $financeRoute = [
 
                 <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu"
                     lay-filter="layadmin-system-side-menu">
+                    @if(Auth::user()->could(['order.take']))
                     <li data-name="home"
                         class="layui-nav-item @if(in_array(Route::currentRouteName(), $orderRoute)) layui-nav-itemed @endif">
                         <a href="javascript:;" lay-tips="接单管理" lay-direction="2">
@@ -202,7 +203,7 @@ $financeRoute = [
                             </dd>
                         </dl>
                         @endif
-                        @if(Auth::user()->could('order.take'))
+                        @if(Auth::user()->could(['order.take', 'finance.asset-flow', 'finance.balance-withdraw', 'finance.finance-report-day']))
                         <dl class="layui-nav-child">
                             <dd data-name="console"
                                 class="@if(Route::currentRouteName() == 'order.take') layui-this  @endif" >
@@ -211,7 +212,8 @@ $financeRoute = [
                         </dl>
                             @endif
                     </li>
-
+                    @endif
+                    @if(Auth::user()->could('finance.asset-flow'))
                     <li data-name="home" class="layui-nav-item @if(in_array(Route::currentRouteName(), $financeRoute)) layui-nav-itemed @endif">
                         <a href="javascript:;" lay-tips="财务管理" lay-direction="2">
                             <i class="layui-icon iconfont  icon-finance-o"></i>
@@ -242,7 +244,8 @@ $financeRoute = [
                         </dl>
                             @endif
                     </li>
-
+                    @endif
+                    @if(Auth::user()->could(['employee.group', 'employee']) || Auth::user()->isParent())
                     <li data-name="home"
                         class="layui-nav-item @if(in_array(Route::currentRouteName(), $accountRoute)) layui-nav-itemed @endif">
                         <a href="javascript:;" lay-tips="账号管理" lay-direction="2">
@@ -270,7 +273,7 @@ $financeRoute = [
                             @endif
                         </dl>
                     </li>
-
+                    @endif
                     <li data-name="home"
                         class="layui-nav-item @if(in_array(Route::currentRouteName(), ['help'])) layui-nav-itemed @endif">
                         <a href="{{ route('help') }}" lay-tips="帮助中心" lay-direction="2">

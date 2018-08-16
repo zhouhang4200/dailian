@@ -170,18 +170,23 @@
             </div>
             <div class="layui-form-item">
                 <div class="layui-input-block">
-                    <button class="layui-btn layui-btn-normal" lay-submit lay-filter="confirm-take">确定</button>
-                    <button type="reset" class="layui-btn layui-btn-primary">取消</button>
+                    <button class="btn-sm" lay-submit lay-filter="confirm-take">确定</button>
+                    <button type="reset" class="btn-sm cancel">取消</button>
                 </div>
             </div>
         </form>
     </div>
+    <a href="" style="display: none" id="order-info"></a>
 @endsection
 
 @section('js')
     <script>
         layui.use(['form', 'laydate', 'element'], function () {
             var form = layui.form ,layer = layui.layer, element = layui.element, laydate = layui.laydate;
+
+            layer.config({
+                isOutAnim: false
+            });
 
             form.on('submit(take)', function (data) {
 
@@ -218,7 +223,37 @@
                     pay_password: encrypt(data.field.pay_password),
                     take_password: data.field.take_password ? encrypt(data.field.take_password) : ''
                 }, function (result) {
-                    layer.msg(result.message);
+                    if (result.status == 1) {
+                        layer.closeAll();
+                        layer.alert("接单成功！", {
+                            title: '提示',
+                            shade: 0.6,
+                            btnAlign: 'c',
+                            time: 3000,
+                            btn: ['立即前往'],
+                            success: function(layero,index){
+                                var i = 3;
+                                var timer = null;
+                                var fn = function() {
+                                    layero.find(".layui-layer-content").text('接单成功！' + i + ' 秒后前往订单详情');
+                                    if(!i) {
+                                        // layer.close(index);
+                                        clearInterval(timer);
+                                    }
+                                    i--;
+                                };
+                                timer = setInterval(fn, 1000);
+                                fn();
+                            },
+                            end:function () {
+                                window.location.href = "{{ route('order.take.show') }}/" + data.field.trade_no;
+                            }
+                        }, function() {
+                            window.location.href = "{{ route('order.take.show') }}/" + data.field.trade_no;
+                        });
+                    } else {
+                        layer.msg(result.message);
+                    }
                 }, 'json');
                 return false;
             });
@@ -232,6 +267,9 @@
                         form.render()
                     }
                 }, 'json');
+            });
+            $('.cancel').click(function () {
+               layer.closeAll();
             });
         });
     </script>

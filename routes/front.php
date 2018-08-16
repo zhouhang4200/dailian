@@ -48,27 +48,19 @@ Route::group(['middleware' => 'auth'], function (){
 
     // 订单
     Route::prefix('order')->group(function (){
-
-
+        // 待接订单
+        Route::get('wait', 'OrderController@wait')->name('order.wait');
         // 发单方
         Route::prefix('send')->group(function (){
             Route::get('/', 'OrderSendController@index')->name('order.send'); // 发单管理视图
             Route::post('/', 'OrderSendController@orderData'); // 发单列表数据
         });
-
         // 接单方
         Route::prefix('take')->group(function (){
             Route::get('/', 'OrderTakeController@index')->name('order.take'); // 接单管理视图
             Route::post('/', 'OrderTakeController@orderData'); // 接单列表数据
-
-            Route::get('/{trade_no}', 'OrderTakeController@show')->name('order.take.show'); // 订单详情
-            Route::get('/complain-info/{trade_no}', 'OrderTakeController@complainInfo')->name('order.take.complain-info'); // 仲裁信息
-            Route::post('/complain-message', 'OrderTakeController@complainMessage')->name('order.take.complain-message'); // 发送仲裁留言
-            Route::get('/operation-log/{trade_no}', 'OrderTakeController@operationLog')->name('order.take.operation-log'); // 订单操作日志
-            Route::get('/message/{trade_no}', 'OrderTakeController@message')->name('order.take.message'); // 订单留言
-            Route::post('/message/{trade_no}', 'OrderTakeController@sendMessage'); // 订单留言
+            Route::get('/{trade_no?}', 'OrderTakeController@show')->name('order.take.show'); // 订单详情
         });
-
         // 订单操作
         Route::prefix('operation')->group(function (){
             Route::post('take', 'OrderOperationController@take')->name('order.operation.take'); // 接单
@@ -88,7 +80,11 @@ Route::group(['middleware' => 'auth'], function (){
             Route::post('apply-complain', 'OrderOperationController@applyComplain')->name('order.operation.apply-complain'); // 申请仲裁
             Route::post('cancel-complain', 'OrderOperationController@cancelComplain')->name('order.operation.cancel-complain'); // 取消仲裁
             Route::get('apply-complete-image/{trade_no}', 'OrderOperationController@applyCompleteImage')->name('order.operation.apply-complete-image'); // 申请验收图片
-
+            Route::get('log/{trade_no}', 'OrderOperationController@log')->name('order.operation.log'); // 订单操作日志
+            Route::get('complain-info/{trade_no}', 'OrderOperationController@complainInfo')->name('order.operation.complain-info'); // 仲裁信息
+            Route::post('send-complain-message', 'OrderOperationController@sendComplainMessage')->name('order.operation.send-complain-message'); // 发送仲裁留言
+            Route::get('message/{trade_no}', 'OrderTakeController@message')->name('order.operation.message'); // 获取订单留言
+            Route::post('send-message/{trade_no}', 'OrderTakeController@sendMessage'); // 发送订单留言
         });
     });
 
@@ -107,7 +103,7 @@ Route::group(['middleware' => 'auth'], function (){
             Route::get('pay-success', 'BalanceRechargeController@paySuccess')->name('finance.balance-recharge.pay-success');
             Route::get('export', 'BalanceRechargeController@export')->name('finance.balance-recharge.export');
         });
-        // 提现
+        // 余额提现
         Route::prefix('balance-withdraw')->group(function (){
             Route::get('/', 'BalanceWithdrawController@index')->name('finance.balance-withdraw');
             Route::post('/', 'BalanceWithdrawController@store');
@@ -144,7 +140,6 @@ Route::group(['middleware' => 'auth'], function (){
 });
 
 // 余额充值回调
-
 Route::prefix('finance')->namespace('Finance')->group(function () {
     // 余额充值
     Route::prefix('balance-recharge')->group(function () {

@@ -157,8 +157,8 @@ body{font-family: "PingFang SC";font-size: 12px !important;color: #303133}
 
 }
 .qs-btn-table{
-    color: #ff8500;
-    border-color: #ff8500;
+    color: #198cff;
+    border-color: #198cff;
 }
 .order-btn{
     display: inline-block;
@@ -197,21 +197,21 @@ body{font-family: "PingFang SC";font-size: 12px !important;color: #303133}
     font-size: 10px;
     text-align: center;
     background-color: #fff;
-    color: #ff8500;
-    border: 1px solid #ff8500;
+    color: #198cff;
+    border: 1px solid #198cff;
     border-radius: 2px;
     height: 16px;
     line-height: 16px;
     font-weight: 600;
 }
 .layui-tab-brief>.layui-tab-more li.layui-this:after, .layui-tab-brief>.layui-tab-title .layui-this:after{
-    border-color: #ff8500;
+    border-color: #198cff;
 }
 .layui-card .layui-tab-brief .layui-tab-title li.layui-this{
-    color: #ff8500;
+    color: #198cff;
 }
 .layui-form-select dl dd.layui-this {
-    background-color: #ff8500;
+    background-color: #198cff;
 }
 body .layui-laydate .layui-this {
     background-color: #ff7a00 !important;

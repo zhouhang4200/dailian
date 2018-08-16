@@ -2,6 +2,7 @@
 
 $orderRoute = [
     'order.take',
+    'order.wait',
 ];
 
 $accountRoute = [
@@ -22,7 +23,7 @@ $accountRoute = [
     'real-name-certification.create',
     'real-name-certification.edit',
     'real-name-certification.store',
-    'real-name-certification.update'
+    'real-name-certification.update',
 ];
 
 $financeRoute = [
@@ -198,8 +199,8 @@ $financeRoute = [
                         @if(Auth::user()->could('order.take'))
                         <dl class="layui-nav-child">
                             <dd data-name="console"
-                                class="@if(Route::currentRouteName() == '') layui-this  @endif" >
-                                <a href="{{ route('order.take') }}">接单中心</a>
+                                class="@if(Route::currentRouteName() == 'order.wait') layui-this  @endif" >
+                                <a href="{{ route('order.wait') }}">接单中心</a>
                             </dd>
                         </dl>
                         @endif
@@ -210,7 +211,7 @@ $financeRoute = [
                                 <a href="{{ route('order.take') }}">已接订单</a>
                             </dd>
                         </dl>
-                            @endif
+                        @endif
                     </li>
 
                     <li data-name="home" class="layui-nav-item @if(in_array(Route::currentRouteName(), $financeRoute)) layui-nav-itemed @endif">
@@ -236,18 +237,18 @@ $financeRoute = [
                         <dl class="layui-nav-child">
                             <dd data-name="console"
                                 class="@if(Route::currentRouteName() == 'finance.balance-withdraw') layui-this  @endif" >
-                                <a href="{{ route('finance.balance-withdraw') }}">我的提现</a>
+                                <a href="{{ route('finance.balance-withdraw') }}">提现记录</a>
                             </dd>
                         </dl>
                         @endif
-                        @if(Auth::user()->could('finance.finance-report-day'))
+                        @if(Auth::user()->could('finance.balance-recharge.record'))
                         <dl class="layui-nav-child">
                             <dd data-name="console"
-                                class="@if(Route::currentRouteName() == 'finance.finance-report-day') layui-this  @endif" >
-                                <a href="{{ route('finance.finance-report-day') }}">资金日报</a>
+                                class="@if(Route::currentRouteName() == 'finance.balance-recharge.record') layui-this  @endif" >
+                                <a href="{{ route('finance.balance-recharge.record') }}">充值记录</a>
                             </dd>
                         </dl>
-                            @endif
+                        @endif
                     </li>
 
                     <li data-name="home"
@@ -259,7 +260,7 @@ $financeRoute = [
                         <dl class="layui-nav-child">
                             @if(Auth::user()->isParent())
                             <dd data-name="console"
-                                class="@if(Route::currentRouteName() == 'real-name-certification') layui-this  @endif">
+                                class="@if(in_array(Route::currentRouteName(), ['real-name-certification', 'real-name-certification.create'])) layui-this  @endif">
                                 <a href="{{ route('real-name-certification') }}">实名认证</a>
                             </dd>
                             @endif
@@ -324,8 +325,13 @@ $financeRoute = [
         index: 'lib/js/index' //主入口模块
     }).use('index');
 
+
     layui.use(['form', 'layedit', 'laydate', 'element'], function(){
         var form = layui.form, layer = layui.layer, element = layui.element, laydate = layui.laydate;
+
+        layer.config({
+            isOutAnim: false
+        });
 
         laydate.render({elem: '#start-time'});
         laydate.render({elem: '#end-time'});

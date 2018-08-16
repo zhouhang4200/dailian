@@ -192,7 +192,7 @@
 @endsection
 
 @section('pop')
-    @include('front.order.take.pop')
+    @include('front.order-operation.pop')
 @endsection
 
 @section('js')
@@ -313,7 +313,7 @@
                     carousel =  layui.carousel;
 
             // 订单操作
-            @include('front.order.take.operation', ['type' => 'list'])
+            @include('front.order-operation.operation', ['type' => 'list'])
 
             // 状态切换
             element.on('tab(order-list)', function () {

@@ -61,7 +61,7 @@
                     <label class="layui-form-label">提现到银行卡</label>
                     <div class="layui-input-inline">
                         <div class="" style="line-height: 30px">
-                            {{ auth()->user()->parent->realNameCertification->bank_card }}
+                            {{ optional(auth()->user()->parent->realNameCertification)->bank_card }}
                         </div>
                     </div>
                 </div>

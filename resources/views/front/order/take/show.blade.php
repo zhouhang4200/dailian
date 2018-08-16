@@ -484,7 +484,7 @@
 @endsection
 
 @section('pop')
-    @include('front.order.take.pop')
+    @include('front.order-operation.pop')
 @endsection
 
 @section('js')
@@ -493,7 +493,7 @@
         layui.use(['form', 'layedit', 'laydate', 'laytpl', 'element', 'carousel'], function(){
             var form = layui.form, layer = layui.layer, layTpl = layui.laytpl, element = layui.element, carousel =  layui.carousel;
 
-            @include('front.order.take.operation', ['type' => 'detail'])
+            @include('front.order-operation.operation', ['type' => 'detail'])
 
             element.on('tab()', function(){
                 var id = this.getAttribute('lay-id');
@@ -509,7 +509,7 @@
             form.on('submit(send-complain-message)', function (data) {
                 var image = $('.pic-add img').attr('src');
                 if (data.field.content) {
-                    $.post("{{ route('order.take.complain-message') }}", {
+                    $.post("{{ route('order.operation.send-complain-message') }}", {
                         'trade_no': "{{ $order->trade_no }}",
                         'content': data.field.content,
                         'image': image
@@ -537,7 +537,7 @@
             // 发送普通留言
             form.on('submit(send-message)', function (data) {
                 if (data.field.content) {
-                    $.post("{{ route('order.take.message', ['trade_no' => $order->trade_no]) }}", {
+                    $.post("{{ route('order.operation.send-message', ['trade_no' => $order->trade_no]) }}", {
                         'content': data.field.content
                     }, function (data) {
                         if (data.status === 1) {
@@ -611,19 +611,19 @@
             });
             // 加载订单操作日志
             function operationLog() {
-                $.get("{{ route('order.take.operation-log', ['trade_no' => $order->trade_no]) }}", function (result) {
+                $.get("{{ route('order.operation.log', ['trade_no' => $order->trade_no]) }}", function (result) {
                     $('#operation-log').html(result);
                 });
             }
             // 订单仲裁信息
             function complainInfo() {
-                $.get('{{ route('order.take.complain-info', ['trade_no' => $order->trade_no])  }}', function (result) {
+                $.get('{{ route('order.operation.complain-info', ['trade_no' => $order->trade_no])  }}', function (result) {
                     $('#complain-info').html(result);
                 });
             }
             // 订单留言
             function message() {
-                $.get('{{ route('order.take.message', ['trade_no' => $order->trade_no])  }}', function (result) {
+                $.get('{{ route('order.operation.message', ['trade_no' => $order->trade_no])  }}', function (result) {
                     $('.layim-chat-main').html(result);
                 });
             }

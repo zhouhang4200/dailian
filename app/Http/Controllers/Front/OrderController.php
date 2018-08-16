@@ -17,7 +17,7 @@ use App\Models\Server;
 class OrderController extends Controller
 {
     /**
-     * 待接单列表
+     * 首页待接单列表
      */
     public function index()
     {
@@ -34,7 +34,6 @@ class OrderController extends Controller
             $servers = Server::condition(['region_id' => request('region_id')])->get(['name', 'id']);
         }
 
-
         return view('front.order.index', [
             'orders' => GameLevelingOrder::condition(array_merge(request()->except('status'), ['status' => 1]))->paginate(20),
             'guest' => auth()->guard()->guest(),
@@ -46,11 +45,31 @@ class OrderController extends Controller
     }
 
     /**
-     * 查看待接单详情
+     * 待接单列表
      */
-    public function show()
+    public function wait()
     {
+        $regions = [];
+        $servers = [];
+        $gameLevelingTypes = [];
 
+        if (request('game_id')) {
+            $regions = Region::condition(['game_id' => request('game_id')])->get(['name', 'id']);
+            $gameLevelingTypes = GameLevelingType::where('game_id', request('game_id'))->get(['name', 'id']);
+        }
+
+        if (request('region_id')) {
+            $servers = Server::condition(['region_id' => request('region_id')])->get(['name', 'id']);
+        }
+
+        return view('front.order.wait', [
+            'orders' => GameLevelingOrder::condition(array_merge(request()->except('status'), ['status' => 1]))->paginate(20),
+            'guest' => auth()->guard()->guest(),
+            'games' => Game::all(),
+            'regions' => $regions,
+            'servers' => $servers,
+            'gameLevelingTypes' => $gameLevelingTypes,
+        ]);
     }
 
     /**

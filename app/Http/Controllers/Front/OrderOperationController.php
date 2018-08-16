@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Front;
 
+use App\Exceptions\Order\OrderComplainException;
 use App\Exceptions\Order\OrderImageException;
+use App\Models\GameLevelingOrderLog;
 use Exception;
 use App\Exceptions\UserAsset\UserAssetBalanceException;
 use App\Exceptions\Order\OrderTimeException;
@@ -64,7 +66,7 @@ class OrderOperationController extends Controller
             return response()->json(['status' => 5, 'message' => $e->getMessage()]);
         } catch (Exception $e) {
             myLog('wanzi-operate-take-error', ['no' => $order->trade_no ?? '', 'message' => $e->getMessage()]);
-            return response()->json(['status' => 5, 'message' => '未知错误']);
+            return response()->json(['status' => 5, 'message' => '未知错误' . $e->getMessage()]);
         }
         DB::commit();
         return response()->ajaxSuccess('接单成功');
@@ -405,6 +407,7 @@ class OrderOperationController extends Controller
     /**
      * 取消异常
      * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function cancelAnomaly()
     {
@@ -716,8 +719,89 @@ class OrderOperationController extends Controller
             return response()->ajaxFail('暂时没有图片');
         }
 
-        return response()->ajaxSuccess('获取成功', view()->make('front.order.apply-complete-image', [
+        return response()->ajaxSuccess('获取成功', view()->make('front.order-operation.apply-complete-image', [
             'image' => $images,
         ])->render());
+    }
+
+    /**
+     * 订单操作记录
+     * @param $tradeNO
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function log($tradeNO)
+    {
+        $operationLog =  GameLevelingOrderLog::where('parent_user_id', request()->user()->parent_id)
+            ->where('game_leveling_order_trade_no', $tradeNO)
+            ->get();
+
+        return  view('front.order-operation.log', [
+            'operationLog' => $operationLog
+        ]);
+    }
+
+    /**
+     * 查看仲裁信息
+     * @param $tradeNO
+     * @return \Illuminate\Http\JsonResponse
+     * @throws Exception
+     */
+    public function complainInfo($tradeNO)
+    {
+        $complainInfo = null;
+        try {
+            $complainInfo = OrderService::init(request()->user()->id, $tradeNO)->getComplainInfo();
+        } catch (OrderComplainException $exception) {
+
+        }
+        return response()->json(view()->make('front.order-operation.complain-info', [
+            'order' => $complainInfo,
+        ])->render());
+    }
+
+    /**
+     * 发送仲裁留言
+     * @return mixed
+     * @throws Exception
+     */
+    public function sendComplainMessage()
+    {
+        try {
+            OrderService::init(request()->user()->id, request('trade_no'))
+                ->sendComplainMessage(request('image'), request('content'));
+        } catch (Exception $exception) {
+            return response()->ajaxFail('发送失败');
+        }
+        DB::commit();
+        return response()->ajaxSuccess('发送成功');
+    }
+
+    /**
+     * @param $tradeNO
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \App\Exceptions\Order\OrderUnauthorizedException
+     */
+    public function message($tradeNO)
+    {
+        return response()->json(view()->make('front.order-operation.message', [
+            'messages' => OrderService::init(request()->user()->id, $tradeNO)->getMessage(),
+        ])->render());
+    }
+
+    /**
+     * 发送订单留言
+     * @param $tradeNO
+     *
+     * @return mixed
+     */
+    public function sendMessage($tradeNO)
+    {
+        try {
+            OrderService::init(request()->user()->id, $tradeNO)->sendMessage(request('content'));
+        } catch (Exception $exception) {
+            return response()->ajaxFail('发送失败');
+        }
+        DB::commit();
+        return response()->ajaxSuccess('发送成功');
     }
 }

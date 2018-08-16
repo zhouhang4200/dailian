@@ -1,7 +1,7 @@
 <?php
 
 $orderRoute = [
-    'order.take',
+    'order.take-list',
     'order.wait',
 ];
 
@@ -137,7 +137,7 @@ $financeRoute = [
             <ul class="layui-nav layui-layout-right" lay-filter="layadmin-layout-right">
 
                 <li class="layui-nav-item" lay-unselect>
-                    <a  id="leveling-message">
+                    <a href="javascript:" class="message-list">
                         <i class="layui-icon layui-icon-notice"></i>
                         <!-- 如果有新消息，则显示小圆点 -->
                         <span class="layui-badge-dot"></span>
@@ -190,14 +190,14 @@ $financeRoute = [
 
                 <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu"
                     lay-filter="layadmin-system-side-menu">
-                    @if(Auth::user()->could(['order.take']))
+                    @if(Auth::user()->could(['order.take-list']))
                     <li data-name="home"
                         class="layui-nav-item @if(in_array(Route::currentRouteName(), $orderRoute)) layui-nav-itemed @endif">
                         <a href="javascript:;" lay-tips="接单管理" lay-direction="2">
                             <i class="layui-icon iconfont  icon-group-o"></i>
-                            <cite>接单管理</cite>
+                            <cite>订单管理</cite>
                         </a>
-                        @if(Auth::user()->could('order.take'))
+                        @if(Auth::user()->could('order.take-list'))
                         <dl class="layui-nav-child">
                             <dd data-name="console"
                                 class="@if(Route::currentRouteName() == 'order.wait') layui-this  @endif" >
@@ -205,11 +205,11 @@ $financeRoute = [
                             </dd>
                         </dl>
                         @endif
-                        @if(Auth::user()->could(['order.take', 'finance.asset-flow', 'finance.balance-withdraw', 'finance.finance-report-day']))
+                        @if(Auth::user()->could(['order.take-list', 'finance.asset-flow', 'finance.balance-withdraw', 'finance.finance-report-day']))
                         <dl class="layui-nav-child">
                             <dd data-name="console"
-                                class="@if(Route::currentRouteName() == 'order.take') layui-this  @endif" >
-                                <a href="{{ route('order.take') }}">已接订单</a>
+                                class="@if(Route::currentRouteName() == 'order.take-list') layui-this  @endif" >
+                                <a href="{{ route('order.take-list') }}">接单管理</a>
                             </dd>
                         </dl>
                         @endif
@@ -341,6 +341,19 @@ $financeRoute = [
 
         @include('front.profile.password-js')
 
+        $(document).on('click', '.message-list', function () {
+            layer.open({
+                title:'代练留言',
+                type: 2,
+                move: false,
+                resize:false,
+                scrollbar: false,
+                area: ['800px', '500px'],
+                content: '{{ route('order.operation.message-list') }}'
+            });
+            return false;
+        });
+
         $(document).on('click', '.cancel', function () {
             layer.closeAll();
         });
@@ -382,5 +395,5 @@ $financeRoute = [
 @yield('js')
 </body>
 @yield('pop')
-@include('front.profile.password')
+@include('front.profile.password-pop')
 </html>

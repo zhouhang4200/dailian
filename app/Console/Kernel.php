@@ -31,7 +31,6 @@ class Kernel extends ConsoleKernel
             ->after(function () {
                 Artisan::call('finance:platform-report-day');
             });
-
     }
 
     /**

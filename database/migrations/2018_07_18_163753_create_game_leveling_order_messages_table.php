@@ -24,6 +24,7 @@ class CreateGameLevelingOrderMessagesTable extends Migration
             $table->string('to_username')->comment('留言接收人名字');
             $table->string('content')->comment('内容');
             $table->string('type')->comment('1 仲裁留言 2 普通订单留言');
+            $table->string('status')->default(1)->comment('1未读 2 已读');
             $table->timestamps();
         });
     }

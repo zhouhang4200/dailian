@@ -246,10 +246,10 @@
                                 fn();
                             },
                             end:function () {
-                                window.location.href = "{{ route('order.take.show') }}/" + data.field.trade_no;
+                                window.location.href = "{{ route('order.show') }}/" + data.field.trade_no;
                             }
                         }, function() {
-                            window.location.href = "{{ route('order.take.show') }}/" + data.field.trade_no;
+                            window.location.href = "{{ route('order.show') }}/" + data.field.trade_no;
                         });
                     } else {
                         layer.msg(result.message);

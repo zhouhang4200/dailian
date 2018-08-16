@@ -236,7 +236,7 @@
 
     </script>
     <script type="text/html" id="noTemplate">
-        <a style="color:#1f93ff"  href="{{ route('order.take') }}/@{{ d.trade_no }}" target="_blank">@{{ d.trade_no }}</a>
+        <a style="color:#1f93ff"  href="{{ route('order.take-list') }}/@{{ d.trade_no }}" target="_blank">@{{ d.trade_no }}</a>
     </script>
     <script type="text/html" id="statusTemplate">
         @{{ d.status_describe }}  <br>
@@ -339,7 +339,7 @@
             // 加载数据
             table.render({
                 elem: '#order-list',
-                url: '{{ route('order.take') }}',
+                url: '{{ route('order.take-list') }}',
                 method: 'post',
                 where:{_token:$('meta[name="_token"]').attr('content')},
                 cols: [[

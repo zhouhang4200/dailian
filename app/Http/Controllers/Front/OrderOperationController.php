@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Front;
 use App\Exceptions\Order\OrderComplainException;
 use App\Exceptions\Order\OrderImageException;
 use App\Models\GameLevelingOrderLog;
+use App\Models\GameLevelingOrderMessage;
 use Exception;
 use App\Exceptions\UserAsset\UserAssetBalanceException;
 use App\Exceptions\Order\OrderTimeException;
@@ -803,5 +804,39 @@ class OrderOperationController extends Controller
         }
         DB::commit();
         return response()->ajaxSuccess('发送成功');
+    }
+
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function messageList()
+    {
+        return view('front.order-operation.message-list', [
+            'messages' => GameLevelingOrderMessage::where('to_user_id', request()->user()->parent_id)
+                ->where('status', 1)->get(),
+        ]);
+    }
+
+    /**
+     * 删除留言
+     * @return mixed
+     */
+    public function deleteMessage()
+    {
+        GameLevelingOrderMessage::where('to_user_id', request()->user()->parent_id)
+            ->where('id', request('id'))
+            ->update(['status' => 2]);
+        return response()->ajaxSuccess('删除成功');
+    }
+
+    /**
+     * 删除所有留言
+     * @return mixed
+     */
+    public function deleteAllMessage()
+    {
+        GameLevelingOrderMessage::where('to_user_id', request()->user()->parent_id)
+            ->update(['status' => 2]);
+        return response()->ajaxSuccess('删除成功');
     }
 }

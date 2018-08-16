@@ -50,17 +50,14 @@ Route::group(['middleware' => 'auth'], function (){
     Route::prefix('order')->group(function (){
         // 待接订单
         Route::get('wait', 'OrderController@wait')->name('order.wait');
-        // 发单方
-        Route::prefix('send')->group(function (){
-            Route::get('/', 'OrderSendController@index')->name('order.send'); // 发单管理视图
-            Route::post('/', 'OrderSendController@orderData'); // 发单列表数据
-        });
-        // 接单方
-        Route::prefix('take')->group(function (){
-            Route::get('/', 'OrderTakeController@index')->name('order.take'); // 接单管理视图
-            Route::post('/', 'OrderTakeController@orderData'); // 接单列表数据
-            Route::get('/{trade_no?}', 'OrderTakeController@show')->name('order.take.show'); // 订单详情
-        });
+
+        // 接单列表
+        Route::get('take-list', 'OrderController@takeList')->name('order.take-list');
+        Route::post('take-list', 'OrderController@takeListData')->name('order.take-list');
+
+        // 订单详情
+        Route::get('/{trade_no?}', 'OrderController@show')->name('order.show');
+
         // 订单操作
         Route::prefix('operation')->group(function (){
             Route::post('take', 'OrderOperationController@take')->name('order.operation.take'); // 接单
@@ -83,8 +80,11 @@ Route::group(['middleware' => 'auth'], function (){
             Route::get('log/{trade_no}', 'OrderOperationController@log')->name('order.operation.log'); // 订单操作日志
             Route::get('complain-info/{trade_no}', 'OrderOperationController@complainInfo')->name('order.operation.complain-info'); // 仲裁信息
             Route::post('send-complain-message', 'OrderOperationController@sendComplainMessage')->name('order.operation.send-complain-message'); // 发送仲裁留言
-            Route::get('message/{trade_no}', 'OrderTakeController@message')->name('order.operation.message'); // 获取订单留言
-            Route::post('send-message/{trade_no}', 'OrderTakeController@sendMessage'); // 发送订单留言
+            Route::get('message/{trade_no}', 'OrderOperationController@message')->name('order.operation.message'); // 获取订单留言
+            Route::post('send-message/{trade_no}', 'OrderOperationController@sendMessage'); // 发送订单留言
+            Route::get('message-list', 'OrderOperationController@messageList')->name('order.operation.message-list'); // 留言列表
+            Route::post('delete-message', 'OrderOperationController@deleteMessage')->name('order.operation.delete-message'); // 删除留言
+            Route::post('delete-all-message', 'OrderOperationController@deleteAllMessage')->name('order.operation.delete-all-message'); // 删除所有留言
         });
     });
 

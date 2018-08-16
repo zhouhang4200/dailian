@@ -74,10 +74,17 @@
                 return true;
             });
         });
-    });
-    $('.main').height($(document).height() - 90);
-    $(window).resize(function () {
+
+        $(document).on('click', '.cancel', function () {
+            layer.closeAll();
+        });
+        $(document).on('click', '.cancel-current', function () {
+            layer.close(layer.index);
+        });
         $('.main').height($(document).height() - 90);
+        $(window).resize(function () {
+            $('.main').height($(document).height() - 90);
+        });
     });
 </script>
 @yield('js')

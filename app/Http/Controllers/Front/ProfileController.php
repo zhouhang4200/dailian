@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Front;
 
+use App\Services\SmSApiService;
 use Auth;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -118,11 +119,6 @@ class ProfileController extends Controller
      */
     public function avatarUpdate(Request $request)
     {
-//        if (Auth::user()->isParent()) {
-//            $user = Auth::user();
-//        } else {
-//            $user = Auth::user()->parent;
-//        }
         $user = Auth::user();
         $user->avatar = $request->data['avatar'];
 
@@ -189,5 +185,42 @@ class ProfileController extends Controller
         $currentUser->save();
 
         return response()->json(['status' => 1, 'message' => '修改成功']);
+    }
+
+    /**
+     * 重置支付密码
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
+     */
+    public function resetPayPassword()
+    {
+        $newPayPassword = clientRSADecrypt(request('password'));
+
+        $currentUser = request()->user();
+        if (request('verification_code') != cache()->get(config('redis_key.profile.pay_password_verification_code') . auth()->id())) {
+            return response()->json(['status' => 0, 'message' => '验证码错误']);
+        }
+        $currentUser->pay_password = bcrypt($newPayPassword);
+        $currentUser->save();
+
+        return response()->json(['status' => 1, 'message' => '修改成功']);
+    }
+
+    /**
+     * 发送验证码
+     * @throws \Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function resetPayPasswordVerificationCode()
+    {
+        $code = randomNumber();
+
+        try {
+            cache()->put(config('redis_key.profile.pay_password_verification_code') . auth()->id(), $code, 1);
+//            SmSApiService::send(request()->user()->phone, $code);
+        } catch (\Exception $exception) {
+
+        }
+        return response()->ajaxSuccess('验证码已经发送至您手机，请注意查收-' .$code);
     }
 }

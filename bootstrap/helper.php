@@ -347,8 +347,15 @@ function fileToBase64($file){
         $mimeType= mime_content_type($file);
         $base64Data = base64_encode(file_get_contents($file));
         $base64File = 'data:'.$mimeType.';base64,'.$base64Data;
-//        unlink($file);
+        unlink($file);
     }
     return $base64File;
 }
 
+function randomNumber($count = 5) {
+    $number = '';
+    for ($i=0; $i < $count; $i ++) {
+         $number .= random_int(0, 9);
+    }
+    return $number;
+}

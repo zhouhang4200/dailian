@@ -49,15 +49,12 @@ Route::group(['middleware' => 'auth'], function (){
     // 订单
     Route::prefix('order')->group(function (){
         // 待接订单
-        Route::get('wait', 'OrderController@wait')->name('order.wait');
-
+        Route::get('wait-list', 'OrderController@waitList')->name('order.wait-list');
         // 接单列表
         Route::get('take-list', 'OrderController@takeList')->name('order.take-list');
         Route::post('take-list', 'OrderController@takeListData')->name('order.take-list');
-
         // 订单详情
         Route::get('/{trade_no?}', 'OrderController@show')->name('order.show');
-
         // 订单操作
         Route::prefix('operation')->group(function (){
             Route::post('take', 'OrderOperationController@take')->name('order.operation.take'); // 接单
@@ -127,6 +124,8 @@ Route::group(['middleware' => 'auth'], function (){
         Route::post('change-password', 'ProfileController@changePassword')->name('profile.change-password'); // 修改密码
         Route::post('set-pay-password', 'ProfileController@setPayPassword')->name('profile.set-pay-password'); // 设置支付密码
         Route::post('change-pay-password', 'ProfileController@changePayPassword')->name('profile.change-pay-password'); // 修改支付密码
+        Route::post('reset-pay-password', 'ProfileController@resetPayPassword')->name('profile.reset-pay-password'); // 重置密码
+        Route::post('reset-pay-password-verification-code', 'ProfileController@resetPayPasswordVerificationCode')->name('profile.reset-pay-password-verification-code'); // 获取重置密码验证码
     });
     // 实名认证
     Route::prefix('real-name-certification')->group(function () {

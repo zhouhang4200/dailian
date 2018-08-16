@@ -47,7 +47,7 @@ class OrderController extends Controller
     /**
      * 待接单列表
      */
-    public function wait()
+    public function waitList()
     {
         $regions = [];
         $servers = [];
@@ -62,7 +62,7 @@ class OrderController extends Controller
             $servers = Server::condition(['region_id' => request('region_id')])->get(['name', 'id']);
         }
 
-        return view('front.order.wait', [
+        return view('front.order.wait-list', [
             'orders' => GameLevelingOrder::condition(array_merge(request()->except('status'), ['status' => 1]))->paginate(20),
             'guest' => auth()->guard()->guest(),
             'games' => Game::all(),

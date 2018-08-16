@@ -2,7 +2,7 @@
 
 $orderRoute = [
     'order.take-list',
-    'order.wait',
+    'order.wait-list',
 ];
 
 $accountRoute = [
@@ -200,8 +200,8 @@ $financeRoute = [
                         @if(Auth::user()->could('order.take-list'))
                         <dl class="layui-nav-child">
                             <dd data-name="console"
-                                class="@if(Route::currentRouteName() == 'order.wait') layui-this  @endif" >
-                                <a href="{{ route('order.wait') }}">接单中心</a>
+                                class="@if(Route::currentRouteName() == 'order.wait-list') layui-this  @endif" >
+                                <a href="{{ route('order.wait-list') }}">接单中心</a>
                             </dd>
                         </dl>
                         @endif
@@ -356,6 +356,9 @@ $financeRoute = [
 
         $(document).on('click', '.cancel', function () {
             layer.closeAll();
+        });
+        $(document).on('click', '.cancel-current', function () {
+            layer.close(layer.index);
         });
     });
 

@@ -136,7 +136,6 @@
         </div>
     </form>
 </div>
-
 <div class="apply-complete-pop" style="display: none; padding: 20px">
     <form class="layui-form">
         <input type="hidden" name="trade_no">

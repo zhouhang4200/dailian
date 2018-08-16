@@ -239,11 +239,11 @@
                 <p class="game choose">游戏：</p>
                 <ul class="game_filter filter">
                     <li @if(request('game_id') == 0) class="islink" @endif>
-                        <a href="{{ route('order.wait', array_merge(['game_id' => 0], request()->except('game_id'))) }}">全部</a>
+                        <a href="{{ route('order.wait-list', array_merge(['game_id' => 0], request()->except('game_id'))) }}">全部</a>
                     </li>
                     @foreach($games as $item)
                         <li @if(request('game_id') == $item->id) class="islink" @endif>
-                            <a href="{{ route('order.wait', array_merge(['game_id' => $item->id], request()->except('game_id'))) }}">{{ $item->name }}</a>
+                            <a href="{{ route('order.wait-list', array_merge(['game_id' => $item->id], request()->except('game_id'))) }}">{{ $item->name }}</a>
                         </li>
                     @endforeach
                 </ul>
@@ -361,145 +361,11 @@
 
 
 @section('pop')
-    <div id="take-pop" style="padding: 24px 0 15px 15px;display: none">
-        <form class="layui-form" action="" method="post">
-            <input type="hidden" name="trade_no">
-            <div class="layui-form-item">
-                <label class="layui-form-label">接单密码</label>
-                <div class="layui-input-inline">
-                    <input type="password" name="take_password" required lay-verify="required" placeholder="请输入支付密码" autocomplete="off" class="layui-input">
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label">支付密码</label>
-                <div class="layui-input-inline">
-                    <input type="password" name="pay_password" required lay-verify="required" placeholder="请输入支付密码" autocomplete="off" class="layui-input">
-                </div>
-                <div class="layui-form-mid layui-word-aux">忘记密码</div>
-            </div>
-            <div class="layui-form-item">
-                <div class="layui-input-block">
-                    <button class="layui-btn layui-btn-normal" lay-submit lay-filter="confirm-take">确定</button>
-                    <button type="reset" class="layui-btn layui-btn-primary">取消</button>
-                </div>
-            </div>
-        </form>
-    </div>
-    <div id="take-no-password-pop" style="padding: 24px 0 15px 15px;display: none">
-        <form class="layui-form" action="" method="post">
-            <input type="hidden" name="trade_no">
-            <div class="layui-form-item">
-                <label class="layui-form-label">支付密码</label>
-                <div class="layui-input-inline">
-                    <input type="password" name="pay_password" required lay-verify="required" placeholder="请输入支付密码" autocomplete="off" class="layui-input">
-                </div>
-                <div class="layui-form-mid layui-word-aux">忘记密码</div>
-            </div>
-            <div class="layui-form-item">
-                <div class="layui-input-block">
-                    <button class="btn-sm" lay-submit lay-filter="confirm-take">确定</button>
-                    <button type="reset" class="btn-sm cancel">取消</button>
-                </div>
-            </div>
-        </form>
-    </div>
-    <a href="" style="display: none" id="order-info"></a>
+    @include('front.order-operation.take-order-pop')
 @endsection
 
 @section('js')
-    <script>
-        layui.use(['form', 'laydate', 'element'], function () {
-            var form = layui.form ,layer = layui.layer, element = layui.element, laydate = layui.laydate;
-            layer.config({
-                isOutAnim: false
-            });
-            // 接单弹窗
-            form.on('submit(take)', function (data) {
-
-                if ($(data.elem).attr('data-guest')) {
-                    layer.msg('请先登录');
-                    return false;
-                }
-
-                $('input[name=trade_no]').val($(data.elem).attr('data-trade_no'));
-
-                if ($(data.elem).attr('data-take_password') == 1) {
-                    layer.open({
-                        type: 1,
-                        shade: 0.2,
-                        title: '接单验证',
-                        area: ['440px'],
-                        content: $('#take-pop')
-                    });
-                } else {
-                    layer.open({
-                        type: 1,
-                        shade: 0.2,
-                        title: '接单验证',
-                        area: ['440px'],
-                        content: $('#take-no-password-pop')
-                    });
-                }
-                return false;
-            });
-            // 确认接单
-            form.on('submit(confirm-take)', function (data) {
-                $.post('{{ route('order.operation.take') }}', {
-                    trade_no:data.field.trade_no,
-                    pay_password: encrypt(data.field.pay_password),
-                    take_password: data.field.take_password ? encrypt(data.field.take_password) : ''
-                }, function (result) {
-                    if (result.status == 1) {
-                        layer.closeAll();
-                        layer.alert("接单成功！", {
-                            title: '提示',
-                            shade: 0.6,
-                            btnAlign: 'c',
-                            time: 3000,
-                            btn: ['立即前往'],
-                            success: function(layero,index){
-                                var i = 3;
-                                var timer = null;
-                                var fn = function() {
-                                    layero.find(".layui-layer-content").text('接单成功！' + i + ' 秒后前往订单详情');
-                                    if(!i) {
-                                        // layer.close(index);
-                                        clearInterval(timer);
-                                    }
-                                    i--;
-                                };
-                                timer = setInterval(fn, 1000);
-                                fn();
-                            },
-                            end:function () {
-                                window.location.href = "{{ route('order.show') }}/" + data.field.trade_no;
-                            }
-                        }, function() {
-                            window.location.href = "{{ route('order.show') }}/" + data.field.trade_no;
-                        });
-                    } else {
-                        layer.msg(result.message);
-                    }
-                }, 'json');
-                return false;
-            });
-            // 选择区加载服务器
-            form.on('select(region)', function (data) {
-                $.post('{{ route('order.get-server') }}', {region_id:data.value}, function (result) {
-                    if (result.status) {
-                        $('[name=server_id]').empty();
-                        $.each(result.content, function (i, v) {
-                            $('[name=server_id]').append("<option>" + v.name + "</option>")
-                        });
-                        form.render()
-                    }
-                }, 'json');
-            });
-            $('.cancel').click(function () {
-               layer.closeAll();
-            });
-        });
-    </script>
+    @include('front.order-operation.take-order-js')
 @endsection
 
 

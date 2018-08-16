@@ -236,7 +236,7 @@
 
     </script>
     <script type="text/html" id="noTemplate">
-        <a style="color:#1f93ff"  href="{{ route('order.take-list') }}/@{{ d.trade_no }}" target="_blank">@{{ d.trade_no }}</a>
+        <a style="color:#1f93ff"  href="{{ route('order.show') }}/@{{ d.trade_no }}" target="_blank">@{{ d.trade_no }}</a>
     </script>
     <script type="text/html" id="statusTemplate">
         @{{ d.status_describe }}  <br>

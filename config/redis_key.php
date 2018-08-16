@@ -5,5 +5,8 @@ return [
     // 订单相关
     'order' => [
         'quantity' => 'order:quantity:', // 用于生成唯一交易订单号
+    ],
+    'profile' => [
+        'pay_password_verification_code' => 'profile:pay_password_verification_code:'
     ]
 ];

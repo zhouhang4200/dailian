@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use ScoutElastic\Searchable;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
@@ -13,6 +14,25 @@ use Illuminate\Database\Eloquent\Model;
  */
 class GameLevelingOrder extends Model
 {
+    use Searchable;
+
+    protected $indexConfigurator = GameLevelingOrderIndexConfigurator::class;
+
+    protected $searchRules = [
+        //
+    ];
+
+    // Here you can specify a mapping for a model fields.
+    protected $mapping = [
+        'properties' => [
+            'title' => [
+                'type' => 'text',
+                "analyzer" => "ik_smart",
+                "search_analyzer" => "ik_smart",
+            ],
+        ]
+    ];
+
     public $fillable = [
         'source',
         'trade_no',
@@ -156,6 +176,64 @@ class GameLevelingOrder extends Model
 
         if (isset($condition['end_time']) && $condition['end_time']) {
             $query->where('created_at', '<=',$condition['end_time'] . ' 23:59:59');
+        }
+
+        return $query;
+    }
+
+
+    public static function searchCondition($condition)
+    {
+        $keyword = (isset($condition['keyword']) && ! empty($condition['keyword'])) ? $condition['keyword'] : '*';
+
+        $query = self::search($keyword);
+
+        if ($keyword != '*') {
+            $query->rule(function($builder) {
+                return [
+                    'must' => [
+                        'match' => [
+                            'trade_no' => $builder->query,
+                        ]
+                    ]
+                ];
+            })->rule(function($builder) {
+                return [
+                    'must' => [
+                        'match' => [
+                            'title' => $builder->query,
+                        ]
+                    ]
+                ];
+            });
+        }
+
+        if (isset($condition['game_id']) && $condition['game_id']) {
+            $query->where('game_id', $condition['game_id']);
+        }
+
+        if (isset($condition['region_id']) && $condition['region_id']) {
+            $query->where('region_id', $condition['region_id']);
+        }
+
+        if (isset($condition['server_id']) && $condition['server_id']) {
+            $query->where('server_id', $condition['server_id']);
+        }
+
+        if (isset($condition['amount']) && $condition['amount'] == '10') {
+            $query->where('amount', '<', 10);
+        }
+
+        if (isset($condition['amount']) && $condition['amount'] == '10,100') {
+            $query->whereBetween('amount', [10, 100]);
+        }
+
+        if (isset($condition['amount']) && $condition['amount'] == '100,200') {
+            $query->whereBetween('amount', [100, 200]);
+        }
+
+        if (isset($condition['amount']) && $condition['amount'] == '200') {
+            $query->where('amount', '>', 200);
         }
 
         return $query;

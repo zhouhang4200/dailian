@@ -79,7 +79,7 @@
                 if (result.status) {
                     $('[name=server_id]').empty();
                     $.each(result.content, function (i, v) {
-                        $('[name=server_id]').append("<option>" + v.name + "</option>")
+                        $('[name=server_id]').append("<option value='" + v.id + "'>" + v.name + "</option>")
                     });
                     form.render()
                 }

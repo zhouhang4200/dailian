@@ -107,7 +107,6 @@ class BalanceRechargeController extends Controller
         }
         DB::commit();
 
-
         return view('front.finance.balance-recharge.pay', [
             'result' => $result,
             'amount' => request('amount'),

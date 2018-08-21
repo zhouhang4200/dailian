@@ -146,9 +146,9 @@ $financeRoute = [
                 <li class="layui-nav-item" lay-unselect style="margin-right: 30px;">
                     <a href="javascript:;">
                         <img src="{{ auth()->user()->avatar ?? '' }}" class="layui-nav-img">
-                        <cite>{{ auth()->user()->phone }}</cite>
+                        <cite>{{ optional(auth()->user())->phone }}</cite>
                     </a>
-                    <dl class="layui-nav-child" id="parent-id" lay-user-id="{{ auth()->user()->parent_id }}">
+                    <dl class="layui-nav-child" id="parent-id" lay-user-id="{{ optional(auth()->user())->parent_id }}">
                         <dd style="text-align: center;">
                             <a href="{{ route('profile') }}">基本资料</a>
                         </dd>

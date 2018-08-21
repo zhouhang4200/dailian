@@ -34,8 +34,10 @@ class OrderController extends Controller
             $servers = Server::condition(['region_id' => request('region_id')])->get(['name', 'id']);
         }
 
+        $orders = GameLevelingOrder::searchCondition(request()->all())->paginate(20);
+
         return view('front.order.index', [
-            'orders' => GameLevelingOrder::condition(array_merge(request()->except('status'), ['status' => 1]))->paginate(20),
+            'orders' => $orders,
             'guest' => auth()->guard()->guest(),
             'games' => Game::all(),
             'regions' => $regions,
@@ -62,8 +64,10 @@ class OrderController extends Controller
             $servers = Server::condition(['region_id' => request('region_id')])->get(['name', 'id']);
         }
 
+        $orders = GameLevelingOrder::searchCondition(request()->all())->paginate(20);
+
         return view('front.order.wait-list', [
-            'orders' => GameLevelingOrder::condition(array_merge(request()->except('status'), ['status' => 1]))->paginate(20),
+            'orders' => $orders,
             'guest' => auth()->guard()->guest(),
             'games' => Game::all(),
             'regions' => $regions,

@@ -23,11 +23,21 @@
             </ul>
             <p class="price choose">价格：</p>
             <ul class="price_filter filter">
-                <li>全部</li>
-                <li>10元以下</li>
-                <li>10元-100元（含）</li>
-                <li class="islink">100元-200元（含）</li>
-                <li>200元以上</li>
+                <li @if(request('amount') == 0) class="islink" @endif>
+                    <a href="{{ route('order', array_merge(['amount' => 0], request()->except('amount'))) }}">全部</a>
+                </li>
+                <li @if(request('amount') == '10') class="islink" @endif>
+                    <a href="{{ route('order', array_merge(['amount' => 10], request()->except('amount'))) }}">10元以下</a>
+                </li>
+                <li @if(request('amount') == '10,100') class="islink" @endif>
+                    <a href="{{ route('order', array_merge(['amount' => '10,100'], request()->except('amount'))) }}">10元-100元（含）</a>
+                </li>
+                <li @if(request('amount') == '100,200') class="islink" @endif>
+                    <a href="{{ route('order', array_merge(['amount' => '100,200'], request()->except('amount'))) }}">100元-200元（含）</a>
+                </li>
+                <li @if(request('amount') == '200') class="islink" @endif>
+                    <a href="{{ route('order', array_merge(['amount' => '200'], request()->except('amount'))) }}">200元以上</a>
+                </li>
             </ul>
         </div>
         <form class="layui-form" action="">
@@ -70,7 +80,7 @@
                 <div class="layui-inline">
                     <label class="layui-form-label">其他</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="orther" placeholder="订单号/发布人/标题" autocomplete="off" class="layui-input">
+                        <input type="text" name="keyword" placeholder="订单号/发布人/标题" autocomplete="off" class="layui-input" value="{{ request('keyword') }}">
                     </div>
                 </div>
                 <div class="layui-inline query f-fr">

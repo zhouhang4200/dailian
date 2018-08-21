@@ -250,22 +250,6 @@ Route::group(['middleware' =>  ['auth.admin']], function () {
             Route::post('update', 'PermissionController@update')->name('admin.permission.update');
             Route::post('delete', 'PermissionController@delete')->name('admin.permission.delete');
         });
-        // 角色
-        Route::prefix('role')->group(function () {
-            Route::get('/', 'RoleController@index')->name('admin.role');
-            Route::get('create', 'RoleController@create')->name('admin.role.create');
-            Route::get('edit', 'RoleController@edit')->name('admin.role.edit');
-            Route::post('store', 'RoleController@store')->name('admin.role.store');
-            Route::post('update', 'RoleController@update')->name('admin.role.update');
-            Route::post('delete', 'RoleController@delete')->name('admin.role.delete');
-        });
-        // 商户角色
-        Route::prefix('user-role')->group(function () {
-            Route::get('/', 'UserRoleController@index')->name('admin.user-role');
-            Route::post('store', 'UserRoleController@store')->name('admin.user-role.store');
-            Route::post('update', 'UserRoleController@update')->name('admin.user-role.update');
-            Route::post('delete', 'UserRoleController@delete')->name('admin.user-role.delete');
-        });
     });
 });
 

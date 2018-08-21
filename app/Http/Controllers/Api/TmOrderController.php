@@ -23,7 +23,7 @@ use App\Exceptions\Order\OrderPasswordException;
 use App\Exceptions\Order\OrderAdminUserException;
 use App\Exceptions\Order\OrderUnauthorizedException;
 
-class OrderController extends Controller
+class TmOrderController extends Controller
 {
     // 发单器在丸子这边的发单账号ID
     private static $creatorUserId = 1;

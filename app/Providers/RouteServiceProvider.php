@@ -33,11 +33,12 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function map()
     {
-        $this->mapApiRoutes();
-
-        $this->mapFrontRoutes();
-
-        $this->mapBackRoutes();
+        if(request()->getHost() == config('app.api_domain')) {
+            $this->mapApiRoutes();
+         } else {
+            $this->mapFrontRoutes();
+            $this->mapBackRoutes();
+        }
     }
 
     /**
@@ -80,8 +81,7 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapApiRoutes()
     {
-        Route::prefix('api')
-             ->middleware('api')
+        Route::middleware('api')
              ->namespace($this->namespace)
              ->group(base_path('routes/api.php'));
     }

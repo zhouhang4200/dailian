@@ -229,4 +229,6 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Geetest' => Germey\Geetest\Geetest::class,
     ],
+    // api 域名
+    'api_domain' => env('API_DOMAIN', 'api.fulugou.net')
 ];

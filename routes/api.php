@@ -19,25 +19,25 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::namespace('Api')->group(function () {
     // 小程序接口
-    Route::middleware(['auth:api'])->prefix('v1')->group(function () {
+    Route::middleware('auth:api')->prefix('v1')->group(function () {
         Route::post('register', 'RegisterController@register'); // 注册
         Route::post('login', 'LoginController@login'); // 登录
-        Route::prefix('profile')->middleware(['auth:api'])->group(function () {
+        Route::prefix('profile')->middleware('wx.api')->group(function () {
             Route::get('/', 'ProfileController@index'); // 个人资料首页
         });
-        Route::prefix('order')->middleware(['auth:api', 'api.auth'])->group(function () {
+        Route::prefix('order')->middleware('wx.api')->group(function () {
 
         });
-        Route::prefix('finance')->middleware(['auth:api', 'api.auth'])->group(function () {
+        Route::prefix('finance')->middleware('wx.api')->group(function () {
 
         });
-        Route::prefix('setting')->middleware(['auth:api', 'api.auth'])->group(function () {
+        Route::prefix('setting')->middleware('wx.api')->group(function () {
 
         });
-        Route::prefix('help')->middleware(['auth:api', 'api.auth'])->group(function () {
+        Route::prefix('help')->middleware('wx.api')->group(function () {
 
         });
-        Route::prefix('notice')->middleware(['auth:api', 'api.auth'])->group(function () {
+        Route::prefix('notice')->middleware('wx.api')->group(function () {
 
         });
         // 订单操作(小程序)

@@ -3,6 +3,7 @@
 namespace App\Http;
 
 use App\Http\Middleware\Permission;
+use App\Http\Middleware\WxApi;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -28,6 +29,8 @@ class Kernel extends HttpKernel
         // api 中间件
         'api.auth' => \App\Http\Middleware\ApiAuth::class,
         'permission' => \App\Http\Middleware\Permission::class,
+        // 小程序
+        'wx.api' => \App\Http\Middleware\WxApi::class,
     ];
 
     /**

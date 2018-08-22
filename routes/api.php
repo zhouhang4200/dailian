@@ -22,38 +22,39 @@ Route::namespace('Api')->group(function () {
     Route::middleware('auth:api')->prefix('v1')->group(function () {
         Route::post('register', 'RegisterController@register'); // 注册
         Route::post('login', 'LoginController@login'); // 登录
-        Route::prefix('profile')->middleware('wx.api')->group(function () {
+        Route::prefix('profile')->group(function () {
             Route::get('/', 'ProfileController@index'); // 个人资料首页
         });
-        Route::prefix('order')->middleware('wx.api')->group(function () {
+        Route::prefix('order')->group(function () {
 
         });
-        Route::prefix('finance')->middleware('wx.api')->group(function () {
+        Route::prefix('finance')->group(function () {
 
         });
-        Route::prefix('setting')->middleware('wx.api')->group(function () {
+        Route::prefix('setting')->group(function () {
 
         });
-        Route::prefix('help')->middleware('wx.api')->group(function () {
+        Route::prefix('help')->group(function () {
 
         });
-        Route::prefix('notice')->middleware('wx.api')->group(function () {
+        Route::prefix('notice')->group(function () {
 
         });
+
         // 订单操作(小程序)
         Route::prefix('order')->group(function () {
-            Route::post('apply-consult', 'WxOrderController@applyConsult'); // 申请协商
-            Route::post('cancel-consult', 'WxOrderController@cancelConsult'); // 取消协商
-            Route::post('agree-consult', 'WxOrderController@agreeConsult'); // 同意协商
-            Route::post('reject-consult', 'WxOrderController@rejectConsult'); // 不同意协商
-            Route::post('apply-complain', 'WxOrderController@applyComplain'); // 申请仲裁
-            Route::post('cancel-complain', 'WxOrderController@cancelComplain'); // 取消仲裁
-            Route::post('detail', 'WxOrderController@detail'); // 详情
-            Route::post('apply-complete-image', 'WxOrderController@applyCompleteImage'); // 发送完成截图
-            Route::post('complain-message', 'WxOrderController@complainMessage'); // 发送仲裁证据
-            Route::post('get-message', 'WxOrderController@getMessage'); // 获取留言
-            Route::post('send-message', 'WxOrderController@sendMessage'); // 发送留言
-            Route::post('get-complain-info', 'WxOrderController@getComplainInfo'); // 仲裁详情
+            Route::post('apply-consult', 'OrderController@applyConsult'); // 申请协商
+            Route::post('cancel-consult', 'OrderController@cancelConsult'); // 取消协商
+            Route::post('agree-consult', 'OrderController@agreeConsult'); // 同意协商
+            Route::post('reject-consult', 'OrderController@rejectConsult'); // 不同意协商
+            Route::post('apply-complain', 'OrderController@applyComplain'); // 申请仲裁
+            Route::post('cancel-complain', 'OrderController@cancelComplain'); // 取消仲裁
+            Route::post('detail', 'OrderController@detail'); // 详情
+            Route::post('apply-complete-image', 'OrderController@applyCompleteImage'); // 发送完成截图
+            Route::post('complain-message', 'OrderController@complainMessage'); // 发送仲裁证据
+            Route::post('get-message', 'OrderController@getMessage'); // 获取留言
+            Route::post('send-message', 'OrderController@sendMessage'); // 发送留言
+            Route::post('get-complain-info', 'OrderController@getComplainInfo'); // 仲裁详情
         });
     });
     // 订单操作(天猫发单器)

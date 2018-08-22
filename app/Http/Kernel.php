@@ -30,7 +30,6 @@ class Kernel extends HttpKernel
         'api.auth' => \App\Http\Middleware\ApiAuth::class,
         'permission' => \App\Http\Middleware\Permission::class,
         // 小程序
-        'wx.api' => \App\Http\Middleware\WxApi::class,
     ];
 
     /**

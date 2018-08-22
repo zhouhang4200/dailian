@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use Auth;
+use Hash;
 use Exception;
 use Illuminate\Http\UploadedFile;
 use App\Models\RealNameCertification;
@@ -116,6 +117,33 @@ class ProfileController extends Controller
                 return response()->apiJson(1001); // 参数缺失
             }
             $user = Auth::user();
+            $user->pay_password = bcrypt(request('pay_password'));
+            $user->save();
+
+            return response()->apiJson(0);
+        } catch (Exception $e) {
+            myLog('wx-profile-payPasswordSet-error', ['用户:' => $user->id ?? '', '失败:' => $e->getMessage()]);
+            return response()->apiJson(1003);
+        }
+    }
+
+    /**
+     *  修改支付密码
+     * @param Request $request
+     * @return mixed
+     * @throws Exception
+     */
+    public function payPasswordReset(Request $request)
+    {
+        try {
+            if (is_null(request('old_pay_password')) || is_null(request('new_pay_password'))) {
+                return response()->apiJson(1001); // 参数缺失
+            }
+            $user = Auth::user();
+
+            if (! Hash::check(request('old_pay_password'), $user->pay_password)) {
+                return response()->apiJson(3003); // 原密码错误
+            }
             $user->pay_password = bcrypt(request('pay_password'));
             $user->save();
 

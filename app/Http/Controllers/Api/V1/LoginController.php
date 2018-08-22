@@ -22,10 +22,19 @@ class LoginController extends Controller
                 return response()->apiJson(1001);
             }
 
-            if(Auth::attempt(['phone' => request('phone'), 'password' => request('password')]))
-            {
+            if(Auth::attempt(['phone' => request('phone'), 'password' => request('password')])) {
                 $user = Auth::user();
-                $data = ['token' => $user->createToken('WanZiXiaoChengXu')->accessToken];
+                $data = [
+                    'name' => $user->name,
+                    'age' => $user->age,
+                    'email' => $user->email,
+                    'phone' => $user->phone,
+                    'wechat' => $user->wechat,
+                    'qq' => $user->qq,
+                    'avatar' => $user->avatar,
+                    'status' => $user->status,
+                    'token' => $user->createToken('WanZiXiaoChengXu')->accessToken
+                ];
                 return response()->apiJson(0, $data);
             } else {
                 return response()->apiJson(1004);

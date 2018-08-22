@@ -33,7 +33,7 @@ class RegisterController extends Controller
 
             $user = User::create($datas);
 
-            $data['data'] = [
+            $data = [
                 'name' => $user->name,
                 'email' => $user->email,
                 'phone' => $user->phone,

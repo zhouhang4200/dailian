@@ -21,9 +21,7 @@ class CheckApiSign
         }
         // 检测 sign
         if (! isset($request->sign) || ! isset($request->timestamp)) {
-            $data = config('api.code')['1001'];
-            $data['data'] = [];
-            return response()->json($data);
+            return response()->apiJson(1001);
         }
 
         $par = $request->all();
@@ -40,9 +38,7 @@ class CheckApiSign
 //dd($sign);
 //        myLog('sign', ['sign' => $sign, 'str' => $str]);
         if ($sign != $request->sign) {
-            $data = config('api.code')['1002'];
-            $data['data'] = [];
-            return response()->json($data);
+            return response()->apiJson(1002);
         }
 
         return $next($request);

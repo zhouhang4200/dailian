@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use Auth;
+use Exception;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -15,13 +16,23 @@ class LoginController extends Controller
      */
     public function login(Request $request)
     {
-        if(Auth::attempt(['phone' => request('phone'), 'password' => request('password')]))
-        {
-            $user = Auth::user();
-            $data = ['token' => $user->createToken('WanZiXiaoChengXu')->accessToken];
-            return response()->apiJson(0, $data);
-        } else {
-            return response()->apiJson(1004);
+        try {
+            // 参数缺失
+            if (is_null( request('phone')) || is_null(request('password'))) {
+                return response()->apiJson(1001);
+            }
+
+            if(Auth::attempt(['phone' => request('phone'), 'password' => request('password')]))
+            {
+                $user = Auth::user();
+                $data = ['token' => $user->createToken('WanZiXiaoChengXu')->accessToken];
+                return response()->apiJson(0, $data);
+            } else {
+                return response()->apiJson(1004);
+            }
+        } catch (Exception $e) {
+            myLog('wx-login-error', ['失败原因：' => $e->getMessage()]);
+            return response()->apiJson(1003);
         }
     }
 }

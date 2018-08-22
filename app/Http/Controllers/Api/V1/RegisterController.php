@@ -14,16 +14,14 @@ class RegisterController extends Controller
         try {
             // 参数缺失
             if (is_null(request('phone')) || is_null(request('password'))) {
-                $data = config('api.code')['1001'];
-                $data['data'] = [];
-                return response()->json($data);
+                return response()->apiJson(1001);
             }
-            // 已存在
+
+            // 手机号已存在
             if (User::where('phone', request('phone'))->first()) {
-                $data = config('api.code')['2003'];
-                $data['data'] = [];
-                return response()->json($data);
+                return response()->apiJson(2003);
             }
+
             $datas = [];
             $datas['phone'] = request('phone');
             $datas['password'] = bcrypt(request('password'));
@@ -35,8 +33,6 @@ class RegisterController extends Controller
 
             $user = User::create($datas);
 
-            $data = [];
-//            $data = config('api.code')['0'];
             $data['data'] = [
                 'name' => $user->name,
                 'email' => $user->email,
@@ -47,11 +43,10 @@ class RegisterController extends Controller
                 'status' => $user->status,
                 'token' => $user->createToken('WanZiXiaoChengXu')->accessToken,
             ];
+            return response()->apiJson(0, $data);
         } catch (Exception $e) {
-//            $data = config('api.code')['1003'];
-            $data['data'] = [];
             myLog('wx-register-error', ['失败原因：' => $e->getMessage()]);
+            return response()->apiJson(1003);
         }
-        return response()->apiJson(1003, $data);
     }
 }

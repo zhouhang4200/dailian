@@ -44,6 +44,7 @@ Route::namespace('V1')->prefix('v1')->group(function () {
             Route::post('pay-password/set', 'ProfileController@payPasswordSet'); // 设置支付密码
             Route::post('pay-password/reset', 'ProfileController@payPasswordReset'); // 修改支付密码
             Route::post('pay-password/refound', 'ProfileController@payPasswordRefound'); // 找回支付密码
+            Route::post('certification', 'ProfileController@certification'); // 填写实名认证
         });
         // 财务
         Route::prefix('finance')->group(function () {

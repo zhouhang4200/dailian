@@ -180,4 +180,54 @@ class ProfileController extends Controller
             return response()->apiJson(1003);
         }
     }
+
+    /**
+     *  填写实名认证
+     * @param Request $request
+     * @return mixed
+     * @throws Exception
+     */
+    public function certification(Request $request)
+    {
+        try {
+            if (
+                is_null(request('real_name')) ||
+                is_null(request('identity_card')) ||
+                is_null(request('bank_card')) ||
+                is_null(request('bank_name')) ||
+                is_null(request('identity_card_front')) ||
+                is_null(request('identity_card_back')) ||
+                is_null(request('identity_card_hand'))
+            ) {
+                return response()->apiJson(1001); // 参数缺失
+            }
+            $user = Auth::user();
+
+            if (! $user->isParent()) {
+                return response()->apiJson(3004); // 只有主账号才能填写实名认证
+            }
+
+            $file1 = request('identity_card_front');
+            $file2 = request('identity_card_back');
+            $file3 = request('identity_card_hand');
+            $path = public_path("/resources/certification/".$user->id.'/'.date('Ymd')."/");
+
+            $datas['user_id'] = $user->id;
+            $datas['real_name'] = request('real_name');
+            $datas['identity_card'] = request('identity_card');
+            $datas['bank_card'] = request('bank_card');
+            $datas['bank_name'] = request('bank_name');
+            $datas['identity_card_front'] = static::uploadImage($file1, $path);
+            $datas['identity_card_back'] = static::uploadImage($file2, $path);
+            $datas['identity_card_hand'] = static::uploadImage($file3, $path);
+            $datas['status'] = 1;
+            $datas['remark'] = '';
+            RealNameCertification::create($datas);
+
+            return response()->apiJson(0);
+        } catch (Exception $e) {
+            myLog('wx-profile-certification-error', ['用户:' => $user->id ?? '', '失败:' => $e->getMessage()]);
+            return response()->apiJson(1003);
+        }
+    }
 }

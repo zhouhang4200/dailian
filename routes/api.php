@@ -18,6 +18,13 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::namespace('Api')->group(function () {
+
+    // 待接单订单
+    Route::prefix('order\wait')->group(function () {
+        Route::post('/', 'OrderWaitController@index'); // 列表
+        Route::post('show', 'OrderWaitController@show'); // 详情
+    });
+
     // 小程序接口
     Route::middleware('auth:api')->prefix('v1')->group(function () {
         Route::post('register', 'RegisterController@register'); // 注册
@@ -39,12 +46,9 @@ Route::namespace('Api')->group(function () {
 
         });
 
+        // 订单
         Route::prefix('order')->group(function () {
-            // 接单人订单
-            Route::prefix('wait')->group(function () {
-                Route::post('/', 'OrderWaitController@index'); // 列表
-                Route::post('show', 'OrderWaitController@show'); // 详情
-            });
+
             // 接单人订单
             Route::prefix('take')->group(function () {
                 Route::post('/', 'OrderTakeController@index'); // 列表

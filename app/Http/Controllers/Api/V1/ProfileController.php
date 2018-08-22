@@ -10,6 +10,11 @@ use App\Models\RealNameCertification;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+/**
+ * 个人中心
+ * Class ProfileController
+ * @package App\Http\Controllers\Api\V1
+ */
 class ProfileController extends Controller
 {
     // 允许上传图片类型
@@ -149,7 +154,7 @@ class ProfileController extends Controller
 
             return response()->apiJson(0);
         } catch (Exception $e) {
-            myLog('wx-profile-payPasswordSet-error', ['用户:' => $user->id ?? '', '失败:' => $e->getMessage()]);
+            myLog('wx-profile-payPasswordReset-error', ['用户:' => $user->id ?? '', '失败:' => $e->getMessage()]);
             return response()->apiJson(1003);
         }
     }
@@ -176,7 +181,7 @@ class ProfileController extends Controller
 
             return response()->apiJson(0);
         } catch (Exception $e) {
-            myLog('wx-profile-payPasswordSet-error', ['用户:' => $user->id ?? '', '失败:' => $e->getMessage()]);
+            myLog('wx-profile-payPasswordRefound-error', ['用户:' => $user->id ?? '', '失败:' => $e->getMessage()]);
             return response()->apiJson(1003);
         }
     }
@@ -248,6 +253,10 @@ class ProfileController extends Controller
                 return response()->apiJson(3005); //实名认证申请信息不存在
             }
 
+            if (! $user->isParent()) {
+                return response()->apiJson(3006); //子账号不能查看主账号实名认证信息
+            }
+
             $data['real_name'] = $certification->real_name;
             $data['identity_card'] = $certification->identity_card;
             $data['identity_card_front'] = $certification->identity_card_front;
@@ -261,7 +270,7 @@ class ProfileController extends Controller
 
             return response()->apiJson(0, $data);
         } catch (Exception $e) {
-            myLog('wx-profile-payPasswordSet-error', ['用户:' => $user->id ?? '', '失败:' => $e->getMessage()]);
+            myLog('wx-profile-certificationShow-error', ['用户:' => $user->id ?? '', '失败:' => $e->getMessage()]);
             return response()->apiJson(1003);
         }
     }

@@ -41,6 +41,7 @@ Route::namespace('V1')->prefix('v1')->group(function () {
         Route::prefix('profile')->group(function () {
             Route::post('/', 'ProfileController@index'); // 个人资料
             Route::post('update', 'ProfileController@update'); // 个人资料修改
+            Route::post('pay-password/set', 'ProfileController@payPasswordSet'); // 设置支付密码
         });
         // 财务
         Route::prefix('finance')->group(function () {

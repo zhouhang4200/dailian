@@ -102,4 +102,27 @@ class ProfileController extends Controller
         // 返回图片路径
         return str_replace('\\', '/', $path);
     }
+
+    /**
+     *  设置支付密码
+     * @param Request $request
+     * @return mixed
+     * @throws Exception
+     */
+    public function payPasswordSet(Request $request)
+    {
+        try {
+            if (is_null(request('pay_password'))) {
+                return response()->apiJson(1001); // 参数缺失
+            }
+            $user = Auth::user();
+            $user->pay_password = bcrypt(request('pay_password'));
+            $user->save();
+
+            return response()->apiJson(0);
+        } catch (Exception $e) {
+            myLog('wx-profile-payPasswordSet-error', ['用户:' => $user->id ?? '', '失败:' => $e->getMessage()]);
+            return response()->apiJson(1003);
+        }
+    }
 }

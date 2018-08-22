@@ -16,8 +16,8 @@ use Illuminate\Http\Request;
 Route::namespace('V1')->prefix('v1')->group(function () {
 
     Route::middleware('api.sign')->group(function () {
-        Route::post('register', 'RegisterController@register'); // 注册
         Route::post('login', 'LoginController@login'); // 登录
+        Route::post('register', 'RegisterController@register'); // 注册
 
         // 待接单订单
         Route::prefix('order\wait')->group(function () {

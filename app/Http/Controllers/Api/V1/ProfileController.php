@@ -21,21 +21,16 @@ class ProfileController extends Controller
         try {
             $user = Auth::user();
 
-            $datas['id'] = $user->id;
-            $datas['name'] = $user->name;
-            $datas['phone'] = $user->phone;
-            $datas['balance'] = $user->userAsset->balance;
-            $datas['frozen'] = $user->userAsset->frozen;
-            $datas['total_balance'] = bcadd($datas['balance'], $datas['frozen'], 2);
+            $data['id'] = $user->id;
+            $data['name'] = $user->name;
+            $data['phone'] = $user->phone;
+            $data['balance'] = $user->userAsset ? $user->userAsset->balance : 0;
+            $data['frozen'] = $user->userAsset ? $user->userAsset->frozen : 0;
 
-            $data = config('api.code')['0'];
-            $data['data'] = [$datas];
-            return response()->json($data);
+            return response()->apiJson(0, $data);
         } catch (Exception $e) {
-            $data = config('api.code')['2001'];
-            $data['data'] = [];
             myLog('wx-profile-index', ['用户:' => $user->id ?? '', '失败:' => $e->getMessage()]);
-            return response()->json($data);
+            return response()->apiJson(1003);
         }
     }
 

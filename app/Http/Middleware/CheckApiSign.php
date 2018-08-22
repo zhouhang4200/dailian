@@ -16,7 +16,9 @@ class CheckApiSign
     public function handle($request, Closure $next)
     {
         $data = [];
-
+        if (env('MIME')) {
+            return $next($request);
+        }
         // 检测 sign
         if (! isset($request->sign) || ! isset($request->timestamp)) {
             $data = config('api.code')['1001'];

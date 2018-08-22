@@ -26,17 +26,17 @@
                 <li @if(request('amount') == 0) class="islink" @endif>
                     <a href="{{ route('order', array_merge(['amount' => 0], request()->except('amount'))) }}">全部</a>
                 </li>
-                <li @if(request('amount') == '10') class="islink" @endif>
-                    <a href="{{ route('order', array_merge(['amount' => 10], request()->except('amount'))) }}">10元以下</a>
+                <li @if(request('amount') == 1) class="islink" @endif>
+                    <a href="{{ route('order', array_merge(['amount' => 1], request()->except('amount'))) }}">10元以下</a>
                 </li>
-                <li @if(request('amount') == '10,100') class="islink" @endif>
-                    <a href="{{ route('order', array_merge(['amount' => '10,100'], request()->except('amount'))) }}">10元-100元（含）</a>
+                <li @if(request('amount') == 2) class="islink" @endif>
+                    <a href="{{ route('order', array_merge(['amount' => 2], request()->except('amount'))) }}">10元-100元（含）</a>
                 </li>
-                <li @if(request('amount') == '100,200') class="islink" @endif>
-                    <a href="{{ route('order', array_merge(['amount' => '100,200'], request()->except('amount'))) }}">100元-200元（含）</a>
+                <li @if(request('amount') == 3) class="islink" @endif>
+                    <a href="{{ route('order', array_merge(['amount' => 3], request()->except('amount'))) }}">100元-200元（含）</a>
                 </li>
-                <li @if(request('amount') == '200') class="islink" @endif>
-                    <a href="{{ route('order', array_merge(['amount' => '200'], request()->except('amount'))) }}">200元以上</a>
+                <li @if(request('amount') == 4) class="islink" @endif>
+                    <a href="{{ route('order', array_merge(['amount' => 4], request()->except('amount'))) }}">200元以上</a>
                 </li>
             </ul>
         </div>

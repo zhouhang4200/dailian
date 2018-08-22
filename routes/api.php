@@ -13,11 +13,7 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-Route::prefix('v1')->group(function () {
+Route::namespace('V1')->prefix('v1')->group(function () {
 
     Route::post('register', 'RegisterController@register'); // 注册
     Route::post('login', 'LoginController@login'); // 登录
@@ -27,6 +23,10 @@ Route::prefix('v1')->group(function () {
         Route::post('/', 'OrderWaitController@index'); // 列表
         Route::post('show', 'OrderWaitController@show'); // 详情
     });
+
+    Route::post('games', 'GameController@index'); // 游戏
+    Route::post('regions', 'RegionController@index'); // 区
+    Route::post('servers', 'ServerController@index'); // 服
 
     // 登录后操作
     Route::middleware('auth:api')->group(function () {
@@ -58,7 +58,7 @@ Route::prefix('v1')->group(function () {
                 Route::post('/', 'OrderSendController@index'); // 列表
                 Route::post('show', 'OrderSendController@show'); // 详情
             });
-            // 订单操作(小程序)
+            // 订单操作
             Route::prefix('operation')->group(function () {
                 Route::post('apply-consult', 'OrderOperationController@applyConsult'); // 申请协商
                 Route::post('cancel-consult', 'OrderOperationController@cancelConsult'); // 取消协商

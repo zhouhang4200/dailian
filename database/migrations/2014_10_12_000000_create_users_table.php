@@ -34,6 +34,7 @@ class CreateUsersTable extends Migration
             $table->dateTime('last_login_at')->nullable()->comment('最后登录时间');
             $table->bigInteger('last_login_ip')->nullable()->comment('最后登录IP');
             $table->string('current_login_local', 100)->nullable()->comment('当前登录地');
+            $table->string('signature', 100)->nullable()->comment('签名');
             $table->dateTime('current_login_at')->nullable()->comment('当前登录时间');
             $table->bigInteger('current_login_ip')->nullable()->comment('当前登录IP');
             $table->string('app_id', 60)->nullable()->comment('api app_id');

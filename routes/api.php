@@ -39,7 +39,8 @@ Route::namespace('V1')->prefix('v1')->group(function () {
         });
         // 个人资料
         Route::prefix('profile')->group(function () {
-            Route::post('/', 'ProfileController@index'); // 个人资料首页
+            Route::post('/', 'ProfileController@index'); // 个人资料
+            Route::post('update', 'ProfileController@update'); // 个人资料修改
         });
         // 财务
         Route::prefix('finance')->group(function () {

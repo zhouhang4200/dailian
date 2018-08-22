@@ -38,18 +38,21 @@ class MonitorApiCommand extends Command
     public function handle()
     {
         while (1) {
-            $start =  microtime(true);
+            try {
+                $start =  microtime(true);
 
-            $client = new Client(['timeout' => 1]);
-            $response = $client->request('POST', 'http://js.qsios.cn/api/taobao/store');
-            $result = $response->getBody()->getContents();
+                $client = new Client(['timeout' => 1]);
+                $response = $client->request('POST', 'http://js.qsios.cn/api/taobao/store');
+                $result = $response->getBody()->getContents();
 
-            $end = microtime(true);
+                $end = microtime(true);
 
-            $data = [$result, '执行时间' => ($end - $start)*1000];
+                $data = [$result, '执行时间' => ($end - $start)*1000];
 
-            myLog('monitorApi', $data);
-
+                myLog('monitorApi', $data);
+            } catch (\Exception $exception) {
+                myLog('monitorApiEx', $exception->getMessage());
+            }
             sleep(1);
         }
 

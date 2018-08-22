@@ -9,7 +9,6 @@ class GameLevelingOrderIndexConfigurator extends IndexConfigurator
 {
     use Migratable;
 
-    protected $name = 'order';
     /**
      * @var array
      */

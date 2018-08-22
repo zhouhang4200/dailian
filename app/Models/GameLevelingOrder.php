@@ -71,13 +71,13 @@ class GameLevelingOrder extends Model
                 'type' => 'integer',
             ],
             'server_name' => [
-                'type' => 'float',
+                'type' => 'keyword',
             ],
             'game_leveling_type_id' => [
                 'type' => 'integer',
             ],
             'game_leveling_type_name' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'title' => [
                 'type' => 'text',
@@ -85,7 +85,7 @@ class GameLevelingOrder extends Model
                 "search_analyzer" => "ik_smart",
             ],
             'amount' => [
-                'type' => 'float',
+                'type' => 'keyword',
             ],
             'game_account' => [
                 'type' => 'keyword',

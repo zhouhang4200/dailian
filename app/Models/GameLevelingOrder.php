@@ -146,7 +146,7 @@ class GameLevelingOrder extends Model
                 'type' => 'keyword',
             ],
             'take_at' => [
-                'type' => 'date',
+                'type' => 'keyword',
             ],
             'price_increase_step' => [
                 'type' => 'float',
@@ -155,16 +155,18 @@ class GameLevelingOrder extends Model
                 'type' => 'float',
             ],
             'apply_complete_at' => [
-                'type' => 'date',
+                'type' => 'keyword',
             ],
             'complete_at' => [
-                'type' => 'date',
+                'type' => 'keyword',
             ],
             'created_at' => [
                 'type' => 'date',
+                "format" =>  "yyyy-MM-dd HH:mm:ss"
             ],
             'updated_at' => [
                 'type' => 'date',
+                "format" =>  "yyyy-MM-dd HH:mm:ss"
             ],
             'source' => [
                 'type' => 'integer',

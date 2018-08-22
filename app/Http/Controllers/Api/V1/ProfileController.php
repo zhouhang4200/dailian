@@ -153,4 +153,31 @@ class ProfileController extends Controller
             return response()->apiJson(1003);
         }
     }
+
+    /**
+     *  找回支付密码
+     * @param Request $request
+     * @return mixed
+     * @throws Exception
+     */
+    public function payPasswordRefound(Request $request)
+    {
+        try {
+            if (is_null(request('phone')) || is_null(request('new_pay_password'))) {
+                return response()->apiJson(1001); // 参数缺失
+            }
+            $user = Auth::user();
+
+            if ($user->phone != request('phone')) {
+                return response()->apiJson(2004); // 请填写注册时候手机号
+            }
+            $user->pay_password = bcrypt(request('new_pay_password'));
+            $user->save();
+
+            return response()->apiJson(0);
+        } catch (Exception $e) {
+            myLog('wx-profile-payPasswordSet-error', ['用户:' => $user->id ?? '', '失败:' => $e->getMessage()]);
+            return response()->apiJson(1003);
+        }
+    }
 }

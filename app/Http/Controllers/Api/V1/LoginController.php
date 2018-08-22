@@ -18,14 +18,10 @@ class LoginController extends Controller
         if(Auth::attempt(['phone' => request('phone'), 'password' => request('password')]))
         {
             $user = Auth::user();
-
-            $data = config('api.code')['0'];
-            $data['data'] = ['token' => $user->createToken('WanZiXiaoChengXu')->accessToken];
-
+            $data = ['token' => $user->createToken('WanZiXiaoChengXu')->accessToken];
+            return response()->apiJson(0, $data);
         } else {
-            $data = config('api.code')['1004'];
-            $data['data'] = [];
+            return response()->apiJson(1004);
         }
-        return response()->json($data);
     }
 }

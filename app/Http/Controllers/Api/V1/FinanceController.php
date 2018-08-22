@@ -47,4 +47,38 @@ class FinanceController extends Controller
             return response()->apiJson(1003);
         }
     }
+
+    /**
+     *  资金流水详情
+     * @param Request $request
+     * @return mixed
+     * @throws Exception
+     */
+    public function flowsShow(Request $request)
+    {
+        try {
+            $user = Auth::user();
+
+            // 查看资金流水权限
+            if (! $user->could('finance.asset-flow')) {
+                return response()->apiJson(1005);
+            }
+
+            if (is_null(request('id'))) {
+                return response()->apiJson(1001); // 参数缺失
+            }
+
+            $userAssetFlow = UserAssetFlow::find(request('id'));
+
+            $data['type'] = config('user_asset.type')[$userAssetFlow->type];
+            $data['amount'] = $userAssetFlow->amount;
+            $data['created_at'] = $userAssetFlow->created_at->toDateTimeString();
+            $data['remark'] = $userAssetFlow->remark;
+
+            return response()->apiJson(0, $data);
+        } catch (Exception $e) {
+            myLog('wx-profile-flowsShow-error', ['用户:' => $user->id ?? '', '失败:' => $e->getMessage()]);
+            return response()->apiJson(1003);
+        }
+    }
 }

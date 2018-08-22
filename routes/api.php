@@ -50,6 +50,7 @@ Route::namespace('V1')->prefix('v1')->group(function () {
         // 财务
         Route::prefix('finance')->group(function () {
             Route::post('flows', 'FinanceController@flows'); // 资金流水
+            Route::post('flows/show', 'FinanceController@flowsShow'); // 资金流水详情
         });
         // 帮助
         Route::prefix('help')->group(function () {

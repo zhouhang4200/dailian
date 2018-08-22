@@ -41,10 +41,16 @@ Route::namespace('V1')->prefix('v1')->group(function () {
         Route::prefix('profile')->group(function () {
             Route::post('/', 'ProfileController@index'); // 个人资料
             Route::post('update', 'ProfileController@update'); // 个人资料修改
+            Route::post('pay-password/set', 'ProfileController@payPasswordSet'); // 设置支付密码
+            Route::post('pay-password/reset', 'ProfileController@payPasswordReset'); // 修改支付密码
+            Route::post('pay-password/refound', 'ProfileController@payPasswordRefound'); // 找回支付密码
+            Route::post('certification', 'ProfileController@certification'); // 填写实名认证
+            Route::post('certification/show', 'ProfileController@certificationShow'); // 实名认证详情
         });
         // 财务
         Route::prefix('finance')->group(function () {
-
+            Route::post('flows', 'FinanceController@flows'); // 资金流水
+            Route::post('flows/show', 'FinanceController@flowsShow'); // 资金流水详情
         });
         // 帮助
         Route::prefix('help')->group(function () {

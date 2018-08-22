@@ -30,7 +30,7 @@ Route::group(['middleware' => 'auth'], function (){
 
     // 员工 与 岗位
     Route::prefix('employee')->group(function (){
-        Route::get('/', 'EmployeeController@index')->name('employee'); // 员工列表
+        Route::get('/', 'EmployeeController@index')->name('employee')->middleware('permission:employee');// 员工列表
         Route::get('create', 'EmployeeController@create')->name('employee.create'); // 员工添加视图
         Route::post('store', 'EmployeeController@store')->name('employee.store'); // 员工保存
         Route::get('edit/{id}', 'EmployeeController@edit')->name('employee.edit'); // 员工编辑视图
@@ -38,7 +38,7 @@ Route::group(['middleware' => 'auth'], function (){
         Route::post('delete', 'EmployeeController@delete')->name('employee.delete'); // 员工删除
         Route::post('forbidden', 'EmployeeController@forbidden')->name('employee.forbidden'); // 员工删除
 
-        Route::get('group', 'EmployeeController@group')->name('employee.group'); // 岗位列表
+        Route::get('group', 'EmployeeController@group')->name('employee.group')->middleware('permission:employee.group');// 岗位列表
         Route::get('group/create', 'EmployeeController@groupCreate')->name('employee.group.create'); // 岗位添加视图
         Route::post('group/store', 'EmployeeController@groupStore')->name('employee.group.store'); // 岗位保存
         Route::get('group/edit/{id}', 'EmployeeController@groupEdit')->name('employee.group.edit'); // 岗位编辑视图
@@ -49,12 +49,12 @@ Route::group(['middleware' => 'auth'], function (){
     // 订单
     Route::prefix('order')->group(function (){
         // 待接订单
-        Route::get('wait-list', 'OrderController@waitList')->name('order.wait-list');
+        Route::get('wait-list', 'OrderController@waitList')->name('order.wait-list')->middleware('permission:order.wait-list');
         // 接单列表
-        Route::get('take-list', 'OrderController@takeList')->name('order.take-list');
+        Route::get('take-list', 'OrderController@takeList')->name('order.take-list')->middleware('permission:order.take-list');
         Route::post('take-list', 'OrderController@takeListData')->name('order.take-list');
         // 订单详情
-        Route::get('/{trade_no?}', 'OrderController@show')->name('order.show');
+        Route::get('/{trade_no?}', 'OrderController@show')->name('order.show')->middleware('permission:order.show');
         // 订单操作
         Route::prefix('operation')->group(function (){
             Route::post('take', 'OrderOperationController@take')->name('order.operation.take'); // 接单
@@ -89,12 +89,12 @@ Route::group(['middleware' => 'auth'], function (){
     Route::prefix('finance')->namespace('Finance')->group(function (){
         // 资金流水
         Route::prefix('asset-flow')->group(function (){
-            Route::get('/', 'AssetFlowController@index')->name('finance.asset-flow');
+            Route::get('/', 'AssetFlowController@index')->name('finance.asset-flow')->middleware('permission:finance.asset-flow');
             Route::get('export', 'AssetFlowController@export')->name('finance.asset-flow.export');
         });
         // 余额充值
         Route::prefix('balance-recharge')->group(function (){
-            Route::get('/', 'BalanceRechargeController@index')->name('finance.balance-recharge');
+            Route::get('/', 'BalanceRechargeController@index')->name('finance.balance-recharge')->middleware('permission:finance.balance-recharge');
             Route::get('record', 'BalanceRechargeController@record')->name('finance.balance-recharge.record');
             Route::get('pay', 'BalanceRechargeController@pay')->name('finance.balance-recharge.pay');
             Route::get('pay-success', 'BalanceRechargeController@paySuccess')->name('finance.balance-recharge.pay-success');
@@ -102,14 +102,14 @@ Route::group(['middleware' => 'auth'], function (){
         });
         // 余额提现
         Route::prefix('balance-withdraw')->group(function (){
-            Route::get('/', 'BalanceWithdrawController@index')->name('finance.balance-withdraw');
+            Route::get('/', 'BalanceWithdrawController@index')->name('finance.balance-withdraw')->middleware('permission:finance.balance-withdraw');
             Route::post('/', 'BalanceWithdrawController@store');
             Route::get('record', 'BalanceWithdrawController@record')->name('finance.balance-withdraw.record');
             Route::get('export', 'BalanceWithdrawController@export')->name('finance.balance-withdraw.export');
         });
         // 资金日报表
         Route::prefix('finance-report-day')->group(function (){
-            Route::get('/', 'FinanceReportDayController@index')->name('finance.finance-report-day');
+            Route::get('/', 'FinanceReportDayController@index')->name('finance.finance-report-day')->middleware('permission:finance.finance-report-day');
             Route::get('export', 'FinanceReportDayController@export')->name('finance.finance-report-day.export');
         });
     });
@@ -129,7 +129,7 @@ Route::group(['middleware' => 'auth'], function (){
     });
     // 实名认证
     Route::prefix('real-name-certification')->group(function () {
-        Route::get('/', 'RealNameCertificationController@index')->name('real-name-certification');
+        Route::get('/', 'RealNameCertificationController@index')->name('real-name-certification')->middleware('permission:real-name-certification');
         Route::get('create', 'RealNameCertificationController@create')->name('real-name-certification.create');
         Route::post('store', 'RealNameCertificationController@store')->name('real-name-certification.store');
         Route::get('edit', 'RealNameCertificationController@edit')->name('real-name-certification.edit');

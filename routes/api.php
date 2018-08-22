@@ -29,10 +29,10 @@ Route::namespace('V1')->prefix('v1')->group(function () {
     Route::post('servers', 'ServerController@index'); // 服
 
     // 登录后操作
-    Route::middleware('auth:api')->group(function () {
+    Route::middleware(['auth:api', 'api.sign'])->group(function () {
         // 个人资料
         Route::prefix('profile')->group(function () {
-            Route::get('/', 'ProfileController@index'); // 个人资料首页
+            Route::post('/', 'ProfileController@index'); // 个人资料首页
         });
         // 财务
         Route::prefix('finance')->group(function () {

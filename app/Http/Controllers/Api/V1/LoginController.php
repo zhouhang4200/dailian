@@ -19,13 +19,13 @@ class LoginController extends Controller
         {
             $user = Auth::user();
 
-            $datas = [];
-            $datas['token'] = $user->createToken('WanZiXiaoChengXu')->accessToken;
-            $status = 200;
+            $data = config('api.code')['0'];
+            $data['data'] = ['token' => $user->createToken('WanZiXiaoChengXu')->accessToken];
+
         } else {
-            $datas['error'] = "未授权";
-            $status = 401;
+            $data = config('api.code')['1004'];
+            $data['data'] = [];
         }
-        return response()->json($datas, $status);
+        return response()->json($data);
     }
 }

@@ -28,10 +28,14 @@ class ProfileController extends Controller
             $datas['frozen'] = $user->userAsset->frozen;
             $datas['total_balance'] = bcadd($datas['balance'], $datas['frozen'], 2);
 
-            return response()->apiSuccess('成功', ['datas' => json_encode($datas)]);
+            $data = config('api.code')['0'];
+            $data['data'] = [$datas];
+            return response()->json($data);
         } catch (Exception $e) {
+            $data = config('api.code')['2001'];
+            $data['data'] = [];
             myLog('wx-profile-index', ['用户:' => $user->id ?? '', '失败:' => $e->getMessage()]);
-            return response()->apiFail('丸子接口异常');
+            return response()->json($data);
         }
     }
 

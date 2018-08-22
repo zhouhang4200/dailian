@@ -230,4 +230,39 @@ class ProfileController extends Controller
             return response()->apiJson(1003);
         }
     }
+
+    /**
+     *  实名认证详情
+     * @param Request $request
+     * @return mixed
+     * @throws Exception
+     */
+    public function certificationShow(Request $request)
+    {
+        try {
+            $user = Auth::user();
+
+            $certification = RealNameCertification::where('user_id', $user->id)->first();
+
+            if (! $certification) {
+                return response()->apiJson(3005); //实名认证申请信息不存在
+            }
+
+            $data['real_name'] = $certification->real_name;
+            $data['identity_card'] = $certification->identity_card;
+            $data['identity_card_front'] = $certification->identity_card_front;
+            $data['identity_card_back'] = $certification->identity_card_back;
+            $data['identity_card_hand'] = $certification->identity_card_hand;
+            $data['bank_card'] = $certification->bank_card;
+            $data['bank_name'] = $certification->bank_name;
+            $data['status'] = $certification->status;
+            $data['status'] = $certification->status;
+            $data['remark'] = $certification->remark;
+
+            return response()->apiJson(0, $data);
+        } catch (Exception $e) {
+            myLog('wx-profile-payPasswordSet-error', ['用户:' => $user->id ?? '', '失败:' => $e->getMessage()]);
+            return response()->apiJson(1003);
+        }
+    }
 }

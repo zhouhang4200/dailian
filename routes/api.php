@@ -32,6 +32,11 @@ Route::namespace('V1')->prefix('v1')->group(function () {
 
     // 登录后操作
     Route::middleware(['auth:api', 'api.sign'])->group(function () {
+        // 密码找回
+        Route::prefix('password')->group(function () {
+            Route::post('refound', 'PasswordController@refound'); // 密码找回
+            Route::post('reset', 'PasswordController@reset'); // 重置密码
+        });
         // 个人资料
         Route::prefix('profile')->group(function () {
             Route::post('/', 'ProfileController@index'); // 个人资料首页

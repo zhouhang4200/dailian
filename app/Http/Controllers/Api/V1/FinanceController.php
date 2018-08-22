@@ -8,10 +8,12 @@ use Hash;
 use Exception;
 use App\Exceptions\UserAsset\UserAssetBalanceException;
 use App\Services\UserAssetService;
+use App\Models\BalanceRecharge;
 use App\Models\BalanceWithdraw;
 use App\Models\UserAssetFlow;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Yansongda\Pay\Pay;
 
 /**
  *  资金管理
@@ -137,6 +139,53 @@ class FinanceController extends Controller
             UserAssetService::init(35, $user->parent_id, $amount, $record->trade_no)->frozen();
         } catch (UserAssetBalanceException $balanceException) {
             return response()->apiJson(4001);
+        } catch (Exception $e) {
+            myLog('wx-profile-withdraw-error', ['用户:' => $user->id ?? '', '失败:' => $e->getMessage()]);
+            return response()->apiJson(1003);
+        }
+        DB::commit();
+
+        return response()->apiJson(0);
+    }
+
+    /**
+     *  充值
+     * @param Request $request
+     * @return mixed
+     * @throws Exception
+     */
+    public function recharge(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            $user = Auth::user();
+
+            // 提现权限
+            if (! $user->could('finance.balance-recharge')) {
+                return response()->apiJson(1005);
+            }
+
+            if (is_null(request('amount'))) {
+                return response()->apiJson(1001); // 参数缺失
+            }
+
+            // 生成充值单号
+            $tradeNo = generateOrderNo();
+
+            BalanceRecharge::create([
+                'user_id' => $user->parent_id,
+                'amount' => request('amount'),
+                'trade_no' => $tradeNo,
+            ]);
+
+            $order = [
+                'out_trade_no' => $tradeNo,
+                'total_fee' => bcmul(request('amount'), 100, 0), // 单位：分
+                'body' => '丸子代练-账户余额充值',
+                'notify_url' => route('finance.balance-recharge.wechat-notify'),
+            ];
+            Pay::wechat(config('pay.wechat'))->miniapp($order);
+
         } catch (Exception $e) {
             myLog('wx-profile-withdraw-error', ['用户:' => $user->id ?? '', '失败:' => $e->getMessage()]);
             return response()->apiJson(1003);

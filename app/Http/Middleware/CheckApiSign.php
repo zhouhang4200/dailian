@@ -35,7 +35,7 @@ class CheckApiSign
         }
 
         $sign = md5(rtrim($str,  '&') . 'ajJKDej2jF');
-
+//dd($sign);
 //        myLog('sign', ['sign' => $sign, 'str' => $str]);
         if ($sign != $request->sign) {
             $data = config('api.code')['1002'];

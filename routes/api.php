@@ -15,18 +15,20 @@ use Illuminate\Http\Request;
 
 Route::namespace('V1')->prefix('v1')->group(function () {
 
-    Route::post('register', 'RegisterController@register'); // 注册
-    Route::post('login', 'LoginController@login'); // 登录
+    Route::middleware('api.sign')->group(function () {
+        Route::post('register', 'RegisterController@register'); // 注册
+        Route::post('login', 'LoginController@login'); // 登录
 
-    // 待接单订单
-    Route::prefix('order\wait')->group(function () {
-        Route::post('/', 'OrderWaitController@index'); // 列表
-        Route::post('show', 'OrderWaitController@show'); // 详情
+        // 待接单订单
+        Route::prefix('order\wait')->group(function () {
+            Route::post('/', 'OrderWaitController@index'); // 列表
+            Route::post('show', 'OrderWaitController@show'); // 详情
+        });
+
+        Route::post('games', 'GameController@index'); // 游戏
+        Route::post('regions', 'RegionController@index'); // 区
+        Route::post('servers', 'ServerController@index'); // 服
     });
-
-    Route::post('games', 'GameController@index'); // 游戏
-    Route::post('regions', 'RegionController@index'); // 区
-    Route::post('servers', 'ServerController@index'); // 服
 
     // 登录后操作
     Route::middleware(['auth:api', 'api.sign'])->group(function () {

@@ -51,6 +51,7 @@ Route::namespace('V1')->prefix('v1')->group(function () {
         Route::prefix('finance')->group(function () {
             Route::post('flows', 'FinanceController@flows'); // 资金流水
             Route::post('flows/show', 'FinanceController@flowsShow'); // 资金流水详情
+            Route::post('withdraw', 'FinanceController@withdraw'); // 提现
         });
         // 帮助
         Route::prefix('help')->group(function () {

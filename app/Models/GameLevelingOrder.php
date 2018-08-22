@@ -22,13 +22,152 @@ class GameLevelingOrder extends Model
         //
     ];
 
-    // Here you can specify a mapping for a model fields.
+    /**
+     * 定义ElasticSearch 字段类型
+     * @var array
+     */
     protected $mapping = [
         'properties' => [
+            'trade_no' => [
+                'type' => 'keyword',
+            ],
+            'foreign_trade_no' => [
+                'type' => 'keyword',
+            ],
+            'status' => [
+                'type' => 'integer',
+            ],
+            'user_id' => [
+                'type' => 'integer',
+            ],
+            'username' => [
+                'type' => 'keyword',
+            ],
+            'parent_user_id' => [
+                'type' => 'integer',
+            ],
+            'parent_username' => [
+                'type' => 'keyword',
+            ],
+            'order_type_id' => [
+                'type' => 'integer',
+            ],
+            'game_class_id' => [
+                'type' => 'integer',
+            ],
+            'game_id' => [
+                'type' => 'integer',
+            ],
+            'game_name' => [
+                'type' => 'keyword',
+            ],
+            'region_id' => [
+                'type' => 'integer',
+            ],
+            'region_name' => [
+                'type' => 'keyword',
+            ],
+            'server_id' => [
+                'type' => 'integer',
+            ],
+            'server_name' => [
+                'type' => 'keyword',
+            ],
+            'game_leveling_type_id' => [
+                'type' => 'integer',
+            ],
+            'game_leveling_type_name' => [
+                'type' => 'keyword',
+            ],
             'title' => [
                 'type' => 'text',
                 "analyzer" => "ik_smart",
                 "search_analyzer" => "ik_smart",
+            ],
+            'amount' => [
+                'type' => 'keyword',
+            ],
+            'game_account' => [
+                'type' => 'keyword',
+            ],
+            'game_password' => [
+                'type' => 'keyword',
+            ],
+            'game_role' => [
+                'type' => 'keyword',
+            ],
+            'day' => [
+                'type' => 'integer',
+            ],
+            'hour' => [
+                'type' => 'integer',
+            ],
+            'efficiency_deposit' => [
+                'type' => 'float',
+            ],
+            'security_deposit' => [
+                'type' => 'float',
+            ],
+            'explain' => [
+                'type' => 'text',
+                "analyzer" => "ik_smart",
+                "search_analyzer" => "ik_smart",
+            ],
+            'requirement' => [
+                'type' => 'text',
+                "analyzer" => "ik_smart",
+                "search_analyzer" => "ik_smart",
+            ],
+            'take_order_password' => [
+                'type' => 'keyword',
+            ],
+            'player_phone' => [
+                'type' => 'text',
+            ],
+            'player_qq' => [
+                'type' => 'keyword',
+            ],
+            'user_phone' => [
+                'type' => 'text',
+            ],
+            'user_qq' => [
+                'type' => 'keyword',
+            ],
+            'take_user_id' => [
+                'type' => 'integer',
+            ],
+            'take_username' => [
+                'type' => 'keyword',
+            ],
+            'take_parent_user_id' => [
+                'type' => 'integer',
+            ],
+            'take_parent_username' => [
+                'type' => 'keyword',
+            ],
+            'take_at' => [
+                'type' => 'date',
+            ],
+            'price_increase_step' => [
+                'type' => 'float',
+            ],
+            'price_ceiling' => [
+                'type' => 'float',
+            ],
+            'apply_complete_at' => [
+                'type' => 'date',
+            ],
+            'complete_at' => [
+                'type' => 'date',
+            ],
+            'created_at' => [
+                'type' => 'date',
+            ],
+            'updated_at' => [
+                'type' => 'date',
+            ],
+            'source' => [
+                'type' => 'integer',
             ],
         ]
     ];
@@ -181,7 +320,11 @@ class GameLevelingOrder extends Model
         return $query;
     }
 
-
+    /**
+     * 搜索过滤
+     * @param $condition
+     * @return \ScoutElastic\Builders\FilterBuilder|\ScoutElastic\Builders\SearchBuilder
+     */
     public static function searchCondition($condition)
     {
         $keyword = (isset($condition['keyword']) && ! empty($condition['keyword'])) ? $condition['keyword'] : '*';
@@ -220,20 +363,38 @@ class GameLevelingOrder extends Model
             $query->where('server_id', $condition['server_id']);
         }
 
-        if (isset($condition['amount']) && $condition['amount'] == '10') {
+        if (isset($condition['amount']) && $condition['amount'] == 1) {
             $query->where('amount', '<', 10);
         }
 
-        if (isset($condition['amount']) && $condition['amount'] == '10,100') {
+        if (isset($condition['amount']) && $condition['amount'] == 2) {
             $query->whereBetween('amount', [10, 100]);
         }
 
-        if (isset($condition['amount']) && $condition['amount'] == '100,200') {
+        if (isset($condition['amount']) && $condition['amount'] == 3) {
             $query->whereBetween('amount', [100, 200]);
         }
 
-        if (isset($condition['amount']) && $condition['amount'] == '200') {
+        if (isset($condition['amount']) && $condition['amount'] == 4) {
             $query->where('amount', '>', 200);
+        }
+        // 1 价格升序
+        if (isset($condition['sort']) && $condition['sort'] == 1) {
+            $query->orderBy('amount', 'asc');
+        }
+        // 2 价格降序
+        if (isset($condition['sort']) && $condition['sort'] == 2) {
+            $query->orderBy('amount', 'desc');
+        }
+        // 3 时间升序
+        if (isset($condition['sort']) && $condition['sort'] == 3) {
+            $query->orderBy('day', 'asc');
+            $query->orderBy('hour', 'asc');
+        }
+        // 4 时间降序
+        if (isset($condition['sort']) && $condition['sort'] == 4) {
+            $query->orderBy('day', 'desc');
+            $query->orderBy('hour', 'desc');
         }
 
         return $query;

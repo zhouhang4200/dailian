@@ -249,11 +249,21 @@
                 </ul>
                 <p class="price choose">价格：</p>
                 <ul class="price_filter filter">
-                    <li>全部</li>
-                    <li>10元以下</li>
-                    <li>10元-100元（含）</li>
-                    <li class="islink">100元-200元（含）</li>
-                    <li>200元以上</li>
+                    <li @if(request('amount') == 0) class="islink" @endif>
+                        <a href="{{ route('order', array_merge(['amount' => 0], request()->except('amount'))) }}">全部</a>
+                    </li>
+                    <li @if(request('amount') == 1) class="islink" @endif>
+                        <a href="{{ route('order', array_merge(['amount' => 1], request()->except('amount'))) }}">10元以下</a>
+                    </li>
+                    <li @if(request('amount') == 2) class="islink" @endif>
+                        <a href="{{ route('order', array_merge(['amount' => 2], request()->except('amount'))) }}">10元-100元（含）</a>
+                    </li>
+                    <li @if(request('amount') == 3) class="islink" @endif>
+                        <a href="{{ route('order', array_merge(['amount' => 3], request()->except('amount'))) }}">100元-200元（含）</a>
+                    </li>
+                    <li @if(request('amount') == 4) class="islink" @endif>
+                        <a href="{{ route('order', array_merge(['amount' => 4], request()->except('amount'))) }}">200元以上</a>
+                    </li>
                 </ul>
             </div>
             <form class="layui-form" action="">

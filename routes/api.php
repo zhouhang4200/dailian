@@ -20,7 +20,7 @@ Route::namespace('V1')->prefix('v1')->group(function () {
         Route::post('register', 'RegisterController@register'); // 注册
 
         // 待接单订单
-        Route::prefix('order\wait')->group(function () {
+        Route::prefix('order/wait')->group(function () {
             Route::post('/', 'OrderWaitController@index'); // 列表
             Route::post('show', 'OrderWaitController@show'); // 详情
         });

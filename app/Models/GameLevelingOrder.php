@@ -353,6 +353,10 @@ class GameLevelingOrder extends Model
             });
         }
 
+        if (isset($condition['trade_no']) && $condition['trade_no']) {
+            $query->where('trade_no', $condition['trade_no']);
+        }
+
         if (isset($condition['game_id']) && $condition['game_id']) {
             $query->where('game_id', $condition['game_id']);
         }

@@ -160,13 +160,13 @@ class FinanceController extends Controller
         try {
             $user = Auth::user();
 
+            if (is_null(request('amount'))) {
+                return response()->apiJson(1001); // 参数缺失
+            }
+
             // 提现权限
             if (! $user->could('finance.balance-recharge')) {
                 return response()->apiJson(1005);
-            }
-
-            if (is_null(request('amount'))) {
-                return response()->apiJson(1001); // 参数缺失
             }
 
             // 生成充值单号

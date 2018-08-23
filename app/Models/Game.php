@@ -66,4 +66,16 @@ class Game extends Model
     {
         return $this->belongsTo(GameType::class);
     }
+
+    /**
+     * @param $key
+     * @return string
+     */
+    public function getIconAttribute($key)
+    {
+        if ($this->attributes['icon']) {
+            return asset($this->attributes['icon']);
+        }
+        return $this->attributes['icon'];
+    }
 }

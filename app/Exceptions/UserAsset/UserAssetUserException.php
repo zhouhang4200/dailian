@@ -2,9 +2,11 @@
 
 namespace App\Exceptions\UserAsset;
 
-use Exception;
-
-class UserAssetUserException extends Exception
+/**
+ * Class UserAssetUserException
+ * @package App\Exceptions\UserAsset
+ */
+class UserAssetUserException extends UserAssetException
 {
     //
 }

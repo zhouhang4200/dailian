@@ -692,6 +692,16 @@ class GameLevelingOrder extends Model
     }
 
     /**
+     * 关联游戏
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function game()
+    {
+        return $this->belongsTo(Game::class);
+    }
+
+
+    /**
      * 关联仲裁表
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */

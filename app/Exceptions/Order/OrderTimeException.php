@@ -2,9 +2,11 @@
 
 namespace App\Exceptions\Order;
 
-use Exception;
-
-class OrderTimeException extends Exception
+/**
+ * Class OrderTimeException
+ * @package App\Exceptions\Order
+ */
+class OrderTimeException  extends OrderException
 {
     //
 }

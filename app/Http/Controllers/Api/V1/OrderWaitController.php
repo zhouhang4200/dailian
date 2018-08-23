@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Models\GameLevelingOrder;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 /**
  * 待接单
@@ -19,6 +20,7 @@ class OrderWaitController extends Controller
     {
         $orders = GameLevelingOrder::searchCondition(request()->all())
             ->select([
+                'game_id',
                 'trade_no',
                 'game_name',
                 'region_name',
@@ -27,9 +29,12 @@ class OrderWaitController extends Controller
                 'game_leveling_type_name',
                 'security_deposit',
                 'efficiency_deposit',
+                'hour',
+                'day',
                 'amount',
                 'take_order_password',
             ])
+            ->with('game')
             ->paginate(request('page_size' , 20));
 
         $orderList = [];
@@ -38,8 +43,11 @@ class OrderWaitController extends Controller
 
             $itemArr['top'] = empty($itemArr['take_order_password']) ? 2 : 1;
             $itemArr['private'] = empty($itemArr['take_order_password']) ? 2 : 1;
+            $itemArr['icon'] = $item['game']['icon'];
 
             unset($itemArr['id']);
+            unset($itemArr['game_id']);
+            unset($itemArr['game']);
             unset($itemArr['take_order_password']);
 
             $orderList[] = $itemArr;
@@ -59,6 +67,14 @@ class OrderWaitController extends Controller
      */
     public function show()
     {
+        $validator = Validator::make(request()->all(), [
+            'trade_no' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->apiJson(1001);
+        }
+
         $detail = GameLevelingOrder::searchCondition(request()->all())->select([
             'trade_no',
             'status',

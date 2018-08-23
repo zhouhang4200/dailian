@@ -25,6 +25,7 @@ Route::namespace('V1')->prefix('v1')->group(function () {
             Route::post('show', 'OrderWaitController@show'); // 详情
         });
 
+        Route::post('game-info', 'GameInfoController@index'); // 游戏信息 所有游戏 区 服
         Route::post('games', 'GameController@index'); // 游戏
         Route::post('regions', 'RegionController@index'); // 区
         Route::post('servers', 'ServerController@index'); // 服
@@ -83,6 +84,7 @@ Route::namespace('V1')->prefix('v1')->group(function () {
             });
             // 订单操作
             Route::prefix('operation')->group(function () {
+                Route::post('take', 'OrderOperationController@take'); // 接单
                 Route::post('apply-consult', 'OrderOperationController@applyConsult'); // 申请协商
                 Route::post('cancel-consult', 'OrderOperationController@cancelConsult'); // 取消协商
                 Route::post('agree-consult', 'OrderOperationController@agreeConsult'); // 同意协商

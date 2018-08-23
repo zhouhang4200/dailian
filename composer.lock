@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a192f80a567c4cd6a854252ebb1ef36d",
+    "content-hash": "ab36a2ebcd61a2381390d24d8b239ae1",
     "packages": [
         {
             "name": "babenkoivan/scout-elasticsearch-driver",
@@ -4267,6 +4267,51 @@
                 }
             ],
             "time": "2016-06-13T19:28:20+00:00"
+        },
+        {
+            "name": "broqiang/laravel-lang",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/BroQiang/laravel-lang.git",
+                "reference": "fd08c804d37109190b187b9208bafe67042a7509"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/BroQiang/laravel-lang/zipball/fd08c804d37109190b187b9208bafe67042a7509",
+                "reference": "fd08c804d37109190b187b9208bafe67042a7509",
+                "shasum": ""
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "BroQiang\\LaravelLang\\TranslationServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "BroQiang\\LaravelLang\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "BroQiang",
+                    "email": "broqiang@qq.com"
+                }
+            ],
+            "description": "languages for Laravel 5",
+            "keywords": [
+                "broqiang",
+                "languages",
+                "laravel"
+            ],
+            "time": "2018-01-31T06:47:29+00:00"
         },
         {
             "name": "doctrine/instantiator",

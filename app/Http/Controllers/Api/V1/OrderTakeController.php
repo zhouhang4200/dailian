@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Models\GameLevelingOrder;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 /**
  * Class OrderTakeController
@@ -17,8 +18,8 @@ class OrderTakeController extends Controller
     public function index()
     {
         $orders = GameLevelingOrder::searchCondition(array_merge([
-            'take_parent_user_id' => auth()->user()->parent_id,
-            request()->except('take_parent_user_id')]))
+            'take_parent_user_id' => auth()->user()->parent_id],
+            request()->except('take_parent_user_id')))
             ->select([
                 'trade_no',
                 'status',
@@ -64,9 +65,17 @@ class OrderTakeController extends Controller
      */
     public function show()
     {
+        $validator = Validator::make(request()->all(), [
+            'trade_no' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->apiJson(1001);
+        }
+
         $detail = GameLevelingOrder::searchCondition(array_merge([
             'take_parent_user_id' => auth()->user()->parent_id,
-            request()->except('take_parent_user_id')]))
+            ], request()->except('take_parent_user_id')))
             ->select([
                 'trade_no',
                 'status',

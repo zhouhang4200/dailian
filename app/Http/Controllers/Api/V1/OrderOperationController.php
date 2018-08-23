@@ -22,15 +22,14 @@ class OrderOperationController extends Controller
      */
     public function take()
     {
-        if (! request('trade_no')) {
+        if (! request('trade_no') && ! request('pay_password')) {
             response()->apiJson(1001);
         }
 
         try {
-            OrderService::init(request()->user()->id, request('trade_no'))
-                ->take(request('pay_password'), request('take_password'));
+            OrderService::init(request()->user()->id, request('trade_no'))->take(request('pay_password'), request('take_password'));
         } catch (UserAssetBalanceException $exception) {
-            return response()->apiJson(7001);
+            return response()->apiJson(4001);
         } catch (UserAssetException $exception) {
             return response()->apiJson(7001);
         } catch (OrderException $exception) {
@@ -38,6 +37,7 @@ class OrderOperationController extends Controller
         } catch (Exception $exception) {
             return response()->apiJson(1003);
         }
+
         return response()->apiJson(0);
     }
 }

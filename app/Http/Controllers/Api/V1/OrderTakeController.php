@@ -99,6 +99,8 @@ class OrderTakeController extends Controller
                 'efficiency_deposit',
                 'amount',
                 'explain',
+                'hour',
+                'day',
                 'requirement',
                 'created_at',
                 'take_at',

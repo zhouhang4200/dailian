@@ -85,6 +85,8 @@ class OrderWaitController extends Controller
             'game_leveling_type_name',
             'security_deposit',
             'efficiency_deposit',
+            'hour',
+            'day',
             'amount',
             'explain',
             'requirement',

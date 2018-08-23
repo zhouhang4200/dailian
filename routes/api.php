@@ -27,6 +27,7 @@ Route::namespace('V1')->prefix('v1')->group(function () {
 
         Route::post('game-info', 'GameInfoController@index'); // 游戏信息 所有游戏 区 服
         Route::post('games', 'GameController@index'); // 游戏
+        Route::post('up', 'GameController@up'); // 游戏
         Route::post('regions', 'RegionController@index'); // 区
         Route::post('servers', 'ServerController@index'); // 服
     });

@@ -34,7 +34,7 @@ Route::namespace('V1')->prefix('v1')->group(function () {
     Route::middleware(['api.token', 'api.sign'])->group(function () {
         // 登录密码问题
         Route::prefix('password')->group(function () {
-            Route::post('refound', 'PasswordController@refound'); // 密码找回
+            Route::post('refund', 'PasswordController@refund'); // 密码找回
             Route::post('reset', 'PasswordController@reset'); // 重置密码
         });
         // 个人资料
@@ -43,7 +43,7 @@ Route::namespace('V1')->prefix('v1')->group(function () {
             Route::post('update', 'ProfileController@update'); // 个人资料修改
             Route::post('pay-password/set', 'ProfileController@payPasswordSet'); // 设置支付密码
             Route::post('pay-password/reset', 'ProfileController@payPasswordReset'); // 修改支付密码
-            Route::post('pay-password/refound', 'ProfileController@payPasswordRefound'); // 找回支付密码
+            Route::post('pay-password/refund', 'ProfileController@payPasswordRefund'); // 找回支付密码
             Route::post('certification', 'ProfileController@certification'); // 填写实名认证
             Route::post('certification/show', 'ProfileController@certificationShow'); // 实名认证详情
         });

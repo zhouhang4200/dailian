@@ -46,7 +46,7 @@ class NoticeController extends Controller
             }
             return response()->apiJson(0, $data);
         } catch (Exception $e) {
-            myLog('wx-notice-index-error', ['用户:' => $user->id ?? '', '失败:' => $e->getMessage()]);
+            myLog('wx-notice-index-error', ['失败:' => $e->getMessage()]);
             return response()->apiJson(1003);
         }
     }
@@ -65,6 +65,10 @@ class NoticeController extends Controller
             }
             $article = Article::find(request('id'));
 
+            if (! $article) {
+                return response()->apiJson(5001);
+            }
+
             $data['id'] = $article->id;
             $data['title'] = $article->title;
             $data['content'] = $article->content;
@@ -72,7 +76,7 @@ class NoticeController extends Controller
 
             return response()->apiJson(0, $data);
         } catch (Exception $e) {
-            myLog('wx-notice-show-error', ['用户:' => $user->id ?? '', '失败:' => $e->getMessage()]);
+            myLog('wx-notice-show-error', ['失败:' => $e->getMessage()]);
             return response()->apiJson(1003);
         }
     }

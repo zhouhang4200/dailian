@@ -115,7 +115,7 @@ class FinanceController extends Controller
             }
 
             if (! Hash::check(request('pay_password'), $user->pay_password)) {
-                return response()->apiJson(3007); // 支付密码错误
+                return response()->apiJson(4002); // 支付密码错误
             }
 
             // 计算手续费

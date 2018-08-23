@@ -16,7 +16,7 @@ class PasswordController extends Controller
      * @return mixed
      * @throws Exception
      */
-    public function refound(Request $request)
+    public function refund(Request $request)
     {
         try {
             if (is_null(request('phone')) || is_null(request('new_password'))) {

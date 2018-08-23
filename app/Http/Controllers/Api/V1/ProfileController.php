@@ -34,7 +34,7 @@ class ProfileController extends Controller
             $data['id'] = $user->id;
             $data['name'] = $user->name;
             $data['age'] = $user->age;
-            $data['enail'] = $user->enail;
+            $data['email'] = $user->email;
             $data['phone'] = $user->phone;
             $data['wechat'] = $user->wechat;
             $data['qq'] = $user->qq;
@@ -165,7 +165,7 @@ class ProfileController extends Controller
      * @return mixed
      * @throws Exception
      */
-    public function payPasswordRefound(Request $request)
+    public function payPasswordRefund(Request $request)
     {
         try {
             if (is_null(request('phone')) || is_null(request('new_pay_password'))) {

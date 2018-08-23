@@ -56,11 +56,18 @@ Route::namespace('V1')->prefix('v1')->group(function () {
         });
         // 帮助
         Route::prefix('help')->group(function () {
-
+            Route::post('/', 'HelpController@index'); // 帮助列表
+            Route::post('show', 'HelpController@show'); // 帮助详情
+        });
+        // 留言
+        Route::prefix('message')->group(function () {
+            Route::post('/', 'MessageController@index'); // 帮助列表
+            Route::post('show', 'MessageController@show'); // 帮助详情
         });
         // 公告
         Route::prefix('notice')->group(function () {
-
+            Route::post('/', 'NoticeController@index'); // 公告列表
+            Route::post('show', 'NoticeController@show'); // 公告详情
         });
         // 订单
         Route::prefix('order')->group(function () {

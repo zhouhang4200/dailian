@@ -22,6 +22,7 @@ class OrderTakeController extends Controller
             'take_parent_user_id' => auth()->user()->parent_id],
             request()->except('take_parent_user_id')))
             ->select([
+                'game_id',
                 'trade_no',
                 'status',
                 'game_name',
@@ -32,9 +33,12 @@ class OrderTakeController extends Controller
                 'game_leveling_type_name',
                 'security_deposit',
                 'efficiency_deposit',
+                'hour',
+                'day',
                 'amount',
                 'take_order_password',
             ])
+            ->with('game')
             ->paginate(request('page_size', 20));
 
         $orderList = [];
@@ -44,8 +48,11 @@ class OrderTakeController extends Controller
             $itemArr['top'] = empty($itemArr['take_order_password']) ? 2 : 1;
             $itemArr['private'] = empty($itemArr['take_order_password']) ? 2 : 1;
             $itemArr['status_describe'] = GameLevelingOrder::$statusDescribe[$itemArr['status']];
+            $itemArr['icon'] = $item['game']['icon'];
 
             unset($itemArr['id']);
+            unset($itemArr['game_id']);
+            unset($itemArr['game']);
             unset($itemArr['status']);
             unset($itemArr['take_order_password']);
 

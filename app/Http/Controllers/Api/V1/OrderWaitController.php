@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Models\GameLevelingOrder;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 /**
  * 待接单
@@ -59,6 +60,14 @@ class OrderWaitController extends Controller
      */
     public function show()
     {
+        $validator = Validator::make(request()->all(), [
+            'trade_no' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->apiJson(1001);
+        }
+
         $detail = GameLevelingOrder::searchCondition(request()->all())->select([
             'trade_no',
             'status',

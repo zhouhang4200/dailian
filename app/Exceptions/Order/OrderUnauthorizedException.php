@@ -2,9 +2,11 @@
 
 namespace App\Exceptions\Order;
 
-use Exception;
-
-class OrderUnauthorizedException extends Exception
+/**
+ * Class OrderUnauthorizedException
+ * @package App\Exceptions\Order
+ */
+class OrderUnauthorizedException extends OrderException
 {
     //
 }

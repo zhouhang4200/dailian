@@ -32,6 +32,7 @@ class Kernel extends HttpKernel
         'permission' => \App\Http\Middleware\Permission::class,
         // api sign
         'api.sign' => \App\Http\Middleware\CheckApiSign::class,
+        'api.token' => \App\Http\Middleware\CheckApiToken::class,
     ];
 
     /**

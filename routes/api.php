@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Laravel\Passport\Passport;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,7 +32,7 @@ Route::namespace('V1')->prefix('v1')->group(function () {
     });
 
     // 登录后操作
-    Route::middleware(['auth:api', 'api.sign'])->group(function () {
+    Route::middleware(['api.token', 'api.sign'])->group(function () {
         // 登录密码问题
         Route::prefix('password')->group(function () {
             Route::post('refound', 'PasswordController@refound'); // 密码找回

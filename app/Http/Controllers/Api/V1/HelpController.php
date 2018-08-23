@@ -53,7 +53,7 @@ class HelpController extends Controller
             $category = ArticleCategory::find(request('id'));
 
             if (! $category) {
-                return response()->apiJson(5001);
+                return response()->apiJson(5002);
             }
             $articles = $category->articles;
 

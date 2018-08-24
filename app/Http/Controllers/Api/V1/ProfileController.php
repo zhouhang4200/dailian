@@ -41,7 +41,7 @@ class ProfileController extends Controller
             $data['phone'] = $user->phone;
             $data['wechat'] = $user->wechat;
             $data['qq'] = $user->qq;
-            $data['avatar'] = url($user->avatar);
+            $data['avatar'] = asset($user->avatar);
             $data['status'] = $user->status;
             $data['certification_status'] = $user->realNameCertification ? $user->realNameCertification->status : 0;
             $data['balance'] = $user->userAsset ? $user->userAsset->balance : 0;

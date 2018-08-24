@@ -34,7 +34,7 @@ class PasswordController extends Controller
             $user->save();
             return response()->apiJson(0);
         } catch (Exception $e) {
-            myLog('wx-refound-error', ['用户:' => $user->id ?? '', '失败原因：' => $e->getMessage()]);
+            myLog('wx-refund-error', ['用户:' => $user->id ?? '', '失败原因：' => $e->getMessage()]);
             return response()->apiJson(1003);
         }
     }

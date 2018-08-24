@@ -87,20 +87,31 @@ Route::namespace('V1')->prefix('v1')->group(function () {
             // 订单操作
             Route::prefix('operation')->group(function () {
                 Route::post('take', 'OrderOperationController@take'); // 接单
+                Route::post('apply-complete', 'OrderOperationController@applyComplete'); // 申请完成
+                Route::post('cancel-complete', 'OrderOperationController@cancelComplete'); // 取消完成
+                Route::post('apply-complete-image', 'OrderOperationController@applyCompleteImage'); // 查看申请验收截图
                 Route::post('apply-consult', 'OrderOperationController@applyConsult'); // 申请协商
                 Route::post('cancel-consult', 'OrderOperationController@cancelConsult'); // 取消协商
                 Route::post('agree-consult', 'OrderOperationController@agreeConsult'); // 同意协商
                 Route::post('reject-consult', 'OrderOperationController@rejectConsult'); // 不同意协商
                 Route::post('apply-complain', 'OrderOperationController@applyComplain'); // 申请仲裁
                 Route::post('cancel-complain', 'OrderOperationController@cancelComplain'); // 取消仲裁
-                Route::post('detail', 'OrderOperationController@detail'); // 详情
-                Route::post('apply-complete-image', 'OrderOperationController@applyCompleteImage'); // 发送完成截图
-                Route::post('complain-message', 'OrderOperationController@complainMessage'); // 发送仲裁证据
+                Route::post('send-complain-message', 'OrderOperationController@sendComplainMessage'); // 发送仲裁证据
+                Route::post('get-complain-info', 'OrderOperationController@getComplainInfo'); // 仲裁详情
                 Route::post('get-message', 'OrderOperationController@getMessage'); // 获取留言
                 Route::post('send-message', 'OrderOperationController@sendMessage'); // 发送留言
-                Route::post('get-complain-info', 'OrderOperationController@getComplainInfo'); // 仲裁详情
             });
         });
+
+        // 上传
+        Route::prefix('upload')->namespace('Upload')->group(function () {
+            // 图片
+            Route::prefix('image')->group(function () {
+                Route::post('/', 'ImageController@index');
+                Route::post('delete', 'ImageController@delete');
+            });
+        });
+
     });
 });
 

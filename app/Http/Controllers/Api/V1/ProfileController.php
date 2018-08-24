@@ -265,9 +265,9 @@ class ProfileController extends Controller
 
             $data['real_name'] = $certification->real_name;
             $data['identity_card'] = $certification->identity_card;
-            $data['identity_card_front'] = $certification->identity_card_front;
-            $data['identity_card_back'] = $certification->identity_card_back;
-            $data['identity_card_hand'] = $certification->identity_card_hand;
+            $data['identity_card_front'] = asset($certification->identity_card_front);
+            $data['identity_card_back'] = asset($certification->identity_card_back);
+            $data['identity_card_hand'] = asset($certification->identity_card_hand);
             $data['bank_card'] = $certification->bank_card;
             $data['bank_name'] = $certification->bank_name;
             $data['status'] = $certification->status;

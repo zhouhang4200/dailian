@@ -34,7 +34,7 @@ class RegisterController extends Controller
             $datas['pay_password'] = bcrypt(request('password'));
             $datas['name'] = request('name') ?? str_random(5);
             $datas['email'] = request('email') ?? str_random(7)."@163.com";
-            $datas['avatar'] = '/front/images/default_avatar.png';
+            $datas['avatar'] = asset('/front/images/default_avatar.png');
             $datas['status'] = 1;
 
             $user = User::create($datas);

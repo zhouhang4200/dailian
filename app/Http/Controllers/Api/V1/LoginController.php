@@ -66,7 +66,7 @@ class LoginController extends Controller
                     'phone' => $user->phone,
                     'wechat' => $user->wechat,
                     'qq' => $user->qq,
-                    'avatar' => $user->avatar,
+                    'avatar' => asset($user->avatar),
                     'status' => $user->status,
                     'token' => $user->createToken('WanZiXiaoChengXu')->accessToken
                 ];

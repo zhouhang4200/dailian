@@ -94,7 +94,7 @@ class ProfileController extends Controller
         if ($extension && ! in_array(strtolower($extension), static::$extensions)) {
             return response()->apiJson(3001);
         }
-        // 判断上传是否为空
+        // 判断上传是否合法
         if (! $file->isValid()) {
             return response()->apiJson(3002);
         }

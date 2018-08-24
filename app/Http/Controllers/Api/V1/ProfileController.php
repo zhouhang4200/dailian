@@ -219,18 +219,18 @@ class ProfileController extends Controller
                 return response()->apiJson(3004); // 只有主账号才能填写实名认证
             }
 
-            $file1 = request('identity_card_front');
-            $file2 = request('identity_card_back');
-            $file3 = request('identity_card_hand');
-            $path = public_path("/resources/certification/".$user->id.'/'.date('Ymd')."/");
+//            $file1 = request('identity_card_front');
+//            $file2 = request('identity_card_back');
+//            $file3 = request('identity_card_hand');
+//            $path = public_path("/resources/certification/".$user->id.'/'.date('Ymd')."/");
 
             $datas['real_name'] = request('real_name');
             $datas['identity_card'] = request('identity_card');
             $datas['bank_card'] = request('bank_card');
             $datas['bank_name'] = request('bank_name');
-            $datas['identity_card_front'] = static::uploadImage($file1, $path);
-            $datas['identity_card_back'] = static::uploadImage($file2, $path);
-            $datas['identity_card_hand'] = static::uploadImage($file3, $path);
+            $datas['identity_card_front'] = request('identity_card_front');
+            $datas['identity_card_back'] = request('identity_card_back');
+            $datas['identity_card_hand'] = request('identity_card_hand');
             $datas['status'] = 1;
             $datas['remark'] = '';
             RealNameCertification::create($datas);

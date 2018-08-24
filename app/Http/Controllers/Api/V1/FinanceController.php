@@ -38,7 +38,7 @@ class FinanceController extends Controller
                 return response()->apiJson(1005);
             }
 
-            $userAssetFlows = UserAssetFlow::where('user_id', $user->parent_id)->latest('created_at')->get();
+            $userAssetFlows = UserAssetFlow::where('user_id', $user->parent_id)->latest('created_at')->paginate(request('page_size'), 20);
 
             $data = [];
             foreach ($userAssetFlows as $k => $userAssetFlow) {
@@ -48,7 +48,13 @@ class FinanceController extends Controller
                 $data[$k]['created_at'] = $userAssetFlow->created_at->toDateTimeString();
             }
 
-            return response()->apiJson(0, $data);
+            return response()->apiJson(0, [
+                'total' => $userAssetFlows->total(),
+                'total_page' => $userAssetFlows->lastPage(),
+                'current_page' => $userAssetFlows->currentPage(),
+                'page_size' => $userAssetFlows->perPage(),
+                'list' => $data
+            ]);
         } catch (Exception $e) {
             myLog('wx-profile-flows-error', ['用户:' => $user->id ?? '', '失败:' => $e->getMessage()]);
             return response()->apiJson(1003);

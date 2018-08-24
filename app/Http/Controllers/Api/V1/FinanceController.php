@@ -38,22 +38,18 @@ class FinanceController extends Controller
                 return response()->apiJson(1005);
             }
 
-            $userAssetFlows = UserAssetFlow::where('user_id', $user->parent_id)->latest('created_at')->paginate(request('page_size'), 20);
-
-            $data = [];
-            foreach ($userAssetFlows as $k => $userAssetFlow) {
-                $data[$k]['id'] = $userAssetFlow->id;
-                $data[$k]['type'] = config('user_asset.type')[$userAssetFlow->type];
-                $data[$k]['amount'] = $userAssetFlow->amount;
-                $data[$k]['created_at'] = $userAssetFlow->created_at->toDateTimeString();
+            if (is_null(request('page')) || is_null(request('page_size'))) {
+                return response()->apiJson(1001); // 参数缺失
             }
+
+            $userAssetFlows = UserAssetFlow::where('user_id', $user->parent_id)->select(['id', 'type', 'amount', 'created_at'])->latest('created_at')->paginate(request('page_size', 20));
 
             return response()->apiJson(0, [
                 'total' => $userAssetFlows->total(),
                 'total_page' => $userAssetFlows->lastPage(),
                 'current_page' => $userAssetFlows->currentPage(),
                 'page_size' => $userAssetFlows->perPage(),
-                'list' => $data
+                'list' => $userAssetFlows
             ]);
         } catch (Exception $e) {
             myLog('wx-profile-flows-error', ['用户:' => $user->id ?? '', '失败:' => $e->getMessage()]);

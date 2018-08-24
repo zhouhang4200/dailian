@@ -187,7 +187,7 @@ class ProfileController extends Controller
 
             return response()->apiJson(0);
         } catch (Exception $e) {
-            myLog('wx-profile-payPasswordRefound-error', ['用户:' => $user->id ?? '', '失败:' => $e->getMessage()]);
+            myLog('wx-profile-payPasswordRefund-error', ['用户:' => $user->id ?? '', '失败:' => $e->getMessage()]);
             return response()->apiJson(1003);
         }
     }
@@ -314,8 +314,8 @@ class ProfileController extends Controller
                     return response()->apiJson(3007);
                 }
             }
-            $data['code'] = $code;
-            return response()->apiJson(0, $data);
+
+            return response()->apiJson(0);
         } catch (Exception $e) {
             myLog('wx-profile-verificationCode-error', ['失败:' => $e->getMessage()]);
             return response()->apiJson(1003);

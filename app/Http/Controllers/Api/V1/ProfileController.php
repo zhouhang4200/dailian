@@ -309,7 +309,7 @@ class ProfileController extends Controller
             }
 
             $code = randomNumber();
-            $content = "验证码：".$code.",此验证码将会在1分钟后过期。";
+            $content = "您的验证码为：".$code.",请于1分钟内正确输入。";
             $result = SmSApiService::send(request('phone'), $content);
 
             if ($result) {

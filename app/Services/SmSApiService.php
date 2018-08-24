@@ -27,7 +27,7 @@ class SmSApiService
         $password = $type == 1 ? 'gcsEc1sx' : 'zbXRhLhl';
 
         //预定义参数，参数说明见文档
-        $spSc = "02"; // 服务代码
+        $spSc = "06"; // 服务代码
         $sa = "10";  // 源地址
         $dc = "15";
 

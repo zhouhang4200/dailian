@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Hash;
 use Exception;
 use Redis;
+use App\Models\User;
 use Illuminate\Http\UploadedFile;
 use App\Services\SmSApiService;
 use App\Models\RealNameCertification;
@@ -289,8 +290,22 @@ class ProfileController extends Controller
     public function verificationCode(Request $request)
     {
         try {
-            if (is_null(request('phone'))) {
+            if (is_null(request('phone')) || is_null(request('type'))) {
                 return response()->apiJson(1001); // 参数缺失
+            }
+
+            $user = User::where('phone', request('phone'))->first();
+
+            if (request('type') == 1) { // 注册
+                if ($user) {
+                    return response()->apiJson(2011); // 重复注册
+                }
+            }
+
+            if (request('type') == 2 || request('type') == 3) { // 手机号没有被注册
+                if (! $user) {
+                    return response()->apiJson(2004); // 请填写注册时候的手机号
+                }
             }
 
             $code = randomNumber();

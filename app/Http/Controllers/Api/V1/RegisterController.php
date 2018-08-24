@@ -18,6 +18,10 @@ class RegisterController extends Controller
                 return response()->apiJson(1001);
             }
 
+            if (strlen(request('password')) < 6 || strlen(request('password')) > 20) {
+                return response()->apiJson(2010); // 密码长度
+            }
+
             // 手机号已存在
             if (User::where('phone', request('phone'))->first()) {
                 return response()->apiJson(2003);

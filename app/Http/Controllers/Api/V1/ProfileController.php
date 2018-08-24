@@ -24,7 +24,7 @@ class ProfileController extends Controller
     private static $extensions = ['png', 'jpg', 'jpeg', 'gif'];
 
     /**
-     *  小程序首页个人资料
+     *  个人资料
      * @param Request $request
      * @return mixed
      * @throws Exception
@@ -41,7 +41,7 @@ class ProfileController extends Controller
             $data['phone'] = $user->phone;
             $data['wechat'] = $user->wechat;
             $data['qq'] = $user->qq;
-            $data['avatar'] = $user->avatar;
+            $data['avatar'] = url($user->avatar);
             $data['status'] = $user->status;
             $data['certification_status'] = $user->realNameCertification ? $user->realNameCertification->status : 0;
             $data['balance'] = $user->userAsset ? $user->userAsset->balance : 0;
@@ -182,9 +182,6 @@ class ProfileController extends Controller
 
             $user = Auth::user();
 
-            if ($user->phone != request('phone')) {
-                return response()->apiJson(2004); // 请填写注册时候手机号
-            }
             $user->pay_password = bcrypt(request('new_pay_password'));
             $user->save();
 
@@ -297,8 +294,6 @@ class ProfileController extends Controller
                 return response()->apiJson(1001); // 参数缺失
             }
 
-            $user = Auth::user();
-
             $code = randomNumber();
             $content = "验证码：".$code.",此验证码将会在1分钟后过期。";
             $result = SmSApiService::send(request('phone'), $content);
@@ -323,7 +318,7 @@ class ProfileController extends Controller
             $data['code'] = $code;
             return response()->apiJson(0, $data);
         } catch (Exception $e) {
-            myLog('wx-profile-verificationCode-error', ['用户:' => $user->id ?? '', '失败:' => $e->getMessage()]);
+            myLog('wx-profile-verificationCode-error', ['失败:' => $e->getMessage()]);
             return response()->apiJson(1003);
         }
     }

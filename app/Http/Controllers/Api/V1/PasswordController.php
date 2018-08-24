@@ -30,10 +30,6 @@ class PasswordController extends Controller
 
             $user = Auth::user();
 
-            if ($user->phone != request('phone')) {
-                return response()->apiJson(2004); // 手机号填写错误
-            }
-
             $user->password = bcrypt(request('new_password'));
             $user->save();
             return response()->apiJson(0);

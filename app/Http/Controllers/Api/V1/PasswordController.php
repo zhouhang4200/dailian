@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use Exception;
 use Hash;
 use Auth;
+use Redis;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -19,8 +20,12 @@ class PasswordController extends Controller
     public function refund(Request $request)
     {
         try {
-            if (is_null(request('phone')) || is_null(request('new_password'))) {
+            if (is_null(request('phone')) || is_null(request('new_password')) || is_null(request('verification_code'))) {
                 return response()->apiJson(1001); // 参数缺失
+            }
+            $code = Redis::get("user:verification-code:".request('phone'));
+            if (request('verification_code') != $code) {
+                return response()->apiJson(1006); // 验证码错误
             }
 
             $user = Auth::user();

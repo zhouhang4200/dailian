@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use Redis;
 use Exception;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -13,13 +14,18 @@ class RegisterController extends Controller
     {
         try {
             // 参数缺失
-            if (is_null(request('phone')) || is_null(request('password'))) {
+            if (is_null(request('phone')) || is_null(request('password')) || is_null(request('verification_code'))) {
                 return response()->apiJson(1001);
             }
 
             // 手机号已存在
             if (User::where('phone', request('phone'))->first()) {
                 return response()->apiJson(2003);
+            }
+
+            $code = Redis::get("user:verification-code:".request('phone'));
+            if (request('verification_code') != $code) {
+                return response()->apiJson(1006); // 验证码错误
             }
 
             $datas = [];

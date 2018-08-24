@@ -48,6 +48,7 @@ Route::namespace('V1')->prefix('v1')->group(function () {
             Route::post('pay-password/refund', 'ProfileController@payPasswordRefund'); // 找回支付密码
             Route::post('certification', 'ProfileController@certification'); // 填写实名认证
             Route::post('certification/show', 'ProfileController@certificationShow'); // 实名认证详情
+            Route::post('verification-code', 'ProfileController@verificationCode'); // 获取手机验证码
         });
         // 财务
         Route::prefix('finance')->group(function () {

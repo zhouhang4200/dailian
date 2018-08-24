@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Api\V1;
 
 use Auth;
+use Carbon\Carbon;
 use Hash;
 use Exception;
+use Redis;
 use Illuminate\Http\UploadedFile;
+use App\Services\SmSApiService;
 use App\Models\RealNameCertification;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -168,9 +171,15 @@ class ProfileController extends Controller
     public function payPasswordRefund(Request $request)
     {
         try {
-            if (is_null(request('phone')) || is_null(request('new_pay_password'))) {
+            if (is_null(request('phone')) || is_null(request('new_pay_password')) || is_null(request('verification_code'))) {
                 return response()->apiJson(1001); // 参数缺失
             }
+
+            $code = Redis::get("user:verification-code:".request('phone'));
+            if (request('verification_code') != $code) {
+                return response()->apiJson(1006); // 验证码错误
+            }
+
             $user = Auth::user();
 
             if ($user->phone != request('phone')) {
@@ -271,6 +280,50 @@ class ProfileController extends Controller
             return response()->apiJson(0, $data);
         } catch (Exception $e) {
             myLog('wx-profile-certificationShow-error', ['用户:' => $user->id ?? '', '失败:' => $e->getMessage()]);
+            return response()->apiJson(1003);
+        }
+    }
+
+    /**
+     *  获取手机验证码
+     * @param Request $request
+     * @return mixed
+     * @throws Exception
+     */
+    public function verificationCode(Request $request)
+    {
+        try {
+            if (is_null(request('phone'))) {
+                return response()->apiJson(1001); // 参数缺失
+            }
+
+            $user = Auth::user();
+
+            $code = randomNumber();
+            $content = "验证码：".$code.",此验证码将会在1分钟后过期。";
+            $result = SmSApiService::send(request('phone'), $content);
+
+            if ($result) {
+                Redis::setex("user:verification-code:".request('phone'),60, $code); // 设置过期时间
+                $count = Redis::get("user:verification-code:times:".request('phone')); // 当天发送次数
+
+                $endOfDay = Carbon::now()->endOfDay();
+                $leftSeconds = $endOfDay->diffInSeconds(); // 当前时间距离当天的秒数
+
+                if (! $count) {
+                    Redis::setex("user:verification-code:times:".request('phone'), $leftSeconds, 1);
+                }
+
+                if ($count < config('api.count')) {
+                    Redis::setex("user:verification-code:times:".request('phone'), $leftSeconds, $count+1);
+                } else {
+                    return response()->apiJson(3007);
+                }
+            }
+            $data['code'] = $code;
+            return response()->apiJson(0, $data);
+        } catch (Exception $e) {
+            myLog('wx-profile-verificationCode-error', ['用户:' => $user->id ?? '', '失败:' => $e->getMessage()]);
             return response()->apiJson(1003);
         }
     }

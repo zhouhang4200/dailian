@@ -40,6 +40,11 @@ class SmSApiService
 
         $client = new \GuzzleHttp\Client();
         $result = $client->request('GET', $uri);
-        return  $result->getBody()->getContents();
+        $content =  $result->getBody()->getContents();
+
+        if ((bool)strpos($content, "mterrcode=000")) {
+            return true;
+        }
+        return false;
     }
 }

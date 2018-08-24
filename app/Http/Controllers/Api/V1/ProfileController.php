@@ -314,8 +314,8 @@ class ProfileController extends Controller
                     return response()->apiJson(3007);
                 }
             }
-            $data['code'] = $code;
-            return response()->apiJson(0, $data);
+
+            return response()->apiJson(0);
         } catch (Exception $e) {
             myLog('wx-profile-verificationCode-error', ['失败:' => $e->getMessage()]);
             return response()->apiJson(1003);

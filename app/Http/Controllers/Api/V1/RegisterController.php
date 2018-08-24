@@ -47,7 +47,7 @@ class RegisterController extends Controller
                 'qq' => $user->qq,
                 'avatar' => $user->avatar,
                 'status' => $user->status,
-                'token' => $user->createToken('WanZiXiaoChengXu')->accessToken,
+                'token' => $user->createToken('WanZiXiaoChengXu')->accessToken
             ];
             return response()->apiJson(0, $data);
         } catch (Exception $e) {

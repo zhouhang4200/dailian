@@ -223,7 +223,6 @@ class ProfileController extends Controller
             $file3 = request('identity_card_hand');
             $path = public_path("/resources/certification/".$user->id.'/'.date('Ymd')."/");
 
-            $datas['user_id'] = $user->id;
             $datas['real_name'] = request('real_name');
             $datas['identity_card'] = request('identity_card');
             $datas['bank_card'] = request('bank_card');

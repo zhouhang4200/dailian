@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1\Upload;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 /**
  * Class UploadController
@@ -10,17 +11,42 @@ use App\Http\Controllers\Controller;
  */
 class ImageController extends Controller
 {
-
+    /**
+     * @return mixed
+     */
     public function index()
     {
+        $validator = Validator::make(request()->all(), [
+            'image' => 'required|image',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->apiJson(1001);
+        }
+
         $img = request()->file('image');
-        // 使用 store 存储文件
-        $path = $img->store(date('Ymd'));
-        dd($path);
+        $path = $img->store(date('Ymd'), 'public');
+        return response()->apiJson(0, $path);
     }
 
+    /**
+     * @return mixed
+     */
     public function delete()
     {
+        $validator = Validator::make(request()->all(), [
+            'path' => 'required',
+        ]);
 
+        if ($validator->fails()) {
+            return response()->apiJson(1001);
+        }
+
+        if (! file_exists(storage_path('app/public/' . request('path')))) {
+            return response()->apiJson(8001);
+        }
+        unlink(storage_path('app/public/' . request('path')));
+
+        return response()->apiJson(0);
     }
 }

@@ -202,6 +202,12 @@ class ProfileController extends Controller
                 return response()->apiJson(3004); // 只有主账号才能填写实名认证
             }
 
+            $certification = RealNameCertification::where('user_id', $user->parent_id)->first();
+
+            if ($certification && $certification->status == 2) {
+                return response()->apiJson(3008);
+            }
+
             $datas['user_id'] = $user->parent_id;
             $datas['real_name'] = request('real_name');
             $datas['identity_card'] = request('identity_card');
@@ -212,7 +218,8 @@ class ProfileController extends Controller
             $datas['identity_card_hand'] = request('identity_card_hand');
             $datas['status'] = 1;
             $datas['remark'] = '';
-            RealNameCertification::create($datas);
+
+            RealNameCertification::updateOrCreate(['user_id' => $user->parent_id], $datas);
 
             return response()->apiJson(0);
         } catch (Exception $e) {

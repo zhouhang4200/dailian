@@ -199,7 +199,6 @@ class FinanceController extends Controller
      */
     public function wechatNotify()
     {
-        dd(222);
         $wechat = Pay::wechat(config('pay.wechat'));
 
         try{

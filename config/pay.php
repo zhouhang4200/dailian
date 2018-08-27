@@ -29,7 +29,7 @@ return [
         // APP 引用的 appid
         'appid' => env('WECHAT_APPID', ''),
         // 微信支付分配的微信商户号
-        'mch_id' => env('WECHAT_MCH_ID', '1502886431'),
+        'mch_id' => env('WECHAT_MCH_ID', ''), // 1502886431
         // 微信支付异步通知地址
         'notify_url' => '',
         // 微信支付签名秘钥

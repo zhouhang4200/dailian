@@ -46,12 +46,13 @@ class OrderOperationController extends Controller
      */
     public function applyComplete()
     {
-        if (! request('trade_no') || ! request('pay_password')) {
-            response()->apiJson(1001);
+
+        if (! request('trade_no') || ! request('images')) {
+           return response()->apiJson(1001);
         }
 
         try {
-            OrderService::init(request()->user()->id, request('trade_no'))->applyComplete(request('images'));
+            OrderService::init(request()->user()->id, request('trade_no'))->applyComplete(imageJsonToArr(request('images')));
         } catch (UserAssetException $exception) {
             return response()->apiJson($exception->getCode());
         } catch (OrderException $exception) {
@@ -59,7 +60,6 @@ class OrderOperationController extends Controller
         } catch (Exception $exception) {
             return response()->apiJson(1003);
         }
-
         return response()->apiJson(0);
     }
 
@@ -74,7 +74,7 @@ class OrderOperationController extends Controller
         }
 
         try {
-            OrderService::init(request()->user()->id, request('trade_no'))->applyCompleteImage();
+          $images = OrderService::init(request()->user()->id, request('trade_no'))->applyCompleteImage();
         } catch (UserAssetException $exception) {
             return response()->apiJson($exception->getCode());
         } catch (OrderException $exception) {
@@ -82,8 +82,7 @@ class OrderOperationController extends Controller
         } catch (Exception $exception) {
             return response()->apiJson(1003);
         }
-
-        return response()->apiJson(0);
+        return response()->apiJson(0, $images->toArray());
     }
 
     /**
@@ -218,12 +217,12 @@ class OrderOperationController extends Controller
      */
     public function applyComplain()
     {
-        if (! request('trade_no')) {
-            response()->apiJson(1001);
+        if (! request('trade_no') || ! request('reason') || ! request('images')) {
+            return response()->apiJson(1001);
         }
 
         try {
-            OrderService::init(request()->user()->id, request('trade_no'))->applyComplain(request('reason'), request('images'));
+            OrderService::init(request()->user()->id, request('trade_no'))->applyComplain(request('reason'), imageJsonToArr(request('images')));
         } catch (UserAssetException $exception) {
             return response()->apiJson($exception->getCode());
         } catch (OrderException $exception) {
@@ -242,7 +241,7 @@ class OrderOperationController extends Controller
     public function cancelComplain()
     {
         if (! request('trade_no')) {
-            response()->apiJson(1001);
+            return response()->apiJson(1001);
         }
 
         try {
@@ -264,11 +263,11 @@ class OrderOperationController extends Controller
     public function getComplainInfo()
     {
         if (! request('trade_no')) {
-            response()->apiJson(1001);
+            return response()->apiJson(1001);
         }
 
         try {
-            OrderService::init(request()->user()->id, request('trade_no'))->getComplainInfo();
+           $complainInfo = OrderService::init(request()->user()->id, request('trade_no'))->getComplainInfo();
         } catch (UserAssetException $exception) {
             return response()->apiJson($exception->getCode());
         } catch (OrderException $exception) {
@@ -276,6 +275,7 @@ class OrderOperationController extends Controller
         } catch (Exception $exception) {
             return response()->apiJson(1003);
         }
+        dd($complainInfo->toArray());
 
         return response()->apiJson(0);
     }
@@ -287,7 +287,7 @@ class OrderOperationController extends Controller
     public function sendComplainMessage()
     {
         if (! request('trade_no')) {
-            response()->apiJson(1001);
+            return response()->apiJson(1001);
         }
 
         try {
@@ -311,7 +311,7 @@ class OrderOperationController extends Controller
     public function getMessage()
     {
         if (! request('trade_no')) {
-            response()->apiJson(1001);
+            return response()->apiJson(1001);
         }
 
         try {
@@ -333,7 +333,7 @@ class OrderOperationController extends Controller
     public function sendMessage()
     {
         if (! request('trade_no')) {
-            response()->apiJson(1001);
+            return response()->apiJson(1001);
         }
 
         try {

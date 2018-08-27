@@ -13,8 +13,6 @@ use Illuminate\Database\Eloquent\Model;
 class Attachment extends Model
 {
     public $fillable = [
-        'name',
-        'mime_type',
         'path',
     ];
 
@@ -23,7 +21,6 @@ class Attachment extends Model
         'mime_type',
         'attachment_id',
         'attachment_type',
-        'created_at',
         'updated_at',
     ];
     
@@ -33,6 +30,19 @@ class Attachment extends Model
     public function image()
     {
         return $this->morphTo();
+    }
+
+
+    /**
+     * @param $key
+     * @return string
+     */
+    public function getPathAttribute($key)
+    {
+        if ($this->attributes['path']) {
+            return asset($this->attributes['path']);
+        }
+        return $this->attributes['path'];
     }
 
 }

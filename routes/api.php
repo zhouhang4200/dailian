@@ -90,7 +90,7 @@ Route::namespace('V1')->prefix('v1')->group(function () {
                 Route::post('take', 'OrderOperationController@take'); // 接单
                 Route::post('apply-complete', 'OrderOperationController@applyComplete'); // 申请完成
                 Route::post('cancel-complete', 'OrderOperationController@cancelComplete'); // 取消完成
-                Route::post('apply-complete-image', 'OrderOperationController@applyCompleteImage'); // 查看申请验收截图
+                Route::post('apply-complete-images', 'OrderOperationController@applyCompleteImage'); // 查看申请验收截图
                 Route::post('apply-consult', 'OrderOperationController@applyConsult'); // 申请协商
                 Route::post('cancel-consult', 'OrderOperationController@cancelConsult'); // 取消协商
                 Route::post('agree-consult', 'OrderOperationController@agreeConsult'); // 同意协商

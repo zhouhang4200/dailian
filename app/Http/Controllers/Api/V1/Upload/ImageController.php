@@ -26,7 +26,7 @@ class ImageController extends Controller
 
         $img = request()->file('image');
         $path = $img->store(date('Ymd'), 'public');
-        return response()->apiJson(0, $path);
+        return response()->apiJson(0, 'storage/' . $path);
     }
 
     /**

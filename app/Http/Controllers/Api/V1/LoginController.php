@@ -114,13 +114,13 @@ class LoginController extends Controller
                 $user->save();
 
                 $data['openid'] = $openId;
-                dd(2);
+                dd($result);
                 return response()->apiJson(0, $data);
-            } elseif (is_array($result) && isset($result['errcode']) && $result['errcode'] == 40163) {
+            } elseif (is_array($result) && isset($result['errcode']) && $result['errcode'] == '40163') {
                 dd($result);
                 return response()->apiJson(2013);
             }
-            dd(3);
+            dd($result);
             return response()->apiJson(2012);
         } catch (Exception $e) {
             myLog('wx-code-error', ['失败原因：' => $e->getMessage()]);

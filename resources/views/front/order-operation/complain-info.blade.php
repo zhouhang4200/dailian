@@ -1,4 +1,4 @@
-@if(is_object($order) && !in_array(optional($order->complain)->status, [1, 3]))
+@if(is_object($order) && in_array(optional($order->complain)->status, [1, 3]))
     <div class="layui-form">
         <table class="layui-table">
             <colgroup>

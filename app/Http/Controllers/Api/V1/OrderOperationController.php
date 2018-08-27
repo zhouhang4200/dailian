@@ -275,24 +275,47 @@ class OrderOperationController extends Controller
         } catch (Exception $exception) {
             return response()->apiJson(1003);
         }
-        dd($complainInfo->toArray());
 
-        return response()->apiJson(0);
+        $responseData = [
+            'initiator' => $complainInfo->complain->initiator,
+            'reason' => $complainInfo->complain->reason,
+            'created_at' => $complainInfo->complain->created_at->toDateTimeString(),
+            'images' => $complainInfo->complain->image()->select('path')->get()->pluck('path')->toArray(),
+        ];
+
+        $messages = [];
+        foreach ($complainInfo->complain->messages as $item) {
+
+            $path = '';
+            if (count($item->image)) {
+                $path = $item->image[0]->path;
+            }
+            $messages[] = [
+                'initiator' => $item->initiator,
+                'content' => $item->content,
+                'path' => $path,
+                'created_at' => $item->created_at->toDateTimeString(),
+            ];
+        }
+        $responseData['messages'] = $messages;
+
+        return response()->apiJson(0, $responseData);
     }
 
     /**
      * 获取仲裁信息
      * @return mixed
+     * @throws Exception
      */
     public function sendComplainMessage()
     {
-        if (! request('trade_no')) {
+        if (! request('trade_no') || ! request('content')) {
             return response()->apiJson(1001);
         }
 
         try {
             OrderService::init(request()->user()->id, request('trade_no'))
-                ->sendComplainMessage(request('images'), request('content'));
+                ->sendComplainMessage(request('image') ? ['path' => request('image')] :  [], request('content'));
         } catch (UserAssetException $exception) {
             return response()->apiJson($exception->getCode());
         } catch (OrderException $exception) {
@@ -315,7 +338,7 @@ class OrderOperationController extends Controller
         }
 
         try {
-            OrderService::init(request()->user()->id, request('trade_no'))->getMessage();
+           $messages =  OrderService::init(request()->user()->id, request('trade_no'))->getMessage();
         } catch (UserAssetException $exception) {
             return response()->apiJson($exception->getCode());
         } catch (OrderException $exception) {
@@ -323,6 +346,7 @@ class OrderOperationController extends Controller
         } catch (Exception $exception) {
             return response()->apiJson(1003);
         }
+        dd($messages);
         return response()->apiJson(0);
     }
 
@@ -332,7 +356,7 @@ class OrderOperationController extends Controller
      */
     public function sendMessage()
     {
-        if (! request('trade_no')) {
+        if (! request('trade_no') || ! request('content')) {
             return response()->apiJson(1001);
         }
 

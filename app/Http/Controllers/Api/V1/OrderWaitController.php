@@ -77,6 +77,7 @@ class OrderWaitController extends Controller
 
         $detail = GameLevelingOrder::searchCondition(request()->all())->select([
             'trade_no',
+            'game_id',
             'status',
             'game_name',
             'region_name',
@@ -90,14 +91,24 @@ class OrderWaitController extends Controller
             'amount',
             'explain',
             'requirement',
-        ])->get()->toArray();
+        ])
+            ->with('game')
+            ->get()
+            ->toArray();
 
         if (!isset($detail[0])) {
             return response()->apiJson(0, $detail[0]);
         }
-        $detail[0]['status_describe'] = GameLevelingOrder::$statusDescribe[$detail[0]['status']];
+
         unset($detail[0]['id']);
-        unset($detail[0]['status']);
+        $detail[0]['top'] = empty($detail[0]['take_order_password']) ? 2 : 1;
+        $detail[0]['private'] = empty($detail[0]['take_order_password']) ? 2 : 1;
+        $detail[0]['icon'] = $detail[0]['game']['icon'];
+
+        unset($detail[0]['id']);
+        unset($detail[0]['game_id']);
+        unset($detail[0]['game']);
+        unset($detail[0]['take_order_password']);
 
         return response()->apiJson(0, $detail[0]);
     }

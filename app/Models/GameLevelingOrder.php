@@ -353,6 +353,10 @@ class GameLevelingOrder extends Model
             });
         }
 
+        if (isset($condition['status']) && $condition['status']) {
+            $query->where('status', $condition['status']);
+        }
+
         if (isset($condition['take_parent_user_id']) && $condition['take_parent_user_id']) {
             $query->where('take_parent_user_id', $condition['take_parent_user_id']);
         }

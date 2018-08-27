@@ -67,16 +67,15 @@ class ProfileController extends Controller
             $user = Auth::user();
             $avatar = request('avatar');
 
-            if (is_file($avatar)) {
-                $path = public_path("/resources/users/".$user->id.'/'.date('Ymd')."/");
-                $user->avatar = static::uploadImage($avatar, $path);
-            } elseif(is_string($avatar)) {
-                $pattern = "/".request()->server()['SERVER_NAME']."/";
+            if(is_string($avatar)) {
+                $pattern = "/".request()->server()['SERVER_NAME']."/"; // 主域名
                 preg_match($pattern, $avatar, $matches);
 
                 if ($matches) {
-                    $user->avatar = str_replace(substr($avatar, 0, strpos($avatar, '.com')+4), '', $avatar);
+                    $user->avatar = str_replace(substr($avatar, 0, strpos($avatar, '.com')+4), '', $avatar); // 去除主域名之后的图片路径
                 }
+            } else {
+                return response()->apiJson(1007);
             }
 
             $user->name = request('name');

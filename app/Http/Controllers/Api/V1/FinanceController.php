@@ -180,7 +180,7 @@ class FinanceController extends Controller
                 'out_trade_no' => $tradeNo,
                 'total_fee' => bcmul(request('amount'), 100, 0), // 单位：分
                 'body' => '丸子代练-账户余额充值',
-                'notify_url' => route('finance.balance-recharge.wechat-notify'),
+                'notify_url' => route('api.finance.wechat-notify'),
             ];
             Pay::wechat(config('pay.wechat'))->miniapp($order);
 
@@ -191,5 +191,45 @@ class FinanceController extends Controller
         DB::commit();
 
         return response()->apiJson(0);
+    }
+
+    /**
+     * 微信异步回调
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function wechatNotify()
+    {
+        $wechat = Pay::wechat(config('pay.wechat'));
+
+        try{
+            $data = $wechat->verify();
+
+            // 支付宝确认交易成功
+            if ($data->result_code == 'SUCCESS') {
+                // 查找充值订单为用户加款
+                $order = BalanceRecharge::where('trade_no', $data->out_trade_no)
+                    ->where('amount', bcdiv($data->cash_fee, 100))
+                    ->where('source', 2)
+                    ->where('status', 1)
+                    ->first();
+                // 查到充值订单
+                if ($order) {
+                    // 为用户加款
+                    UserAssetService::init(12, $order->user_id, $order->amount, $order->trade_no)->recharge();
+                    $order->status = 2;
+                    $order->save();
+
+                    // 发送通知
+                    event((new NotificationEvent('recharge', [
+                        'user_id' => $order->user_id,
+                        'message' => '充值成功'
+                    ])));
+                }
+            }
+        } catch (Exception $e) {
+            \Log::debug('Wechat notify Error', [$e->getMessage()]);
+        }
+
+        return $wechat->success();
     }
 }

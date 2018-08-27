@@ -257,6 +257,9 @@ class ProfileController extends Controller
                 $identityCardLen = strlen($certification->identity_card);
                 $substr = substr($certification->identity_card, 5, $identityCardLen-9);
                 $data['identity_card'] = str_replace($substr, '*********', $certification->identity_card);
+            } else {
+                $data['bank_card'] = $certification->bank_card;
+                $data['identity_card'] = $certification->identity_card;
             }
 
 

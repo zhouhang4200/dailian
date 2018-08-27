@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Models\User;
 use Exception;
 use App\Exceptions\Order\OrderException;
 use App\Exceptions\UserAsset\UserAssetException;
@@ -294,7 +295,7 @@ class OrderOperationController extends Controller
                 'initiator' => $item->initiator,
                 'content' => $item->content,
                 'path' => $path,
-                'created_at' => $item->created_at->toDateTimeString(),
+                'created_at' => $item->created_at,
             ];
         }
         $responseData['messages'] = $messages;
@@ -346,8 +347,16 @@ class OrderOperationController extends Controller
         } catch (Exception $exception) {
             return response()->apiJson(1003);
         }
-        dd($messages);
-        return response()->apiJson(0);
+
+        $responseData = $messages->map(function($item) {
+           return  [
+                'initiator' => $item->initiator,
+                'content' => $item->content,
+                'created_at' => $item->created_at,
+                'avatar' => User::where('id',  $item->from_user_id)->value('avatar')
+            ];
+        });
+        return response()->apiJson(0, $responseData);
     }
 
     /**

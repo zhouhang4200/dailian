@@ -14,7 +14,6 @@ use Illuminate\Http\Request;
 */
 
 Route::namespace('V1')->prefix('v1')->group(function () {
-
     Route::middleware('api.sign')->group(function () {
         Route::post('login', 'LoginController@login'); // 登录
         Route::post('register', 'RegisterController@register'); // 注册
@@ -35,6 +34,7 @@ Route::namespace('V1')->prefix('v1')->group(function () {
 
     // 登录后操作
     Route::middleware(['api.token', 'api.sign'])->group(function () {
+        Route::post('code', 'LoginController@code'); // 获取微信JS_code
         // 登录密码问题
         Route::prefix('password')->group(function () {
             Route::post('refund', 'PasswordController@refund'); // 密码找回

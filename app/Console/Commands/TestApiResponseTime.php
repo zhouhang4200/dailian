@@ -40,15 +40,22 @@ class TestApiResponseTime extends Command
      */
     public function handle()
     {
-        $client = new Client();
+        $client = new Request([
+            'POST',
+            'http://api.dailian.com/v1/finance/flows/show',
+            [
+                'Accept' => 'application/json',
+                'Authorization' => 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImY5ZTg1Zjg3OTUyNDAyZTFhNjdkZmRkMTQ2ZWRkYzA1NTE4MDNjYzRiNzE1MTQ2ZjQ4MDVmMDFlZWI1NDZmYjNjMzk1OGNkMjU1OWY1NjA1In0.eyJhdWQiOiI3IiwianRpIjoiZjllODVmODc5NTI0MDJlMWE2N2RmZGQxNDZlZGRjMDU1MTgwM2NjNGI3MTUxNDZmNDgwNWYwMWVlYjU0NmZiM2MzOTU4Y2QyNTU5ZjU2MDUiLCJpYXQiOjE1MzUzNDg5MzYsIm5iZiI6MTUzNTM0ODkzNiwiZXhwIjoxNTY2ODg0OTM1LCJzdWIiOiIyMSIsInNjb3BlcyI6W119.mX_Bt_QCmf50MwZ6b4e5Jxp4f6mfP7NoExzr7EzMOf6LaO1DIGwacrdXmnS-64s6S6hPXjU-6ifgfPZZ4r8rkaIQP7iIXaqKnIyue57QbGTDJ7ExucnJVqXldCgLh4p-fUq5sq-PUySVybk79hnTOzG0qO9dps7qdNY8Ofo-K3F4sS50nLqJco9eUqMQvQRjWlGJCB3tRMaTKqbSz19WwzyFHCv-MiXv71cL8OPickpkdS9PhruZZEJcavYp6olIIt6nEA3U5UIXlCBK09tiVoCPMItv0VGn3tpOL0-U76gsw_aJN7E-tHHZo9igv4pI_nVaVaAqFllpgreDt2tkqAlmH7wT8yrDaF5zSkFs8ZXMXHfNdyOF7r3Z_KimpNJSLsrpzy0Dxlt2UScjY0EpMvAINjiY40snHB52GkFJF27Su8s3-9bzw9SjMpL020OFpfjU09NsgOtFSbBQ_tlMjZLGKoAMzi8yIe2qGeJwOqsmxUwTZIs0Kuy8x6sHOuY2wPaAih7ClL-GmlFcSp6qdG4Z18DnNtvBZbPTgctDhEiMn3POyVUl-oG_SpZUkCAZN1g_DE5nHlkgZqu62L_5zFJK6LLXLnQ8O7XJLDIgPm591aGoNQD2tuyOMulVkMDye2hAhV_mSsa4rI_QTJoKdJBZ7KM1fNhu4QYM8Ly6_EM'
+            ]
+        ]);
         $requests = function ($total) use ($client) {
             $uri = 'http://api.dailian.com/v1/finance/flows/show';
             for ($i = 0; $i < $total; $i++) {
-                $client->requestAsync('POST', $uri, [
-                    'Accept' => 'application/json',
-                    'Authorization' => 'Bearer  eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjEzMTA5MWQ4ODZhMDYxYTllNTBmODExN2M2ZWViMTkyOGVjNTMwMmI4NzA1NDdjMGU0MDNlNGIxNTVmMTA0YjJiMjQ0MmFiMzg0YjcxNDE1In0.eyJhdWQiOiI3IiwianRpIjoiMTMxMDkxZDg4NmEwNjFhOWU1MGY4MTE3YzZlZWIxOTI4ZWM1MzAyYjg3MDU0N2MwZTQwM2U0YjE1NWYxMDRiMmIyNDQyYWIzODRiNzE0MTUiLCJpYXQiOjE1MzUzMzczOTEsIm5iZiI6MTUzNTMzNzM5MSwiZXhwIjoxNTY2ODczMzkwLCJzdWIiOiIyMSIsInNjb3BlcyI6W119.HGBIbadvI-vE5aCw55k9jJIIkadZliYPIC1dD9_lTnUrvXyu6SwcHRJ0l3Vk2GMHTegwDij3ZDn52tWzHBYOfO4ziMYTrlI1SQs0-p56Cei53-SSA3XtuuYSQQsd7BcbU_E8XoVLlWaKHGK5SRVy_znELM4Hwvb8Bu7IUZ4ajc7uGa_2xZ4BBqzahDFOUa-P9JfvBA6znssHzmrJr0DEjYoM5zjU14oC9NKu_o7zxnHwXkVQmkXGKpuRSL_ETY2j_N1SKVVIAgoq8nNaaOckyTqDQN6GUm2KWp7m4RO56j7AqO7PMEgAR-bmFvqDuU3OQ66zMQKKsbfw0QcrceeVaWp5Enu6W1ilbYPYEgO9Y_T34oJR8n31OpfIqFLq-X6lG8el-yx5Eqrq76ogxx4U2EsOZhmaz63gIumFJnceYUcPsPQtGhor6n3_FvjxCVHjoUpd6-JSSXeySBL94QanijEq7LoJ76dMrrn_JZLccjw1KtlxMyTN1WYjOFeprgH5FIcgOA13ZEe2PN5dGOu2sQMKUd4R-2cG-XNIhVc1B7xYJ5gy82co-uDPNhsPyKmVmy3vepg1M4IGEGKyzG1t90raTCrjlVUzCl3xv7GuUQpAX__Ix1n2a771TV6fFWiKJodOLZdhs0riBTrUAKKFvKvjSs91eXDUR2azg_W37Uw',
-                    'form-params' => ['id' => 340, 'timestamp' => 213, 'sign' => 'ads']
-                ]);
+                yield function () use ($client, $uri, $i) {
+                    return $client->requestAsync('POST', $uri, [
+                        'form-params' => ['id' => 340, 'timestamp' => 213, 'sign' => 'ads']
+                    ]);
+                };
             }
         };
 

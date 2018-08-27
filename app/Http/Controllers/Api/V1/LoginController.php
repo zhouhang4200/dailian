@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use Auth;
 use Hash;
 use Exception;
+use GuzzleHttp\Client;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\BlockadeAccount;
@@ -75,6 +76,40 @@ class LoginController extends Controller
             } else {
                 return response()->apiJson(2001);
             }
+        } catch (Exception $e) {
+            myLog('wx-login-error', ['失败原因：' => $e->getMessage()]);
+            return response()->apiJson(1003);
+        }
+    }
+
+    /**
+     *  获取小程序JS_code
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function code(Request $request)
+    {
+        try {
+            // 参数缺失
+            if (is_null( request('code'))) {
+                return response()->apiJson(1001);
+            }
+
+            $user = Auth::user();
+
+            $client = new Client();
+
+            $response = $client->request('GET', "https://api.weixin.qq.com/sns/jscode2session", [
+                'query' => [
+                    'appid' => config('pay.wecaht.miniapp_id'),
+                    'secret' => config('pay.wecaht.app_secret'),
+                    'js_code' => request('code'),
+                    'grant_type' => 'authorization_code'
+                ],
+            ]);
+            $result =  $response->getBody()->getContents();
+dd($result);
+            $user->wechat_open_id = 1;
         } catch (Exception $e) {
             myLog('wx-login-error', ['失败原因：' => $e->getMessage()]);
             return response()->apiJson(1003);

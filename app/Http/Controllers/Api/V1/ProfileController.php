@@ -69,7 +69,15 @@ class ProfileController extends Controller
 
             // 检查后缀
             $extension = explode('.', $avatar);
-            if (! in_array($extension, static::$extensions)) {
+
+            if (! in_array($extension[count($extension)-1], static::$extensions)) {
+                return response()->apiJson(1008);
+            }
+            // 检查前缀
+            $pattern = "/^\/.*/";
+            preg_match($pattern, $avatar, $arr);
+
+            if (! $arr) {
                 return response()->apiJson(1008);
             }
 

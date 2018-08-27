@@ -203,7 +203,7 @@ class FinanceController extends Controller
 
         try{
             $data = $wechat->verify();
-
+dd(222);
             // 支付宝确认交易成功
             if ($data->result_code == 'SUCCESS') {
                 // 查找充值订单为用户加款

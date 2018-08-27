@@ -41,20 +41,21 @@ class TestApiResponseTime extends Command
     public function handle()
     {
         $client = new Client();
-        $requests = function ($total) {
-            $uri = 'http://api.dailian.com/v1/games';
+        $requests = function ($total) use ($client) {
+            $uri = 'http://api.dailian.com/v1/finance/flows/show';
             for ($i = 0; $i < $total; $i++) {
-                yield new Request('POST', $uri, [
+                $client->requestAsync('POST', $uri, [
                     'Accept' => 'application/json',
-                    'Authorization' => 'Bearer  eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFkYWM5YjJiMDkxM2YzZjdhMjg5OWVjNTQ4MzI0MWQyNzFkZDVjYWNjZDhlZGZhZjljNDMzYTcyNTZjNzFiNWEwOGRkZjk5YWU0MTViMzllIn0.eyJhdWQiOiI3IiwianRpIjoiMWRhYzliMmIwOTEzZjNmN2EyODk5ZWM1NDgzMjQxZDI3MWRkNWNhY2NkOGVkZmFmOWM0MzNhNzI1NmM3MWI1YTA4ZGRmOTlhZTQxNWIzOWUiLCJpYXQiOjE1MzUwOTI5OTcsIm5iZiI6MTUzNTA5Mjk5NywiZXhwIjoxNTY2NjI4OTk3LCJzdWIiOiIyMSIsInNjb3BlcyI6W119.r5-XbaD2ee_h6-TBFShvy0Z_MNJ7feFei0Sk6ZZNNTOoa4ZbZtdg12iW109JZaKnYmMCT-3nW6OSA1bcaP1ejrcMfPp0wX5j9kSTVbfm4Fm2S94x4JS6-fw5MwVP5rULMi85ENdl4ze3Iq7CeZ7d31mBqHUFnEXFnB1WNsnRNtoXdmxO6myEALp_wgs6L6xkkWij95GGT0Lvk3ONcOwOyuv0MxnNDuDsXBmhh0FHsRlsPD4aJS8ga6Ihk9cIqLDRYu_vA_pxVYd8QNkPcmpUOEwpNS5G2MoH7_3WoEBI-DGE-x39sJ_4U_jXGHjd66LnyQrcNO1gfDGpVNUSMVVaSE6ZXdok9v7vq_HPf5Ace59ceiLNwQhd-zALKzJ9kgfiWlB--eue_9OiIu-243Hb8xGGAjPD0KlYtr7ap-iOmcCKl7azCvdTY0BFC5pIgP4n83DTbuQTe5-6a7RMk8BSPVXpc2mKU38qEKNd9FPv4mJf1tmMaxogL1GP-Er1qC9_h776Y9UqMKIAQTyxVusvCuu3PddL40KfoBkilZ8GZwR_qBoPha0rslsoiYW4baazL4TAkkiYhoUUPHOg60cqedP7oaAIxNKkLZAzzKc_4_BescOAc5b9n4iuCZfFgTP27_4ALoPk9XiM0HMyoPO4hzXgIYdsZCy57TmemnQs4PM',
+                    'Authorization' => 'Bearer  eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjEzMTA5MWQ4ODZhMDYxYTllNTBmODExN2M2ZWViMTkyOGVjNTMwMmI4NzA1NDdjMGU0MDNlNGIxNTVmMTA0YjJiMjQ0MmFiMzg0YjcxNDE1In0.eyJhdWQiOiI3IiwianRpIjoiMTMxMDkxZDg4NmEwNjFhOWU1MGY4MTE3YzZlZWIxOTI4ZWM1MzAyYjg3MDU0N2MwZTQwM2U0YjE1NWYxMDRiMmIyNDQyYWIzODRiNzE0MTUiLCJpYXQiOjE1MzUzMzczOTEsIm5iZiI6MTUzNTMzNzM5MSwiZXhwIjoxNTY2ODczMzkwLCJzdWIiOiIyMSIsInNjb3BlcyI6W119.HGBIbadvI-vE5aCw55k9jJIIkadZliYPIC1dD9_lTnUrvXyu6SwcHRJ0l3Vk2GMHTegwDij3ZDn52tWzHBYOfO4ziMYTrlI1SQs0-p56Cei53-SSA3XtuuYSQQsd7BcbU_E8XoVLlWaKHGK5SRVy_znELM4Hwvb8Bu7IUZ4ajc7uGa_2xZ4BBqzahDFOUa-P9JfvBA6znssHzmrJr0DEjYoM5zjU14oC9NKu_o7zxnHwXkVQmkXGKpuRSL_ETY2j_N1SKVVIAgoq8nNaaOckyTqDQN6GUm2KWp7m4RO56j7AqO7PMEgAR-bmFvqDuU3OQ66zMQKKsbfw0QcrceeVaWp5Enu6W1ilbYPYEgO9Y_T34oJR8n31OpfIqFLq-X6lG8el-yx5Eqrq76ogxx4U2EsOZhmaz63gIumFJnceYUcPsPQtGhor6n3_FvjxCVHjoUpd6-JSSXeySBL94QanijEq7LoJ76dMrrn_JZLccjw1KtlxMyTN1WYjOFeprgH5FIcgOA13ZEe2PN5dGOu2sQMKUd4R-2cG-XNIhVc1B7xYJ5gy82co-uDPNhsPyKmVmy3vepg1M4IGEGKyzG1t90raTCrjlVUzCl3xv7GuUQpAX__Ix1n2a771TV6fFWiKJodOLZdhs0riBTrUAKKFvKvjSs91eXDUR2azg_W37Uw',
+                    'form-params' => ['id' => 340, 'timestamp' => 213, 'sign' => 'ads']
                 ]);
             }
         };
 
-        $pool = new Pool($client, $requests(100), [
+        $pool = new Pool($client, $requests(5), [
             'concurrency' => 5,
             'fulfilled' => function ($response, $index) {
-                echo $index.".";
+                echo $response->getBody()->getContents();
                 // this is delivered each successful response
             },
             'rejected' => function ($reason, $index) {

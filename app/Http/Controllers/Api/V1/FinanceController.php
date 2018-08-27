@@ -166,11 +166,6 @@ class FinanceController extends Controller
                 return response()->apiJson(1001); // 参数缺失
             }
 
-            // 提现权限
-            if (! $user->could('finance.balance-recharge')) {
-                return response()->apiJson(1005);
-            }
-
             // 生成充值单号
             $tradeNo = generateOrderNo();
 
@@ -178,6 +173,7 @@ class FinanceController extends Controller
                 'user_id' => $user->parent_id,
                 'amount' => request('amount'),
                 'trade_no' => $tradeNo,
+                'source' => 2
             ]);
 
             $order = [
@@ -189,7 +185,7 @@ class FinanceController extends Controller
             Pay::wechat(config('pay.wechat'))->miniapp($order);
 
         } catch (Exception $e) {
-            myLog('wx-profile-withdraw-error', ['用户:' => $user->id ?? '', '失败:' => $e->getMessage()]);
+            myLog('wx-profile-recharge-error', ['用户:' => $user->id ?? '', '失败:' => $e->getMessage()]);
             return response()->apiJson(1003);
         }
         DB::commit();

@@ -73,9 +73,6 @@ class ProfileController extends Controller
             if (! in_array($extension[count($extension)-1], static::$extensions)) {
                 return response()->apiJson(1008);
             }
-            // 检查前缀
-            $pattern = "/^\/.*/";
-            preg_match($pattern, $avatar, $arr);
 
             if (! $arr) {
                 return response()->apiJson(1008);
@@ -90,6 +87,9 @@ class ProfileController extends Controller
                     $user->avatar = str_replace(substr($avatar, 0, strpos($avatar, '.com')+4), '', $avatar); // 去除主域名之后的图片路径
                 } else {
                     $user->avatar = $avatar;
+                    // 检查前缀
+                    $pattern = "/^\/.*/";
+                    preg_match($pattern, $avatar, $arr);
                 }
             } else {
                 return response()->apiJson(1007);

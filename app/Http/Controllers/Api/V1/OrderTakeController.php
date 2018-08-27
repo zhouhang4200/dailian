@@ -47,7 +47,6 @@ class OrderTakeController extends Controller
 
             $itemArr['top'] = empty($itemArr['take_order_password']) ? 2 : 1;
             $itemArr['private'] = empty($itemArr['take_order_password']) ? 2 : 1;
-            $itemArr['status_describe'] = GameLevelingOrder::$statusDescribe[$itemArr['status']];
             $itemArr['icon'] = $item['game']['icon'];
 
             unset($itemArr['id']);
@@ -112,10 +111,7 @@ class OrderTakeController extends Controller
             return response()->apiJson(0, $detail[0]);
         }
 
-        $detail[0]['status_describe'] = GameLevelingOrder::$statusDescribe[$detail[0]['status']];
-
         unset($detail[0]['id']);
-        unset($detail[0]['status']);
 
         return response()->apiJson(0, $detail[0]);
     }

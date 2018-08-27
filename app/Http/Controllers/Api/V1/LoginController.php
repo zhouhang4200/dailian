@@ -99,16 +99,9 @@ class LoginController extends Controller
 
             $client = new Client();
 
-            $response = $client->request('GET', "https://api.weixin.qq.com/sns/jscode2session", [
-                'query' => [
-                    'appid' => config('pay.wecaht.miniapp_id'),
-                    'secret' => config('pay.wecaht.app_secret'),
-                    'js_code' => request('code'),
-                    'grant_type' => 'authorization_code'
-                ],
-            ]);
+            $response = $client->request('GET', "https://api.weixin.qq.com/sns/jscode2session?appid=".config('pay.wecaht.miniapp_id')."&secret=".config('pay.wecaht.app_secret')."&js_code=".request('code')."&grant_type=authorization_code");
             $result =  $response->getBody()->getContents();
-dd($result);
+dd("https://api.weixin.qq.com/sns/jscode2session?appid=".config('pay.wecaht.miniapp_id')."&secret=".config('pay.wecaht.app_secret')."&js_code=".request('code')."&grant_type=authorization_code");
             $user->wechat_open_id = 1;
         } catch (Exception $e) {
             myLog('wx-login-error', ['失败原因：' => $e->getMessage()]);

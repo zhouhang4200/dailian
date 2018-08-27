@@ -199,10 +199,10 @@ class FinanceController extends Controller
      */
     public function wechatNotify()
     {
+        dd(222);
         $wechat = Pay::wechat(config('pay.wechat'));
 
         try{
-            dd(222);
             $data = $wechat->verify();
             // 支付宝确认交易成功
             if ($data->result_code == 'SUCCESS') {

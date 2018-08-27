@@ -48,6 +48,7 @@ class ProfileController extends Controller
             $data['balance'] = $user->userAsset ? $user->userAsset->balance : 0;
             $data['frozen'] = $user->userAsset ? $user->userAsset->frozen : 0;
             $data['signature'] = $user->signature;
+            $data['pay_password'] = ! empty($user->pay_password) ? 1 : 2;
 
             return response()->apiJson(0, $data);
         } catch (Exception $e) {

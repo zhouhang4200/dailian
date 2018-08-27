@@ -250,12 +250,20 @@ class ProfileController extends Controller
                 return response()->apiJson(3006); //子账号不能查看主账号实名认证信息
             }
 
+            if ($certification->status == 2) {
+                $bankCardLen = strlen($certification->bank_card);
+                $substr = substr($certification->bank_card, 3, $bankCardLen-6);
+                $data['bank_card'] = str_replace($substr, '******', $certification->bank_card);
+                $identityCardLen = strlen($certification->identity_card);
+                $substr = substr($certification->identity_card, 5, $identityCardLen-9);
+                $data['identity_card'] = str_replace($substr, '*********', $certification->identity_card);
+            }
+
+
             $data['real_name'] = $certification->real_name;
-            $data['identity_card'] = $certification->identity_card;
             $data['identity_card_front'] = asset($certification->identity_card_front);
             $data['identity_card_back'] = asset($certification->identity_card_back);
             $data['identity_card_hand'] = asset($certification->identity_card_hand);
-            $data['bank_card'] = $certification->bank_card;
             $data['bank_name'] = $certification->bank_name;
             $data['status'] = $certification->status;
             $data['status'] = $certification->status;

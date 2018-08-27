@@ -53,7 +53,6 @@ class OrderTakeController extends Controller
             unset($itemArr['id']);
             unset($itemArr['game_id']);
             unset($itemArr['game']);
-            unset($itemArr['status']);
             unset($itemArr['take_order_password']);
 
             $orderList[] = $itemArr;

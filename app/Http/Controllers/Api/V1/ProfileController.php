@@ -68,38 +68,25 @@ class ProfileController extends Controller
             $user = Auth::user();
             $avatar = request('avatar');
 
-            // 检查后缀
-            $extension = explode('.', $avatar);
-
-            if (! in_array($extension[count($extension)-1], static::$extensions)) {
-                return response()->apiJson(1008);
-            }
 
             // 检查类型
             if(is_string($avatar)) {
-                $pattern = "/".request()->server()['SERVER_NAME']."/"; // 主域名
-                preg_match($pattern, $avatar, $matches);
+                // 检查后缀
+                $extension = explode('.', $avatar);
 
-                if ($matches) {
-                    $user->avatar = str_replace(substr($avatar, 0, strpos($avatar, '.com')+4), '', $avatar); // 去除主域名之后的图片路径
-                } else {
-                    $user->avatar = $avatar;
-                    // 检查前缀
-                    $pattern = "/^\/.*/";
-                    preg_match($pattern, $avatar, $arr);
-
-                    if (! $arr) {
-                        return response()->apiJson(1008);
-                    }
+                if (! in_array($extension[count($extension)-1], static::$extensions)) {
+                    return response()->apiJson(1008);
                 }
-            } else {
-                return response()->apiJson(1007);
+
+                if (strpos($avatar,'https') === false && strpos($avatar,'http') === false) {
+                    $user->avatar = $avatar;
+                }
             }
 
-            $user->name = request('name');
-            $user->qq = request('qq');
-            $user->signature = request('signature');
-            $user->email = request('email');
+            $user->name = request('name', $user->name);
+            $user->qq = request('qq', $user->qq);
+            $user->signature = request('signature', $user->signature);
+            $user->email = request('email', $user->email);
             $user->save();
 
             return response()->apiJson(0);

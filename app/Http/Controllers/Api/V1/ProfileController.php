@@ -74,10 +74,6 @@ class ProfileController extends Controller
                 return response()->apiJson(1008);
             }
 
-            if (! $arr) {
-                return response()->apiJson(1008);
-            }
-
             // 检查类型
             if(is_string($avatar)) {
                 $pattern = "/".request()->server()['SERVER_NAME']."/"; // 主域名
@@ -90,6 +86,10 @@ class ProfileController extends Controller
                     // 检查前缀
                     $pattern = "/^\/.*/";
                     preg_match($pattern, $avatar, $arr);
+
+                    if (! $arr) {
+                        return response()->apiJson(1008);
+                    }
                 }
             } else {
                 return response()->apiJson(1007);

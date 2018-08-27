@@ -49,7 +49,7 @@ class FinanceController extends Controller
                 'total_page' => $userAssetFlows->lastPage(),
                 'current_page' => $userAssetFlows->currentPage(),
                 'page_size' => $userAssetFlows->perPage(),
-                'list' => $userAssetFlows
+                'list' => $userAssetFlows->items()
             ]);
         } catch (Exception $e) {
             myLog('wx-profile-flows-error', ['用户:' => $user->id ?? '', '失败:' => $e->getMessage()]);

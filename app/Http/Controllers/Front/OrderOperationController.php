@@ -768,8 +768,11 @@ class OrderOperationController extends Controller
     public function sendComplainMessage()
     {
         try {
+            // 存储图片
+            $image = base64ToImg(request('image'), 'complain');
+
             OrderService::init(request()->user()->id, request('trade_no'))
-                ->sendComplainMessage(request('image'), request('content'));
+                ->sendComplainMessage($image, request('content'));
         } catch (Exception $exception) {
             return response()->ajaxFail('发送失败');
         }

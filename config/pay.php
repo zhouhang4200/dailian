@@ -25,7 +25,7 @@ return [
         // 公众号 APPID
         'app_id' => env('WECHAT_APP_ID', 'wxd741646d2b519c60'),
         // 小程序 APPID
-        'miniapp_id' => env('WECHAT_MINIAPP_ID', ''),
+        'miniapp_id' => env('WECHAT_MINIAPP_ID', 'wx2c4853cb397d357c'),
         // APP 引用的 appid
         'appid' => env('WECHAT_APPID', ''),
         // 微信支付分配的微信商户号

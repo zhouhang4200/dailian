@@ -250,19 +250,19 @@
                 <p class="price choose">价格：</p>
                 <ul class="price_filter filter">
                     <li @if(request('amount') == 0) class="islink" @endif>
-                        <a href="{{ route('order', array_merge(['amount' => 0], request()->except('amount'))) }}">全部</a>
+                        <a href="{{ route('order.wait-list', array_merge(['amount' => 0], request()->except('amount'))) }}">全部</a>
                     </li>
                     <li @if(request('amount') == 1) class="islink" @endif>
-                        <a href="{{ route('order', array_merge(['amount' => 1], request()->except('amount'))) }}">10元以下</a>
+                        <a href="{{ route('order.wait-list', array_merge(['amount' => 1], request()->except('amount'))) }}">10元以下</a>
                     </li>
                     <li @if(request('amount') == 2) class="islink" @endif>
-                        <a href="{{ route('order', array_merge(['amount' => 2], request()->except('amount'))) }}">10元-100元（含）</a>
+                        <a href="{{ route('order.wait-list', array_merge(['amount' => 2], request()->except('amount'))) }}">10元-100元（含）</a>
                     </li>
                     <li @if(request('amount') == 3) class="islink" @endif>
-                        <a href="{{ route('order', array_merge(['amount' => 3], request()->except('amount'))) }}">100元-200元（含）</a>
+                        <a href="{{ route('order.wait-list', array_merge(['amount' => 3], request()->except('amount'))) }}">100元-200元（含）</a>
                     </li>
                     <li @if(request('amount') == 4) class="islink" @endif>
-                        <a href="{{ route('order', array_merge(['amount' => 4], request()->except('amount'))) }}">200元以上</a>
+                        <a href="{{ route('order.wait-list', array_merge(['amount' => 4], request()->except('amount'))) }}">200元以上</a>
                     </li>
                 </ul>
             </div>
@@ -306,7 +306,7 @@
                     <div class="layui-inline">
                         <label class="layui-form-label">其他</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="orther" placeholder="订单号/发布人/标题" autocomplete="off" class="layui-input">
+                            <input type="text" name="keyword" placeholder="订单号/发布人/标题" autocomplete="off" class="layui-input" value="{{ request('keyword') }}">
                         </div>
                     </div>
                     <div class="layui-inline query f-fr">

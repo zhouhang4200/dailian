@@ -1308,12 +1308,12 @@ class OrderService
 
     /**
      * 发送仲裁留言
-     * @param $imageFile
+     * @param $image
      * @param $content
      * @return object
      * @throws Exception
      */
-    public function sendComplainMessage($imageFile, $content)
+    public function sendComplainMessage($image, $content)
     {
         // 检测当前操作用户是否是发单人或接单人
         if (! in_array(self::$user->parent_id, [self::$order->parent_user_id, self::$order->take_parent_user_id])) {
@@ -1348,8 +1348,7 @@ class OrderService
                 ]);
             }
 
-            // 存储图片
-            $image = base64ToImg($imageFile, 'complain');
+
             if ($image) {
                 $image['game_leveling_order_trade_no'] = self::$order->trade_no;
                 $message->image()->create($image);

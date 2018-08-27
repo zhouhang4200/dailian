@@ -49,7 +49,7 @@ Route::group(['middleware' => 'auth'], function (){
     // 订单
     Route::prefix('order')->group(function (){
         // 待接订单
-        Route::get('wait-list', 'OrderController@waitList')->name('order.wait-list')->middleware('permission:order.wait-list');
+        Route::get('wait-list', 'OrderController@waitList')->name('order.wait-list');
         // 接单列表
         Route::get('take-list', 'OrderController@takeList')->name('order.take-list')->middleware('permission:order.take-list');
         Route::post('take-list', 'OrderController@takeListData')->name('order.take-list');

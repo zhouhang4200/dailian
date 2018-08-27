@@ -27,9 +27,9 @@ return [
         // 小程序 APPID
         'miniapp_id' => env('WECHAT_MINIAPP_ID', 'wx2c4853cb397d357c'),
         // APP 引用的 appid
-        'appid' => env('WECHAT_APPID', ''),
+        'appid' => env('WECHAT_APPID', 'wx2c4853cb397d357c'),
         // 微信支付分配的微信商户号
-        'mch_id' => env('WECHAT_MCH_ID', ''), // 1502886431
+        'mch_id' => env('WECHAT_MCH_ID', '1502886431'), // 1502886431
         // 微信支付异步通知地址
         'notify_url' => '',
         // 微信支付签名秘钥

@@ -103,10 +103,6 @@ class LoginController extends Controller
             $result =  $response->getBody()->getContents();
             $result = json_decode($result, true);
 
-            if (! is_array($result) || ! $result) {
-                return response()->apiJson(2012);
-            }
-
             if (is_array($result) && isset($result['openid'])) {
                 $openId = $result['openid'];
                 $sessionKey = $result['session_key'];
@@ -114,13 +110,11 @@ class LoginController extends Controller
                 $user->save();
 
                 $data['openid'] = $openId;
-                dd($result);
+
                 return response()->apiJson(0, $data);
-            } elseif (is_array($result) && isset($result['errcode']) && $result['errcode'] == '40163') {
-                dd($result);
-                return response()->apiJson(2013);
+            } elseif (is_array($result) && isset($result['errcode'])) {
+                return response()->json(['code' => 2012, 'message' => $result['errmsg']]);
             }
-            dd($result);
             return response()->apiJson(2012);
         } catch (Exception $e) {
             myLog('wx-code-error', ['失败原因：' => $e->getMessage()]);

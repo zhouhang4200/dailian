@@ -202,8 +202,8 @@ class FinanceController extends Controller
         $wechat = Pay::wechat(config('pay.wechat'));
 
         try{
+            dd(222);
             $data = $wechat->verify();
-dd(222);
             // 支付宝确认交易成功
             if ($data->result_code == 'SUCCESS') {
                 // 查找充值订单为用户加款

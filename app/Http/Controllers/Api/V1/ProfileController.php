@@ -66,8 +66,14 @@ class ProfileController extends Controller
         try {
             $user = Auth::user();
             $file = $request->avatar;
-            $path = public_path("/resources/users/".$user->id.'/'.date('Ymd')."/");
-            $user->avatar = static::uploadImage($file, $path);
+
+            if (is_file($file)) {
+                $path = public_path("/resources/users/".$user->id.'/'.date('Ymd')."/");
+                $user->avatar = static::uploadImage($file, $path);
+            } elseif(is_string($file)) {
+                $user->avatar = request('avatar');
+            }
+
             $user->name = request('name');
             $user->qq = request('qq');
             $user->signature = request('signature');

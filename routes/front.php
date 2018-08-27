@@ -129,7 +129,7 @@ Route::group(['middleware' => 'auth'], function (){
     });
     // 实名认证
     Route::prefix('real-name-certification')->group(function () {
-        Route::get('/', 'RealNameCertificationController@index')->name('real-name-certification')->middleware('permission:real-name-certification');
+        Route::get('/', 'RealNameCertificationController@index')->name('real-name-certification');
         Route::get('create', 'RealNameCertificationController@create')->name('real-name-certification.create');
         Route::post('store', 'RealNameCertificationController@store')->name('real-name-certification.store');
         Route::get('edit', 'RealNameCertificationController@edit')->name('real-name-certification.edit');

@@ -101,7 +101,7 @@ class LoginController extends Controller
 
             $response = $client->request('GET', "https://api.weixin.qq.com/sns/jscode2session?appid=".config('pay.wechat.miniapp_id')."&secret=".config('pay.wechat.app_secret')."&js_code=".request('code')."&grant_type=authorization_code");
             $result =  $response->getBody()->getContents();
-            $result = json_decode($result);
+            $result = json_decode($result, true);
 
             if (! is_array($result) || ! $result) {
                 return response()->apiJson(2012);
@@ -114,8 +114,8 @@ class LoginController extends Controller
                 $user->save();
 
                 $data['openid'] = $openId;
-                return response()->apiJson(0, $data);
                 dd(2);
+                return response()->apiJson(0, $data);
             } elseif (is_array($result) && isset($result['errcode']) && $result['errcode'] == 40163) {
                 dd($result);
                 return response()->apiJson(2013);

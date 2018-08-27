@@ -65,9 +65,36 @@ class ProfileController extends Controller
     {
         try {
             $user = Auth::user();
-            $file = $request->avatar;
-            $path = public_path("/resources/users/".$user->id.'/'.date('Ymd')."/");
-            $user->avatar = static::uploadImage($file, $path);
+            $avatar = request('avatar');
+
+            // 检查后缀
+            $extension = explode('.', $avatar);
+
+            if (! in_array($extension[count($extension)-1], static::$extensions)) {
+                return response()->apiJson(1008);
+            }
+            // 检查前缀
+            $pattern = "/^\/.*/";
+            preg_match($pattern, $avatar, $arr);
+
+            if (! $arr) {
+                return response()->apiJson(1008);
+            }
+
+            // 检查类型
+            if(is_string($avatar)) {
+                $pattern = "/".request()->server()['SERVER_NAME']."/"; // 主域名
+                preg_match($pattern, $avatar, $matches);
+
+                if ($matches) {
+                    $user->avatar = str_replace(substr($avatar, 0, strpos($avatar, '.com')+4), '', $avatar); // 去除主域名之后的图片路径
+                } else {
+                    $user->avatar = $avatar;
+                }
+            } else {
+                return response()->apiJson(1007);
+            }
+
             $user->name = request('name');
             $user->qq = request('qq');
             $user->signature = request('signature');
@@ -79,38 +106,6 @@ class ProfileController extends Controller
             myLog('wx-profile-update-error', ['用户:' => $user->id ?? '', '失败:' => $e->getMessage()]);
             return response()->apiJson(1003);
         }
-    }
-
-    /**
-     * 接收远程传过来的图片
-     * @param UploadedFile $file
-     * @param $path
-     * @return \Illuminate\Http\JsonResponse|mixed
-     */
-    public static function uploadImage(UploadedFile $file, $path)
-    {
-        // 获取可传输的图片类型
-        $extension = $file->getClientOriginalExtension();
-
-        if ($extension && ! in_array(strtolower($extension), static::$extensions)) {
-            return response()->apiJson(3001);
-        }
-        // 判断上传是否合法
-        if (! $file->isValid()) {
-            return response()->apiJson(3002);
-        }
-        // 不存在存储路径的时候指定路径
-        if (!file_exists($path)) {
-            mkdir($path, 0755, true);
-        }
-        // 图片随机命名
-        $randNum = rand(1, 100000000) . rand(1, 100000000);
-        $fileName = time().substr($randNum, 0, 6).'.'.$extension;
-        // 保存图片
-        $path = $file->move($path, $fileName);
-        $path = strstr($path, '/resources');
-        // 返回图片路径
-        return str_replace('\\', '/', $path);
     }
 
     /**

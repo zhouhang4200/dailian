@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Exceptions\Order\OrderComplainException;
+use App\Exceptions\Order\OrderException;
 use App\Exceptions\UserAsset\UserAssetException;
 use App\Models\GameLevelingOrderMessage;
 use Exception;
@@ -215,16 +216,19 @@ class OrderService
         }
 
         DB::beginTransaction();
+
+        // 如果存在保证金, 冻结接单方对应的保证金
+        if (self::$order->security_deposit > 0) {
+            UserAssetService::init(33, self::$user->id, self::$order->security_deposit, self::$order->trade_no)->frozen();
+        }
+        if (self::$order->efficiency_deposit > 0) {
+            UserAssetService::init(32, self::$user->id, self::$order->efficiency_deposit, self::$order->trade_no)->frozen();
+        }
+
         try {
-            // 如果存在保证金, 冻结接单方对应的保证金
-            if (self::$order->security_deposit > 0) {
-                UserAssetService::init(33, self::$user->id, self::$order->security_deposit, self::$order->trade_no)->frozen();
-            }
-            if (self::$order->efficiency_deposit > 0) {
-                UserAssetService::init(32, self::$user->id, self::$order->efficiency_deposit, self::$order->trade_no)->frozen();
-            }
             // 冻结发单方对应订单金额
             UserAssetService::init(31, self::$order->user_id, self::$order->amount, self::$order->trade_no)->frozen();
+
             // 保存接单人ID修改订单状态
             self::$order->status = 2;
             self::$order->take_user_id = self::$user->id;
@@ -235,8 +239,8 @@ class OrderService
             self::$order->save();
             // 写入订单日志
             GameLevelingOrderLog::store('接单', self::$order->trade_no, self::$user->id, self::$user->name, self::$user->parent_id, self::$user->name . ': 进行操作 [接单]');
-        } catch (UserAssetBalanceException $e) {
-            throw new UserAssetBalanceException($e->getMessage());
+        }  catch (UserAssetBalanceException $exception) {
+            throw new UserAssetBalanceException($exception->getMessage(), 4011);
         } catch (Exception $exception) {
             throw new Exception($exception->getMessage());
         }
@@ -273,13 +277,16 @@ class OrderService
 
     /**
      * 申请验收
-     * @param array $image
+     * @param array $images
      *
      * @return object
      * @throws \Exception
      */
-    public function applyComplete($image = [])
+    public function applyComplete(array $images = [])
     {
+        if (! $images) {
+            throw new OrderException('至少输入一张验收图片', 7009);
+        }
         if (self::$order->status != 2) {
             throw new OrderStatusException('申请验收失败,订单当前状态为: ' . self::$order->getStatusDescribe(), 7005);
         }
@@ -299,7 +306,7 @@ class OrderService
                 'game_leveling_order_trade_no' => self::$order->trade_no
             ]);
             // 存储验收图片
-            $applyComplete->image()->createMany($image);
+            $applyComplete->image()->createMany($images);
             // 写入订单日志
             GameLevelingOrderLog::store('申请验收', self::$order->trade_no, self::$user->id, self::$user->name, self::$user->parent_id, self::$user->name . ': 进行操作 [申请验收]');
         } catch (Exception $exception) {
@@ -823,13 +830,17 @@ class OrderService
     /**
      * 申请仲裁
      * @param $reason
-     * @param array $image
+     * @param array $images
      * @return object
      * @throws OrderStatusException
      * @throws Exception
      */
-    public function applyComplain($reason, $image = [])
+    public function applyComplain($reason, $images = [])
     {
+        if (! $images) {
+            throw new OrderException('至少输入一张验收图片', 7009);
+        }
+
         // 状态为 代练中(2)  待收验(3) 异常(4)
         if ( ! in_array(self::$order->status, [2, 3, 4])) {
             throw new OrderStatusException('申请仲裁失败,订单当前状态为: ' . self::$order->getStatusDescribe(), 7005);
@@ -847,7 +858,7 @@ class OrderService
                 1,
                 $reason);
             // 存储图片
-            $complain->image()->createMany($image);
+            $complain->image()->createMany($images);
             // 记录订单前一个状态
             GameLevelingOrderPreviousStatus::store(self::$order->trade_no, self::$order->status);
             // 修改订单状态

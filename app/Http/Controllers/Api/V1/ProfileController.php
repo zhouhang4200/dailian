@@ -47,6 +47,7 @@ class ProfileController extends Controller
             $data['certification_status'] = $user->realNameCertification ? $user->realNameCertification->status : 0;
             $data['balance'] = $user->userAsset ? $user->userAsset->balance : 0;
             $data['frozen'] = $user->userAsset ? $user->userAsset->frozen : 0;
+            $data['signature'] = $user->signature;
 
             return response()->apiJson(0, $data);
         } catch (Exception $e) {

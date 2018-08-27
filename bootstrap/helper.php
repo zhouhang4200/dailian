@@ -211,6 +211,24 @@ if (!function_exists('base64ToImg')) {
         }
     }
 }
+if (!function_exists('imageJsonToArr')) {
+
+    /**
+     * 将图片路径json 转 数组
+     * @param $jsonImages
+     * @return array
+     */
+    function imageJsonToArr($jsonImages)
+    {
+        $images = [];
+        foreach (json_decode($jsonImages, true) as $image) {
+            $images[] = [
+                'path' => $image,
+            ];
+        }
+        return $images;
+    }
+}
 
 if (!function_exists('export')) {
     /**

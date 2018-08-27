@@ -215,11 +215,7 @@ class ProfileController extends Controller
                 return response()->apiJson(3004); // 只有主账号才能填写实名认证
             }
 
-//            $file1 = request('identity_card_front');
-//            $file2 = request('identity_card_back');
-//            $file3 = request('identity_card_hand');
-//            $path = public_path("/resources/certification/".$user->id.'/'.date('Ymd')."/");
-
+            $datas['user_id'] = $user->parent_id;
             $datas['real_name'] = request('real_name');
             $datas['identity_card'] = request('identity_card');
             $datas['bank_card'] = request('bank_card');

@@ -102,7 +102,7 @@ class LoginController extends Controller
             $response = $client->request('GET', "https://api.weixin.qq.com/sns/jscode2session?appid=".config('pay.wechat.miniapp_id')."&secret=".config('pay.wechat.app_secret')."&js_code=".request('code')."&grant_type=authorization_code");
             $result =  $response->getBody()->getContents();
             $result = json_decode($result);
-dd($result);
+
             if (! is_array($result) || ! $result) {
                 return response()->apiJson(2012);
             }
@@ -115,9 +115,12 @@ dd($result);
 
                 $data['openid'] = $openId;
                 return response()->apiJson(0, $data);
+                dd(2);
             } elseif (is_array($result) && isset($result['errcode']) && $result['errcode'] == 40163) {
+                dd($result);
                 return response()->apiJson(2013);
             }
+            dd(3);
             return response()->apiJson(2012);
         } catch (Exception $e) {
             myLog('wx-code-error', ['失败原因：' => $e->getMessage()]);

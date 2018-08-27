@@ -65,13 +65,18 @@ class ProfileController extends Controller
     {
         try {
             $user = Auth::user();
-            $file = $request->avatar;
+            $avatar = request('avatar');
 
-            if (is_file($file)) {
+            if (is_file($avatar)) {
                 $path = public_path("/resources/users/".$user->id.'/'.date('Ymd')."/");
-                $user->avatar = static::uploadImage($file, $path);
-            } elseif(is_string($file)) {
-                $user->avatar = request('avatar');
+                $user->avatar = static::uploadImage($avatar, $path);
+            } elseif(is_string($avatar)) {
+                $pattern = "/".request()->server()['SERVER_NAME']."/";
+                preg_match($pattern, $avatar, $matches);
+
+                if ($matches) {
+                    $user->avatar = str_replace(substr($avatar, 0, strpos($avatar, '.com')+4), '', $avatar);
+                }
             }
 
             $user->name = request('name');

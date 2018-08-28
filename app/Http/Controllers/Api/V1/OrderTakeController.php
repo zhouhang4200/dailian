@@ -114,8 +114,7 @@ class OrderTakeController extends Controller
                 'parent_user_id',
             ])
             ->with(['consult', 'complain'])
-            ->get()
-            ->toArray();
+            ->get();
 
         if (!isset($detail[0])) {
             return response()->apiJson(0, $detail[0]);
@@ -124,6 +123,10 @@ class OrderTakeController extends Controller
         $detail[0]['initiator'] = $detail[0]['parent_user_id'] == request()->user()->parent_id ? 1 : 2;
         $detail[0]['consult_initiator'] = (int) optional($detail[0]['consult'])['initiator'];
         $detail[0]['complain_initiator'] = (int) (optional($detail[0]['complain'])['initiator']);
+        $detail[0]['complain_initiator'] = (int) (optional($detail[0]['complain'])['initiator']);
+        $detail[0]['complain_describe'] = optional($detail[0]->complain)->getComplainDescribe();
+        $detail[0]['consult_describe'] = optional($detail[0]->consult)->getConsultDescribe();
+        $detail[0]['complain_result'] = optional($detail[0]->complain)->getComplainResult();
 
         unset($detail[0]['id']);
         unset($detail[0]['consult']);

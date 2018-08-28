@@ -15,6 +15,8 @@ class CheckApiSign
      */
     public function handle($request, Closure $next)
     {
+        myLog('api-request', request()->all());
+
         // 在生产环境才做签名检测
         if (app()->environment() == 'production') {
 

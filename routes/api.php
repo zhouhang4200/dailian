@@ -101,6 +101,8 @@ Route::namespace('V1')->prefix('v1')->group(function () {
                 Route::post('get-complain-info', 'OrderOperationController@getComplainInfo'); // 仲裁详情
                 Route::post('get-message', 'OrderOperationController@getMessage'); // 获取留言
                 Route::post('send-message', 'OrderOperationController@sendMessage'); // 发送留言
+                Route::post('anomaly', 'OrderOperationController@anomaly'); // 提交异常
+                Route::post('cancel-anomaly', 'OrderOperationController@cancelAnomaly'); // 取消异常
             });
         });
 

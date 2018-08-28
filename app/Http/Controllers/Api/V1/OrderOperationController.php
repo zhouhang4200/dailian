@@ -384,4 +384,50 @@ class OrderOperationController extends Controller
 
         return response()->apiJson(0);
     }
+
+    /**
+     * 异常
+     * @return mixed
+     */
+    public function anomaly()
+    {
+        if (! request('trade_no')) {
+            return response()->apiJson(1001);
+        }
+
+        try {
+            OrderService::init(request()->user()->id, request('trade_no'))->anomaly();
+        } catch (UserAssetException $exception) {
+            return response()->apiJson($exception->getCode());
+        } catch (OrderException $exception) {
+            return response()->apiJson($exception->getCode());
+        } catch (Exception $exception) {
+            return response()->apiJson(1003);
+        }
+
+        return response()->apiJson(0);
+    }
+
+    /**
+     * 取消异常
+     * @return mixed
+     */
+    public function cancelAnomaly()
+    {
+        if (! request('trade_no')) {
+            return response()->apiJson(1001);
+        }
+
+        try {
+            OrderService::init(request()->user()->id, request('trade_no'))->cancelAnomaly();
+        } catch (UserAssetException $exception) {
+            return response()->apiJson($exception->getCode());
+        } catch (OrderException $exception) {
+            return response()->apiJson($exception->getCode());
+        } catch (Exception $exception) {
+            return response()->apiJson(1003);
+        }
+
+        return response()->apiJson(0);
+    }
 }

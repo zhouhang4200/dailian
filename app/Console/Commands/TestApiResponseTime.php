@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use Carbon\Carbon;
 use GuzzleHttp\Pool;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
@@ -40,41 +41,78 @@ class TestApiResponseTime extends Command
      */
     public function handle()
     {
-        $client = new Request([
-            'POST',
-            'http://api.dailian.com/v1/finance/flows/show',
-            [
-                'Accept' => 'application/json',
-                'Authorization' => 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImY5ZTg1Zjg3OTUyNDAyZTFhNjdkZmRkMTQ2ZWRkYzA1NTE4MDNjYzRiNzE1MTQ2ZjQ4MDVmMDFlZWI1NDZmYjNjMzk1OGNkMjU1OWY1NjA1In0.eyJhdWQiOiI3IiwianRpIjoiZjllODVmODc5NTI0MDJlMWE2N2RmZGQxNDZlZGRjMDU1MTgwM2NjNGI3MTUxNDZmNDgwNWYwMWVlYjU0NmZiM2MzOTU4Y2QyNTU5ZjU2MDUiLCJpYXQiOjE1MzUzNDg5MzYsIm5iZiI6MTUzNTM0ODkzNiwiZXhwIjoxNTY2ODg0OTM1LCJzdWIiOiIyMSIsInNjb3BlcyI6W119.mX_Bt_QCmf50MwZ6b4e5Jxp4f6mfP7NoExzr7EzMOf6LaO1DIGwacrdXmnS-64s6S6hPXjU-6ifgfPZZ4r8rkaIQP7iIXaqKnIyue57QbGTDJ7ExucnJVqXldCgLh4p-fUq5sq-PUySVybk79hnTOzG0qO9dps7qdNY8Ofo-K3F4sS50nLqJco9eUqMQvQRjWlGJCB3tRMaTKqbSz19WwzyFHCv-MiXv71cL8OPickpkdS9PhruZZEJcavYp6olIIt6nEA3U5UIXlCBK09tiVoCPMItv0VGn3tpOL0-U76gsw_aJN7E-tHHZo9igv4pI_nVaVaAqFllpgreDt2tkqAlmH7wT8yrDaF5zSkFs8ZXMXHfNdyOF7r3Z_KimpNJSLsrpzy0Dxlt2UScjY0EpMvAINjiY40snHB52GkFJF27Su8s3-9bzw9SjMpL020OFpfjU09NsgOtFSbBQ_tlMjZLGKoAMzi8yIe2qGeJwOqsmxUwTZIs0Kuy8x6sHOuY2wPaAih7ClL-GmlFcSp6qdG4Z18DnNtvBZbPTgctDhEiMn3POyVUl-oG_SpZUkCAZN1g_DE5nHlkgZqu62L_5zFJK6LLXLnQ8O7XJLDIgPm591aGoNQD2tuyOMulVkMDye2hAhV_mSsa4rI_QTJoKdJBZ7KM1fNhu4QYM8Ly6_EM'
-            ]
+//        // 读取文件中的值
+//        $text = file_get_contents(public_path('api.txt'));
+//        $arr = explode("\n", $text);
+//
+//        // 将原数组复制一份到第二数组,去除原数组的最后一个空值，和原数组倒数第二个值，
+//        // 去掉第二个数组的第一个值和最后一个空值，好计算差
+//        $arr2 = $arr;
+//        array_splice($arr, -2); // 去最后2值，数组key重新排序
+//        array_splice($arr2, -1); // 去最后值，数组key重新排序
+//        array_splice($arr2, 0, 1); // 去第一个值，数组key重新排序
+//
+//        // 计算出微秒差值存入数组
+//        $diff = [];
+//        foreach ($arr as $k => $v) {
+//            foreach ($arr2 as $k2 => $v2) {
+//                $diff[$k] = $arr2[$k]-$v;
+//            }
+//        }
+//
+//        // 接口请求时间大于1秒的写入计数
+//        $count = 0;
+//        foreach ($diff as $k => $v) {
+//            if ($v > 1) {
+//                $count++;
+//            }
+//        }
+//
+//        dd($count);
+
+        // 配置参数
+        $times = 1000;
+        $method = 'POST';
+        $uri = 'http://api.dailian.com/v1/finance/flows/show';
+        $options = [
+            'query' => ['id' => 340, 'timestamp' => 213, 'sign' => 'ads']
+        ];
+        $headers = [
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjU5ZjgyNWJlMDk3NmFmZTZlYTk4MWJmNTQyZDI0YTVkMDUxMzI2ZmIwZDcyNDU0MGZlZjQ2OGY5YjBmM2RiOTZmNGE4MjJkZjdmMzc3MjZjIn0.eyJhdWQiOiI3IiwianRpIjoiNTlmODI1YmUwOTc2YWZlNmVhOTgxYmY1NDJkMjRhNWQwNTEzMjZmYjBkNzI0NTQwZmVmNDY4ZjliMGYzZGI5NmY0YTgyMmRmN2YzNzcyNmMiLCJpYXQiOjE1MzU0MjMwOTUsIm5iZiI6MTUzNTQyMzA5NSwiZXhwIjoxNTY2OTU5MDk1LCJzdWIiOiIyMSIsInNjb3BlcyI6W119.TSFvQkkQO3A4KH-SzMpJ083ExS3DSEKrW_LcwCjZbENStpjfzdu0FlsYu1rj9oJIvO5ISNct7rfFkLwbbJyj7FbYmRmUGLd3sLW9rL5135JGulyn0He3DOiHn5ZRKZAwnEeGKW_hWCpRJpx6sMzYyGulx7rQyVxls5otGHgQsCcAR3LWEU2AeDUmYBiAnSbU5KD8IQalMscyphbPjce0s2lXXt4zqo2zhvY1iPKn5Kk3uzRwO-tCAjgsyq5BrAqexCwBnrvBtzUjqZBFSttBFlAQjSL8T2LPNJTe0JgX4xHcMzYOwy5ievRhRm3y96IOOm86ikLyuUeKod44zAtQUdjLR4ot1BKNndKKvuFd7-EahBb_hEqfEs3SAcT4b_MeZHdVAXTR1R5IoQWAFOsudOkm-yeLIc_lA2pa9SIg2DXcjqXi8KxkqusSaQkFhjUGRtJxxpsx4qChNorU1d_jEVAw65c-VcEVNemB5GSKu_xTu3QXDqHcHT55xfnYoWC8YsecttUbvFb8kMmRQzrsaEnorR7UboUVnS6X1zoNoNr_k0Ya_Yl6iGcuZxNNh_KQ8xr6UzH-ypH19Qk0nDoJNu3sklcBBHe57ici0F28UgNZwT24gIqJE1KAJvohbIcbp9rQ0o5_baJC1grUplegUKYOPtYqoXWPASk1ta4hV1A'
+        ];
+
+        // 初始化
+        $client = new Client([
+            'headers' => $headers
         ]);
-        $requests = function ($total) use ($client) {
-            $uri = 'http://api.dailian.com/v1/finance/flows/show';
+
+        // 异步请求
+        $requests = function ($total) use ($client, $method, $uri, $options) {
             for ($i = 0; $i < $total; $i++) {
-                yield function () use ($client, $uri, $i) {
-                    return $client->requestAsync('POST', $uri, [
-                        'form-params' => ['id' => 340, 'timestamp' => 213, 'sign' => 'ads']
-                    ]);
+                yield function () use ($client, $method, $uri, $i, $options) {
+                    return $client->requestAsync($method, $uri, $options);
                 };
             }
         };
 
-        $pool = new Pool($client, $requests(5), [
+        $startTime = Carbon::now()->timestamp.'.'.Carbon::now()->micro;
+        // 结果
+        $pool = new Pool($client, $requests($times), [
             'concurrency' => 5,
-            'fulfilled' => function ($response, $index) {
-                echo $response->getBody()->getContents();
-                // this is delivered each successful response
+            'fulfilled' => function ($response, $index) use ($startTime) {
+                // 得出接口请求的微秒时间戳，存入文件
+                $time = Carbon::now()->timestamp.'.'.Carbon::now()->micro;
+                $fileName = public_path('api.txt');
+                $file = fopen($fileName, 'a');
+                fwrite($file, $time."\n");
             },
             'rejected' => function ($reason, $index) {
-
-                // this is delivered each failed request
             },
         ]);
 
-// Initiate the transfers and create a promise
         $promise = $pool->promise();
 
-// Force the pool of requests to complete.
         $promise->wait();
     }
 }

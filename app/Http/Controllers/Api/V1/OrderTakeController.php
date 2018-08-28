@@ -37,10 +37,12 @@ class OrderTakeController extends Controller
                 'day',
                 'amount',
                 'take_order_password',
+                'created_at',
             ])
-            ->with('game')
+            ->with(['game', 'consult', 'complain'])
             ->paginate(request('page_size', 20));
 
+        $currentUserParentId = request()->user()->parent_user_id;
         $orderList = [];
         foreach ($orders->items() as $key => $item) {
             $itemArr = $item->toArray();
@@ -48,6 +50,9 @@ class OrderTakeController extends Controller
             $itemArr['top'] = empty($itemArr['take_order_password']) ? 2 : 1;
             $itemArr['private'] = empty($itemArr['take_order_password']) ? 2 : 1;
             $itemArr['icon'] = $item['game']['icon'];
+            $itemArr['initiator'] = $item['parent_user_id'] == $currentUserParentId ? 1 : 2;
+            $itemArr['consult_initiator'] = (int) optional($item->consult)->initiator;
+            $itemArr['complain_initiator'] = (int) optional($item->complain)->initiator;
 
             unset($itemArr['id']);
             unset($itemArr['game_id']);

@@ -48,6 +48,17 @@ class User extends Authenticatable
         }
         return $this->attributes['parent_id'];
     }
+    /**
+     * 获取父ID
+     * @return mixed
+     */
+    public function getAvatarAttribute()
+    {
+        if ($this->attributes['avatar']) {
+            return asset($this->attributes['avatar']);
+        }
+        return $this->attributes['avatar'];
+    }
 
     /**
      * 是否是主账号
@@ -204,4 +215,6 @@ class User extends Authenticatable
                     })->sort()->values();
         });
     }
+
+
 }

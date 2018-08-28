@@ -51,6 +51,8 @@ class OrderTakeController extends Controller
             $itemArr['private'] = empty($itemArr['take_order_password']) ? 2 : 1;
             $itemArr['icon'] = $item['game']['icon'];
             $itemArr['initiator'] = $item['parent_user_id'] == $currentUserParentId ? 1 : 2;
+            $itemArr['consult_initiator'] = (int) optional($item->consult)->initiator;
+            $itemArr['complain_initiator'] = (int) optional($item->complain)->initiator;
 
             unset($itemArr['id']);
             unset($itemArr['game_id']);

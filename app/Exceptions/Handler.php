@@ -42,12 +42,18 @@ class Handler extends ExceptionHandler
     /**
      * Render an exception into an HTTP response.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Exception  $exception
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Exception $exception
      * @return \Illuminate\Http\Response
+     * @throws Exception
      */
     public function render($request, Exception $exception)
     {
-        return parent::render($request, $exception);
+//        if(request()->getHost() == config('app.api_domain')) {
+//            myLog('exception', [$exception->getFile(), $exception->getFile(), $exception->getMessage()]);
+//            return response()->apiJson(1003);
+//        } else {
+            return parent::render($request, $exception);
+//        }
     }
 }

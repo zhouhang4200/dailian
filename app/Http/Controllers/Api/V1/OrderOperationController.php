@@ -44,6 +44,7 @@ class OrderOperationController extends Controller
     /**
      * 申请验收
      * @return mixed
+     * @throws Exception
      */
     public function applyComplete()
     {

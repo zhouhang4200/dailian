@@ -42,7 +42,7 @@ class OrderTakeController extends Controller
             ->with(['game', 'consult', 'complain'])
             ->paginate(request('page_size', 20));
 
-        $currentUserParentId = request()->user()->parent_user_id;
+        $currentUserParentId = request()->user()->parent_id;
         $orderList = [];
         foreach ($orders->items() as $key => $item) {
             $itemArr = $item->toArray();

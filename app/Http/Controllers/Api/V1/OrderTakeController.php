@@ -37,6 +37,7 @@ class OrderTakeController extends Controller
                 'day',
                 'amount',
                 'take_order_password',
+                'created_at',
             ])
             ->with('game')
             ->paginate(request('page_size', 20));

@@ -19,6 +19,7 @@ class LoginController extends Controller
      *  小程序登录
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
+     * @throws Exception
      */
     public function login(Request $request)
     {
@@ -86,6 +87,7 @@ class LoginController extends Controller
      *  获取小程序JS_code
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function code(Request $request)
     {

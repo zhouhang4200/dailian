@@ -59,6 +59,8 @@ class OrderOperationController extends Controller
         } catch (OrderException $exception) {
             return response()->apiJson($exception->getCode());
         } catch (Exception $exception) {
+            myLog('apply-complain', [$exception->getFile(), $exception->getLine(), $exception->getMessage()]);
+
             return response()->apiJson(1003);
         }
         return response()->apiJson(0);
@@ -229,7 +231,6 @@ class OrderOperationController extends Controller
         } catch (OrderException $exception) {
             return response()->apiJson($exception->getCode());
         } catch (Exception $exception) {
-            myLog('apply-complain', [$exception->getFile(), $exception->getLine(), $exception->getMessage()]);
             return response()->apiJson(1003);
         }
 

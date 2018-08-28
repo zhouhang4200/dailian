@@ -294,10 +294,14 @@ class OrderOperationController extends Controller
             if (count($item->image)) {
                 $path = $item->image[0]->path;
             }
+            $userInfo = User::find($item->from_user_id);
+
             $messages[] = [
                 'initiator' => $item->initiator,
                 'content' => $item->content,
                 'path' => $path,
+                'name' => $userInfo->name,
+                'avatar' => $userInfo->avatar,
                 'created_at' => $item->created_at,
             ];
         }

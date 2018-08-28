@@ -39,6 +39,7 @@ class OrderTakeController extends Controller
                 'take_order_password',
                 'created_at',
             ])
+            ->orderBy('id', 'desc')
             ->with(['game', 'consult', 'complain'])
             ->paginate(request('page_size', 20));
 

@@ -11,7 +11,6 @@ use App\Models\User;
 use App\Models\BlockadeAccount;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Laravel\Passport\Passport;
 
 class LoginController extends Controller
 {

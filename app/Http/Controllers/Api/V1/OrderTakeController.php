@@ -23,6 +23,7 @@ class OrderTakeController extends Controller
             request()->except('take_parent_user_id')))
             ->select([
                 'game_id',
+                'parent_user_id',
                 'trade_no',
                 'status',
                 'game_name',
@@ -59,6 +60,7 @@ class OrderTakeController extends Controller
             unset($itemArr['game_id']);
             unset($itemArr['game']);
             unset($itemArr['take_order_password']);
+            unset($itemArr['parent_user_id']);
 
             $orderList[] = $itemArr;
         }
@@ -109,7 +111,9 @@ class OrderTakeController extends Controller
                 'created_at',
                 'take_at',
                 'complete_at',
+                'parent_user_id',
             ])
+            ->with(['consult', 'complain'])
             ->get()
             ->toArray();
 
@@ -117,7 +121,13 @@ class OrderTakeController extends Controller
             return response()->apiJson(0, $detail[0]);
         }
 
+        $detail[0]['initiator'] = $detail[0]['parent_user_id'] == request()->user()->parent_id ? 1 : 2;
+        $detail[0]['consult_initiator'] = (int) optional($detail[0]['consult'])['initiator'];
+        $detail[0]['complain_initiator'] = (int) (optional($detail[0]['complain'])['initiator']);
+
         unset($detail[0]['id']);
+        unset($detail[0]['consult']);
+        unset($detail[0]['complain']);
 
         return response()->apiJson(0, $detail[0]);
     }

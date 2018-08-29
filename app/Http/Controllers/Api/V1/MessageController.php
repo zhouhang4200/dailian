@@ -39,7 +39,7 @@ class MessageController extends Controller
                 $data[$k]['content'] = $message->content;
                 $data[$k]['type'] = $message->type;
                 $data[$k]['status'] = $message->status;
-                $data[$k]['created_at'] = $message->created_at->toDateTimeString();
+                $data[$k]['created_at'] = $message->created_at;
             }
             return response()->apiJson(0, $data);
         } catch (Exception $e) {
@@ -73,7 +73,7 @@ class MessageController extends Controller
             $data['type'] = $message->type;
             $data['status'] = $message->status;
             $data['from_username'] = $message->from_username;
-            $data['created_at'] = $message->created_at->toDateTimeString();
+            $data['created_at'] = $message->created_at;
 
             return response()->apiJson(0, $data);
         } catch (Exception $e) {

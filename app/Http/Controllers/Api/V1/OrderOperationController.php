@@ -36,6 +36,7 @@ class OrderOperationController extends Controller
         } catch (UserAssetException $exception) {
             return response()->apiJson($exception->getCode());
         } catch (Exception $exception) {
+            myLog('s', [$exception->getFile(), $exception->getLine(), $exception->getMessage()]);
             return response()->apiJson(1003);
         }
         return response()->apiJson(0);

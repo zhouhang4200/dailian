@@ -35,6 +35,8 @@ class OrderWaitController extends Controller
                 'take_order_password',
             ])
             ->with('game')
+            ->where('status', 1)
+            ->orderBy('id', 'desc')
             ->paginate(request('page_size' , 20));
 
         $orderList = [];
@@ -93,6 +95,7 @@ class OrderWaitController extends Controller
             'requirement',
         ])
             ->with('game')
+            ->where('status', 1)
             ->get()
             ->toArray();
 

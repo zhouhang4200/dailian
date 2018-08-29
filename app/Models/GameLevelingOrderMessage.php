@@ -39,7 +39,6 @@ class GameLevelingOrderMessage extends Model
      */
     public function getCreatedAtAttribute($value)
     {
-        return Carbon::createFromTimestamp(strtotime($value))
-            ->toDateTimeString();
+        return Carbon::createFromTimestamp(strtotime($value))->toDateTimeString();
     }
 }

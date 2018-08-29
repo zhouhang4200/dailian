@@ -32,6 +32,18 @@ Route::namespace('V1')->prefix('v1')->group(function () {
         Route::post('servers', 'ServerController@index'); // 服
     });
 
+    // 帮助
+    Route::prefix('help')->group(function () {
+        Route::post('/', 'HelpController@index'); // 帮助列表
+        Route::post('show', 'HelpController@show'); // 帮助详情
+    });
+
+    // 公告
+    Route::prefix('notice')->group(function () {
+        Route::post('/', 'NoticeController@index'); // 公告列表
+        Route::post('show', 'NoticeController@show'); // 公告详情
+    });
+
     // 登录后操作
     Route::middleware(['api.token', 'api.sign'])->group(function () {
         Route::post('code', 'LoginController@code'); // 获取微信JS_code
@@ -58,20 +70,10 @@ Route::namespace('V1')->prefix('v1')->group(function () {
             Route::post('recharge', 'FinanceController@recharge'); // 充值
             Route::any('wechat-notify', 'FinanceController@wechatNotify')->name('api.finance.wechat-notify');
         });
-        // 帮助
-        Route::prefix('help')->group(function () {
-            Route::post('/', 'HelpController@index'); // 帮助列表
-            Route::post('show', 'HelpController@show'); // 帮助详情
-        });
         // 留言
         Route::prefix('message')->group(function () {
             Route::post('/', 'MessageController@index'); // 帮助列表
             Route::post('show', 'MessageController@show'); // 帮助详情
-        });
-        // 公告
-        Route::prefix('notice')->group(function () {
-            Route::post('/', 'NoticeController@index'); // 公告列表
-            Route::post('show', 'NoticeController@show'); // 公告详情
         });
         // 订单
         Route::prefix('order')->group(function () {

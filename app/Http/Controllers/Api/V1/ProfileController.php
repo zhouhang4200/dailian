@@ -137,7 +137,7 @@ class ProfileController extends Controller
             if (! Hash::check(request('old_pay_password'), $user->pay_password)) {
                 return response()->apiJson(3003); // 原密码错误
             }
-            $user->pay_password = bcrypt(request('pay_password'));
+            $user->pay_password = bcrypt(request('new_pay_password'));
             $user->save();
 
             return response()->apiJson(0);

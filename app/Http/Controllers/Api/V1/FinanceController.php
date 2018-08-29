@@ -233,4 +233,31 @@ class FinanceController extends Controller
 
         return $wechat->success();
     }
+
+    /**
+     *  提现信息
+     * @param Request $request
+     * @return mixed
+     * @throws Exception
+     */
+    public function withdrawInfo(Request $request)
+    {
+        try {
+            $user = Auth::user();
+
+            $data = [
+                'balance' => 100,
+                'rate' => 0.01,
+                'tips' => '充值说明',
+                'min_amount' => 10,
+                'max_amount' => 1000,
+            ];
+
+        } catch (Exception $e) {
+            myLog('wx-profile-withdrawInfo-error', ['用户:' => $user->id ?? '', '失败:' => $e->getMessage()]);
+            return response()->apiJson(1003);
+        }
+
+        return response()->apiJson(0, $data);
+    }
 }

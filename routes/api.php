@@ -67,6 +67,7 @@ Route::namespace('V1')->prefix('v1')->group(function () {
             Route::post('flows', 'FinanceController@flows'); // 资金流水
             Route::post('flows/show', 'FinanceController@flowsShow'); // 资金流水详情
             Route::post('withdraw', 'FinanceController@withdraw'); // 提现
+            Route::post('withdraw-info', 'FinanceController@withdrawInfo'); // 提现信息
             Route::post('recharge', 'FinanceController@recharge'); // 充值
             Route::any('wechat-notify', 'FinanceController@wechatNotify')->name('api.finance.wechat-notify');
         });

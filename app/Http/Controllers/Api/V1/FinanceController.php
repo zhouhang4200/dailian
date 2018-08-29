@@ -181,8 +181,8 @@ class FinanceController extends Controller
                 'notify_url' => route('api.finance.wechat-notify'),
                 'openid' => $user->wechat_open_id,
             ];
-            Pay::wechat(config('pay.wechat'))->miniapp($order);
-
+            $result = Pay::wechat(config('pay.wechat'))->miniapp($order);
+            dd($result);
         } catch (Exception $e) {
             myLog('wx-profile-recharge-error', ['用户:' => $user->id ?? '', '失败:' => $e->getMessage()]);
             return response()->apiJson(1003);

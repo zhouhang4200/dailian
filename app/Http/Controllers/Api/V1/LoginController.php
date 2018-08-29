@@ -57,7 +57,7 @@ class LoginController extends Controller
                         $leftTime= sec2Time($time);
                         $message = '您已被封号，封号原因：'.$blockade->reason.'，封号时间：'.$blockade->start_time.'至'.$blockade->end_time.' ，剩余时长：'.$leftTime.'，如有异议请联系客服。';
 
-                        return response()->json(['code' => 2009, 'message' => $message, 'data' => []]); // 普通封号
+                        return response()->apiJson(2009); // 普通封号
                     }
                 }
 
@@ -70,7 +70,8 @@ class LoginController extends Controller
                     'qq' => $user->qq,
                     'avatar' => asset($user->avatar),
                     'status' => $user->status,
-                    'token' => $user->createToken('WanZiXiaoChengXu')->accessToken
+                    'token' => $user->createToken('WanZiXiaoChengXu')->accessToken,
+                    'has_openid' => $user->wechat_open_id ? 1 : 0,
                 ];
                 return response()->apiJson(0, $data);
             } else {

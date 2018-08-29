@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use Redis;
 use Exception;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -53,6 +54,10 @@ class RegisterController extends Controller
                 'status' => $user->status,
                 'token' => $user->createToken('WanZiXiaoChengXu')->accessToken
             ];
+
+            $role = Role::where('name', 'default')->where('user_id', 0)->first();
+            $user->roles()->sync($role->id);
+
             return response()->apiJson(0, $data);
         } catch (Exception $e) {
             myLog('wx-register-error', ['失败原因：' => $e->getMessage()]);

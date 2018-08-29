@@ -75,6 +75,7 @@ Route::namespace('V1')->prefix('v1')->group(function () {
         Route::prefix('message')->group(function () {
             Route::post('/', 'MessageController@index'); // 帮助列表
             Route::post('show', 'MessageController@show'); // 帮助详情
+            Route::post('count', 'MessageController@count'); // 未读留言数
         });
         // 订单
         Route::prefix('order')->group(function () {

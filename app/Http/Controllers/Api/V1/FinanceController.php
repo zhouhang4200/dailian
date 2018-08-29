@@ -249,7 +249,7 @@ class FinanceController extends Controller
                 'balance' => 100,
                 'rate' => 0.01,
                 'tips' => '充值说明',
-                'min_amount' => 10,
+                'min_amount' => 0.01,
                 'max_amount' => 1000,
             ];
 

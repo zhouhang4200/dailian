@@ -1313,7 +1313,7 @@ class OrderService
         }
 
         if (is_null(self::$order->complain->messages)) {
-            throw new OrderComplainException('暂时没有仲裁信息', 7010);
+            throw new OrderComplainException('暂时没有仲裁信息', 7008);
         }
         return self::$order;
     }

@@ -126,7 +126,7 @@ class MessageController extends Controller
 
             return response()->apiJson(0);
         } catch (Exception $e) {
-            myLog('wx-message-count-error', ['用户：' => $user->id ?? '', '失败:' => $e->getMessage()]);
+            myLog('wx-message-readed-error', ['用户：' => $user->id ?? '', '失败:' => $e->getMessage()]);
             return response()->apiJson(1003);
         }
     }

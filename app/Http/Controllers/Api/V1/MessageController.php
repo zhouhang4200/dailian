@@ -81,4 +81,53 @@ class MessageController extends Controller
             return response()->apiJson(1003);
         }
     }
+
+    /**
+     *  未读留言条数
+     * @param Request $request
+     * @return mixed
+     * @throws Exception
+     */
+    public function count(Request $request)
+    {
+        try {
+            $user = Auth::user();
+
+            $last7Days = Carbon::now()->subDays(7)->toDateTimeString();
+
+            $count = GameLevelingOrderMessage::where('to_user_id', $user->parent_id)
+                ->where('created_at', '>=', $last7Days)
+                ->where('created_at', '<=', Carbon::now())
+                ->where('status', 1)
+                ->count();
+
+            $data['count'] = $count;
+
+            return response()->apiJson(0, $data);
+        } catch (Exception $e) {
+            myLog('wx-message-count-error', ['用户：' => $user->id ?? '', '失败:' => $e->getMessage()]);
+            return response()->apiJson(1003);
+        }
+    }
+
+    /**
+     *  全部标为已读
+     * @param Request $request
+     * @return mixed
+     * @throws Exception
+     */
+    public function readed(Request $request)
+    {
+        try {
+            $user = Auth::user();
+
+            $count = GameLevelingOrderMessage::where('to_user_id', $user->parent_id)
+                ->update(['status' => 2]);
+
+            return response()->apiJson(0);
+        } catch (Exception $e) {
+            myLog('wx-message-readed-error', ['用户：' => $user->id ?? '', '失败:' => $e->getMessage()]);
+            return response()->apiJson(1003);
+        }
+    }
 }

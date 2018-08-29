@@ -95,6 +95,7 @@ class OrderWaitController extends Controller
             'amount',
             'explain',
             'requirement',
+            'take_order_password',
         ])
             ->with('game')
             ->where('status', 1)

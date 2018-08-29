@@ -53,7 +53,7 @@ class PasswordController extends Controller
             }
 
             $user = Auth::user();
-            if (! Hash::check(request('new_password'), $user->password)) {
+            if (! Hash::check(request('old_password'), $user->password)) {
                 return response()->apiJson(2005); // 原密码错误
             }
             $user->password = bcrypt(request('new_password'));

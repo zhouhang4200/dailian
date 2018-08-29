@@ -179,6 +179,7 @@ class FinanceController extends Controller
                 'total_fee' => bcmul(request('amount'), 100, 0), // 单位：分
                 'body' => '丸子代练-账户余额充值',
                 'notify_url' => route('api.finance.wechat-notify'),
+                'openid' => $user->wechat_open_id,
             ];
             Pay::wechat(config('pay.wechat'))->miniapp($order);
 

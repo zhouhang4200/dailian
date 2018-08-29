@@ -183,6 +183,9 @@ class FinanceController extends Controller
             ];
             $result = Pay::wechat(config('pay.wechat'))->miniapp($order);
 
+            if (! $result) {
+                return response()->apiJson(1003);
+            }
         } catch (Exception $e) {
             myLog('wx-profile-recharge-error', ['用户:' => $user->id ?? '', '失败:' => $e->getMessage()]);
             return response()->apiJson(1003);

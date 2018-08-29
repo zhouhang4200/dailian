@@ -45,7 +45,7 @@ class OrderWaitController extends Controller
             $itemArr = $item->toArray();
 
             $itemArr['top'] = strlen($itemArr['take_order_password']) ? 1 : 2;
-            $itemArr['private'] = $itemArr['take_order_password'];
+            $itemArr['private'] = strlen($itemArr['take_order_password']) ? 1 : 2;
             $itemArr['icon'] = $item['game']['icon'];
 
             unset($itemArr['id']);

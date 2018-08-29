@@ -44,8 +44,8 @@ class OrderWaitController extends Controller
         foreach ($orders->items() as $key => $item) {
             $itemArr = $item->toArray();
 
-            $itemArr['top'] = empty($itemArr['take_order_password']) ? 2 : 1;
-            $itemArr['private'] = empty($itemArr['take_order_password']) ? 2 : 1;
+            $itemArr['top'] = strlen($itemArr['take_order_password']) ? 1 : 2;
+            $itemArr['private'] = strlen($itemArr['take_order_password']) ? 1 : 2;
             $itemArr['icon'] = $item['game']['icon'];
 
             unset($itemArr['id']);

@@ -1309,12 +1309,11 @@ class OrderService
     {
         // 检测当前操作用户是否是发单人或接单人
         if (! in_array(self::$user->parent_id, [self::$order->parent_user_id, self::$order->take_parent_user_id])) {
-            throw new OrderUnauthorizedException('您无权操作');
+            throw new OrderUnauthorizedException('您无权操作', 7006);
         }
 
         if (is_null(self::$order->complain->messages)) {
-
-            throw new OrderComplainException('暂时没有仲裁信息');
+            throw new OrderComplainException('暂时没有仲裁信息', 7010);
         }
         return self::$order;
     }

@@ -39,7 +39,7 @@ class TmOrderController extends Controller
     // 允许上传图片类型
     private static $extensions = ['png', 'jpg', 'jpeg', 'gif'];
     // 本地网站地址
-    private static $url = 'http://www.dailian.com';
+    private static $url = 'api.dailian.com';
 
     /**
      * 合成发单器的sign
@@ -662,8 +662,10 @@ class TmOrderController extends Controller
                 $data['businessman_phone'],
                 $data['businessman_qq'],
                 $data['order_password'],
-                $data['order_no']
+                $data['order_no'],
+                1
             );
+
             // 回调
             if ($order) {
                 $options = [
@@ -685,7 +687,7 @@ class TmOrderController extends Controller
                 $result = json_decode($result, true);
 
                 if (! isset($result['code']) || $result['code'] != 1) {
-                    throw new OrderServiceException('调用发单器回调接口失败');
+                    throw new Exception('调用发单器回调接口失败');
                 }
             } else {
                 throw new Exception('丸子下单失败');
@@ -717,7 +719,7 @@ class TmOrderController extends Controller
             return response()->apiFail('接单平台接口异常');
         }
         DB::commit();
-//        myLog('place-order-success', ['发单器结果' => $result, '从发单器获取的参数' => $data, '发送给发单器的参数' => $options]);
+        myLog('place-order-success', ['发单器结果' => $result, '从发单器获取的参数' => $data, '发送给发单器的参数' => $options]);
         return response()->apiSuccess('下单成功', ['order_no' => $order->trade_no]);
     }
 

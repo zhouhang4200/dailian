@@ -142,6 +142,7 @@ class OrderService
 
             // 生成交易订单号
             $tradeNO = generateOrderNo();
+
             // 创建订单
             $order = GameLevelingOrder::create([
                 'trade_no' => $tradeNO,
@@ -177,6 +178,7 @@ class OrderService
                 'user_qq' => $userQQ,
                 'source' => $source,
             ]);
+
             // 写入订单日志
             GameLevelingOrderLog::store('发布', $tradeNO, self::$user->id, self::$user->name, self::$user->parent_id, self::$user->name . ': 发布了订单');
         } catch (Exception $exception) {

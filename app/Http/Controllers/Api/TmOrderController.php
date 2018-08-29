@@ -719,7 +719,7 @@ class TmOrderController extends Controller
             return response()->apiFail('接单平台接口异常');
         }
         DB::commit();
-        myLog('place-order-success', ['发单器结果' => $result, '从发单器获取的参数' => $data, '发送给发单器的参数' => $options]);
+//        myLog('place-order-success', ['发单器结果' => $result, '从发单器获取的参数' => $data, '发送给发单器的参数' => $options]);
         return response()->apiSuccess('下单成功', ['order_no' => $order->trade_no]);
     }
 

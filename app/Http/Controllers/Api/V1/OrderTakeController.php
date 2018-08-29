@@ -23,6 +23,7 @@ class OrderTakeController extends Controller
             request()->except('take_parent_user_id')))
             ->select([
                 'game_id',
+                'parent_user_id',
                 'trade_no',
                 'status',
                 'game_name',
@@ -39,10 +40,11 @@ class OrderTakeController extends Controller
                 'take_order_password',
                 'created_at',
             ])
+            ->orderBy('id', 'desc')
             ->with(['game', 'consult', 'complain'])
             ->paginate(request('page_size', 20));
 
-        $currentUserParentId = request()->user()->parent_user_id;
+        $currentUserParentId = request()->user()->parent_id;
         $orderList = [];
         foreach ($orders->items() as $key => $item) {
             $itemArr = $item->toArray();
@@ -58,6 +60,7 @@ class OrderTakeController extends Controller
             unset($itemArr['game_id']);
             unset($itemArr['game']);
             unset($itemArr['take_order_password']);
+            unset($itemArr['parent_user_id']);
 
             $orderList[] = $itemArr;
         }
@@ -108,15 +111,26 @@ class OrderTakeController extends Controller
                 'created_at',
                 'take_at',
                 'complete_at',
+                'parent_user_id',
             ])
-            ->get()
-            ->toArray();
+            ->with(['consult', 'complain'])
+            ->get();
 
         if (!isset($detail[0])) {
             return response()->apiJson(0, $detail[0]);
         }
 
+        $detail[0]['initiator'] = $detail[0]['parent_user_id'] == request()->user()->parent_id ? 1 : 2;
+        $detail[0]['consult_initiator'] = (int) optional($detail[0]['consult'])['initiator'];
+        $detail[0]['complain_initiator'] = (int) (optional($detail[0]['complain'])['initiator']);
+        $detail[0]['complain_initiator'] = (int) (optional($detail[0]['complain'])['initiator']);
+        $detail[0]['complain_describe'] = optional($detail[0]->complain)->getComplainDescribe();
+        $detail[0]['consult_describe'] = optional($detail[0]->consult)->getConsultDescribe();
+        $detail[0]['complain_result'] = optional($detail[0]->complain)->getComplainResult();
+
         unset($detail[0]['id']);
+        unset($detail[0]['consult']);
+        unset($detail[0]['complain']);
 
         return response()->apiJson(0, $detail[0]);
     }

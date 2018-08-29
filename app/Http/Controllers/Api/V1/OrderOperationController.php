@@ -44,6 +44,7 @@ class OrderOperationController extends Controller
     /**
      * 申请验收
      * @return mixed
+     * @throws Exception
      */
     public function applyComplete()
     {
@@ -293,10 +294,14 @@ class OrderOperationController extends Controller
             if (count($item->image)) {
                 $path = $item->image[0]->path;
             }
+            $userInfo = User::find($item->from_user_id);
+
             $messages[] = [
                 'initiator' => $item->initiator,
                 'content' => $item->content,
                 'path' => $path,
+                'name' => $userInfo->name,
+                'avatar' => $userInfo->avatar,
                 'created_at' => $item->created_at,
             ];
         }
@@ -373,6 +378,52 @@ class OrderOperationController extends Controller
 
         try {
             OrderService::init(request()->user()->id, request('trade_no'))->sendMessage(request('content'));
+        } catch (UserAssetException $exception) {
+            return response()->apiJson($exception->getCode());
+        } catch (OrderException $exception) {
+            return response()->apiJson($exception->getCode());
+        } catch (Exception $exception) {
+            return response()->apiJson(1003);
+        }
+
+        return response()->apiJson(0);
+    }
+
+    /**
+     * 异常
+     * @return mixed
+     */
+    public function anomaly()
+    {
+        if (! request('trade_no')) {
+            return response()->apiJson(1001);
+        }
+
+        try {
+            OrderService::init(request()->user()->id, request('trade_no'))->anomaly();
+        } catch (UserAssetException $exception) {
+            return response()->apiJson($exception->getCode());
+        } catch (OrderException $exception) {
+            return response()->apiJson($exception->getCode());
+        } catch (Exception $exception) {
+            return response()->apiJson(1003);
+        }
+
+        return response()->apiJson(0);
+    }
+
+    /**
+     * 取消异常
+     * @return mixed
+     */
+    public function cancelAnomaly()
+    {
+        if (! request('trade_no')) {
+            return response()->apiJson(1001);
+        }
+
+        try {
+            OrderService::init(request()->user()->id, request('trade_no'))->cancelAnomaly();
         } catch (UserAssetException $exception) {
             return response()->apiJson($exception->getCode());
         } catch (OrderException $exception) {

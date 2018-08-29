@@ -106,8 +106,8 @@ class OrderWaitController extends Controller
         }
 
         unset($detail[0]['id']);
-        $detail[0]['top'] = empty($detail[0]['take_order_password']) ? 2 : 1;
-        $detail[0]['private'] = empty($detail[0]['take_order_password']) ? 2 : 1;
+        $detail[0]['top'] = strlen($detail[0]['take_order_password']) ? 1 : 2;
+        $detail[0]['private'] = strlen($detail[0]['take_order_password']) ? 1 : 2;
         $detail[0]['icon'] = $detail[0]['game']['icon'];
 
         unset($detail[0]['id']);

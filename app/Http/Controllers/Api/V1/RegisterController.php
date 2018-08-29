@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use Redis;
 use Exception;
 use App\Models\Role;
+use App\Models\UserAsset;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -57,6 +58,9 @@ class RegisterController extends Controller
 
             $role = Role::where('name', 'default')->where('user_id', 0)->first();
             $user->roles()->sync($role->id);
+
+            // 初始化用户资产
+            UserAsset::create(['user_id' => $user->id]);
 
             return response()->apiJson(0, $data);
         } catch (Exception $e) {

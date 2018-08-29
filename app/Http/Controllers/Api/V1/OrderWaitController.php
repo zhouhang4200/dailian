@@ -101,7 +101,7 @@ class OrderWaitController extends Controller
             ->toArray();
 
         if (!isset($detail[0])) {
-            return response()->apiJson(0, $detail[0]);
+            return response()->apiJson(1003);
         }
 
         unset($detail[0]['id']);

@@ -2,15 +2,16 @@
 
 namespace App\Console\Commands;
 
+
 use Redis;
 use Aliyun\Core\DefaultAcsClient;
 use Aliyun\Core\Regions\Endpoint;
 use Aliyun\Core\Profile\DefaultProfile;
 use Aliyun\Core\Regions\EndpointConfig;
 use Aliyun\Core\Regions\EndpointProvider;
+use Aliyun\SLB\Request\DeleteLoadBalancerRequest;
 use Aliyun\SLB\Request\UploadServerCertificateRequest;
 use Aliyun\SLB\Request\SetLoadBalancerHTTPSListenerAttributeRequest;
-
 use Illuminate\Console\Command;
 
 /**
@@ -33,16 +34,6 @@ class AutoUpdateSSLCertificateToLoadBalance extends Command
      * @var string
      */
     protected $description = '自动更新ssl证书到负载均衡';
-
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
 
     /**
      * Execute the console command.
@@ -83,7 +74,10 @@ class AutoUpdateSSLCertificateToLoadBalance extends Command
 
         // 删除过期证书
         if ($sslCertificateId = Redis::get('sslCertificateId')) {
-
+            $deleteLoadBalance = new DeleteLoadBalancerRequest();
+            $deleteLoadBalance->setRegionId('cn-hangzhou');
+            $deleteLoadBalance->setLoadBalancerId($sslCertificateId);
+            $client->getAcsResponse($deleteLoadBalance);
         }
         // 将本次证书存入redis
         Redis::set('sslCertificateId', $uploadCertificateResult->ServerCertificateId);

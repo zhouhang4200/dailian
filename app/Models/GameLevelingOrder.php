@@ -342,7 +342,8 @@ class GameLevelingOrder extends Model
                         ]
                     ]
                 ];
-            })->rule(function($builder) {
+            });
+            $query->rule(function($builder) {
                 return [
                     'must' => [
                         'match' => [

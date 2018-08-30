@@ -77,6 +77,8 @@ class CreateTestOrder extends Command
                 1,
                 123456
             );
+
+            $this->info($i);
         }
     }
 

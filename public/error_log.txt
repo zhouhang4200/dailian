@@ -1,0 +1,6 @@
+[30-Aug-2018 07:00:59 UTC] PHP Warning:  require(/home/vagrant/Code/wz/public/../vendor/autoload.php): failed to open stream: No such file or directory in /home/vagrant/Code/wz/public/index.php on line 27
+[30-Aug-2018 07:00:59 UTC] PHP Stack trace:
+[30-Aug-2018 07:00:59 UTC] PHP   1. {main}() /home/vagrant/Code/wz/public/index.php:0
+[30-Aug-2018 07:00:59 UTC] PHP Fatal error:  require(): Failed opening required '/home/vagrant/Code/wz/public/../vendor/autoload.php' (include_path='.:/usr/share/php') in /home/vagrant/Code/wz/public/index.php on line 27
+[30-Aug-2018 07:00:59 UTC] PHP Stack trace:
+[30-Aug-2018 07:00:59 UTC] PHP   1. {main}() /home/vagrant/Code/wz/public/index.php:0

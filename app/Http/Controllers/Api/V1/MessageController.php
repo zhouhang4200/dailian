@@ -61,6 +61,8 @@ class MessageController extends Controller
                 return response()->apiJson(1001); // 参数缺失
             }
             $message = GameLevelingOrderMessage::find(request('id'));
+            $message->status = 2;
+            $message->save();
 
             if (! $message) {
                 return response()->apiJson(5003);

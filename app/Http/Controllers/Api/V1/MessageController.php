@@ -97,7 +97,7 @@ class MessageController extends Controller
 
             $count = GameLevelingOrderMessage::where('to_user_id', $user->parent_id)
                 ->where('created_at', '>=', $last7Days)
-                ->where('created_at', '<=', Carbon::now())
+                ->where('created_at', '<=', Carbon::now()->toDateTimeString())
                 ->where('status', 1)
                 ->count();
 

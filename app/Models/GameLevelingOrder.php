@@ -333,26 +333,25 @@ class GameLevelingOrder extends Model
 
         $query = self::search($keyword);
 
-        if ($keyword != '*') {
-            $query->rule(function($builder) {
-                return [
-                    'must' => [
-                        'match' => [
-                            'trade_no' => $builder->query,
-                        ]
-                    ]
-                ];
-            });
-            $query->rule(function($builder) {
-                return [
-                    'must' => [
-                        'match' => [
-                            'title' => $builder->query,
-                        ]
-                    ]
-                ];
-            });
-        }
+//        if ($keyword != '*') {
+//            $query->rule(function($builder) {
+//                return [
+//                    'must' => [
+//                        [
+//                            "match" => [
+//                                "trade_no" => $builder->query,
+//                            ],
+//                        ],
+//                        [
+//                            "match" => [
+//                                "title" => $builder->query,
+//                            ],
+//                        ]
+//                    ],
+//
+//                ];
+//            });
+//        }
 
         if (isset($condition['status']) && $condition['status']) {
             $query->where('status', $condition['status']);

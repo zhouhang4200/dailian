@@ -117,7 +117,7 @@ class OrderTakeController extends Controller
             ->get();
 
         if (!isset($detail[0])) {
-            return response()->apiJson(0, $detail[0]);
+            return response()->apiJson(0);
         }
 
         $detail[0]['initiator'] = $detail[0]['parent_user_id'] == request()->user()->parent_id ? 1 : 2;

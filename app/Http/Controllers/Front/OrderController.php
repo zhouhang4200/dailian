@@ -38,7 +38,7 @@ class OrderController extends Controller
             ->orderBy('id', 'desc')
             ->paginate(20);
 //->profile();
-        dd($orders);
+//        dd($orders);
         return view('front.order.index', [
             'orders' => $orders,
             'guest' => auth()->guard()->guest(),

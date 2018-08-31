@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Models\User;
+use DB;
 use Exception;
+use App\Models\User;
+use App\Services\TmApiService;
 use App\Exceptions\Order\OrderException;
 use App\Exceptions\UserAsset\UserAssetException;
 use App\Models\GameLevelingOrder;
@@ -28,17 +30,20 @@ class OrderOperationController extends Controller
         if (! request('trade_no') || ! request('pay_password')) {
             response()->apiJson(1001);
         }
-
+        DB::beginTransaction();
         try {
             OrderService::init(request()->user()->id, request('trade_no'))->take(request('pay_password'), request('take_password'));
+            $order = GameLevelingOrder::where('trade_no', request('trade_no'))->first();
+            TmApiService::take($order);
         } catch (OrderException $exception) {
             return response()->apiJson($exception->getCode());
         } catch (UserAssetException $exception) {
             return response()->apiJson($exception->getCode());
         } catch (Exception $exception) {
-            myLog('s', [$exception->getFile(), $exception->getLine(), $exception->getMessage()]);
+            myLog('take', [$exception->getFile(), $exception->getLine(), $exception->getMessage()]);
             return response()->apiJson(1003);
         }
+        DB::commit();
         return response()->apiJson(0);
     }
 
@@ -54,17 +59,20 @@ class OrderOperationController extends Controller
            return response()->apiJson(1001);
         }
 
+        DB::beginTransaction();
         try {
             OrderService::init(request()->user()->id, request('trade_no'))->applyComplete(imageJsonToArr(request('images')));
+            TmApiService::applyComplete(request('trade_no'));
         } catch (UserAssetException $exception) {
             return response()->apiJson($exception->getCode());
         } catch (OrderException $exception) {
             return response()->apiJson($exception->getCode());
         } catch (Exception $exception) {
-            myLog('apply-complain', [$exception->getFile(), $exception->getLine(), $exception->getMessage()]);
+            myLog('applyComplete', [$exception->getFile(), $exception->getLine(), $exception->getMessage()]);
 
             return response()->apiJson(1003);
         }
+        DB::commit();
         return response()->apiJson(0);
     }
 
@@ -99,9 +107,10 @@ class OrderOperationController extends Controller
         if (! request('trade_no')) {
             response()->apiJson(1001);
         }
-
+        DB::beginTransaction();
         try {
             OrderService::init(request()->user()->id, request('trade_no'))->cancelComplete();
+            TmApiService::cancelComplete(request('trade_no'));
         } catch (UserAssetException $exception) {
             return response()->apiJson($exception->getCode());
         } catch (OrderException $exception) {
@@ -109,7 +118,7 @@ class OrderOperationController extends Controller
         } catch (Exception $exception) {
             return response()->apiJson(1003);
         }
-
+        DB::commit();
         return response()->apiJson(0);
     }
 
@@ -132,9 +141,12 @@ class OrderOperationController extends Controller
 
         // 拆分保证金
         $deposit = GameLevelingOrder::deuceDeposit(request('trade_no'), request('deposit'));
+        DB::beginTransaction();
         try {
             OrderService::init(request()->user()->id, request('trade_no'))
-                ->applyConsult(request('amount'), $deposit['security_deposit'], $deposit['efficiency_deposit'], request('amount'));
+                ->applyConsult(request('amount'), $deposit['security_deposit'], $deposit['efficiency_deposit'], request('reason'));
+
+            TmApiService::applyConsult(request('trade_no'), request('amount'), request('deposit'), request('reason'));
         } catch (UserAssetException $exception) {
             return response()->apiJson($exception->getCode());
         } catch (OrderException $exception) {
@@ -142,7 +154,7 @@ class OrderOperationController extends Controller
         } catch (Exception $exception) {
             return response()->apiJson(1003);
         }
-
+        DB::commit();
         return response()->apiJson(0);
 
     }
@@ -156,9 +168,11 @@ class OrderOperationController extends Controller
         if (! request('trade_no')) {
             response()->apiJson(1001);
         }
-
+        DB::beginTransaction();
         try {
             OrderService::init(request()->user()->id, request('trade_no'))->cancelConsult();
+
+            TmApiService::cancelConsult(request('trade_no'));
         } catch (UserAssetException $exception) {
             return response()->apiJson($exception->getCode());
         } catch (OrderException $exception) {
@@ -166,7 +180,7 @@ class OrderOperationController extends Controller
         } catch (Exception $exception) {
             return response()->apiJson(1003);
         }
-
+        DB::commit();
         return response()->apiJson(0);
     }
 
@@ -179,9 +193,11 @@ class OrderOperationController extends Controller
         if (! request('trade_no')) {
             response()->apiJson(1001);
         }
-
+        DB::beginTransaction();
         try {
             OrderService::init(request()->user()->id, request('trade_no'))->agreeConsult();
+
+            TmApiService::agreeConsult(request('trade_no'));
         } catch (UserAssetException $exception) {
             return response()->apiJson($exception->getCode());
         } catch (OrderException $exception) {
@@ -189,7 +205,7 @@ class OrderOperationController extends Controller
         } catch (Exception $exception) {
             return response()->apiJson(1003);
         }
-
+        DB::commit();
         return response()->apiJson(0);
     }
 
@@ -202,9 +218,11 @@ class OrderOperationController extends Controller
         if (! request('trade_no')) {
             response()->apiJson(1001);
         }
-
+        DB::beginTransaction();
         try {
             OrderService::init(request()->user()->id, request('trade_no'))->rejectConsult();
+
+            TmApiService::rejectConsult(request('trade_no'));
         } catch (UserAssetException $exception) {
             return response()->apiJson($exception->getCode());
         } catch (OrderException $exception) {
@@ -212,7 +230,7 @@ class OrderOperationController extends Controller
         } catch (Exception $exception) {
             return response()->apiJson(1003);
         }
-
+        DB::commit();
         return response()->apiJson(0);
     }
 
@@ -225,9 +243,11 @@ class OrderOperationController extends Controller
         if (! request('trade_no') || ! request('reason') || ! request('images')) {
             return response()->apiJson(1001);
         }
-
+        DB::beginTransaction();
         try {
             OrderService::init(request()->user()->id, request('trade_no'))->applyComplain(request('reason'), imageJsonToArr(request('images')));
+
+            TmApiService::applyComplain(request('trade_no'), request('reason'));
         } catch (UserAssetException $exception) {
             return response()->apiJson($exception->getCode());
         } catch (OrderException $exception) {
@@ -235,7 +255,7 @@ class OrderOperationController extends Controller
         } catch (Exception $exception) {
             return response()->apiJson(1003);
         }
-
+        DB::commit();
         return response()->apiJson(0);
     }
 
@@ -248,9 +268,11 @@ class OrderOperationController extends Controller
         if (! request('trade_no')) {
             return response()->apiJson(1001);
         }
-
+        DB::beginTransaction();
         try {
             OrderService::init(request()->user()->id, request('trade_no'))->cancelComplain();
+
+            TmApiService::cancelComplain(request('trade_no'));
         } catch (UserAssetException $exception) {
             return response()->apiJson($exception->getCode());
         } catch (OrderException $exception) {
@@ -258,6 +280,7 @@ class OrderOperationController extends Controller
         } catch (Exception $exception) {
             return response()->apiJson(1003);
         }
+        DB::commit();
         return response()->apiJson(0);
     }
 
@@ -312,7 +335,7 @@ class OrderOperationController extends Controller
     }
 
     /**
-     * 获取仲裁信息
+     * 发送仲裁信息
      * @return mixed
      * @throws Exception
      */
@@ -337,7 +360,7 @@ class OrderOperationController extends Controller
     }
 
     /**
-     * 获取仲裁信息
+     * 获取留言
      * @return mixed
      */
     public function getMessage()
@@ -399,9 +422,11 @@ class OrderOperationController extends Controller
         if (! request('trade_no')) {
             return response()->apiJson(1001);
         }
-
+        DB::beginTransaction();
         try {
             OrderService::init(request()->user()->id, request('trade_no'))->anomaly();
+
+            TmApiService::anomaly(request('trade_no'));
         } catch (UserAssetException $exception) {
             return response()->apiJson($exception->getCode());
         } catch (OrderException $exception) {
@@ -409,7 +434,7 @@ class OrderOperationController extends Controller
         } catch (Exception $exception) {
             return response()->apiJson(1003);
         }
-
+        DB::commit();
         return response()->apiJson(0);
     }
 
@@ -422,9 +447,11 @@ class OrderOperationController extends Controller
         if (! request('trade_no')) {
             return response()->apiJson(1001);
         }
-
+        DB::beginTransaction();
         try {
             OrderService::init(request()->user()->id, request('trade_no'))->cancelAnomaly();
+
+            TmApiService::cancelAnomaly(request('trade_no'));
         } catch (UserAssetException $exception) {
             return response()->apiJson($exception->getCode());
         } catch (OrderException $exception) {
@@ -432,7 +459,7 @@ class OrderOperationController extends Controller
         } catch (Exception $exception) {
             return response()->apiJson(1003);
         }
-
+        DB::commit();
         return response()->apiJson(0);
     }
 }

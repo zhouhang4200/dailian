@@ -44,7 +44,7 @@ class CreateTestOrder extends Command
     {
         $count = $this->argument('count') ?? 100000;
 
-        for ($i=0; $i<= $count; $i ++) {
+        for ($i=1; $i<= $count; $i ++) {
 
             $game = Game::find(rand(1, 18));
             $region = Region::where('game_id', $game->id)->first();

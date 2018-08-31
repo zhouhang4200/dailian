@@ -200,8 +200,7 @@ class OrderService
      */
     public function take($payPassword, $takePassword)
     {
-        // 验证接单密码
-        if (! empty(self::$order->take_order_password) && self::$order->take_password != $takePassword) {
+        if (! empty(self::$order->take_order_password) && self::$order->take_order_password != $takePassword) {
             throw new OrderPasswordException('接单密码错误', 7003);
         }
 

@@ -177,6 +177,7 @@ class OrderService
                 'player_phone' => $playerPhone,
                 'user_qq' => $userQQ,
                 'source' => $source,
+                'status' => 1,
             ]);
 
             // 写入订单日志
@@ -651,8 +652,7 @@ class OrderService
         DB::beginTransaction();
         try {
             // 记录撤销数据
-            GameLevelingOrderConsult::where('game_leveling_order_trade_no', self::$order->trade_no)
-                ->update(['status' => 2]);
+            GameLevelingOrderConsult::where('game_leveling_order_trade_no', self::$order->trade_no)->update(['status' => 2]);
             // 记录订单前一个状态
             $previousStatus = GameLevelingOrderPreviousStatus::getLatestBy(self::$order->trade_no);
             // 修改订单状态

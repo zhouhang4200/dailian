@@ -231,5 +231,8 @@ return [
         'Geetest' => Germey\Geetest\Geetest::class,
     ],
     // api 域名
-    'api_domain' => env('API_DOMAIN', 'api.fulugou.net')
+    'api_domain' => env('API_DOMAIN', 'api.fulugou.net'),
+
+    // 生成假数据指定为中文
+    'faker_locale' => 'zh_CN',
 ];

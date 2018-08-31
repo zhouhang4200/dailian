@@ -121,8 +121,8 @@ class OrderTakeController extends Controller
         }
 
         $detail[0]['initiator'] = $detail[0]['parent_user_id'] == request()->user()->parent_id ? 1 : 2;
-        $detail[0]['consult_initiator'] = (int) optional($detail[0]['consult'])['initiator'];
-        $detail[0]['complain_initiator'] = (int) (optional($detail[0]['complain'])['initiator']);
+//        $detail[0]['consult_initiator'] = (int) optional($detail[0]['consult'])['initiator'];
+        $detail[0]['consult_initiator'] = optional($detail[0]->consult)->getConsultInitiator();;
         $detail[0]['complain_initiator'] = (int) (optional($detail[0]['complain'])['initiator']);
         $detail[0]['complain_describe'] = optional($detail[0]->complain)->getComplainDescribe();
         $detail[0]['consult_describe'] = optional($detail[0]->consult)->getConsultDescribe();

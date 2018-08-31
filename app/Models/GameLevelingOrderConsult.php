@@ -67,6 +67,15 @@ class GameLevelingOrderConsult extends Model
     }
 
     /**
+     * 获取撤销发起人
+     * @return int 0 不存在撤销 1 撤销发起人为 发单方
+     */
+    public function getConsultInitiator()
+    {
+        return (int) $this->status == 3 ? 0 : $this->initiator;
+    }
+
+    /**
      * 获取订单撤销 描述
      * @return string
      */

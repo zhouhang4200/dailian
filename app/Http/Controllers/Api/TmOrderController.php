@@ -32,7 +32,7 @@ class TmOrderController extends Controller
     // 发单器给的IV
     private static $iv = '1234567891111152';
     // 发单器的回调地址
-    private static $callbackUrl = 'www.test.com/api/partner/order/callback';
+    private static $callbackUrl = 'www.tm.com/api/partner/order/callback';
     // 发单器那边的app_id, app_secret
     private static $appId = 'T8WsMDT4mJ5DxKJkf4fWVP5XYU00McJxxyAeoX4aPIy6jrWN70bmQltXfwof';
     private static $appSecret = 'XlDzhGb9EeiJW2r6os1CVC6bKLrikFDHgH5mVLGdVRMNyYhY7Q4QvFIL2SBx';

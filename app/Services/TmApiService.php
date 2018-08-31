@@ -35,18 +35,18 @@ class TmApiService
     private static $appSecret = 'XlDzhGb9EeiJW2r6os1CVC6bKLrikFDHgH5mVLGdVRMNyYhY7Q4QvFIL2SBx';
     // 发单平台的地址
     private static $url = [
-        'take' => 'http://www.test.com/api/partner/order/receive', // 接单
-        'anomaly' => 'http://www.test.com/api/partner/order/abnormal', // 异常
-        'cancelAnomaly' => 'http://www.test.com/api/partner/order/cancel-abnormal', // 取消异常
-        'applyComplain' => 'http://www.test.com/api/partner/order/apply-arbitration', // 申请仲裁
-        'cancelComplain' => 'http://www.test.com/api/partner/order/cancel-arbitration', // 取消仲裁
-        'applyComplete' => 'http://www.test.com/api/partner/order/apply-complete', // 申请验收
-        'applyConsult' => 'http://www.test.com/api/partner/order/revoke', // 申请协商
-        'cancelConsult' => 'http://www.test.com/api/partner/order/cancel-revoke', // 取消协商
-        'agreeConsult' => 'http://www.test.com/api/partner/order/agree-revoke', // 同意协商
-        'refuseConsult' => 'http://www.test.com/api/partner/order/refuse-revoke', // 不同意协商
-        'arbitration' =>  'http://www.test.com/api/partner/order/force-arbitration', // 客服仲裁
-        'cancelComplete' => 'http://www.test.com/api/partner/order/cancel-complete', // 取消验收
+        'take' => 'http://www.tm.com/api/partner/order/receive', // 接单
+        'anomaly' => 'http://www.tm.com/api/partner/order/abnormal', // 异常
+        'cancelAnomaly' => 'http://www.tm.com/api/partner/order/cancel-abnormal', // 取消异常
+        'applyComplain' => 'http://www.tm.com/api/partner/order/apply-arbitration', // 申请仲裁
+        'cancelComplain' => 'http://www.tm.com/api/partner/order/cancel-arbitration', // 取消仲裁
+        'applyComplete' => 'http://www.tm.com/api/partner/order/apply-complete', // 申请验收
+        'applyConsult' => 'http://www.tm.com/api/partner/order/revoke', // 申请协商
+        'cancelConsult' => 'http://www.tm.com/api/partner/order/cancel-revoke', // 取消协商
+        'agreeConsult' => 'http://www.tm.com/api/partner/order/agree-revoke', // 同意协商
+        'refuseConsult' => 'http://www.tm.com/api/partner/order/refuse-revoke', // 不同意协商
+        'arbitration' =>  'http://www.tm.com/api/partner/order/force-arbitration', // 客服仲裁
+        'cancelComplete' => 'http://www.tm.com/api/partner/order/cancel-complete', // 取消验收
     ];
 
     /**

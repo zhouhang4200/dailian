@@ -38,8 +38,6 @@ class TmOrderController extends Controller
     private static $appSecret = 'XlDzhGb9EeiJW2r6os1CVC6bKLrikFDHgH5mVLGdVRMNyYhY7Q4QvFIL2SBx';
     // 允许上传图片类型
     private static $extensions = ['png', 'jpg', 'jpeg', 'gif'];
-    // 本地网站地址
-    private static $url = 'api.dailian.com';
 
     /**
      * 合成发单器的sign
@@ -993,7 +991,7 @@ class TmOrderController extends Controller
             foreach ($images as $k => $image) {
                 $data[$k]['username'] = $order->take_username ?? '';
                 $data[$k]['created_at'] = $order->created_at->toDateTimeString();
-                $data[$k]['url'] = static::$url.$image->path;
+                $data[$k]['url'] = asset($image->path);
             }
         } catch (OrderTimeException $e) {
             myLog('operate-applyCompleteImage-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
@@ -1188,13 +1186,13 @@ class TmOrderController extends Controller
 
             foreach($images as $k => $image) {
                 if ($k == 0) {
-                    $data['image']['pic1'] = static::$url.$image->path;
+                    $data['image']['pic1'] = asset($image->path);
                 }
                 if ($k == 1) {
-                    $data['image']['pic2'] = static::$url.$image->path;
+                    $data['image']['pic2'] = asset($image->path);
                 }
                 if ($k == 2) {
-                    $data['image']['pic3'] = static::$url.$image->path;
+                    $data['image']['pic3'] = asset($image->path);
                 }
             }
             if (isset($order->complain->messages)) {
@@ -1205,7 +1203,7 @@ class TmOrderController extends Controller
                     $data['message'][$k]['content'] = $message->content;
                     if (isset($message->image)) {
                         foreach ($message->image as $k1 => $image) {
-                            $data['message'][$k]['pic'] = static::$url.$image->path;
+                            $data['message'][$k]['pic'] = asset($image->path);
                         }
                     }
                 }

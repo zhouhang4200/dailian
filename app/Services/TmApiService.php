@@ -149,7 +149,7 @@ class TmApiService
             $sign = static::getSign($options);
             $options['sign'] = $sign;
             // 发送
-            static::normalRequest($options, config('tb.action.take'));
+            static::normalRequest($options, config('tm.action.take'));
         } catch (Exception $e) {
             throw new UnknownException($e->getMessage());
         }
@@ -171,7 +171,7 @@ class TmApiService
             $sign = static::getSign($options);
             $options['sign'] = $sign;
             // 发送
-            static::normalRequest($options, config('tb.action.anomaly'));
+            static::normalRequest($options, config('tm.action.anomaly'));
         } catch (Exception $e) {
             throw new UnknownException($e->getMessage());
         }
@@ -193,7 +193,7 @@ class TmApiService
             $sign = static::getSign($options);
             $options['sign'] = $sign;
             // 发送
-            static::normalRequest($options, config('tb.action.cancel_anomaly'));
+            static::normalRequest($options, config('tm.action.cancel_anomaly'));
         } catch (Exception $e) {
             throw new UnknownException($e->getMessage());
         }
@@ -216,7 +216,7 @@ class TmApiService
             $sign = static::getSign($options);
             $options['sign'] = $sign;
             // 发送
-            static::normalRequest($options, config('tb.action.apply_complain'));
+            static::normalRequest($options, config('tm.action.apply_complain'));
         } catch (Exception $e) {
             throw new UnknownException($e->getMessage());
         }
@@ -239,7 +239,7 @@ class TmApiService
             $sign = static::getSign($options);
             $options['sign'] = $sign;
             // 发送
-            static::normalRequest($options, config('tb.action.cancel_complain'));
+            static::normalRequest($options, config('tm.action.cancel_complain'));
         } catch (Exception $e) {
             throw new UnknownException($e->getMessage());
         }
@@ -261,7 +261,7 @@ class TmApiService
             $sign = static::getSign($options);
             $options['sign'] = $sign;
             // 发送
-            static::normalRequest($options, config('tb.action.apply_complete'));
+            static::normalRequest($options, config('tm.action.apply_complete'));
         } catch (Exception $e) {
             throw new UnknownException($e->getMessage());
         }
@@ -287,7 +287,7 @@ class TmApiService
             $sign = static::getSign($options);
             $options['sign'] = $sign;
             // 发送
-            static::normalRequest($options, config('tb.action.apply_consult'));
+            static::normalRequest($options, config('tm.action.apply_consult'));
         } catch (Exception $e) {
             throw new UnknownException($e->getMessage());
         }
@@ -310,7 +310,7 @@ class TmApiService
             $sign = static::getSign($options);
             $options['sign'] = $sign;
             // 发送
-            static::normalRequest($options, config('tb.action.cancel_consult'));
+            static::normalRequest($options, config('tm.action.cancel_consult'));
         } catch (Exception $e) {
             throw new UnknownException($e->getMessage());
         }
@@ -333,7 +333,7 @@ class TmApiService
             $sign = static::getSign($options);
             $options['sign'] = $sign;
             // 发送
-            static::normalRequest($options, config('tb.action.agree_consult'));
+            static::normalRequest($options, config('tm.action.agree_consult'));
         } catch (Exception $e) {
             throw new UnknownException($e->getMessage());
         }
@@ -356,7 +356,7 @@ class TmApiService
             $sign = static::getSign($options);
             $options['sign'] = $sign;
             // 发送
-            static::normalRequest($options, config('tb.action.refuse_consult'));
+            static::normalRequest($options, config('tm.action.refuse_consult'));
         } catch (Exception $e) {
             throw new UnknownException($e->getMessage());
         }
@@ -383,7 +383,7 @@ class TmApiService
             $sign = static::getSign($options);
             $options['sign'] = $sign;
             // 发送
-            static::normalRequest($options, config('tb.action.arbitration'));
+            static::normalRequest($options, config('tm.action.arbitration'));
         } catch (Exception $e) {
             throw new UnknownException($e->getMessage());
         }
@@ -406,7 +406,7 @@ class TmApiService
             $sign = static::getSign($options);
             $options['sign'] = $sign;
             // 发送
-            static::normalRequest($options, config('tb.action.cancel_complete'));
+            static::normalRequest($options, config('tm.action.cancel_complete'));
         } catch (Exception $e) {
             throw new UnknownException($e->getMessage());
         }

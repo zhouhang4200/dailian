@@ -4,6 +4,11 @@ namespace App\Exceptions\UserAsset;
 
 use Exception;
 
+/**
+ * 用户资金异常
+ * Class UserAssetException
+ * @package App\Exceptions\UserAsset
+ */
 class UserAssetException extends Exception
 {
     /**

@@ -483,10 +483,14 @@ class GameLevelingOrder extends Model
      */
     public function getRemainingTime()
     {
-        return sec2Time(Carbon::parse($this->take_at)
-            ->addDays($this->day)
-            ->addHours($this->hours)
-            ->diffInSeconds(Carbon::now()));
+        if (! in_array($this->status, [8, 9, 10, 11, 13])) {
+            return sec2Time(Carbon::parse($this->take_at)
+                ->addDays($this->day)
+                ->addHours($this->hours)
+                ->diffInSeconds(Carbon::now()));
+        } else {
+            return '--';
+        }
     }
 
     /**

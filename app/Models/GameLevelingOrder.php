@@ -670,7 +670,7 @@ class GameLevelingOrder extends Model
      */
     public function getComplainResult()
     {
-        if (! is_null($this->complain)) {
+        if (! is_null($this->complain) && $this->complain->status == 2) {
 
             if ($this->complain->initiator == 1) { // 如果发起人为发单方
 

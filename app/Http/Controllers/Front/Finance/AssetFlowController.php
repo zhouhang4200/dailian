@@ -19,7 +19,7 @@ class AssetFlowController extends Controller
     public function index()
     {
         return view('front.finance.asset-flow.index', [
-           'assetFlow' => UserAssetFlow::condition(array_merge(request()->except('user_id'), ['user_id' => request()->user()->parent_id]))->latest('created_at')
+           'assetFlow' => UserAssetFlow::condition(array_merge(request()->except('user_id'), ['user_id' => request()->user()->parent_id]))->latest('id')
                ->paginate()
         ]);
     }

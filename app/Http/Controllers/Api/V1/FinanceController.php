@@ -40,7 +40,7 @@ class FinanceController extends Controller
 
             $userAssetFlows = UserAssetFlow::where('user_id', $user->parent_id)
                 ->select(['id', 'type', 'amount', 'balance', 'created_at'])
-                ->latest('created_at')->paginate(request('page_size', 20));
+                ->latest('id')->paginate(request('page_size', 20));
 
             return response()->apiJson(0, [
                 'total' => $userAssetFlows->total(),

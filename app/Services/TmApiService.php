@@ -7,11 +7,12 @@ use Exception;
 use App\Models\User;
 use GuzzleHttp\Client;
 use App\Models\GameLevelingOrder;
+use App\Exceptions\UnknownException;
 use App\Exceptions\Order\OrderStatusException;
 
 /**
  * 丸子调千手的操作类
- * Class QsTransmitterConrtoller
+ * Class TmApiService
  * @package App\Services
  */
 class TmApiService
@@ -37,8 +38,9 @@ class TmApiService
      * @param $url
      * @param string $method
      * @return mixed
-     * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws OrderStatusException
+     * @throws UnknownException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public static function normalRequest($options, $url, $method = 'POST')
     {
@@ -48,8 +50,8 @@ class TmApiService
                 'form_params' => $options,
             ]);
             $result =  $response->getBody()->getContents();
-            // 发送日志
-//            myLog('qs-request-result', ['地址' => $url,'信息' => $options,'结果' => $result]);
+            
+            myLog('qs-request-result', ['地址' => $url,'信息' => $options,'结果' => $result]);
 
             if (! isset($result) || empty($result)) {
                 throw new OrderStatusException('请求返回数据不存在');
@@ -69,11 +71,9 @@ class TmApiService
             }
             return json_decode($result, true);
         } catch (OrderStatusException $e) {
-//            myLog('tmapi-reback-request-error', ['方法' => '请求', '原因' => $e->getMessage()]);
             throw new OrderStatusException($e->getMessage());
         } catch (Exception $e) {
-//            myLog('tmapi-local-request-error', ['方法' => '请求', '原因' => $e->getMessage()]);
-            throw new Exception($e->getMessage());
+            throw new UnknownException($e->getMessage());
         }
     }
 
@@ -85,6 +85,7 @@ class TmApiService
      * @return mixed
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws OrderStatusException
+     * @throws UnknownException
      */
     public static function formDataRequest($options, $url, $method = 'POST')
     {
@@ -101,7 +102,7 @@ class TmApiService
             $result = $response->getBody()->getContents();
 
             // 发送日志
-//            myLog('qs-request-result', ['地址' => $url,'信息' => $options,'结果' => $result]);
+            myLog('qs-request-result', ['地址' => $url,'信息' => $options,'结果' => $result]);
 
             if (! isset($result) || empty($result)) {
                 throw new OrderStatusException('请求返回数据不存在');
@@ -121,11 +122,9 @@ class TmApiService
             }
             return json_decode($result, true);
         } catch (OrderStatusException $e) {
-//            myLog('tmapi-reback-request-error', ['方法' => '请求', '原因' => $e->getMessage()]);
             throw new OrderStatusException($e->getMessage());
         } catch (Exception $e) {
-//            myLog('tmapi-local-request-error', ['方法' => '请求', '原因' => $e->getMessage()]);
-            throw new Exception($e->getMessage());
+            throw new UnknownException($e->getMessage());
         }
     }
 
@@ -152,13 +151,14 @@ class TmApiService
             // 发送
             static::normalRequest($options, config('tb.action.take'));
         } catch (Exception $e) {
-            throw new Exception($e->getMessage());
+            throw new UnknownException($e->getMessage());
         }
     }
 
     /**
      *  异常
      * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws UnknownException
      */
     public static function anomaly($orderNo)
     {
@@ -173,13 +173,14 @@ class TmApiService
             // 发送
             static::normalRequest($options, config('tb.action.anomaly'));
         } catch (Exception $e) {
-            throw new Exception($e->getMessage());
+            throw new UnknownException($e->getMessage());
         }
     }
 
     /**
      * 取消异常
      * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws UnknownException
      */
     public static function cancelAnomaly($orderNo)
     {
@@ -194,13 +195,14 @@ class TmApiService
             // 发送
             static::normalRequest($options, config('tb.action.cancel_anomaly'));
         } catch (Exception $e) {
-            throw new Exception($e->getMessage());
+            throw new UnknownException($e->getMessage());
         }
     }
 
     /**
      * 申请仲裁
      * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws UnknownException
      */
     public static function applyComplain($orderNo, $reason)
     {
@@ -216,7 +218,7 @@ class TmApiService
             // 发送
             static::normalRequest($options, config('tb.action.apply_complain'));
         } catch (Exception $e) {
-            throw new Exception($e->getMessage());
+            throw new UnknownException($e->getMessage());
         }
     }
 
@@ -224,6 +226,7 @@ class TmApiService
      *  取消仲裁
      * @param $orderNo
      * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws UnknownException
      */
     public static function cancelComplain($orderNo)
     {
@@ -238,13 +241,14 @@ class TmApiService
             // 发送
             static::normalRequest($options, config('tb.action.cancel_complain'));
         } catch (Exception $e) {
-            throw new Exception($e->getMessage());
+            throw new UnknownException($e->getMessage());
         }
     }
 
     /**
      *  申请完成
      * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws UnknownException
      */
     public static function applyComplete($orderNo)
     {
@@ -259,13 +263,14 @@ class TmApiService
             // 发送
             static::normalRequest($options, config('tb.action.apply_complete'));
         } catch (Exception $e) {
-            throw new Exception($e->getMessage());
+            throw new UnknownException($e->getMessage());
         }
     }
 
     /**
      *  申请协商
      * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws UnknownException
      */
     public static function applyConsult($orderNo, $amount, $deposit, $reason)
     {
@@ -284,7 +289,7 @@ class TmApiService
             // 发送
             static::normalRequest($options, config('tb.action.apply_consult'));
         } catch (Exception $e) {
-            throw new Exception($e->getMessage());
+            throw new UnknownException($e->getMessage());
         }
     }
 
@@ -292,6 +297,7 @@ class TmApiService
      *  取消协商
      * @param $orderNo
      * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws UnknownException
      */
     public static function cancelConsult($orderNo)
     {
@@ -306,13 +312,14 @@ class TmApiService
             // 发送
             static::normalRequest($options, config('tb.action.cancel_consult'));
         } catch (Exception $e) {
-            throw new Exception($e->getMessage());
+            throw new UnknownException($e->getMessage());
         }
     }
 
     /**
      *  同意协商
      * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws UnknownException
      */
     public static function agreeConsult($orderNo)
     {
@@ -328,7 +335,7 @@ class TmApiService
             // 发送
             static::normalRequest($options, config('tb.action.agree_consult'));
         } catch (Exception $e) {
-            throw new Exception($e->getMessage());
+            throw new UnknownException($e->getMessage());
         }
     }
 
@@ -336,6 +343,7 @@ class TmApiService
      *  不同意协商
      * @param $orderNo
      * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws UnknownException
      */
     public static function rejectConsult($orderNo)
     {
@@ -350,7 +358,7 @@ class TmApiService
             // 发送
             static::normalRequest($options, config('tb.action.refuse_consult'));
         } catch (Exception $e) {
-            throw new Exception($e->getMessage());
+            throw new UnknownException($e->getMessage());
         }
     }
 
@@ -359,6 +367,7 @@ class TmApiService
      * @param $amount
      * @param $deposit
      * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws UnknownException
      */
     public static function arbitration($orderNo, $amount, $deposit)
     {
@@ -376,7 +385,7 @@ class TmApiService
             // 发送
             static::normalRequest($options, config('tb.action.arbitration'));
         } catch (Exception $e) {
-            throw new Exception($e->getMessage());
+            throw new UnknownException($e->getMessage());
         }
     }
 
@@ -384,6 +393,7 @@ class TmApiService
      *  取消验收
      * @param $orderNo
      * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws UnknownException
      */
     public static function cancelComplete($orderNo)
     {
@@ -398,7 +408,7 @@ class TmApiService
             // 发送
             static::normalRequest($options, config('tb.action.cancel_complete'));
         } catch (Exception $e) {
-            throw new Exception($e->getMessage());
+            throw new UnknownException($e->getMessage());
         }
     }
 }

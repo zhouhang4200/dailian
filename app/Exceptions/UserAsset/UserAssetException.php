@@ -14,8 +14,7 @@ class UserAssetException extends Exception
      */
     public function __construct($message, $code = 0)
     {
-
-        myLog('user-asset-ex', [$message, self::getFile()]);
         parent::__construct($message, $code);
+        myLog('user-asset-ex', [$message, self::getFile(), self::getLine(), self::getMessage()]);
     }
 }

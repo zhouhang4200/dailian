@@ -1,7 +1,9 @@
 
     // 接单
     form.on('submit(take)', function (data) {
+        var index = layer.load();
         $.post('{{ route('order.operation.take') }}', {trade_no: $(data.elem).attr('data-no')}, function (result) {
+        layer.close(index);
             if (result.status) {
                 @if($type == 'list')
                     layer.msg(result.message);
@@ -41,13 +43,14 @@
             layer.alert('请至少上传一张图片');
             return false;
         }
-
+        var index = layer.load();
         $.post('{{ route('order.operation.apply-complete') }}', {
             trade_no: data.field.trade_no,
             image_1:pic1,
             image_2:pic2,
             image_3:pic3
         }, function (result) {
+        layer.close(index);
             if (result.status == 1) {
                 layer.closeAll();
                 @if($type == 'list')
@@ -68,7 +71,9 @@
 
     // 取消验收
     form.on('submit(cancel-complete)', function (data) {
+    var index = layer.load();
         $.post('{{ route('order.operation.cancel-complete') }}', {trade_no: $(data.elem).attr('data-no')}, function (result) {
+    layer.close(index);
             if (result.status) {
                 @if($type == 'list')
                     layer.msg(result.message);
@@ -87,7 +92,9 @@
 
     // 异常
     form.on('submit(anomaly)', function (data) {
+        var index = layer.load();
         $.post('{{ route('order.operation.anomaly') }}', {trade_no: $(data.elem).attr('data-no')}, function (result) {
+        layer.close(index);
             if (result.status) {
                 @if($type == 'list')
                     layer.msg(result.message);
@@ -106,7 +113,9 @@
 
     // 取消异常
     form.on('submit(cancel-anomaly)', function (data) {
+        var index = layer.load();
         $.post('{{ route('order.operation.cancel-anomaly') }}', {trade_no: $(data.elem).attr('data-no')}, function (result) {
+        layer.close(index);
             if (result.status) {
                 @if($type == 'list')
                     layer.msg(result.message);
@@ -139,15 +148,18 @@
         });
         return false;
     });
+
     // 确认提交撤销
     form.on('submit(confirm-apply-consult)', function (data) {
         layer.confirm('您确认提交撤销吗?', {icon: 3}, function(index){
+            var index1 = layer.load();
             $.post('{{ route('order.operation.apply-consult') }}', {
                 trade_no: data.field.trade_no,
                 amount: data.field.amount,
                 deposit: data.field.deposit,
                 reason: data.field.reason
             }, function (result) {
+                layer.close(index1);
                 if (result.status == 1) {
                     layer.closeAll();
                     @if($type == 'list')
@@ -169,7 +181,9 @@
 
     // 取消撤销
     form.on('submit(cancel-consult)', function (data) {
+    var index = layer.load();
         $.post('{{ route('order.operation.cancel-consult') }}', {trade_no: $(data.elem).attr('data-no')}, function (result) {
+    layer.close(index);
             if (result.status) {
                 @if($type == 'list')
                     layer.msg(result.message);
@@ -187,7 +201,9 @@
     });
     // 同意撤销
     form.on('submit(agree-consult)', function (data) {
+    var index = layer.load();
         $.post('{{ route('order.operation.agree-consult') }}', {trade_no: $(data.elem).attr('data-no')}, function (result) {
+    layer.close(index);
             if (result.status == 1) {
                 layer.closeAll();
                 @if($type == 'list')
@@ -206,7 +222,9 @@
     });
     // 不同意撤销
     form.on('submit(reject-consult)', function (data) {
+    var index = layer.load();
         $.post('{{ route('order.operation.reject-consult') }}', {trade_no: $(data.elem).attr('data-no')}, function (result) {
+    layer.close(index);
             if (result.status) {
                 @if($type == 'list')
                     layer.msg(result.message);
@@ -246,7 +264,7 @@
             layer.alert('请至少上传一张图片');
             return false;
         }
-
+    var index1 = layer.load();
         $.post('{{ route('order.operation.apply-complain') }}', {
             trade_no: data.field.trade_no,
             reason: data.field.reason,
@@ -254,6 +272,7 @@
             image_2: pic2,
             image_3: pic3
         }, function (result) {
+    layer.close(index1);
             if (result.status) {
                 @if($type == 'list')
                     layer.msg(result.message);
@@ -266,12 +285,14 @@
             } else {
                 layer.alert(result.message);
             }
-        }, 'json');
+    }, 'json');
         return false;
     });
     // 取消仲裁
     form.on('submit(cancel-complain)', function (data) {
+    var index = layer.load();
         $.post('{{ route('order.operation.cancel-complain') }}', {trade_no: $(data.elem).attr('data-no')}, function (result) {
+    layer.close(index);
             if (result.status) {
                 @if($type == 'list')
                     layer.msg(result.message);

@@ -9,9 +9,8 @@ use GuzzleHttp\Client;
 use App\Models\GameLevelingOrder;
 use App\Exceptions\UnknownException;
 
-
 /**
- * 丸子调千手的操作类
+ * 丸子调天猫发单平台的操作类
  * Class TmApiService
  * @package App\Services
  */
@@ -49,7 +48,7 @@ class TmApiService
         ]);
         $result =  $response->getBody()->getContents();
 
-        myLog('qs-request-result', ['地址' => $url,'信息' => $options,'结果' => $result]);
+        myLog('tm-request', ['地址' => $url,'信息' => $options,'结果' => $result]);
 
         if (! isset($result) || empty($result)) {
             throw new Exception('请求返回数据不存在');
@@ -398,5 +397,44 @@ class TmApiService
         } catch (Exception $e) {
             throw new UnknownException($e->getMessage());
         }
+    }
+
+    /**
+     * @param $orderNo
+     * @param $tradNo
+     * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public static function callback($orderNo, $tradNo)
+    {
+        $options = [
+            'no' => $orderNo,
+            'order_no' => $tradNo,
+            'app_id' => config('tm.app_id'),
+            'timestamp' => time()
+        ];
+
+        // 合成发单器的签名
+        $options['sign'] = static::getSign($options);;
+
+        $client = new Client();
+        $response = $client->request('POST', config('tm.action.callback'), [
+            'form_params' => $options,
+            'body' => 'x-www-form-urlencoded',
+        ]);
+        $result = $response->getBody()->getContents();
+
+        return json_decode($result, true);
+    }
+
+    /**
+     * 解密数据
+     * @param $encryptOrderData
+     * @return mixed
+     */
+    public static function decryptOrderData($encryptOrderData)
+    {
+        $decryptData = openssl_decrypt($encryptOrderData, 'aes-128-cbc', config('tm.aes_key'), false, config('tm.aes_iv'));
+        return json_decode($decryptData, true);
     }
 }

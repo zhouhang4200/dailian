@@ -19,7 +19,7 @@ class BalanceWithdrawController extends Controller
     {
         $balanceWithdraws = BalanceWithdraw::condition(request()->all())->with(['userAssetFlows' =>  function ($query) {
             $query->latest('id')->first();
-        }])->paginate(20);
+        }])->latest('id')->paginate(20);
 
         return view('back.finance.balance-withdraw.index', ['balanceWithdraws' => $balanceWithdraws,]);
     }

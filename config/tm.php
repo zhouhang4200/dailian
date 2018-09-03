@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'app_id' => env('TM_APP_ID', 'XlDzhGb9EeiJW2r6os1CVC6bKLrikFDHgH5mVLGdVRMNyYhY7Q4QvFIL2SBx'),
+    'app_id' => env('TM_APP_ID', 'T8WsMDT4mJ5DxKJkf4fWVP5XYU00McJxxyAeoX4aPIy6jrWN70bmQltXfwof'),
 
     'app_secret' => env('TM_APP_SECRET', 'XlDzhGb9EeiJW2r6os1CVC6bKLrikFDHgH5mVLGdVRMNyYhY7Q4QvFIL2SBx'),
 

@@ -49,11 +49,11 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-//        if(request()->getHost() == config('app.api_domain')) {
-//            myLog('exception', [$exception->getFile(), $exception->getFile(), $exception->getMessage()]);
-//            return response()->apiJson(1003);
-//        } else {
+        if(request()->getHost() == config('app.api_domain')) {
+            myLog('exception', [$exception->getFile(), $exception->getFile(), $exception->getMessage()]);
+            return response()->apiJson(1003);
+        } else {
             return parent::render($request, $exception);
-//        }
+        }
     }
 }

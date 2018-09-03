@@ -125,6 +125,7 @@ class OrderOperationController extends Controller
     /**
      * 申请撤销
      * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function applyConsult()
     {
@@ -162,6 +163,7 @@ class OrderOperationController extends Controller
     /**
      * 取消撤销
      * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function cancelConsult()
     {
@@ -187,6 +189,7 @@ class OrderOperationController extends Controller
     /**
      * 同意撤销
      * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function agreeConsult()
     {
@@ -212,6 +215,7 @@ class OrderOperationController extends Controller
     /**
      * 不同意撤销
      * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function rejectConsult()
     {
@@ -237,6 +241,7 @@ class OrderOperationController extends Controller
     /**
      * 申请仲裁
      * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function applyComplain()
     {
@@ -262,6 +267,7 @@ class OrderOperationController extends Controller
     /**
      * 取消仲裁
      * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function cancelComplain()
     {
@@ -416,6 +422,7 @@ class OrderOperationController extends Controller
     /**
      * 异常
      * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function anomaly()
     {
@@ -441,6 +448,7 @@ class OrderOperationController extends Controller
     /**
      * 取消异常
      * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function cancelAnomaly()
     {

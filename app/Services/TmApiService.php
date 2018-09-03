@@ -6,21 +6,8 @@ use DB;
 use Exception;
 use App\Models\User;
 use GuzzleHttp\Client;
-use App\Models\Game;
-use App\Models\Server;
-use App\Models\Region;
-use Illuminate\Http\UploadedFile;
-use App\Models\GameLevelingType;
-use App\Services\OrderService;
 use App\Models\GameLevelingOrder;
-use Illuminate\Http\Request;
-use App\Exceptions\Order\OrderTimeException;
-use App\Exceptions\Order\OrderUserException;
-use App\Exceptions\Order\OrderMoneyException;
 use App\Exceptions\Order\OrderStatusException;
-use App\Exceptions\Order\OrderPasswordException;
-use App\Exceptions\Order\OrderAdminUserException;
-use App\Exceptions\Order\OrderUnauthorizedException;
 
 /**
  * 丸子调千手的操作类
@@ -29,26 +16,6 @@ use App\Exceptions\Order\OrderUnauthorizedException;
  */
 class TmApiService
 {
-    // 发单平台的app_id
-    private static $appId = 'T8WsMDT4mJ5DxKJkf4fWVP5XYU00McJxxyAeoX4aPIy6jrWN70bmQltXfwof';
-    // 发单平台的app_secret
-    private static $appSecret = 'XlDzhGb9EeiJW2r6os1CVC6bKLrikFDHgH5mVLGdVRMNyYhY7Q4QvFIL2SBx';
-    // 发单平台的地址
-    private static $url = [
-        'take' => 'http://www.tm.com/api/partner/order/receive', // 接单
-        'anomaly' => 'http://www.tm.com/api/partner/order/abnormal', // 异常
-        'cancelAnomaly' => 'http://www.tm.com/api/partner/order/cancel-abnormal', // 取消异常
-        'applyComplain' => 'http://www.tm.com/api/partner/order/apply-arbitration', // 申请仲裁
-        'cancelComplain' => 'http://www.tm.com/api/partner/order/cancel-arbitration', // 取消仲裁
-        'applyComplete' => 'http://www.tm.com/api/partner/order/apply-complete', // 申请验收
-        'applyConsult' => 'http://www.tm.com/api/partner/order/revoke', // 申请协商
-        'cancelConsult' => 'http://www.tm.com/api/partner/order/cancel-revoke', // 取消协商
-        'agreeConsult' => 'http://www.tm.com/api/partner/order/agree-revoke', // 同意协商
-        'refuseConsult' => 'http://www.tm.com/api/partner/order/refuse-revoke', // 不同意协商
-        'arbitration' =>  'http://www.tm.com/api/partner/order/force-arbitration', // 客服仲裁
-        'cancelComplete' => 'http://www.tm.com/api/partner/order/cancel-complete', // 取消验收
-    ];
-
     /**
      * 制作签名
      * @param array $options
@@ -61,7 +28,7 @@ class TmApiService
         foreach ($options as $key => $value) {
             $str .= $key . '=' . $value . '&';
         }
-        return md5(rtrim($str,  '&') . static::$appSecret);
+        return md5(rtrim($str,  '&') . config('tm.app_secret'));
     }
 
     /**
@@ -70,8 +37,8 @@ class TmApiService
      * @param $url
      * @param string $method
      * @return mixed
-     * @throws OrderServiceException
      * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws OrderStatusException
      */
     public static function normalRequest($options, $url, $method = 'POST')
     {
@@ -116,8 +83,8 @@ class TmApiService
      * @param $url
      * @param string $method
      * @return mixed
-     * @throws OrderServiceException
      * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws OrderStatusException
      */
     public static function formDataRequest($options, $url, $method = 'POST')
     {
@@ -166,6 +133,7 @@ class TmApiService
      * 接单
      * @param GameLevelingOrder $order
      * @throws Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public static function take(GameLevelingOrder $order)
     {
@@ -173,7 +141,7 @@ class TmApiService
             $user = User::find($order->take_parent_user_id);
             $options = [
                 'order_no' => $order->trade_no,
-                'app_id' => static::$appId,
+                'app_id' => config('tm.app_id'),
                 'timestamp' => time(),
                 'hatchet_man_qq' => $user->qq ?? '0',
                 'hatchet_man_phone' => $user->phone,
@@ -182,7 +150,7 @@ class TmApiService
             $sign = static::getSign($options);
             $options['sign'] = $sign;
             // 发送
-            static::normalRequest($options, static::$url['take']);
+            static::normalRequest($options, config('tb.action.take'));
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
         }
@@ -197,13 +165,13 @@ class TmApiService
         try {
             $options = [
                 'order_no' => $orderNo,
-                'app_id' => static::$appId,
+                'app_id' => config('tm.app_id'),
                 'timestamp' => time(),
             ];
             $sign = static::getSign($options);
             $options['sign'] = $sign;
             // 发送
-            static::normalRequest($options, static::$url['anomaly']);
+            static::normalRequest($options, config('tb.action.anomaly'));
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
         }
@@ -218,13 +186,13 @@ class TmApiService
         try {
             $options = [
                 'order_no' => $orderNo,
-                'app_id' => static::$appId,
+                'app_id' => config('tm.app_id'),
                 'timestamp' => time(),
             ];
             $sign = static::getSign($options);
             $options['sign'] = $sign;
             // 发送
-            static::normalRequest($options, static::$url['cancelAnomaly']);
+            static::normalRequest($options, config('tb.action.cancel_anomaly'));
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
         }
@@ -239,14 +207,14 @@ class TmApiService
         try {
             $options = [
                 'order_no' => $orderNo,
-                'app_id' => static::$appId,
+                'app_id' => config('tm.app_id'),
                 'timestamp' => time(),
                 'content' => $reason,
             ];
             $sign = static::getSign($options);
             $options['sign'] = $sign;
             // 发送
-            static::normalRequest($options, static::$url['applyComplain']);
+            static::normalRequest($options, config('tb.action.apply_complain'));
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
         }
@@ -262,13 +230,13 @@ class TmApiService
         try {
             $options = [
                 'order_no' => $orderNo,
-                'app_id' => static::$appId,
+                'app_id' => config('tm.app_id'),
                 'timestamp' => time(),
             ];
             $sign = static::getSign($options);
             $options['sign'] = $sign;
             // 发送
-            static::normalRequest($options, static::$url['cancelComplain']);
+            static::normalRequest($options, config('tb.action.cancel_complain'));
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
         }
@@ -283,13 +251,13 @@ class TmApiService
         try {
             $options = [
                 'order_no' => $orderNo,
-                'app_id' => static::$appId,
+                'app_id' => config('tm.app_id'),
                 'timestamp' => time(),
             ];
             $sign = static::getSign($options);
             $options['sign'] = $sign;
             // 发送
-            static::normalRequest($options, static::$url['applyComplete']);
+            static::normalRequest($options, config('tb.action.apply_complete'));
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
         }
@@ -304,7 +272,7 @@ class TmApiService
         try {
             $options = [
                 'order_no' => $orderNo,
-                'app_id' => static::$appId,
+                'app_id' => config('tm.app_id'),
                 'timestamp' => time(),
                 'api_amount' => $amount,
                 'api_deposit' => $deposit,
@@ -314,7 +282,7 @@ class TmApiService
             $sign = static::getSign($options);
             $options['sign'] = $sign;
             // 发送
-            static::normalRequest($options, static::$url['applyConsult']);
+            static::normalRequest($options, config('tb.action.apply_consult'));
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
         }
@@ -330,13 +298,13 @@ class TmApiService
         try {
             $options = [
                 'order_no' => $orderNo,
-                'app_id' => static::$appId,
+                'app_id' => config('tm.app_id'),
                 'timestamp' => time(),
             ];
             $sign = static::getSign($options);
             $options['sign'] = $sign;
             // 发送
-            static::normalRequest($options, static::$url['cancelConsult']);
+            static::normalRequest($options, config('tb.action.cancel_consult'));
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
         }
@@ -351,14 +319,14 @@ class TmApiService
         try {
             $options = [
                 'order_no' => $orderNo,
-                'app_id' => static::$appId,
+                'app_id' => config('tm.app_id'),
                 'api_service' => 0,
                 'timestamp' => time(),
             ];
             $sign = static::getSign($options);
             $options['sign'] = $sign;
             // 发送
-            static::normalRequest($options, static::$url['agreeConsult']);
+            static::normalRequest($options, config('tb.action.agree_consult'));
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
         }
@@ -374,13 +342,13 @@ class TmApiService
         try {
             $options = [
                 'order_no' => $orderNo,
-                'app_id' => static::$appId,
+                'app_id' => config('tm.app_id'),
                 'timestamp' => time(),
             ];
             $sign = static::getSign($options);
             $options['sign'] = $sign;
             // 发送
-            static::normalRequest($options, static::$url['refuseConsult']);
+            static::normalRequest($options, config('tb.action.refuse_consult'));
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
         }
@@ -397,7 +365,7 @@ class TmApiService
         try {
             $options = [
                 'order_no' => $orderNo,
-                'app_id' => static::$appId,
+                'app_id' => config('tm.app_id'),
                 'timestamp' => time(),
                 'api_amount' => $amount,
                 'api_deposit' => $deposit,
@@ -406,7 +374,7 @@ class TmApiService
             $sign = static::getSign($options);
             $options['sign'] = $sign;
             // 发送
-            static::normalRequest($options, static::$url['arbitration']);
+            static::normalRequest($options, config('tb.action.arbitration'));
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
         }
@@ -422,13 +390,13 @@ class TmApiService
         try {
             $options = [
                 'order_no' => $orderNo,
-                'app_id' => static::$appId,
+                'app_id' => config('tm.app_id'),
                 'timestamp' => time(),
             ];
             $sign = static::getSign($options);
             $options['sign'] = $sign;
             // 发送
-            static::normalRequest($options, static::$url['cancelComplete']);
+            static::normalRequest($options, config('tb.action.cancel_complete'));
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
         }

@@ -32,7 +32,7 @@ class GameLevelingOrderComplainController extends Controller
     public function index()
     {
         return view('back.order.game-leveling-order-complain.index', [
-            'complainOrders' => GameLevelingOrderComplain::with('order')->condition(request()->all())->paginate(),
+            'complainOrders' => GameLevelingOrderComplain::with('order')->condition(request()->all())->latest('id')->paginate(),
             'statusCount' => GameLevelingOrderComplain::selectRaw('status, count(1) as count')
             ->groupBy('status')->pluck('count', 'status')->toArray(),
         ]);

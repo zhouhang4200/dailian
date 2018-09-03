@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Services\TmApiService;
 use Exception;
 use App\Exceptions\OrderException;
 use App\Exceptions\UserAssetException;
@@ -25,32 +26,10 @@ class TmOrderController extends Controller
 {
     // 发单器在丸子这边的发单账号ID
     private static $creatorUserId = 1;
-    // 发单器给的key
-    private static $key = '335ss6s8m8e4f5a8e2e2ls5';
-    // 发单器给的IV
-    private static $iv = '1234567891111152';
-    // 发单器的回调地址
-    private static $callbackUrl = 'www.tm.com/api/partner/order/callback';
-    // 发单器那边的app_id, app_secret
-    private static $appId = 'T8WsMDT4mJ5DxKJkf4fWVP5XYU00McJxxyAeoX4aPIy6jrWN70bmQltXfwof';
-    private static $appSecret = 'XlDzhGb9EeiJW2r6os1CVC6bKLrikFDHgH5mVLGdVRMNyYhY7Q4QvFIL2SBx';
+
+
     // 允许上传图片类型
     private static $extensions = ['png', 'jpg', 'jpeg', 'gif'];
-
-    /**
-     * 合成发单器的sign
-     * @param $options
-     * @return string
-     */
-    public function generateSign($options)
-    {
-        ksort($options);
-        $str = '';
-        foreach ($options as $key => $value) {
-            $str .= $key . '=' . $value . '&';
-        }
-        return md5(rtrim($str,  '&') . static::$appSecret);
-    }
 
     /**
      *  上架
@@ -413,13 +392,12 @@ class TmOrderController extends Controller
             if (! isset($data) || ! $data) {
                 throw new Exception('接收信息为空');
             }
-            $decryptData = openssl_decrypt($data, 'aes-128-cbc', static::$key, false, static::$iv);
-            $data = json_decode($decryptData, true);
-            $orderService = OrderService::init(static::$creatorUserId);
-            $game = Game::where('name', $data['game_name'])->first();
-            $region = Region::where('name', $data['game_region'])->where('game_id', $game->id)->first();
-            $server = Server::where('name', $data['game_serve'])->where('region_id', $region->id)->first();
-            $gameLevelingType = GameLevelingType::where('game_id', $game->id)->where('name', $data['game_leveling_type'])->first();
+            $decryptOrderData = TmApiService::decryptOrderData($data);
+            $orderService = OrderService::init(config('tm.user_id'));
+            $game = Game::where('name', $decryptOrderData['game_name'])->first();
+            $region = Region::where('name', $decryptOrderData['game_region'])->where('game_id', $game->id)->first();
+            $server = Server::where('name', $decryptOrderData['game_serve'])->where('region_id', $region->id)->first();
+            $gameLevelingType = GameLevelingType::where('game_id', $game->id)->where('name', $decryptOrderData['game_leveling_type'])->first();
             // 如果没有找到代练类型
             if (! $gameLevelingType) {
                 $gameLevelingType = GameLevelingType::where('game_id', $game->id)->first();
@@ -429,48 +407,32 @@ class TmOrderController extends Controller
                 $game->id,
                 $region->id,
                 $server->id,
-                $data['game_leveling_title'],
-                $data['game_account'],
-                $data['game_password'],
-                $data['game_role'],
-                $data['game_leveling_day'],
-                $data['game_leveling_hour'],
+                $decryptOrderData['game_leveling_title'],
+                $decryptOrderData['game_account'],
+                $decryptOrderData['game_password'],
+                $decryptOrderData['game_role'],
+                $decryptOrderData['game_leveling_day'],
+                $decryptOrderData['game_leveling_hour'],
                 $gameLevelingType->id,
-                $data['game_leveling_price'],
-                $data['game_leveling_security_deposit'],
-                $data['game_leveling_efficiency_deposit'],
-                $data['game_leveling_instructions'],
-                $data['game_leveling_requirements'],
-                $data['businessman_phone'],
-                $data['businessman_qq'],
-                $data['order_password'],
-                $data['order_no'],
+                $decryptOrderData['game_leveling_price'],
+                $decryptOrderData['game_leveling_security_deposit'],
+                $decryptOrderData['game_leveling_efficiency_deposit'],
+                $decryptOrderData['game_leveling_instructions'],
+                $decryptOrderData['game_leveling_requirements'],
+                $decryptOrderData['businessman_phone'],
+                $decryptOrderData['businessman_qq'],
+                $decryptOrderData['order_password'],
+                $decryptOrderData['order_no'],
                 1
             );
 
             // 回调
             if ($order) {
-                $options = [
-                    'no' => $data['order_no'],
-                    'order_no' => $order->trade_no,
-                    'app_id' => static::$appId,
-                    'timestamp' => time()
-                ];
-                // 合成发单器的签名
-                $sign = $this->generateSign($options);
-                $options['sign'] = $sign;
-
-                $client = new Client();
-                $response = $client->request('POST', static::$callbackUrl, [
-                    'form_params' => $options,
-                    'body' => 'x-www-form-urlencoded',
-                ]);
-                $result = $response->getBody()->getContents();
-                $result = json_decode($result, true);
-
-                if (! isset($result['code']) || $result['code'] != 1) {
+                $callbackResult = TmApiService::callback($decryptOrderData['order_no'], $order->trade_no);
+                if (! isset($callbackResult['code']) || $callbackResult['code'] != 1) {
                     throw new Exception('调用发单器回调接口失败');
                 }
+
             } else {
                 throw new Exception('丸子下单失败');
             }
@@ -479,7 +441,7 @@ class TmOrderController extends Controller
         } catch (UserAssetException $e) {
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
-            return response()->apiFail('接单平台接口异常');
+            return response()->apiFail('接单平台接口异常' . $e->getMessage());
         }
         DB::commit();
 //        myLog('place-order-success', ['发单器结果' => $result, '从发单器获取的参数' => $data, '发送给发单器的参数' => $options]);

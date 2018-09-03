@@ -1,10 +1,17 @@
 <?php
 
 return [
+    // 天猫发单器在丸子的账号ID
+    'user_id' => env('TM_USER_ID', 1),
+    // 天猫发单器给丸子分配的app_id
     'app_id' => env('TM_APP_ID', 'T8WsMDT4mJ5DxKJkf4fWVP5XYU00McJxxyAeoX4aPIy6jrWN70bmQltXfwof'),
-
+    // 天猫发单器给丸子分配的app_secret
     'app_secret' => env('TM_APP_SECRET', 'XlDzhGb9EeiJW2r6os1CVC6bKLrikFDHgH5mVLGdVRMNyYhY7Q4QvFIL2SBx'),
-
+    // 天猫发单器给的 aes_key
+    'aes_key' => env('TM_AES_KEY', '335ss6s8m8e4f5a8e2e2ls5'),
+    // 天猫发单器给的 aes_iv
+    'aes_iv' => env('TM_AES_IV', '1234567891111152'),
+    // 天猫发单器的接口地址
     'action' => [
         'take' =>  env('TM_DOMAIN', 'http://www.tm.com') . '/api/partner/order/receive', // 接单
         'anomaly' => env('TM_DOMAIN', 'http://www.tm.com') .  '/api/partner/order/abnormal', // 异常
@@ -18,5 +25,6 @@ return [
         'refuse_consult' => env('TM_DOMAIN', 'http://www.tm.com') .  '/api/partner/order/refuse-revoke', // 不同意协商
         'arbitration' =>  env('TM_DOMAIN', 'http://www.tm.com') .  '/api/partner/order/force-arbitration', // 客服仲裁
         'cancel_complete' => env('TM_DOMAIN', 'http://www.tm.com') . '/api/partner/order/cancel-complete', // 取消验收
+        'callback' => env('TM_DOMAIN', 'http://www.tm.com') . '/api/partner/order/callback', // 取消验收
     ],
 ];

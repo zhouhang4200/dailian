@@ -18,6 +18,7 @@ Route::namespace('V1')->prefix('v1')->group(function () {
         Route::post('login', 'LoginController@login'); // 登录
         Route::post('register', 'RegisterController@register'); // 注册
         Route::post('verification-code', 'ProfileController@verificationCode'); // 获取手机验证码
+        Route::post('password/refund', 'PasswordController@refund'); // 密码找回
 
         // 待接单订单
         Route::prefix('order/wait')->group(function () {
@@ -49,7 +50,6 @@ Route::namespace('V1')->prefix('v1')->group(function () {
         Route::post('code', 'LoginController@code'); // 获取微信JS_code
         // 登录密码问题
         Route::prefix('password')->group(function () {
-            Route::post('refund', 'PasswordController@refund'); // 密码找回
             Route::post('reset', 'PasswordController@reset'); // 重置密码
         });
         // 个人资料

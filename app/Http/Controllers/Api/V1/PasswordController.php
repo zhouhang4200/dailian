@@ -6,6 +6,7 @@ use Exception;
 use Hash;
 use Auth;
 use Redis;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -28,7 +29,11 @@ class PasswordController extends Controller
                 return response()->apiJson(1006); // 验证码错误
             }
 
-            $user = Auth::user();
+            $user = User::where('phone', request('phone'))->first();
+
+            if (! $user) {
+                return response()->apiJson(2006);
+            }
 
             $user->password = bcrypt(request('new_password'));
             $user->save();

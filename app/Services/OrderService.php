@@ -1050,7 +1050,7 @@ class OrderService
             // 写入订单日志
             GameLevelingOrderLog::store('完成仲裁', self::$order->trade_no, 0, self::$user->name, 0, '客服: 进行操作 [完成仲裁]');
         } catch (Exception $exception) {
-            throw new UnknownException($exception->getMessage());
+            throw new Exception($exception->getMessage());
         }
         DB::commit();
         return self::$order;
@@ -1298,7 +1298,7 @@ class OrderService
             throw new OrderException('您无权操作', 7006);
         }
 
-        if (is_null(self::$order->complain->messages)) {
+        if (is_null(optional(self::$order->complain)->messages)) {
             throw new OrderException('暂时没有仲裁信息', 7008);
         }
         return self::$order;

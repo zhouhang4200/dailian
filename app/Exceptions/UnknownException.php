@@ -19,7 +19,7 @@ class UnknownException extends Exception
      */
     public function __construct($message, $code = 0)
     {
-        myLog('unknown-ex', [$message, self::getFile(), self::getLine(), self::getMessage()]);
+        myLog('unknown-ex', [$message, self::getFile(), self::getLine(), request()->all()]);
         parent::__construct($message, $code);
     }
 }

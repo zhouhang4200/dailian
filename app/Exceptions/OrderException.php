@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Exceptions\Order;
+namespace App\Exceptions;
 
 use Exception;
 
@@ -19,7 +19,7 @@ class OrderException extends Exception
      */
     public function __construct($message, $code = 0)
     {
-        myLog('order-ex', [$message, self::getFile(), self::getFile(), self::getMessage()]);
+        myLog('order-ex', [$message, self::getFile(), self::getLine(), request()->all()]);
         parent::__construct($message, $code);
     }
 }

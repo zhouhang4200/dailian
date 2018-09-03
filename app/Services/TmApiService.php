@@ -8,7 +8,7 @@ use App\Models\User;
 use GuzzleHttp\Client;
 use App\Models\GameLevelingOrder;
 use App\Exceptions\UnknownException;
-use App\Exceptions\Order\OrderStatusException;
+
 
 /**
  * 丸子调千手的操作类
@@ -38,43 +38,37 @@ class TmApiService
      * @param $url
      * @param string $method
      * @return mixed
-     * @throws OrderStatusException
-     * @throws UnknownException
      * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws Exception
      */
     public static function normalRequest($options, $url, $method = 'POST')
     {
-        try {
-            $client = new Client();
-            $response = $client->request($method, $url, [
-                'form_params' => $options,
-            ]);
-            $result =  $response->getBody()->getContents();
-            
-            myLog('qs-request-result', ['地址' => $url,'信息' => $options,'结果' => $result]);
+        $client = new Client();
+        $response = $client->request($method, $url, [
+            'form_params' => $options,
+        ]);
+        $result =  $response->getBody()->getContents();
 
-            if (! isset($result) || empty($result)) {
-                throw new OrderStatusException('请求返回数据不存在');
-            }
+        myLog('qs-request-result', ['地址' => $url,'信息' => $options,'结果' => $result]);
 
-            if (isset($result) && ! empty($result)) {
-                $arrResult = json_decode($result, true);
+        if (! isset($result) || empty($result)) {
+            throw new Exception('请求返回数据不存在');
+        }
 
-                // 失败
-                if (isset($arrResult) && is_array($arrResult) && count($arrResult) > 0) {
-                    if (isset($arrResult['code']) && $arrResult['code'] != 1) {
-                        $message = $arrResult['message'] ?? '发单器接口返回错误';
+        if (isset($result) && ! empty($result)) {
+            $arrResult = json_decode($result, true);
 
-                        throw new OrderStatusException($message);
-                    }
+            // 失败
+            if (isset($arrResult) && is_array($arrResult) && count($arrResult) > 0) {
+                if (isset($arrResult['code']) && $arrResult['code'] != 1) {
+                    $message = $arrResult['message'] ?? '发单器接口返回错误';
+
+                    throw new Exception($message);
                 }
             }
-            return json_decode($result, true);
-        } catch (OrderStatusException $e) {
-            throw new OrderStatusException($e->getMessage());
-        } catch (Exception $e) {
-            throw new UnknownException($e->getMessage());
         }
+        return json_decode($result, true);
+
     }
 
     /**
@@ -84,48 +78,42 @@ class TmApiService
      * @param string $method
      * @return mixed
      * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws OrderStatusException
-     * @throws UnknownException
+     * @throws Exception
      */
     public static function formDataRequest($options, $url, $method = 'POST')
     {
-        try {
-            $data = [];
-            foreach ($options as $name => $value) {
-                $data[$name]['name'] = $name;
-                $data[$name]['contents'] = $value;
-            }
-            $client = new Client();
-            $response = $client->request($method, $url, [
-                'multipart' => $data,
-            ]);
-            $result = $response->getBody()->getContents();
 
-            // 发送日志
-            myLog('qs-request-result', ['地址' => $url,'信息' => $options,'结果' => $result]);
+        $data = [];
+        foreach ($options as $name => $value) {
+            $data[$name]['name'] = $name;
+            $data[$name]['contents'] = $value;
+        }
+        $client = new Client();
+        $response = $client->request($method, $url, [
+            'multipart' => $data,
+        ]);
+        $result = $response->getBody()->getContents();
 
-            if (! isset($result) || empty($result)) {
-                throw new OrderStatusException('请求返回数据不存在');
-            }
+        // 发送日志
+        myLog('qs-request-result', ['地址' => $url,'信息' => $options,'结果' => $result]);
 
-            if (isset($result) && ! empty($result)) {
-                $arrResult = json_decode($result, true);
+        if (! isset($result) || empty($result)) {
+            throw new Exception('请求返回数据不存在');
+        }
 
-                // 失败
-                if (isset($arrResult) && is_array($arrResult) && count($arrResult) > 0) {
-                    if (isset($arrResult['code']) && $arrResult['code'] != 1) {
-                        $message = $arrResult['message'] ?? '发单器接口返回错误';
+        if (isset($result) && ! empty($result)) {
+            $arrResult = json_decode($result, true);
 
-                        throw new OrderStatusException($message);
-                    }
+            // 失败
+            if (isset($arrResult) && is_array($arrResult) && count($arrResult) > 0) {
+                if (isset($arrResult['code']) && $arrResult['code'] != 1) {
+                    $message = $arrResult['message'] ?? '发单器接口返回错误';
+                    throw new Exception($message);
                 }
             }
-            return json_decode($result, true);
-        } catch (OrderStatusException $e) {
-            throw new OrderStatusException($e->getMessage());
-        } catch (Exception $e) {
-            throw new UnknownException($e->getMessage());
         }
+        return json_decode($result, true);
+
     }
 
     /**
@@ -240,7 +228,7 @@ class TmApiService
             $options['sign'] = $sign;
             // 发送
             static::normalRequest($options, config('tm.action.cancel_complain'));
-        } catch (Exception $e) {
+        } catch (TmApiException $e) {
             throw new UnknownException($e->getMessage());
         }
     }

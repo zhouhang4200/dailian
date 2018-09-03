@@ -4,12 +4,7 @@ namespace App\Services;
 
 use Exception;
 use App\Exceptions\UnknownException;
-use App\Exceptions\UserAsset\UserAssetTypeException;
-use App\Exceptions\UserAsset\UserAssetUserException;
-use App\Exceptions\UserAsset\UserAssetMoneyException;
-use App\Exceptions\UserAsset\UserAssetRecordException;
-use App\Exceptions\UserAsset\UserAssetTradeNoException;
-use App\Exceptions\UserAsset\UserAssetBalanceException;
+use App\Exceptions\UserAssetException;
 use App\Models\User;
 use App\Models\UserAsset;
 use App\Models\UserAssetFlow;
@@ -65,25 +60,22 @@ class UserAssetService
      * @param float $amount 金额
      * @param string $tradeNO 交易单号
      * @param string|null $remark 备注
-     * @throws UserAssetMoneyException
-     * @throws UserAssetTradeNoException
-     * @throws UserAssetTypeException
-     * @throws UserAssetUserException
      * @return UserAssetService|null
+     * @throws UserAssetException
      */
     public static function init(int $subType, int $userId, float $amount, string $tradeNO, string $remark = null)
     {
         if (!$user = User::find($userId)) {
-            throw new UserAssetUserException('用户ID不合法', 4003);
+            throw new UserAssetException('用户ID不合法', 4003);
         }
         if ($amount <= 0) {
-            throw new UserAssetMoneyException('金额不合法', 4004);
+            throw new UserAssetException('金额不合法', 4004);
         }
         if (! $tradeNO) {
-            throw new UserAssetTradeNoException('交易单号不合法', 4005);
+            throw new UserAssetException('交易单号不合法', 4005);
         }
         if (! in_array($subType, array_flip(config('user_asset.sub_type')))) {
-            throw new UserAssetTypeException('子类型不存在', 4006);
+            throw new UserAssetException('子类型不存在', 4006);
         }
 
         self::$type    = (int) substr(trim($subType), 0, 1);
@@ -102,13 +94,13 @@ class UserAssetService
     /**
      * 充值
      * @return bool
-     * @throws UserAssetTypeException
+     * @throws UserAssetException
      * @throws Exception
      */
     public function recharge()
     {
         if (self::$type != 1) {
-            throw new UserAssetTypeException('请检查传入的子类型是否正确', 4007);
+            throw new UserAssetException('请检查传入的子类型是否正确', 4007);
         }
 
         DB::beginTransaction();
@@ -130,13 +122,13 @@ class UserAssetService
     /**
      * 提现
      * @return bool
-     * @throws UserAssetTypeException
+     * @throws UserAssetException
      * @throws Exception
      */
     public function withdraw()
     {
         if (self::$type != 3) {
-            throw new UserAssetTypeException('请检查传入的子类型是否正确', 4007);
+            throw new UserAssetException('请检查传入的子类型是否正确', 4007);
         }
 
         DB::beginTransaction();
@@ -144,12 +136,12 @@ class UserAssetService
         $userAsset = UserAsset::where('user_id', self::$userId)->lockForUpdate()->first();
         // 检测余额是否够本次提现
         if ($userAsset->balance < self::$amount) {
-            throw new UserAssetBalanceException('您的余额不够,请调整提现金额', 4001);
+            throw new UserAssetException('您的余额不够,请调整提现金额', 4001);
         }
         // 获取用户认证信息
         $realNameCertification = RealNameCertification::where('user_id', self::$userId)->first();
         if (! $realNameCertification) {
-            throw new UserAssetUserException('您的账号没有进行实名认证无法进行提现');
+            throw new UserAssetException('您的账号没有进行实名认证无法进行提现');
         }
 
         try {
@@ -180,13 +172,13 @@ class UserAssetService
     /**
      * 冻结
      * @return bool
-     * @throws UserAssetTypeException
+     * @throws UserAssetException
      * @throws Exception
      */
     public function frozen()
     {
         if (self::$type != 3) {
-            throw new UserAssetTypeException('请检查传入的子类型是否正确', 4007);
+            throw new UserAssetException('请检查传入的子类型是否正确', 4007);
         }
         DB::beginTransaction();
 
@@ -194,7 +186,7 @@ class UserAssetService
 
         // 检测余额是否够本次提现
         if ($userAsset->balance < self::$amount) {
-            throw new UserAssetBalanceException('您的余额不够', 4001);
+            throw new UserAssetException('您的余额不够', 4001);
         }
 
         try {
@@ -214,13 +206,13 @@ class UserAssetService
     /**
      * 解冻
      * @return bool
-     * @throws UserAssetTypeException
+     * @throws UserAssetException
      * @throws Exception
      */
     public function unfrozen()
     {
         if (self::$type != 4) {
-            throw new UserAssetTypeException('请检查传入的子类型是否正确', 4007);
+            throw new UserAssetException('请检查传入的子类型是否正确', 4007);
         }
 
         DB::beginTransaction();
@@ -228,7 +220,7 @@ class UserAssetService
         $userAsset = UserAsset::where('user_id', self::$userId)->lockForUpdate()->first();
         // 检测余额是否够本次提现
         if ($userAsset->frozen < self::$amount) {
-            throw new UserAssetBalanceException('您的冻结金额不够本次解冻', 4008);
+            throw new UserAssetException('您的冻结金额不够本次解冻', 4008);
         }
 
         // 检测用户相关冻结订单号总金额与需要解冻金额是否相符
@@ -236,11 +228,11 @@ class UserAssetService
             ->where('trade_no', self::$tradeNO)->where('type', 3)->first();
 
         if (is_null($frozen)) {
-            throw new UserAssetRecordException('不存在相关的冻结记录', 4009);
+            throw new UserAssetException('不存在相关的冻结记录', 4009);
         }
 
         if ($frozen->amount < self::$amount) {
-            throw new UserAssetMoneyException('解冻金额大于冻结金额', 4010);
+            throw new UserAssetException('解冻金额大于冻结金额', 4010);
         }
 
         try {
@@ -260,20 +252,20 @@ class UserAssetService
     /**
      * 从余额支出
      * @return bool
-     * @throws UserAssetTypeException
+     * @throws UserAssetException
      * @throws Exception
      */
     public function expendFromBalance()
     {
         if (self::$type != 6) {
-            throw new UserAssetTypeException('请检查传入的子类型是否正确', 4007);
+            throw new UserAssetException('请检查传入的子类型是否正确', 4007);
         }
 
         DB::beginTransaction();
         $userAsset = UserAsset::where('user_id', self::$userId)->lockForUpdate()->first();
         // 检测余额是否够本次支出
         if ($userAsset->balance < self::$amount) {
-            throw new UserAssetBalanceException('您的余额不够', 4001);
+            throw new UserAssetException('您的余额不够', 4001);
         }
 
         try {
@@ -293,13 +285,13 @@ class UserAssetService
      * 从冻结支出
      * @return bool
      * @throws UnknownException
-     * @throws UserAssetBalanceException
-     * @throws UserAssetTypeException
+     * @throws UserAssetException
+     * @throws UserAssetException
      */
     public function expendFromFrozen()
     {
         if (self::$type != 6) {
-            throw new UserAssetTypeException('请检查传入的子类型是否正确', 4007);
+            throw new UserAssetException('请检查传入的子类型是否正确', 4007);
         }
 
         DB::beginTransaction();
@@ -308,7 +300,7 @@ class UserAssetService
         // 检测冻结余额是否够本次支出
 
         if ($userAsset->frozen < self::$amount) {
-            throw new UserAssetBalanceException('冻结余额不够支出', 4008);
+            throw new UserAssetException('冻结余额不够支出', 4008);
         }
 
         try {
@@ -328,13 +320,13 @@ class UserAssetService
     /**
      * 收入
      * @return bool
-     * @throws UserAssetTypeException
+     * @throws UserAssetException
      * @throws Exception
      */
     public function income()
     {
         if (self::$type != 5) {
-            throw new UserAssetTypeException('请检查传入的子类型是否正确', 4007);
+            throw new UserAssetException('请检查传入的子类型是否正确', 4007);
         }
 
         DB::beginTransaction();
@@ -343,7 +335,7 @@ class UserAssetService
         // 检测冻结余额是否够本次支出
 
         if ($userAsset->frozen < self::$amount) {
-            throw new UserAssetBalanceException('冻结余额不够支出', 4008);
+            throw new UserAssetException('冻结余额不够支出', 4008);
         }
 
         try {

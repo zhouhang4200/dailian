@@ -2,27 +2,25 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Exceptions\Order\OrderImageException;
-use DB;
 use Exception;
-use GuzzleHttp\Client;
+use App\Exceptions\OrderException;
+use App\Exceptions\UserAssetException;
 use App\Models\Game;
 use App\Models\Server;
 use App\Models\Region;
-use Illuminate\Http\UploadedFile;
 use App\Models\GameLevelingType;
-use App\Services\OrderService;
 use App\Models\GameLevelingOrder;
-use Illuminate\Http\Request;
+use App\Services\OrderService;
 use App\Http\Controllers\Controller;
-use App\Exceptions\Order\OrderTimeException;
-use App\Exceptions\Order\OrderUserException;
-use App\Exceptions\Order\OrderMoneyException;
-use App\Exceptions\Order\OrderStatusException;
-use App\Exceptions\Order\OrderPasswordException;
-use App\Exceptions\Order\OrderAdminUserException;
-use App\Exceptions\Order\OrderUnauthorizedException;
+use DB;
+use GuzzleHttp\Client;
+use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 
+/**
+ * Class TmOrderController
+ * @package App\Http\Controllers\Api
+ */
 class TmOrderController extends Controller
 {
     // 发单器在丸子这边的发单账号ID
@@ -58,6 +56,7 @@ class TmOrderController extends Controller
      *  上架
      * @param Request $request
      * @return mixed
+     * @throws Exception
      */
     public function onSale(Request $request)
     {
@@ -67,25 +66,10 @@ class TmOrderController extends Controller
 
             $orderService = OrderService::init($userId, $orderNo);
             $orderService->onSale();
-        } catch (OrderTimeException $e) {
+        } catch (OrderException $e) {
             myLog('operate-onSale-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail($e->getMessage());
-        } catch (OrderUserException $e) {
-            myLog('operate-onSale-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderMoneyException $e) {
-            myLog('operate-onSale-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderStatusException $e) {
-            myLog('operate-onSale-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderPasswordException $e) {
-            myLog('operate-onSale-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderAdminUserException $e) {
-            myLog('operate-onSale-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderUnauthorizedException $e) {
+        } catch (UserAssetException $e) {
             myLog('operate-onSale-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
@@ -108,29 +92,11 @@ class TmOrderController extends Controller
 
             $orderService = OrderService::init($userId, $orderNo);
             $orderService->offSale();
-        } catch (OrderTimeException $e) {
-            myLog('operate-offSale-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+        } catch (OrderException $e) {
             return response()->apiFail($e->getMessage());
-        } catch (OrderUserException $e) {
-            myLog('operate-offSale-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderMoneyException $e) {
-            myLog('operate-offSale-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderStatusException $e) {
-            myLog('operate-offSale-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderPasswordException $e) {
-            myLog('operate-offSale-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderAdminUserException $e) {
-            myLog('operate-offSale-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderUnauthorizedException $e) {
-            myLog('operate-offSale-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+        } catch (UserAssetException $e) {
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
-            myLog('operate-local-offSale-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail('接单平台接口异常');
         }
         return response()->apiSuccess();
@@ -154,29 +120,11 @@ class TmOrderController extends Controller
                 $orderService = OrderService::init($userId, $orderNo);
                 $orderService->delete();
             }
-        } catch (OrderTimeException $e) {
-            myLog('operate-delete-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+        } catch (OrderException $e) {
             return response()->apiFail($e->getMessage());
-        } catch (OrderUserException $e) {
-            myLog('operate-delete-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderMoneyException $e) {
-            myLog('operate-delete-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderStatusException $e) {
-            myLog('operate-delete-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderPasswordException $e) {
-            myLog('operate-delete-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderAdminUserException $e) {
-            myLog('operate-delete-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderUnauthorizedException $e) {
-            myLog('operate-delete-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+        } catch (UserAssetException $e) {
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
-            myLog('operate-local-delete-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail('接单平台接口异常');
         }
         return response()->apiSuccess();
@@ -195,29 +143,11 @@ class TmOrderController extends Controller
 
             $orderService = OrderService::init($userId, $orderNo);
             $orderService->complete();
-        } catch (OrderTimeException $e) {
-            myLog('operate-complete-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+        } catch (OrderException $e) {
             return response()->apiFail($e->getMessage());
-        } catch (OrderUserException $e) {
-            myLog('operate-complete-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderMoneyException $e) {
-            myLog('operate-complete-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderStatusException $e) {
-            myLog('operate-complete-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderPasswordException $e) {
-            myLog('operate-complete-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderAdminUserException $e) {
-            myLog('operate-complete-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderUnauthorizedException $e) {
-            myLog('operate-complete-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+        } catch (UserAssetException $e) {
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
-            myLog('operate-local-complete-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail('接单平台接口异常');
         }
         return response()->apiSuccess();
@@ -236,29 +166,11 @@ class TmOrderController extends Controller
 
             $orderService = OrderService::init($userId, $orderNo);
             $orderService->lock();
-        } catch (OrderTimeException $e) {
-            myLog('operate-lock-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+        } catch (OrderException $e) {
             return response()->apiFail($e->getMessage());
-        } catch (OrderUserException $e) {
-            myLog('operate-lock-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderMoneyException $e) {
-            myLog('operate-lock-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderStatusException $e) {
-            myLog('operate-lock-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderPasswordException $e) {
-            myLog('operate-lock-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderAdminUserException $e) {
-            myLog('operate-lock-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderUnauthorizedException $e) {
-            myLog('operate-lock-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+        } catch (UserAssetException $e) {
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
-            myLog('operate-local-lock-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail('接单平台接口异常');
         }
         return response()->apiSuccess();
@@ -277,29 +189,11 @@ class TmOrderController extends Controller
 
             $orderService = OrderService::init($userId, $orderNo);
             $orderService->cancelLock();
-        } catch (OrderTimeException $e) {
-            myLog('operate-cancelLock-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+        } catch (OrderException $e) {
             return response()->apiFail($e->getMessage());
-        } catch (OrderUserException $e) {
-            myLog('operate-cancelLock-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderMoneyException $e) {
-            myLog('operate-cancelLock-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderStatusException $e) {
-            myLog('operate-cancelLock-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderPasswordException $e) {
-            myLog('operate-cancelLock-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderAdminUserException $e) {
-            myLog('operate-cancelLock-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderUnauthorizedException $e) {
-            myLog('operate-cancelLock-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+        } catch (UserAssetException $e) {
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
-            myLog('operate-local-cancelLock-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail('接单平台接口异常');
         }
         return response()->apiSuccess();
@@ -324,29 +218,11 @@ class TmOrderController extends Controller
 
             $orderService = OrderService::init($userId, $orderNo);
             $orderService->applyConsult($amount, $securityDeposit, $efficiencyDeposit, $reason);
-        } catch (OrderTimeException $e) {
-            myLog('operate-applyConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+        } catch (OrderException $e) {
             return response()->apiFail($e->getMessage());
-        } catch (OrderUserException $e) {
-            myLog('operate-applyConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderMoneyException $e) {
-            myLog('operate-applyConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderStatusException $e) {
-            myLog('operate-applyConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderPasswordException $e) {
-            myLog('operate-applyConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderAdminUserException $e) {
-            myLog('operate-applyConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderUnauthorizedException $e) {
-            myLog('operate-applyConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+        } catch (UserAssetException $e) {
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
-            myLog('operate-local-applyConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail('接单平台接口异常');
         }
         return response()->apiSuccess();
@@ -362,32 +238,13 @@ class TmOrderController extends Controller
         try {
             $orderNo = $request->order_no;
             $userId = $request->user->id;
-            myLog('no', ['no' => $orderNo]);
             $orderService = OrderService::init($userId, $orderNo);
             $orderService->cancelConsult();
-        } catch (OrderTimeException $e) {
-            myLog('operate-cancelConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+        } catch (OrderException $e) {
             return response()->apiFail($e->getMessage());
-        } catch (OrderUserException $e) {
-            myLog('operate-cancelConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderMoneyException $e) {
-            myLog('operate-cancelConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderStatusException $e) {
-            myLog('operate-cancelConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderPasswordException $e) {
-            myLog('operate-cancelConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderAdminUserException $e) {
-            myLog('operate-cancelConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderUnauthorizedException $e) {
-            myLog('operate-cancelConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+        } catch (UserAssetException $e) {
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
-            myLog('operate-local-cancelConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail('接单平台接口异常');
         }
         return response()->apiSuccess();
@@ -406,29 +263,11 @@ class TmOrderController extends Controller
 
             $orderService = OrderService::init($userId, $orderNo);
             $orderService->agreeConsult();
-        } catch (OrderTimeException $e) {
-            myLog('operate-agreeConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+        } catch (OrderException $e) {
             return response()->apiFail($e->getMessage());
-        } catch (OrderUserException $e) {
-            myLog('operate-agreeConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderMoneyException $e) {
-            myLog('operate-agreeConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderStatusException $e) {
-            myLog('operate-agreeConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderPasswordException $e) {
-            myLog('operate-agreeConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderAdminUserException $e) {
-            myLog('operate-agreeConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderUnauthorizedException $e) {
-            myLog('operate-agreeConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+        } catch (UserAssetException $e) {
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
-            myLog('operate-local-agreeConsult', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail('接单平台接口异常');
         }
         return response()->apiSuccess();
@@ -447,29 +286,11 @@ class TmOrderController extends Controller
 
             $orderService = OrderService::init($userId, $orderNo);
             $orderService->rejectConsult();
-        } catch (OrderTimeException $e) {
-            myLog('operate-refuseConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+        } catch (OrderException $e) {
             return response()->apiFail($e->getMessage());
-        } catch (OrderUserException $e) {
-            myLog('operate-refuseConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderMoneyException $e) {
-            myLog('operate-refuseConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderStatusException $e) {
-            myLog('operate-refuseConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderPasswordException $e) {
-            myLog('operate-refuseConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderAdminUserException $e) {
-            myLog('operate-refuseConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderUnauthorizedException $e) {
-            myLog('operate-refuseConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+        } catch (UserAssetException $e) {
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
-            myLog('operate-local-refuseConsult-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail('接单平台接口异常');
         }
         return response()->apiSuccess();
@@ -511,33 +332,13 @@ class TmOrderController extends Controller
                 $image['pic3']['path'] = $imagePath3;
             }
 
-//            myLog('image', ['image' => $image, 'pic1' => $pic1, 'pic2' => $pic2, 'pic3' => $pic3]);
-//            myLog('image', ['image' => $image, 'reason' => $reason]);
             $orderService = OrderService::init($userId, $orderNo);
             $orderService->applyComplain($reason, $image);
-        } catch (OrderTimeException $e) {
-            myLog('operate-applyComplain-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+        } catch (OrderException $e) {
             return response()->apiFail($e->getMessage());
-        } catch (OrderUserException $e) {
-            myLog('operate-applyComplain-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderMoneyException $e) {
-            myLog('operate-applyComplain-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderStatusException $e) {
-            myLog('operate-applyComplain-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderPasswordException $e) {
-            myLog('operate-applyComplain-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderAdminUserException $e) {
-            myLog('operate-applyComplain-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderUnauthorizedException $e) {
-            myLog('operate-applyComplain-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+        } catch (UserAssetException $e) {
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
-            myLog('operate-local-applyComplain-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail('接单平台接口异常');
         }
         return response()->apiSuccess();
@@ -588,29 +389,11 @@ class TmOrderController extends Controller
 
             $orderService = OrderService::init($userId, $orderNo);
             $orderService->cancelComplain();
-        } catch (OrderTimeException $e) {
-            myLog('operate-cancelComplain-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+        } catch (OrderException $e) {
             return response()->apiFail($e->getMessage());
-        } catch (OrderUserException $e) {
-            myLog('operate-cancelComplain-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderMoneyException $e) {
-            myLog('operate-cancelComplain-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderStatusException $e) {
-            myLog('operate-cancelComplain-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderPasswordException $e) {
-            myLog('operate-cancelComplain-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderAdminUserException $e) {
-            myLog('operate-cancelComplain-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderUnauthorizedException $e) {
-            myLog('operate-cancelComplain-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+        } catch (UserAssetException $e) {
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
-            myLog('operate-local-cancelComplain-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail('接单平台接口异常');
         }
         return response()->apiSuccess();
@@ -620,6 +403,7 @@ class TmOrderController extends Controller
      * 接收发单参数，创建订单
      * @param Request $request
      * @return bool
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function placeOrder(Request $request)
     {
@@ -629,8 +413,8 @@ class TmOrderController extends Controller
             if (! isset($data) || ! $data) {
                 throw new Exception('接收信息为空');
             }
-            $decriptData = openssl_decrypt($data, 'aes-128-cbc', static::$key, false, static::$iv);
-            $data = json_decode($decriptData, true);
+            $decryptData = openssl_decrypt($data, 'aes-128-cbc', static::$key, false, static::$iv);
+            $data = json_decode($decryptData, true);
             $orderService = OrderService::init(static::$creatorUserId);
             $game = Game::where('name', $data['game_name'])->first();
             $region = Region::where('name', $data['game_region'])->where('game_id', $game->id)->first();
@@ -690,30 +474,11 @@ class TmOrderController extends Controller
             } else {
                 throw new Exception('丸子下单失败');
             }
-        } catch (OrderTimeException $e) {
-            myLog('place-order-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+        } catch (OrderException $e) {
             return response()->apiFail($e->getMessage());
-        } catch (OrderUserException $e) {
-            myLog('place-order-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderMoneyException $e) {
-            myLog('place-order-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderStatusException $e) {
-            myLog('place-order-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderPasswordException $e) {
-            myLog('place-order-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderAdminUserException $e) {
-            myLog('place-order-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderUnauthorizedException $e) {
-            myLog('place-order-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+        } catch (UserAssetException $e) {
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
-            DB::rollback();
-            myLog('place-order-local-error', ['data' => $data, 'message' => $e->getMessage(), 'line' => $e->getLine()]);
             return response()->apiFail('接单平台接口异常');
         }
         DB::commit();
@@ -743,29 +508,11 @@ class TmOrderController extends Controller
                 'server_name' => $order->server_name,
                 'title' => $order->title,
             ];
-        } catch (OrderTimeException $e) {
-            myLog('operate-detail-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+        } catch (OrderException $e) {
             return response()->apiFail($e->getMessage());
-        } catch (OrderUserException $e) {
-            myLog('operate-detail-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderMoneyException $e) {
-            myLog('operate-detail-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderStatusException $e) {
-            myLog('operate-detail-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderPasswordException $e) {
-            myLog('operate-detail-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderAdminUserException $e) {
-            myLog('operate-detail-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderUnauthorizedException $e) {
-            myLog('operate-detail-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+        } catch (UserAssetException $e) {
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
-            myLog('operate-local-detail-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail('接单平台接口异常');
         }
         return response()->apiSuccess('成功', $data);
@@ -787,29 +534,11 @@ class TmOrderController extends Controller
 
             $orderService = OrderService::init($userId, $orderNo);
             $order = $orderService->addTime($day, $hour);
-        } catch (OrderTimeException $e) {
-            myLog('operate-addTime-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+        } catch (OrderException $e) {
             return response()->apiFail($e->getMessage());
-        } catch (OrderUserException $e) {
-            myLog('operate-addTime-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderMoneyException $e) {
-            myLog('operate-addTime-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderStatusException $e) {
-            myLog('operate-addTime-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderPasswordException $e) {
-            myLog('operate-addTime-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderAdminUserException $e) {
-            myLog('operate-addTime-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderUnauthorizedException $e) {
-            myLog('operate-addTime-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+        } catch (UserAssetException $e) {
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
-            myLog('operate-local-addTime-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail('接单平台接口异常');
         }
         return response()->apiSuccess();
@@ -830,29 +559,11 @@ class TmOrderController extends Controller
 
             $orderService = OrderService::init($userId, $orderNo);
             $order = $orderService->addMoney($amount);
-        } catch (OrderTimeException $e) {
-            myLog('operate-addMoney-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+        } catch (OrderException $e) {
             return response()->apiFail($e->getMessage());
-        } catch (OrderUserException $e) {
-            myLog('operate-addMoney-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderMoneyException $e) {
-            myLog('operate-addMoney-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderStatusException $e) {
-            myLog('operate-addMoney-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderPasswordException $e) {
-            myLog('operate-addMoney-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderAdminUserException $e) {
-            myLog('operate-addMoney-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderUnauthorizedException $e) {
-            myLog('operate-addMoney-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+        } catch (UserAssetException $e) {
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
-            myLog('operate-local-addMoney-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail('接单平台接口异常');
         }
         return response()->apiSuccess();
@@ -874,29 +585,11 @@ class TmOrderController extends Controller
 
             $orderService = OrderService::init($userId, $orderNo);
             $order = $orderService->updateAccountPassword($account, $password);
-        } catch (OrderTimeException $e) {
-            myLog('operate-updateAccountPassword-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+        } catch (OrderException $e) {
             return response()->apiFail($e->getMessage());
-        } catch (OrderUserException $e) {
-            myLog('operate-updateAccountPassword-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderMoneyException $e) {
-            myLog('operate-updateAccountPassword-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderStatusException $e) {
-            myLog('operate-updateAccountPassword-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderPasswordException $e) {
-            myLog('operate-updateAccountPassword-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderAdminUserException $e) {
-            myLog('operate-updateAccountPassword-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderUnauthorizedException $e) {
-            myLog('operate-updateAccountPassword-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+        } catch (UserAssetException $e) {
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
-            myLog('operate-local-updateAccountPassword-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail('接单平台接口异常');
         }
         return response()->apiSuccess();
@@ -906,6 +599,7 @@ class TmOrderController extends Controller
      * 修改订单
      * @param Request $request
      * @return bool
+     * @throws Exception
      */
     public function update(Request $request)
     {
@@ -915,8 +609,8 @@ class TmOrderController extends Controller
             if (! isset($data) || ! $data) {
                 throw new Exception('接收信息为空');
             }
-            $decriptData = openssl_decrypt($data, 'aes-128-cbc', static::$key, false, static::$iv);
-            $data = json_decode($decriptData, true);
+            $decryptData = openssl_decrypt($data, 'aes-128-cbc', static::$key, false, static::$iv);
+            $data = json_decode($decryptData, true);
             $orderNo = $data['order_no'];
             $orderService = OrderService::init(static::$creatorUserId, $orderNo);
             $game = Game::where('name', $data['game_name'])->first();
@@ -944,30 +638,11 @@ class TmOrderController extends Controller
                 $data['businessman_qq'],
                 $data['order_password']
             );
-        } catch (OrderTimeException $e) {
-            myLog('operate-update-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+        } catch (OrderException $e) {
             return response()->apiFail($e->getMessage());
-        } catch (OrderUserException $e) {
-            myLog('operate-update-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderMoneyException $e) {
-            myLog('operate-update-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderStatusException $e) {
-            myLog('operate-update-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderPasswordException $e) {
-            myLog('operate-update-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderAdminUserException $e) {
-            myLog('operate-update-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderUnauthorizedException $e) {
-            myLog('operate-update-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+        } catch (UserAssetException $e) {
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
-            DB::rollback();
-            myLog('operate-update-local-error', ['data' => $data, 'message' => $e->getMessage()]);
             return response()->apiFail('接单平台接口异常');
         }
         DB::commit();
@@ -993,29 +668,11 @@ class TmOrderController extends Controller
                 $data[$k]['created_at'] = $order->created_at->toDateTimeString();
                 $data[$k]['url'] = asset($image->path);
             }
-        } catch (OrderTimeException $e) {
-            myLog('operate-applyCompleteImage-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+        } catch (OrderException $e) {
             return response()->apiFail($e->getMessage());
-        } catch (OrderUserException $e) {
-            myLog('operate-applyCompleteImage-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderMoneyException $e) {
-            myLog('operate-applyCompleteImage-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderStatusException $e) {
-            myLog('operate-applyCompleteImage-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderPasswordException $e) {
-            myLog('operate-applyCompleteImage-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderAdminUserException $e) {
-            myLog('operate-applyCompleteImage-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderUnauthorizedException $e) {
-            myLog('operate-applyCompleteImage-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+        } catch (UserAssetException $e) {
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
-            myLog('operate-applyCompleteImage-local-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail('接单平台接口异常');
         }
         return response()->apiSuccess('操作成功', $data);
@@ -1037,29 +694,11 @@ class TmOrderController extends Controller
 
             $orderService = OrderService::init($userId, $orderNo);
             $order = $orderService->sendComplainMessage($image, $reason);
-        } catch (OrderTimeException $e) {
-            myLog('operate-complainMessage-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+        } catch (OrderException $e) {
             return response()->apiFail($e->getMessage());
-        } catch (OrderUserException $e) {
-            myLog('operate-complainMessage-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderMoneyException $e) {
-            myLog('operate-complainMessage-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderStatusException $e) {
-            myLog('operate-complainMessage-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderPasswordException $e) {
-            myLog('operate-complainMessage-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderAdminUserException $e) {
-            myLog('operate-complainMessage-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderUnauthorizedException $e) {
-            myLog('operate-complainMessage-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+        } catch (UserAssetException $e) {
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
-            myLog('operate-local-complainMessage-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail('接单平台接口异常');
         }
         return response()->apiSuccess();
@@ -1088,29 +727,11 @@ class TmOrderController extends Controller
                 $data[$k]['send_content'] = $message->content;
                 $data[$k]['send_time'] = $message->created_at->toDateTimeString();
             }
-        } catch (OrderTimeException $e) {
-            myLog('operate-getMessage-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+        } catch (OrderException $e) {
             return response()->apiFail($e->getMessage());
-        } catch (OrderUserException $e) {
-            myLog('operate-getMessage-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderMoneyException $e) {
-            myLog('operate-getMessage-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderStatusException $e) {
-            myLog('operate-getMessage-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderPasswordException $e) {
-            myLog('operate-getMessage-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderAdminUserException $e) {
-            myLog('operate-getMessage-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderUnauthorizedException $e) {
-            myLog('operate-getMessage-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+        } catch (UserAssetException $e) {
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
-            myLog('operate-local-getMessage-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail('接单平台接口异常');
         }
         return response()->apiSuccess('操作成功', $data);
@@ -1131,29 +752,11 @@ class TmOrderController extends Controller
 
             $orderService = OrderService::init($userId, $orderNo);
             $order = $orderService->sendMessage($message);
-        } catch (OrderTimeException $e) {
-            myLog('operate-sendMessage-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+        } catch (OrderException $e) {
             return response()->apiFail($e->getMessage());
-        } catch (OrderUserException $e) {
-            myLog('operate-sendMessage-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderMoneyException $e) {
-            myLog('operate-sendMessage-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderStatusException $e) {
-            myLog('operate-sendMessage-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderPasswordException $e) {
-            myLog('operate-sendMessage-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderAdminUserException $e) {
-            myLog('operate-sendMessage-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderUnauthorizedException $e) {
-            myLog('operate-sendMessage-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+        } catch (UserAssetException $e) {
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
-            myLog('operate-local-sendMessage-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail('接单平台接口异常');
         }
         return response()->apiSuccess();
@@ -1208,29 +811,11 @@ class TmOrderController extends Controller
                     }
                 }
             }
-        } catch (OrderTimeException $e) {
-            myLog('operate-getComplainInfo-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+        } catch (OrderException $e) {
             return response()->apiFail($e->getMessage());
-        } catch (OrderUserException $e) {
-            myLog('operate-getComplainInfo-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderMoneyException $e) {
-            myLog('operate-getComplainInfo-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderStatusException $e) {
-            myLog('operate-getComplainInfo-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderPasswordException $e) {
-            myLog('operate-getComplainInfo-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderAdminUserException $e) {
-            myLog('operate-getComplainInfo-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
-            return response()->apiFail($e->getMessage());
-        } catch (OrderUnauthorizedException $e) {
-            myLog('operate-getComplainInfo-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
+        } catch (UserAssetException $e) {
             return response()->apiFail($e->getMessage());
         } catch (Exception $e) {
-            myLog('operate-local-getComplainInfo-error', ['no' => $orderNo, 'message' => $e->getMessage()]);
             return response()->apiFail('接单平台接口异常');
         }
         return response()->apiSuccess('成功', $data);

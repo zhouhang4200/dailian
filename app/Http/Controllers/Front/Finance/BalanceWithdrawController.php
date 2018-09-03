@@ -3,11 +3,15 @@
 namespace App\Http\Controllers\Front\Finance;
 
 use DB;
-use App\Exceptions\UserAsset\UserAssetBalanceException;
+use App\Exceptions\UserAssetException;
 use App\Models\BalanceWithdraw;
 use App\Http\Controllers\Controller;
 use App\Services\UserAssetService;
 
+/**
+ * Class BalanceWithdrawController
+ * @package App\Http\Controllers\Front\Finance
+ */
 class BalanceWithdrawController extends Controller
 {
     public function index()
@@ -50,8 +54,8 @@ class BalanceWithdrawController extends Controller
             ]);
             // 冻结资金
             UserAssetService::init(35, auth()->user()->parent_id, $amount, $record->trade_no)->frozen();
-        } catch (UserAssetBalanceException $balanceException) {
-            return response()->ajaxFail('您的账号余额不够');
+        } catch (UserAssetException $exception) {
+            return response()->ajaxFail($exception->getMessage());
         } catch (\Exception $exception) {
             return response()->ajaxFail($exception->getMessage());
         }

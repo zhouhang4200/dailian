@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use DB;
 use Exception;
 use App\Models\User;
 use App\Services\TmApiService;
-use App\Exceptions\Order\OrderException;
-use App\Exceptions\UserAsset\UserAssetException;
+use App\Exceptions\OrderException;
+use App\Exceptions\UserAssetException;
 use App\Models\GameLevelingOrder;
 use App\Services\OrderService;
 use App\Http\Controllers\Controller;
+use DB;
 use Illuminate\Support\Facades\Validator;
 
 /**
@@ -24,6 +24,7 @@ class OrderOperationController extends Controller
      * 接单
      * @return mixed
      * @throws \Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function take()
     {
@@ -40,7 +41,6 @@ class OrderOperationController extends Controller
         } catch (UserAssetException $exception) {
             return response()->apiJson($exception->getCode());
         } catch (Exception $exception) {
-            myLog('take', [$exception->getFile(), $exception->getLine(), $exception->getMessage()]);
             return response()->apiJson(1003);
         }
         DB::commit();
@@ -51,6 +51,7 @@ class OrderOperationController extends Controller
      * 申请验收
      * @return mixed
      * @throws Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function applyComplete()
     {
@@ -67,9 +68,7 @@ class OrderOperationController extends Controller
             return response()->apiJson($exception->getCode());
         } catch (OrderException $exception) {
             return response()->apiJson($exception->getCode());
-        } catch (Exception $exception) {
-            myLog('applyComplete', [$exception->getFile(), $exception->getLine(), $exception->getMessage()]);
-
+        }  catch (Exception $exception) {
             return response()->apiJson(1003);
         }
         DB::commit();
@@ -95,12 +94,14 @@ class OrderOperationController extends Controller
         } catch (Exception $exception) {
             return response()->apiJson(1003);
         }
+        DB::commit();
         return response()->apiJson(0, $images->toArray());
     }
 
     /**
      * 取消验收
      * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function cancelComplete()
     {
@@ -438,7 +439,7 @@ class OrderOperationController extends Controller
             return response()->apiJson($exception->getCode());
         } catch (OrderException $exception) {
             return response()->apiJson($exception->getCode());
-        } catch (Exception $exception) {
+        }catch (Exception $exception) {
             return response()->apiJson(1003);
         }
         DB::commit();

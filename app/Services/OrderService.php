@@ -4,18 +4,8 @@ namespace App\Services;
 
 use Exception;
 use App\Exceptions\UnknownException;
-use App\Exceptions\Order\OrderException;
-use App\Exceptions\Order\OrderTimeException;
-use App\Exceptions\Order\OrderUserException;
-use App\Exceptions\Order\OrderMoneyException;
-use App\Exceptions\Order\OrderImageException;
-use App\Exceptions\Order\OrderStatusException;
-use App\Exceptions\UserAsset\UserAssetException;
-use App\Exceptions\Order\OrderPasswordException;
-use App\Exceptions\Order\OrderComplainException;
-use App\Exceptions\Order\OrderAdminUserException;
-use App\Exceptions\Order\OrderUnauthorizedException;
-use App\Exceptions\UserAsset\UserAssetBalanceException;
+use App\Exceptions\OrderException;
+use App\Exceptions\UserAssetException;
 use App\Models\User;
 use App\Models\Game;
 use App\Models\Server;
@@ -66,12 +56,12 @@ class OrderService
     {
         if ($adminUserId != 0) {
             if (! $user = AdminUser::find($adminUserId)) {
-                throw new OrderAdminUserException('管理员ID不存在', 7001);
+                throw new OrderException('管理员ID不存在', 7001);
             }
             self::$user = $user;
         } else {
             if (! $user = User::find($userId)) {
-                throw new OrderUserException('用户ID不存在', 7002);
+                throw new OrderException('用户ID不存在', 7002);
             }
             self::$user = $user;
         }
@@ -195,14 +185,12 @@ class OrderService
      * @param $payPassword
      * @param $takePassword
      * @return object
-     * @throws OrderStatusException
-     * @throws OrderPasswordException
      * @throws Exception
      */
     public function take($payPassword, $takePassword)
     {
         if (! empty(self::$order->take_order_password) && self::$order->take_order_password != $takePassword) {
-            throw new OrderPasswordException('接单密码错误', 7003);
+            throw new OrderException('接单密码错误', 7003);
         }
 
         // 验证支付密码
@@ -211,11 +199,11 @@ class OrderService
         }
 
         if (self::$user->parent_id == self::$order->parent_user_id) {
-            throw new OrderUserException('您不可以接自己发的单', 7004);
+            throw new OrderException('您不可以接自己发的单', 7004);
         }
 
         if (self::$order->status != 1) {
-            throw new OrderStatusException('接单失败,订单当前状态为: ' . self::$order->getStatusDescribe(), 7005);
+            throw new OrderException('接单失败,订单当前状态为: ' . self::$order->getStatusDescribe(), 7005);
         }
 
         DB::beginTransaction();
@@ -242,8 +230,8 @@ class OrderService
             self::$order->save();
             // 写入订单日志
             GameLevelingOrderLog::store('接单', self::$order->trade_no, self::$user->id, self::$user->name, self::$user->parent_id, self::$user->name . ': 进行操作 [接单]');
-        }  catch (UserAssetBalanceException $exception) {
-            throw new UserAssetBalanceException($exception->getMessage(), 4011);
+        }  catch (UserAssetException $exception) {
+            throw new UserAssetException($exception->getMessage(), 4011);
         } catch (Exception $exception) {
             throw new UnknownException($exception->getMessage());
         }
@@ -259,10 +247,10 @@ class OrderService
     public function delete()
     {
         if ( ! in_array(self::$order->status, [1, 12])) {
-            throw new OrderStatusException('撤单失败,订单当前状态为: ' . self::$order->getStatusDescribe(), 7005);
+            throw new OrderException('撤单失败,订单当前状态为: ' . self::$order->getStatusDescribe(), 7005);
         }
         if (self::$order->parent_user_id != self::$user->parent_id) {
-            throw new OrderUnauthorizedException('该订单不属于您,您无权撤单', 7006);
+            throw new OrderException('该订单不属于您,您无权撤单', 7006);
         }
         DB::beginTransaction();
         try {
@@ -291,11 +279,11 @@ class OrderService
             throw new OrderException('至少输入一张验收图片', 7009);
         }
         if (self::$order->status != 2) {
-            throw new OrderStatusException('申请验收失败,订单当前状态为: ' . self::$order->getStatusDescribe(), 7005);
+            throw new OrderException('申请验收失败,订单当前状态为: ' . self::$order->getStatusDescribe(), 7005);
         }
 
         if (self::$order->take_parent_user_id != self::$user->parent_id) {
-            throw new OrderUnauthorizedException('您不是接单方无法申请验收', 7006);
+            throw new OrderException('您不是接单方无法申请验收', 7006);
         }
 
         DB::beginTransaction();
@@ -327,10 +315,10 @@ class OrderService
     public function cancelComplete()
     {
         if (self::$order->status != 3) {
-            throw new OrderStatusException('取消验收失败,订单当前状态为: ' . self::$order->getStatusDescribe(), 7005);
+            throw new OrderException('取消验收失败,订单当前状态为: ' . self::$order->getStatusDescribe(), 7005);
         }
         if (self::$order->take_parent_user_id != self::$user->parent_id) {
-            throw new OrderUnauthorizedException('您不是接单方无法取消验收', 7006);
+            throw new OrderException('您不是接单方无法取消验收', 7006);
         }
 
         DB::beginTransaction();
@@ -366,10 +354,10 @@ class OrderService
     public function complete()
     {
         if (self::$order->status != 3) {
-            throw new OrderStatusException('完成验收失败,订单当前状态为: ' . self::$order->getStatusDescribe(), 7005);
+            throw new OrderException('完成验收失败,订单当前状态为: ' . self::$order->getStatusDescribe(), 7005);
         }
         if (self::$order->parent_user_id != self::$user->parent_id) {
-            throw new OrderUnauthorizedException('您不是发单方无法完成验收', 7006);
+            throw new OrderException('您不是发单方无法完成验收', 7006);
         }
 
         DB::beginTransaction();
@@ -406,17 +394,17 @@ class OrderService
     /**
      * 上架
      * @return object
-     * @throws OrderStatusException
-     * @throws OrderUnauthorizedException
+     * @throws OrderException
+     * @throws OrderException
      * @throws Exception
      */
     public function onSale()
     {
         if (self::$order->status != 12) {
-            throw new OrderStatusException('上架失败,订单当前状态为: ' . self::$order->getStatusDescribe(), 7005);
+            throw new OrderException('上架失败,订单当前状态为: ' . self::$order->getStatusDescribe(), 7005);
         }
         if (self::$order->parent_user_id != self::$user->parent_id) {
-            throw new OrderUnauthorizedException('您不是发单方无法上架该订单', 7006);
+            throw new OrderException('您不是发单方无法上架该订单', 7006);
         }
 
         DB::beginTransaction();
@@ -436,17 +424,17 @@ class OrderService
     /**
      * 下架
      * @return object
-     * @throws OrderStatusException
-     * @throws OrderUnauthorizedException
+     * @throws OrderException
+     * @throws OrderException
      * @throws Exception
      */
     public function offSale()
     {
         if (self::$order->status != 1) {
-            throw new OrderStatusException('下架失败,订单当前状态为: ' . self::$order->getStatusDescribe(), 7005);
+            throw new OrderException('下架失败,订单当前状态为: ' . self::$order->getStatusDescribe(), 7005);
         }
         if (self::$order->parent_user_id != self::$user->parent_id) {
-            throw new OrderUnauthorizedException('您不是发单方无法下架该订单', 7006);
+            throw new OrderException('您不是发单方无法下架该订单', 7006);
         }
 
         DB::beginTransaction();
@@ -466,18 +454,18 @@ class OrderService
     /**
      * 锁定
      * @return object
-     * @throws OrderStatusException
-     * @throws OrderUnauthorizedException
+     * @throws OrderException
+     * @throws OrderException
      * @throws Exception
      */
     public function lock()
     {
         // 待验收 与 异常时可以锁定
         if (! in_array(self::$order->status, [2, 3, 6])) {
-            throw new OrderStatusException('锁定失败,订单当前状态为: ' . self::$order->getStatusDescribe(), 7005);
+            throw new OrderException('锁定失败,订单当前状态为: ' . self::$order->getStatusDescribe(), 7005);
         }
         if (self::$order->parent_user_id != self::$user->parent_id) {
-            throw new OrderUnauthorizedException('您不是发单方无法锁定该订单', 7006);
+            throw new OrderException('您不是发单方无法锁定该订单', 7006);
         }
         DB::beginTransaction();
         try {
@@ -498,18 +486,18 @@ class OrderService
     /**
      * 取消锁定
      * @return object
-     * @throws OrderStatusException
-     * @throws OrderUnauthorizedException
+     * @throws OrderException
+     * @throws OrderException
      * @throws Exception
      */
     public function cancelLock()
     {
         // 锁定状态可以取消锁定
         if (self::$order->status != 7) {
-            throw new OrderStatusException('取消锁定失败,订单当前状态为: ' . self::$order->getStatusDescribe(), 7005);
+            throw new OrderException('取消锁定失败,订单当前状态为: ' . self::$order->getStatusDescribe(), 7005);
         }
         if (self::$order->parent_user_id != self::$user->parent_id) {
-            throw new OrderUnauthorizedException('您不是发单方无法取消锁定', 7006);
+            throw new OrderException('您不是发单方无法取消锁定', 7006);
         }
         DB::beginTransaction();
         try {
@@ -530,18 +518,18 @@ class OrderService
     /**
      * 异常
      * @return object
-     * @throws OrderStatusException
-     * @throws OrderUnauthorizedException
+     * @throws OrderException
+     * @throws OrderException
      * @throws Exception
      */
     public function anomaly()
     {
         // 只有代练中订单可进行异常标记
         if (self::$order->status != 2) {
-            throw new OrderStatusException('标记异常失败,订单当前状态为: ' . self::$order->getStatusDescribe(), 7005);
+            throw new OrderException('标记异常失败,订单当前状态为: ' . self::$order->getStatusDescribe(), 7005);
         }
         if (self::$order->take_parent_user_id != self::$user->parent_id) {
-            throw new OrderUnauthorizedException('您不是接单方无法进行异常操作', 7006);
+            throw new OrderException('您不是接单方无法进行异常操作', 7006);
         }
         DB::beginTransaction();
         try {
@@ -560,18 +548,18 @@ class OrderService
     /**
      * 取消异常
      * @return object
-     * @throws OrderStatusException
-     * @throws OrderUnauthorizedException
+     * @throws OrderException
+     * @throws OrderException
      * @throws Exception
      */
     public function cancelAnomaly()
     {
         // 只有异常订单可取消异常
         if (self::$order->status != 6) {
-            throw new OrderStatusException('取消异常失败,订单当前状态为: ' . self::$order->getStatusDescribe(), 7005);
+            throw new OrderException('取消异常失败,订单当前状态为: ' . self::$order->getStatusDescribe(), 7005);
         }
         if (self::$order->take_parent_user_id != self::$user->parent_id) {
-            throw new OrderUnauthorizedException('您不是接单方无法进行异常操作', 7006);
+            throw new OrderException('您不是接单方无法进行异常操作', 7006);
         }
         DB::beginTransaction();
         try {
@@ -594,14 +582,14 @@ class OrderService
      * @param $efficiencyDeposit
      * @param $reason
      * @return object
-     * @throws OrderStatusException
+     * @throws OrderException
      * @throws Exception
      */
     public function applyConsult($amount, $securityDeposit, $efficiencyDeposit, $reason)
     {
         // 状态为 代练中(2)  待收验(3) 异常(6) 锁定(7) 可申请撤销
         if ( ! in_array(self::$order->status, [2, 3, 6 ,7])) {
-            throw new OrderStatusException('申请撤销失败,订单当前状态为: ' . self::$order->getStatusDescribe(), 7005);
+            throw new OrderException('申请撤销失败,订单当前状态为: ' . self::$order->getStatusDescribe(), 7005);
         }
         DB::beginTransaction();
         try {
@@ -635,19 +623,19 @@ class OrderService
     /**
      * 取消撤销
      * @return object
-     * @throws OrderStatusException
-     * @throws OrderUnauthorizedException
+     * @throws OrderException
+     * @throws OrderException
      * @throws Exception
      */
     public function cancelConsult()
     {
         // 状态为 撤销中 可取消撤销
         if (self::$order->status != 4) {
-            throw new OrderStatusException('取消撤销失败,订单当前状态为: ' . self::$order->getStatusDescribe(), 7005);
+            throw new OrderException('取消撤销失败,订单当前状态为: ' . self::$order->getStatusDescribe(), 7005);
         }
         // 检测当前操作用户与发起用户是否是同一人
         if (self::$order->consult->parent_user_id != self::$user->parent_id) {
-            throw new OrderUnauthorizedException('您不是该订单撤销发起人无法取消撤销', 7006);
+            throw new OrderException('您不是该订单撤销发起人无法取消撤销', 7006);
         }
         DB::beginTransaction();
         try {
@@ -670,19 +658,19 @@ class OrderService
     /**
      * 拒绝撤销
      * @return object
-     * @throws OrderStatusException
+     * @throws OrderException
      * @throws Exception
      */
     public function rejectConsult()
     {
         // 状态为 撤销中 可取消撤销
         if (self::$order->status != 4) {
-            throw new OrderStatusException('不同意撤销失败,订单当前状态为: ' . self::$order->getStatusDescribe(), 7005);
+            throw new OrderException('不同意撤销失败,订单当前状态为: ' . self::$order->getStatusDescribe(), 7005);
         }
 
         // 非发起方才可进行此操作
         if (self::$order->consult->parent_user_id == self::$user->parent_id) {
-            throw new OrderUnauthorizedException('非撤销发起人才能拒绝撤销', 7006);
+            throw new OrderException('非撤销发起人才能拒绝撤销', 7006);
         }
 
         DB::beginTransaction();
@@ -705,19 +693,19 @@ class OrderService
     /**
      * 同意撤销
      * @return object
-     * @throws OrderStatusException
-     * @throws OrderUnauthorizedException
+     * @throws OrderException
+     * @throws OrderException
      * @throws Exception
      */
     public function agreeConsult()
     {
         // 状态为 撤销中 可取消撤销
         if (self::$order->status != 4) {
-            throw new OrderStatusException('同意撤销失败,订单当前状态为: ' . self::$order->getStatusDescribe(), 7005);
+            throw new OrderException('同意撤销失败,订单当前状态为: ' . self::$order->getStatusDescribe(), 7005);
         }
         // 检测当前操作用户与发起用户是否是同一人
         if (self::$order->consult->parent_user_id == self::$user->parent_id) {
-            throw new OrderUnauthorizedException('您不能同意自己发起的撤销', 7006);
+            throw new OrderException('您不能同意自己发起的撤销', 7006);
         }
         DB::beginTransaction();
         try {
@@ -834,7 +822,7 @@ class OrderService
      * @param $reason
      * @param array $images
      * @return object
-     * @throws OrderStatusException
+     * @throws OrderException
      * @throws Exception
      */
     public function applyComplain($reason, $images = [])
@@ -845,7 +833,7 @@ class OrderService
 
         // 状态为 代练中(2)  待收验(3) 异常(4)
         if ( ! in_array(self::$order->status, [2, 3, 4])) {
-            throw new OrderStatusException('申请仲裁失败,订单当前状态为: ' . self::$order->getStatusDescribe(), 7005);
+            throw new OrderException('申请仲裁失败,订单当前状态为: ' . self::$order->getStatusDescribe(), 7005);
         }
         DB::beginTransaction();
         try {
@@ -878,19 +866,19 @@ class OrderService
     /**
      * 取消仲裁
      * @return object
-     * @throws OrderStatusException
-     * @throws OrderUnauthorizedException
+     * @throws OrderException
+     * @throws OrderException
      * @throws Exception
      */
     public function cancelComplain()
     {
         // 状态为 撤销中 可取消撤销
         if (self::$order->status != 5) {
-            throw new OrderStatusException('取消仲裁失败,订单当前状态为: ' . self::$order->getStatusDescribe(), 7005);
+            throw new OrderException('取消仲裁失败,订单当前状态为: ' . self::$order->getStatusDescribe(), 7005);
         }
         // 检测当前操作用户与发起用户是否是同一人
         if (self::$order->complain->parent_user_id != self::$user->parent_id) {
-            throw new OrderUnauthorizedException('您不是该订单仲裁发起人无法取消仲裁', 7006);
+            throw new OrderException('您不是该订单仲裁发起人无法取消仲裁', 7006);
         }
         DB::beginTransaction();
         try {
@@ -938,14 +926,14 @@ class OrderService
      * @param $inputEfficiencyDeposit
      * @param $inputResult
      * @return object
-     * @throws OrderStatusException
+     * @throws OrderException
      * @throws Exception
      */
     public function arbitration($inputAmount, $inputSecurityDeposit, $inputEfficiencyDeposit, $inputResult)
     {
         // 状态为 仲裁中 可取消撤销
         if (self::$order->status != 5) {
-            throw new OrderStatusException('仲裁失败,订单当前状态为: ' . self::$order->getStatusDescribe(), 7005);
+            throw new OrderException('仲裁失败,订单当前状态为: ' . self::$order->getStatusDescribe(), 7005);
         }
 
         DB::beginTransaction();
@@ -1078,14 +1066,14 @@ class OrderService
      * 订单加款
      * @param float $amount 加到多少钱
      * @return object
-     * @throws OrderUnauthorizedException
+     * @throws OrderException
      * @throws Exception
      */
     public function addMoney($amount)
     {
         // 检测当前操作用户与发起用户是否是同一人
         if (self::$order->parent_user_id != self::$user->parent_id) {
-            throw new OrderUnauthorizedException('该订单不属于您,你无权操作', 7005);
+            throw new OrderException('该订单不属于您,你无权操作', 7005);
         }
         DB::beginTransaction();
         try {
@@ -1098,7 +1086,7 @@ class OrderService
                 // 写入订单日志
                 GameLevelingOrderLog::store('订单加款', self::$order->trade_no, self::$user->id, self::$user->name, self::$user->parent_id, self::$user->name . ': 进行操作 [加款] 加款金额：' . $amount);
             } else {
-                throw new OrderMoneyException('代练金额只可增加');
+                throw new OrderException('代练金额只可增加');
             }
         } catch (Exception $exception) {
             throw new UnknownException($exception->getMessage());
@@ -1112,14 +1100,14 @@ class OrderService
      * @param $day
      * @param $hour
      * @return object
-     * @throws OrderUnauthorizedException
+     * @throws OrderException
      * @throws Exception
      */
     public function addTime($day, $hour)
     {
         // 检测当前操作用户与发起用户是否是同一人
         if (self::$order->parent_user_id != self::$user->parent_id) {
-            throw new OrderUnauthorizedException('该订单不属于您,你无权操作', 7006);
+            throw new OrderException('该订单不属于您,你无权操作', 7006);
         }
         DB::beginTransaction();
 
@@ -1133,7 +1121,7 @@ class OrderService
             GameLevelingOrderLog::store('订单加时', self::$order->trade_no, self::$user->id, self::$user->name, self::$user->parent_id, self::$user->name . ': 进行操作 [加时] 加时：' . $day . ' 天' . $hour . ' 小时');
         } else {
             DB::rollBack();
-            throw new OrderTimeException('代练时间只可增加');
+            throw new OrderException('代练时间只可增加');
         }
         DB::commit();
         return self::$order;
@@ -1159,8 +1147,6 @@ class OrderService
      * @param string $playerPhone
      * @param string $userQQ
      * @param string $takeOrderPassword
-     * @throws OrderUnauthorizedException
-     * @throws OrderStatusException
      * @throws Exception
      */
     public function update(
@@ -1186,12 +1172,12 @@ class OrderService
     {
         // 状态为 仲裁中 可取消撤销
         if (self::$order->status != 1) {
-            throw new OrderStatusException('修改失败,订单当前状态为: ' . self::$order->getStatusDescribe(), 7005);
+            throw new OrderException('修改失败,订单当前状态为: ' . self::$order->getStatusDescribe(), 7005);
         }
 
         // 检测当前操作用户是否是发单人
         if (self::$order->parent_user_id != self::$user->parent_id) {
-            throw new OrderUnauthorizedException('该订单不属于您,你无权操作', 7006);
+            throw new OrderException('该订单不属于您,你无权操作', 7006);
         }
 
         DB::beginTransaction();
@@ -1245,14 +1231,14 @@ class OrderService
      * @param $account
      * @param $password
      * @return object
-     * @throws OrderUnauthorizedException
+     * @throws OrderException
      * @throws Exception
      */
     public function updateAccountPassword($account, $password)
     {
         // 检测当前操作用户与发起用户是否是同一人
         if (self::$order->parent_user_id != self::$user->parent_id) {
-            throw new OrderUnauthorizedException('该订单不属于您,你无权操作', 7006);
+            throw new OrderException('该订单不属于您,你无权操作', 7006);
         }
         DB::beginTransaction();
         try {
@@ -1277,7 +1263,7 @@ class OrderService
     {
         // 检测当前操作用户是否是发单人
         if (self::$order->parent_user_id != self::$user->parent_id) {
-            throw new OrderUnauthorizedException('该订单不属于您,你无权操作', 7006);
+            throw new OrderException('该订单不属于您,你无权操作', 7006);
         }
         return self::$order;
     }
@@ -1291,10 +1277,10 @@ class OrderService
     {
         // 检测当前操作用户是否是发单人或接单人
         if (! in_array(self::$user->parent_id, [self::$order->parent_user_id, self::$order->take_parent_user_id])) {
-            throw new OrderUnauthorizedException('您无权操作', 7006);
+            throw new OrderException('您无权操作', 7006);
         }
         if (is_null(self::$order->applyComplete)) {
-            throw new OrderImageException('暂时没有验收图片', 7007);
+            throw new OrderException('暂时没有验收图片', 7007);
         }
         return self::$order->applyComplete->image;
 
@@ -1309,11 +1295,11 @@ class OrderService
     {
         // 检测当前操作用户是否是发单人或接单人
         if (! in_array(self::$user->parent_id, [self::$order->parent_user_id, self::$order->take_parent_user_id])) {
-            throw new OrderUnauthorizedException('您无权操作', 7006);
+            throw new OrderException('您无权操作', 7006);
         }
 
         if (is_null(self::$order->complain->messages)) {
-            throw new OrderComplainException('暂时没有仲裁信息', 7008);
+            throw new OrderException('暂时没有仲裁信息', 7008);
         }
         return self::$order;
     }
@@ -1329,7 +1315,7 @@ class OrderService
     {
         // 检测当前操作用户是否是发单人或接单人
         if (! in_array(self::$user->parent_id, [self::$order->parent_user_id, self::$order->take_parent_user_id])) {
-            throw new OrderUnauthorizedException('您无权操作', 7006);
+            throw new OrderException('您无权操作', 7006);
         }
 
         DB::beginTransaction();
@@ -1375,13 +1361,13 @@ class OrderService
     /**
      * 获取订单留言
      * @return \Illuminate\Support\Collection
-     * @throws OrderUnauthorizedException
+     * @throws OrderException
      */
     public function getMessage()
     {
         // 检测当前操作用户是否是发单人或接单人
         if (! in_array(self::$user->parent_id, [self::$order->parent_user_id, self::$order->take_parent_user_id])) {
-            throw new OrderUnauthorizedException('您无权操作', 7006);
+            throw new OrderException('您无权操作', 7006);
         }
 
         return GameLevelingOrderMessage::where('game_leveling_order_trade_no', self::$order->trade_no)
@@ -1399,7 +1385,7 @@ class OrderService
     {
         // 检测当前操作用户是否是发单人或接单人
         if (! in_array(self::$user->parent_id, [self::$order->parent_user_id, self::$order->take_parent_user_id])) {
-            throw new OrderUnauthorizedException('您无权操作', 7006);
+            throw new OrderException('您无权操作', 7006);
         }
 
         DB::beginTransaction();

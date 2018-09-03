@@ -203,9 +203,4 @@ class BalanceRechargeController extends Controller
 
         return $alipay->success();
     }
-
-    public function refund()
-    {
-
-    }
 }

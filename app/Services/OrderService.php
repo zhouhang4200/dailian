@@ -170,7 +170,7 @@ class OrderService
                 'source' => $source,
                 'status' => 1,
                 'top' => 0,
-                'top_at' => '0000-00-00 00:00:00',
+                'top_at' => date('Y-m-d H:i:s'),
             ]);
 
             // 写入订单日志

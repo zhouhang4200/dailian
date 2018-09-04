@@ -28,23 +28,38 @@ class GameLevelingOrder extends Model
      */
     protected $mapping = [
         'properties' => [
-        'title' => [
-            'type' => 'text',
-            "analyzer" => "ik_smart",
-            "search_analyzer" => "ik_smart",
+            'title' => [
+                'type' => 'text',
+                "analyzer" => "ik_smart",
+                "search_analyzer" => "ik_smart",
 
-        ],
-        'explain' => [
-            'type' => 'text',
-            "analyzer" => "ik_smart",
-            "search_analyzer" => "ik_smart",
-        ],
-        'requirement' => [
-            'type' => 'text',
-            "analyzer" => "ik_smart",
-            "search_analyzer" => "ik_smart",
-        ],
-            ]
+            ],
+            'explain' => [
+                'type' => 'text',
+                "analyzer" => "ik_smart",
+                "search_analyzer" => "ik_smart",
+            ],
+            'requirement' => [
+                'type' => 'text',
+                "analyzer" => "ik_smart",
+                "search_analyzer" => "ik_smart",
+            ],
+            'top_at' => [
+                'type' => 'date',
+                "format" =>  "YYYY-MM-dd HH:mm:ss",
+                "store" => true,
+            ],
+            'created_at' => [
+                'type' => 'date',
+                "format" =>  "YYYY-MM-dd HH:mm:ss",
+                "store" => true,
+            ],
+            'updated_at' => [
+                'type' => 'date',
+                "format" =>  "YYYY-MM-dd HH:mm:ss",
+                "store" => true,
+            ],
+        ]
     ];
 
     public $fillable = [
@@ -702,7 +717,7 @@ class GameLevelingOrder extends Model
 
     /**
      * 关联游戏
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function game()
     {

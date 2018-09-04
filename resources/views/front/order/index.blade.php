@@ -115,7 +115,9 @@
                 <td>
                     <p class="item-title">【{{ $item->game_name }}】{{ $item->title }}
                         {{--<span class="hot f-ff1">热</span>--}}
-                        {{--<span class="top f-ff1">顶</span>--}}
+                        @if($item->top)
+                            <span class="top f-ff1">顶</span>
+                        @endif
                     </p>
                     <p class="order_number">订单号：{{ $item->trade_no }}</p>
                 </td>

@@ -306,6 +306,12 @@ class ProfileController extends Controller
                 }
             }
 
+            $times = Redis::get("user:verification-code:times:".request('phone')) ?? 0;
+
+            if ($times >= 10) {
+                return response()->apiJson(3007); // 操作频繁
+            }
+
             $code = randomNumber();
             $content = "您的验证码为：".$code.",请于1分钟内正确输入。";
             $result = SmSApiService::send(request('phone'), $content);

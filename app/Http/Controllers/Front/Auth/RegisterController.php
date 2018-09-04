@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Front\Auth;
 
+use DB;
+use Exception;
 use App\Models\User;
 use App\Models\UserAsset;
 use Illuminate\Http\Request;
@@ -93,32 +95,39 @@ class RegisterController extends Controller
      */
     public function register(Request $request)
     {
-        $data = $request->all();
-        $data['password'] = clientRSADecrypt($request->password);
-        $data['password_confirmation'] = clientRSADecrypt($request->password_confirmation);
-        $validator = Validator::make($data, [
-            'geetest_challenge' => 'required',
-            'name' => 'required|string|max:50',
-            'email' => 'required|string|email|max:100|unique:users',
-            'phone' => 'required|string|size:11|unique:users',
-            'password' => 'required|string|min:6|max:22|confirmed',
-        ], [
-            'geetest_challenge.required' => '请点击按钮进行验证',
-            'phone.size' => '请填写正确的手机号',
-            'phone.unique' => '手机号已被注册',
-            'email.unique' => '邮箱已被注册',
-            'password.min' => '密码最少6位',
-            'password.max' => '密码最大22位',
-            'password.confirmed' => '两次密码输入不一致',
-        ]);
+        DB::beginTransaction();
+        try {
+            $data = $request->all();
+            $data['password'] = clientRSADecrypt($request->password);
+            $data['password_confirmation'] = clientRSADecrypt($request->password_confirmation);
+            $validator = Validator::make($data, [
+                'geetest_challenge' => 'required',
+                'name' => 'required|string|max:50',
+                'email' => 'required|string|email|max:100|unique:users',
+                'phone' => 'required|string|size:11|unique:users',
+                'password' => 'required|string|min:6|max:22|confirmed',
+            ], [
+                'geetest_challenge.required' => '请点击按钮进行验证',
+                'phone.size' => '请填写正确的手机号',
+                'phone.unique' => '手机号已被注册',
+                'email.unique' => '邮箱已被注册',
+                'password.min' => '密码最少6位',
+                'password.max' => '密码最大22位',
+                'password.confirmed' => '两次密码输入不一致',
+            ]);
 
-        if ($validator->fails()) {
-            return response()->json(['status' => 0, 'message' => $validator->errors()->all()[0]]);
+            if ($validator->fails()) {
+                return response()->json(['status' => 0, 'message' => $validator->errors()->all()[0]]);
+            }
+
+            event(new Registered($user = $this->create($data)));
+
+            $this->guard()->login($user);
+        } catch (Exception $e) {
+            return response()->json(['status' => 0, 'message' => '服务出错，请联系相关运营人员!']);
+            myLog('register', ['message' => $e->getMessage()]);
         }
-
-        event(new Registered($user = $this->create($data)));
-
-        $this->guard()->login($user);
+        DB::commit();
 
         return response()->json(['status' => 1, 'message' => '注册成功!']);
     }

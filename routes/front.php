@@ -94,8 +94,8 @@ Route::group(['middleware' => 'auth'], function (){
         });
         // 余额充值
         Route::prefix('balance-recharge')->group(function (){
-            Route::get('/', 'BalanceRechargeController@index')->name('finance.balance-recharge')->middleware('permission:finance.balance-recharge');
-            Route::get('record', 'BalanceRechargeController@record')->name('finance.balance-recharge.record');
+            Route::get('/', 'BalanceRechargeController@index')->name('finance.balance-recharge');
+            Route::get('record', 'BalanceRechargeController@record')->name('finance.balance-recharge.record')->middleware('permission:finance.balance-recharge.record');
             Route::get('pay', 'BalanceRechargeController@pay')->name('finance.balance-recharge.pay');
             Route::get('pay-success', 'BalanceRechargeController@paySuccess')->name('finance.balance-recharge.pay-success');
             Route::get('export', 'BalanceRechargeController@export')->name('finance.balance-recharge.export');

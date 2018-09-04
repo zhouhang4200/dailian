@@ -21,6 +21,11 @@ class Permission
             abort(403);
         }
 
+        // 如果是主账号无需检测
+        if (auth()->user()->getOriginal('parent_id') == 0) {
+            return $next($request);
+        }
+
         $permissions = is_array($permission)
             ? $permission
             : explode('|', $permission);

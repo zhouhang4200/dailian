@@ -169,6 +169,8 @@ class OrderService
                 'user_qq' => $userQQ,
                 'source' => $source,
                 'status' => 1,
+                'top' => 0,
+                'top_at' => '0000-00-00 00:00:00',
             ]);
 
             // 写入订单日志

@@ -18,6 +18,7 @@ class EventServiceProvider extends ServiceProvider
         ],
         'Illuminate\Auth\Events\Registered' => [
             'App\Listeners\Registered\GivePermission',
+            'App\Listeners\Registered\InitUserAsset',
         ],
         'Laravel\Passport\Events\AccessTokenCreated' => [
             'App\Listeners\RevokeOldTokens',

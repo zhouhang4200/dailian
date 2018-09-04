@@ -22,6 +22,10 @@ class GameLevelingOrder extends Model
         //
     ];
 
+    /**
+     * 定义ElasticSearch 字段类型
+     * @var array
+     */
     protected $mapping = [
         'properties' => [
         'title' => [
@@ -41,160 +45,6 @@ class GameLevelingOrder extends Model
             "search_analyzer" => "ik_smart",
         ],
             ]
-    ];
-    /**
-     * 定义ElasticSearch 字段类型
-     * @var array
-     */
-    protected $mappingg = [
-        '_all' => [
-            'enabled' => true,
-        ],
-        'properties' => [
-//            'trade_no' => [
-//                'type' => 'text',
-//            ],
-//            'foreign_trade_no' => [
-//                'type' => 'keyword',
-//            ],
-//            'status' => [
-//                'type' => 'integer',
-//            ],
-//            'user_id' => [
-//                'type' => 'integer',
-//            ],
-//            'username' => [
-//                'type' => 'keyword',
-//            ],
-//            'parent_user_id' => [
-//                'type' => 'integer',
-//            ],
-//            'parent_username' => [
-//                'type' => 'keyword',
-//            ],
-//            'order_type_id' => [
-//                'type' => 'integer',
-//            ],
-//            'game_class_id' => [
-//                'type' => 'integer',
-//            ],
-//            'game_id' => [
-//                'type' => 'integer',
-//            ],
-//            'game_name' => [
-//                'type' => 'keyword',
-//            ],
-//            'region_id' => [
-//                'type' => 'integer',
-//            ],
-//            'region_name' => [
-//                'type' => 'keyword',
-//            ],
-//            'server_id' => [
-//                'type' => 'integer',
-//            ],
-//            'server_name' => [
-//                'type' => 'keyword',
-//            ],
-//            'game_leveling_type_id' => [
-//                'type' => 'integer',
-//            ],
-//            'game_leveling_type_name' => [
-//                'type' => 'keyword',
-//            ],
-            'title' => [
-                'type' => 'text',
-                "analyzer" => "ik_smart",
-                "search_analyzer" => "ik_smart",
-            ],
-//            'amount' => [
-//                'type' => 'keyword',
-//            ],
-//            'game_account' => [
-//                'type' => 'keyword',
-//            ],
-//            'game_password' => [
-//                'type' => 'keyword',
-//            ],
-//            'game_role' => [
-//                'type' => 'keyword',
-//            ],
-//            'day' => [
-//                'type' => 'integer',
-//            ],
-//            'hour' => [
-//                'type' => 'integer',
-//            ],
-//            'efficiency_deposit' => [
-//                'type' => 'float',
-//            ],
-//            'security_deposit' => [
-//                'type' => 'float',
-//            ],
-            'explain' => [
-                'type' => 'text',
-                "analyzer" => "ik_smart",
-                "search_analyzer" => "ik_smart",
-            ],
-            'requirement' => [
-                'type' => 'text',
-                "analyzer" => "ik_smart",
-                "search_analyzer" => "ik_smart",
-            ],
-//            'take_order_password' => [
-//                'type' => 'keyword',
-//            ],
-//            'player_phone' => [
-//                'type' => 'text',
-//            ],
-//            'player_qq' => [
-//                'type' => 'keyword',
-//            ],
-//            'user_phone' => [
-//                'type' => 'text',
-//            ],
-//            'user_qq' => [
-//                'type' => 'keyword',
-//            ],
-//            'take_user_id' => [
-//                'type' => 'integer',
-//            ],
-//            'take_username' => [
-//                'type' => 'keyword',
-//            ],
-//            'take_parent_user_id' => [
-//                'type' => 'integer',
-//            ],
-//            'take_parent_username' => [
-//                'type' => 'keyword',
-//            ],
-//            'take_at' => [
-//                'type' => 'keyword',
-//            ],
-//            'price_increase_step' => [
-//                'type' => 'float',
-//            ],
-//            'price_ceiling' => [
-//                'type' => 'float',
-//            ],
-//            'apply_complete_at' => [
-//                'type' => 'keyword',
-//            ],
-//            'complete_at' => [
-//                'type' => 'keyword',
-//            ],
-//            'created_at' => [
-//                'type' => 'date',
-//                "format" =>  "yyyy-MM-dd HH:mm:ss"
-//            ],
-//            'updated_at' => [
-//                'type' => 'date',
-//                "format" =>  "yyyy-MM-dd HH:mm:ss"
-//            ],
-//            'source' => [
-//                'type' => 'integer',
-//            ],
-        ]
     ];
 
     public $fillable = [
@@ -234,6 +84,8 @@ class GameLevelingOrder extends Model
         'hour',
         'complete_at',
         'status',
+        'top',
+        'top_at',
     ];
 
     /**

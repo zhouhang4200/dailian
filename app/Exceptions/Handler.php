@@ -13,6 +13,9 @@ class Handler extends ExceptionHandler
      * @var array
      */
     protected $dontReport = [
+        OrderException::class,
+        UnknownException::class,
+        UserAssetException::class,
     ];
 
     /**

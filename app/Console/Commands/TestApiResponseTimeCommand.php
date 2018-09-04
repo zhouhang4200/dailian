@@ -8,7 +8,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
 use Illuminate\Console\Command;
 
-class TestApiResponseTime extends Command
+class TestApiResponseTimeCommand extends Command
 {
     /**
      * The name and signature of the console command.

@@ -205,94 +205,189 @@ class GameLevelingOrder extends Model
      */
     public static function searchCondition($condition)
     {
-        $keyword = (isset($condition['keyword']) && ! empty($condition['keyword'])) ? $condition['keyword'] : '*';
+        $keyword = (isset($condition['keyword']) && ! empty($condition['keyword'])) ? $condition['keyword'] : '-1';
 
         $query = self::search($keyword);
 
-        if ($keyword != '*') {
-            $query->rule(function($builder) {
-                return [
-                    'match' => [
-                        [
-                            "match" => [
-                                "trade_no" => $builder->query,
+        $where = [];
+
+        $searchCondition = [
+            'should' => [
+                [
+                    "bool" => [
+                        "must" => [
+                            [
+                                "match" => [
+                                    "status" => "1",
+                                ],
                             ],
-                        ],
-                        [
-                            "match" => [
-                                "title" => $builder->query,
-                            ],
+                            [
+                                "match" => [
+                                    "top" => "1",
+                                ],
+                            ]
                         ]
-                    ],
-
-                ];
-            });
-        }
-//
-//        $search = [
-//            'must' => [
-//                [
-//                    'term' => [
-//                        'status' => 1
-//                    ]
-//                ]
-//            ]
-//        ];
-//
-//        if ($keyword != '*') {
-//            $search = array_merge($search, [
-//                'should' => [
-//                    [
-//                        "term" => [
-//                            "trade_no" => $keyword,
-//                        ],
-//                    ],
-//                    [
-//                        "match" => [
-//                            "title" => $keyword,
-//                        ],
-//                    ],
-//                ]
-//            ]);
-//        }
-
-
+                    ]
+                ],
+                [
+                    "bool" => [
+                        "must" => []
+                    ]
+                ],
+                [
+                    "bool" =>  [
+                        "should" =>  [
+                            [
+                                "bool" =>  [
+                                    "must" =>  []
+                                ]
+                            ],
+                            [
+                                "bool" =>  [
+                                    "must" =>  []
+                                ]
+                            ],
+                            [
+                                "bool" =>  [
+                                    "must" =>  []
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ];
 
         if (isset($condition['status']) && $condition['status']) {
-            $query->where('status', $condition['status']);
+            $where[] = [
+                "match" => [
+                    "status" => $condition['status'],
+                ]
+            ];
         }
 
         if (isset($condition['take_parent_user_id']) && $condition['take_parent_user_id']) {
-            $query->where('take_parent_user_id', $condition['take_parent_user_id']);
+            $where[] = [
+                "match" => [
+                    "take_parent_user_id" => $condition['take_parent_user_id'],
+                ]
+            ];
         }
 
         if (isset($condition['trade_no']) && $condition['trade_no']) {
-            $query->where('trade_no', $condition['trade_no']);
+            $where[] = [
+                "match" => [
+                    "trade_no" => $condition['trade_no'],
+                ]
+            ];
         }
 
         if (isset($condition['game_id']) && $condition['game_id']) {
-            $query->where('game_id', $condition['game_id']);
+            $where[] = [
+                "match" => [
+                    "game_id" => $condition['game_id'],
+                ]
+            ];
         }
 
         if (isset($condition['region_id']) && $condition['region_id']) {
-            $query->where('region_id', $condition['region_id']);
+            $where[] = [
+                "match" => [
+                    "region_id" => $condition['region_id'],
+                ]
+            ];
         }
 
         if (isset($condition['server_id']) && $condition['server_id']) {
-            $query->where('server_id', $condition['server_id']);
+            $where[] = [
+                "match" => [
+                    "server_id" => $condition['server_id'],
+                ]
+            ];
         }
 
+        $filter = [];
+
         if (isset($condition['amount']) && $condition['amount'] == 1) {
-            $query->where('amount', '<', 10);
+            $filter = [
+                'bool' => [
+                    'must' =>  [
+                        'range' => [
+                            'amount' => [
+                                'lt' => 10,
+                            ]
+                        ]
+                    ]
+                ]
+            ];
         }
 
         if (isset($condition['amount']) && $condition['amount'] == 2) {
-            $query->whereBetween('amount', [10, 100]);
+            $filter = [
+                'bool' => [
+                    'must' =>  [
+                        'range' => [
+                            'amount' => [
+                                'gte' => 100,
+                                'lte' => 200,
+                            ]
+                        ]
+                    ]
+                ]
+            ];
         }
 
         if (isset($condition['amount']) && $condition['amount'] == 3) {
-            $query->whereBetween('amount', [100, 200]);
+            $filter = [
+                'bool' => [
+                    'must' =>  [
+                        'range' => [
+                            'amount' => [
+                                'gte' => 100,
+                                'lte' => 200,
+                            ]
+                        ]
+                ]
+                ]
+            ];
         }
+
+        if ($keyword == '-1') {
+            $searchCondition['should'][1]['bool']['must'] = $where;
+            $searchCondition['should'][1]['bool']['filter'] = $filter;
+            unset($searchCondition['should'][2]);
+        } else {
+            $searchCondition['should'][2]['bool']['should'][0]['bool']['must'] = array_merge($where, [
+                [
+                    "match" => [
+                        "trade_no" => $keyword,
+                    ]
+                ]
+            ]);
+            $searchCondition['should'][2]['bool']['should'][1]['bool']['must'] = array_merge($where, [
+                [
+                    "match" => [
+                        "title" => $keyword,
+                    ]
+                ]
+            ]);
+            $searchCondition['should'][2]['bool']['should'][2]['bool']['must'] = array_merge($where, [
+                [
+                    "match" => [
+                        "title" => $keyword,
+                    ]
+                ]
+            ]);
+
+            $searchCondition['should'][2]['bool']['should'][2]['bool']['filter'] = $filter;
+            $searchCondition['should'][1] = $searchCondition['should'][2];
+            unset($searchCondition['should'][2]);
+        }
+
+        // 查询
+        $query->rule(function() use ($searchCondition) {
+            return $searchCondition;
+        });
 
         if (isset($condition['amount']) && $condition['amount'] == 4) {
             $query->where('amount', '>', 200);

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c09d7d291b1c35e39179a9f9f1a8c03c",
+    "content-hash": "233e598e641650f16fb83d126e7e37c1",
     "packages": [
         {
             "name": "babenkoivan/scout-elasticsearch-driver",
@@ -2712,6 +2712,45 @@
                 "promises"
             ],
             "time": "2018-06-13T15:59:06+00:00"
+        },
+        {
+            "name": "santik/sql-elasticsearch-query-converter",
+            "version": "0.1.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/santik/SqlElasticSearchQueryConverter.git",
+                "reference": "6074183fb8518baa6dc1695a68fdb5e80d03b536"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/santik/SqlElasticSearchQueryConverter/zipball/6074183fb8518baa6dc1695a68fdb5e80d03b536",
+                "reference": "6074183fb8518baa6dc1695a68fdb5e80d03b536",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.0",
+                "ramsey/uuid": "^3.7"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Santik\\SqlElasticSearchQueryConverter\\": [
+                        "src/"
+                    ]
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "proprietary"
+            ],
+            "authors": [
+                {
+                    "name": "Alexander Fedortets",
+                    "email": "fedorets.alex@gmail.com"
+                }
+            ],
+            "description": "Library for converting AND OR SQL like query to Elastic Search query",
+            "time": "2017-11-29T20:37:57+00:00"
         },
         {
             "name": "simplesoftwareio/simple-qrcode",

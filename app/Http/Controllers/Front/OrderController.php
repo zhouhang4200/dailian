@@ -37,7 +37,7 @@ class OrderController extends Controller
         $orders = GameLevelingOrder::searchCondition(array_merge(request()->except('status'), ['status' => 1]))
             ->orderBy('id', 'desc')
             ->paginate(20);
-//->profile();
+//->explain();
 //        dd($orders);
         return view('front.order.index', [
             'orders' => $orders,

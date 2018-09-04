@@ -39,7 +39,8 @@ class OrderController extends Controller
             ->orderBy('top_at', 'desc')
             ->orderBy('id', 'desc')
             ->paginate(20);
-
+//            ->explain();
+//        dd($orders);
         return view('front.order.index', [
             'orders' => $orders,
             'guest' => auth()->guard()->guest(),

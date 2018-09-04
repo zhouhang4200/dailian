@@ -322,7 +322,6 @@ class GameLevelingOrder extends Model
         }
 
         $filter = [];
-
         if (isset($condition['amount']) && $condition['amount'] == 1) {
             $filter = [
                 'bool' => [
@@ -343,8 +342,8 @@ class GameLevelingOrder extends Model
                     'must' =>  [
                         'range' => [
                             'amount' => [
-                                'gte' => 100,
-                                'lte' => 200,
+                                'gt' => 10,
+                                'lt' => 200,
                             ]
                         ]
                     ]
@@ -358,11 +357,25 @@ class GameLevelingOrder extends Model
                     'must' =>  [
                         'range' => [
                             'amount' => [
-                                'gte' => 100,
-                                'lte' => 200,
+                                'gt' => 100,
+                                'lt' => 200,
                             ]
                         ]
                 ]
+                ]
+            ];
+        }
+
+        if (isset($condition['amount']) && $condition['amount'] == 4) {
+            $filter = [
+                'bool' => [
+                    'must' =>  [
+                        'range' => [
+                            'amount' => [
+                                'gt' => 200,
+                            ]
+                        ]
+                    ]
                 ]
             ];
         }
@@ -403,10 +416,6 @@ class GameLevelingOrder extends Model
         $query->rule(function() use ($searchCondition) {
             return $searchCondition;
         });
-
-        if (isset($condition['amount']) && $condition['amount'] == 4) {
-            $query->where('amount', '>', 200);
-        }
 
         // 1 价格升序
         if (isset($condition['sort']) && $condition['sort'] == 1) {

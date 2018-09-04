@@ -190,22 +190,20 @@ $financeRoute = [
 
                 <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu"
                     lay-filter="layadmin-system-side-menu">
-                    @if(Auth::user()->could(['order.take-list']))
+
                     <li data-name="home"
                         class="layui-nav-item @if(in_array(Route::currentRouteName(), $orderRoute)) layui-nav-itemed @endif">
                         <a href="javascript:;" lay-tips="接单管理" lay-direction="2">
                             <i class="layui-icon iconfont  icon-group-o"></i>
                             <cite>订单管理</cite>
                         </a>
-                        @if(Auth::user()->could('order.take-list'))
                         <dl class="layui-nav-child">
                             <dd data-name="console"
                                 class="@if(Route::currentRouteName() == 'order.wait-list') layui-this  @endif" >
                                 <a href="{{ route('order.wait-list') }}">接单中心</a>
                             </dd>
                         </dl>
-                        @endif
-                        @if(Auth::user()->could(['order.take-list', 'finance.asset-flow', 'finance.balance-withdraw', 'finance.finance-report-day']))
+                        @if(Auth::user()->could(['order.take-list']))
                         <dl class="layui-nav-child">
                             <dd data-name="console"
                                 class="@if(Route::currentRouteName() == 'order.take-list') layui-this  @endif" >
@@ -214,7 +212,7 @@ $financeRoute = [
                         </dl>
                         @endif
                     </li>
-                    @endif
+
                     @if(Auth::user()->could('finance.asset-flow'))
                     <li data-name="home" class="layui-nav-item @if(in_array(Route::currentRouteName(), $financeRoute)) layui-nav-itemed @endif">
                         <a href="javascript:;" lay-tips="财务管理" lay-direction="2">

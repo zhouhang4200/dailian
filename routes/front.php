@@ -51,7 +51,7 @@ Route::group(['middleware' => 'auth'], function (){
         // 待接订单
         Route::get('wait-list', 'OrderController@waitList')->name('order.wait-list');
         // 接单列表
-        Route::get('take-list', 'OrderController@takeList')->name('order.take-list');
+        Route::get('take-list', 'OrderController@takeList')->name('order.take-list')->middleware('permission:order.take-list');
         Route::post('take-list', 'OrderController@takeListData')->name('order.take-list');
         // 订单详情
         Route::get('/{trade_no?}', 'OrderController@show')->name('order.show');
@@ -94,8 +94,8 @@ Route::group(['middleware' => 'auth'], function (){
         });
         // 余额充值
         Route::prefix('balance-recharge')->group(function (){
-            Route::get('/', 'BalanceRechargeController@index')->name('finance.balance-recharge')->middleware('permission:finance.balance-recharge');
-            Route::get('record', 'BalanceRechargeController@record')->name('finance.balance-recharge.record');
+            Route::get('/', 'BalanceRechargeController@index')->name('finance.balance-recharge');
+            Route::get('record', 'BalanceRechargeController@record')->name('finance.balance-recharge.record')->middleware('permission:finance.balance-recharge.record');
             Route::get('pay', 'BalanceRechargeController@pay')->name('finance.balance-recharge.pay');
             Route::get('pay-success', 'BalanceRechargeController@paySuccess')->name('finance.balance-recharge.pay-success');
             Route::get('export', 'BalanceRechargeController@export')->name('finance.balance-recharge.export');

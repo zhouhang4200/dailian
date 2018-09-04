@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use DB;
 use Redis;
 use Exception;
 use App\Models\Role;
@@ -14,6 +15,7 @@ class RegisterController extends Controller
 {
     public function register(Request $request)
     {
+        DB::beginTransaction();
         try {
             // 参数缺失
             if (is_null(request('phone')) || is_null(request('password')) || is_null(request('verification_code'))) {
@@ -49,8 +51,8 @@ class RegisterController extends Controller
                 'name' => $user->name,
                 'email' => $user->email,
                 'phone' => $user->phone,
-                'wechat' => $user->wechat,
-                'qq' => $user->qq,
+                'wechat' => $user->wechat ?? '',
+                'qq' => $user->qq ?? '',
                 'avatar' => $user->avatar,
                 'status' => $user->status,
                 'token' => $user->createToken('WanZiXiaoChengXu')->accessToken
@@ -61,11 +63,11 @@ class RegisterController extends Controller
 
             // 初始化用户资产
             UserAsset::create(['user_id' => $user->id]);
-
-            return response()->apiJson(0, $data);
         } catch (Exception $e) {
             myLog('wx-register-error', ['失败原因：' => $e->getMessage()]);
             return response()->apiJson(1003);
         }
+        DB::commit();
+        return response()->apiJson(0, $data);
     }
 }

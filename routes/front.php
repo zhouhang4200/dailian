@@ -51,7 +51,7 @@ Route::group(['middleware' => 'auth'], function (){
         // 待接订单
         Route::get('wait-list', 'OrderController@waitList')->name('order.wait-list');
         // 接单列表
-        Route::get('take-list', 'OrderController@takeList')->name('order.take-list')->middleware('permission:order.take-list');
+        Route::get('take-list', 'OrderController@takeList')->name('order.take-list');
         Route::post('take-list', 'OrderController@takeListData')->name('order.take-list');
         // 订单详情
         Route::get('/{trade_no?}', 'OrderController@show')->name('order.show');

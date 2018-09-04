@@ -335,10 +335,14 @@ class GameLevelingOrder extends Model
      */
     public function getRemainingTime()
     {
-        return sec2Time(Carbon::parse($this->take_at)
-            ->addDays($this->day)
-            ->addHours($this->hours)
-            ->diffInSeconds(Carbon::now()));
+        if (! in_array($this->status, [8, 9, 10, 11, 13])) {
+            return sec2Time(Carbon::parse($this->take_at)
+                ->addDays($this->day)
+                ->addHours($this->hours)
+                ->diffInSeconds(Carbon::now()));
+        } else {
+            return '--';
+        }
     }
 
     /**
@@ -522,7 +526,7 @@ class GameLevelingOrder extends Model
      */
     public function getComplainResult()
     {
-        if (! is_null($this->complain)) {
+        if (! is_null($this->complain) && $this->complain->status == 2) {
 
             if ($this->complain->initiator == 1) { // 如果发起人为发单方
 

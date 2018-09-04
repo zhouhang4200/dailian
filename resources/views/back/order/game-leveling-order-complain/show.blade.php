@@ -142,13 +142,16 @@
                 });
                 return false;
             });
+
             // 确认仲裁
             form.on('submit(confirm-arbitration)', function (data) {
+                var index1 = layer.load();
                 $.post('{{ route('admin.game-leveling-order-complain.confirm-arbitration') }}', {
                     trade_no:data.field.trade_no,
                     amount:data.field.amount,
                     deposit:data.field.deposit
                 }, function (result) {
+                    layer.close(index1);
                     if (result.status == 1) {
                         layer.closeAll();
                         layer.msg(result.message);

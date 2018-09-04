@@ -118,9 +118,6 @@ class RegisterController extends Controller
 
         event(new Registered($user = $this->create($data)));
 
-        // 初始化用户资产
-        UserAsset::create(['user_id' => $user->id]);
-
         $this->guard()->login($user);
 
         return response()->json(['status' => 1, 'message' => '注册成功!']);

@@ -10,7 +10,7 @@ use App\Models\GameLevelingType;
 use Faker\Generator;
 use Illuminate\Console\Command;
 
-class CreateTestOrder extends Command
+class CreateTestOrderCommand extends Command
 {
     /**
      * The name and signature of the console command.

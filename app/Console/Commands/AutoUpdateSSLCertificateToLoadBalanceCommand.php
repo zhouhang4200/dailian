@@ -19,7 +19,7 @@ use Illuminate\Console\Command;
  * Class AutoUpdateSSLCertificateToLoadBalance
  * @package App\Console\Commands
  */
-class AutoUpdateSSLCertificateToLoadBalance extends Command
+class AutoUpdateSSLCertificateToLoadBalanceCommand extends Command
 {
     /**
      * The name and signature of the console command.

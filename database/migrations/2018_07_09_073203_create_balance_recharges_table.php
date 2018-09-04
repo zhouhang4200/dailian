@@ -21,7 +21,6 @@ class CreateBalanceRechargesTable extends Migration
             $table->tinyInteger('source')->comment('充值来源 1 支付宝 2微信 3 转账');
             $table->tinyInteger('status')->comment('1 创建订单 2 完成充值');
             $table->string('remark', 500)->nullable()->comment('备注');
-            $table->string('remark', 500)->comment('备注');
             $table->timestamps();
         });
     }

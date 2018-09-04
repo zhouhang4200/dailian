@@ -49,6 +49,7 @@ class CreateGameLevelingOrdersTable extends Migration
             $table->text('explain')->comment('代练说明');
             $table->text('requirement')->comment('代练要求');
             $table->string('take_order_password', 30)->nullable()->comment('接单密码');
+            $table->string('player_name', 80)->default(0)->comment('玩家名称');
             $table->string('player_phone', 20)->default(0)->comment('玩家电话');
             $table->string('player_qq', 20)->default(0)->comment('玩家QQ');
             $table->string('user_phone', 20)->default(0)->comment('发单用户电话');
@@ -59,6 +60,8 @@ class CreateGameLevelingOrdersTable extends Migration
             $table->timestamp('apply_complete_at')->nullable()->comment('申请验收时间');
             $table->timestamp('complete_at')->nullable()->comment('订单完成时间');
             $table->unsignedTinyInteger('source')->default(1)->comment('订单来源');
+            $table->unsignedTinyInteger('top')->default(0)->comment('置顶 0 没有置 1 置顶');
+            $table->timestamp('top_at')->nullable()->comment('置顶的时间');
             $table->timestamps();
         });
     }

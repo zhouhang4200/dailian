@@ -302,7 +302,7 @@ class UserAssetService
         if ($userAsset->frozen < self::$amount) {
             throw new UserAssetException('冻结余额不够支出', 4008);
         }
-dump($userAsset->frozen, self::$amount, self::$userId);
+
         try {
             // 写流水
             $this->flow($userAsset->balance,  bcsub($userAsset->frozen, self::$amount));

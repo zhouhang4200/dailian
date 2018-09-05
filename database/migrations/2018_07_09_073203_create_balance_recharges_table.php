@@ -16,6 +16,7 @@ class CreateBalanceRechargesTable extends Migration
         Schema::create('balance_recharges', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->comment('用户ID');
+            $table->integer('type')->comment('type');
             $table->string('trade_no', 22)->comment('交易单号');
             $table->decimal('amount', 17, 4)->comment('交易单号');
             $table->tinyInteger('source')->comment('充值来源 1 支付宝 2微信 3 转账');

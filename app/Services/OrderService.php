@@ -813,7 +813,7 @@ class OrderService
             // 获取费率类型
             $gameLevelingType = GameLevelingType::find(self::$order->game_leveling_type_id);
 
-            // 代练费
+            // 发单人支付代练费
             if ($expend > 0) {
                 UserAssetService::init(61, self::$order->user_id, $expend, self::$order->trade_no)->expendFromFrozen();
             }

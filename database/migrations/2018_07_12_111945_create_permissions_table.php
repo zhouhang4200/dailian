@@ -33,6 +33,10 @@ class CreatePermissionsTable extends Migration
 
         DB::table('permissions')->insert($data);
         DB::table('roles')->insert([['user_id' => 0, 'name' => 'default', 'alias' => '默认权限']]);
+
+        $role = \App\Models\Role::where('name', 'default')->where('user_id', 0)->first();
+        $permissionIds = \App\Models\Permission::pluck('id')->toArray();
+        $role->permissions()->sync($permissionIds);
     }
 
     /**

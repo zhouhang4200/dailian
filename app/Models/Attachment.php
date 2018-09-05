@@ -14,6 +14,9 @@ class Attachment extends Model
 {
     public $fillable = [
         'path',
+        'trade_no',
+        'attachment_id',
+        'attachment_type',
     ];
 
     public $hidden = [

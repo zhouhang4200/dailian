@@ -21,7 +21,7 @@ class CreateAttachmentsTable extends Migration
             $table->string('path', 200)->comment('路径');
             $table->string('description', 200)->nullable()->comment('说明');
             $table->string('attachment_type', 200)->comment('多态关联模型');
-            $table->unsignedInteger('attachment_id')->comment('多态关联模型ID');
+            $table->unsignedInteger('attachment_id')->default('0')->comment('多态关联模型ID');
             $table->timestamps();
         });
     }

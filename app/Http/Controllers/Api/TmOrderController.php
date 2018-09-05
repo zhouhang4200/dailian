@@ -627,7 +627,7 @@ class TmOrderController extends Controller
             $data = [];
             foreach ($images as $k => $image) {
                 $data[$k]['username'] = $order->take_username ?? '';
-                $data[$k]['created_at'] = $order->created_at->toDateTimeString();
+                $data[$k]['created_at'] = $order->created_at;
                 $data[$k]['url'] = asset($image->path);
             }
         } catch (OrderException $e) {
@@ -687,7 +687,7 @@ class TmOrderController extends Controller
                 $data[$k]['sender'] = $initiator[$message->initiator];
                 $data[$k]['id'] = $message->id;
                 $data[$k]['send_content'] = $message->content;
-                $data[$k]['send_time'] = $message->created_at->toDateTimeString();
+                $data[$k]['send_time'] = $message->created_at;
             }
         } catch (OrderException $e) {
             return response()->apiFail($e->getMessage());
@@ -741,7 +741,7 @@ class TmOrderController extends Controller
             $data = [];
             $complain = $order->complain;
             $data['who'] = $complain->initiator;
-            $data['created_at'] = $complain->created_at->toDateTimeString();
+            $data['created_at'] = $complain->created_at;
             $data['content'] = $complain->reason;
             $data['arbitration_id'] = $complain->id;
             $images = $complain->image;
@@ -764,7 +764,7 @@ class TmOrderController extends Controller
                 foreach ($order->complain->messages as $k => $message) {
                     $data['message'][$k]['pic'] = '';
                     $data['message'][$k]['who'] = $message->initiator;
-                    $data['message'][$k]['created_at'] = $message->created_at->toDateTimeString();
+                    $data['message'][$k]['created_at'] = $message->created_at;
                     $data['message'][$k]['content'] = $message->content;
                     if (isset($message->image)) {
                         foreach ($message->image as $k1 => $image) {

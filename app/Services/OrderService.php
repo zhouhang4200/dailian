@@ -945,7 +945,7 @@ class OrderService
         try {
             // 更新撤销数据
             $complain = GameLevelingOrderComplain::where('game_leveling_order_trade_no', self::$order->trade_no)->first();
-            $complain->status = 2;
+            $complain->status = 3;
             $complain->save();
             // 删除上传的仲裁图片
             foreach ($complain->image as $item) {

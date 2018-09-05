@@ -227,7 +227,7 @@ class TmApiService
             $options['sign'] = $sign;
             // 发送
             static::normalRequest($options, config('tm.action.cancel_complain'));
-        } catch (TmApiException $e) {
+        } catch (Exception $e) {
             throw new UnknownException($e->getMessage());
         }
     }

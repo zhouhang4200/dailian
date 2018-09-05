@@ -429,6 +429,7 @@ class TmOrderController extends Controller
             // 回调
             if ($order) {
                 $callbackResult = TmApiService::callback($decryptOrderData['order_no'], $order->trade_no);
+                myLog('call', [$callbackResult, $decryptOrderData]);
                 if (! isset($callbackResult['code']) || $callbackResult['code'] != 1) {
                     throw new Exception('调用发单器回调接口失败');
                 }

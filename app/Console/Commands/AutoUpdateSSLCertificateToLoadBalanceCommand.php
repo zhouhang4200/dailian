@@ -45,8 +45,9 @@ class AutoUpdateSSLCertificateToLoadBalanceCommand extends Command
         // 配置网关
         $endpoint = new Endpoint('cn-hangzhou', EndpointConfig::getRegionIds(), EndpointConfig::getProductDomains());
         EndpointProvider::setEndpoints([$endpoint]);
+
         // 授权资料
-        $profile = DefaultProfile::getProfile('cn-hangzhou', 'LTAI5TUoYIJablEa', 'crjFw80SlZ3B4mP0fTNKaG38HhtS9k');
+        $profile = DefaultProfile::getProfile('cn-hangzhou', config('aliyun.access_key_id'), config('aliyun.access_secret'));
 
         // 创建客户端
         $client = new DefaultAcsClient($profile);
@@ -56,8 +57,8 @@ class AutoUpdateSSLCertificateToLoadBalanceCommand extends Command
         $uploadCertificate->setActionName('UploadServerCertificate');
         $uploadCertificate->setServerCertificateName('丸子代练');
         $uploadCertificate->setRegionId('cn-hangzhou');
-        $uploadCertificate->setPrivateKey(file_get_contents(storage_path('logs/fulugou.net/fulugou.net.key')));
-        $uploadCertificate->setServerCertificate(file_get_contents(storage_path('logs/fulugou.net/fulugou.net.pem')));
+        $uploadCertificate->setPrivateKey(file_get_contents(config('aliyun.ssl_private_key_path')));
+        $uploadCertificate->setServerCertificate(file_get_contents(config('aliyun.ssl_certificate_path')));
         $uploadCertificateResult = $client->getAcsResponse($uploadCertificate);
 
         // 修改负载配置
@@ -79,7 +80,7 @@ class AutoUpdateSSLCertificateToLoadBalanceCommand extends Command
             $deleteLoadBalance->setLoadBalancerId($sslCertificateId);
             $client->getAcsResponse($deleteLoadBalance);
         }
-        // 将本次证书存入redis
+        // 将本次证书ID存入redis
         Redis::set('sslCertificateId', $uploadCertificateResult->ServerCertificateId);
     }
 }

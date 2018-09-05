@@ -1120,7 +1120,7 @@ class OrderService
             OrderStatistic::where('trade_no', self::$order->trade_no)->update([
                 'status' => 9,
                 'consult_complain_amount' => $expend,
-                'consult_complain_deposit' => $$securityDepositExpend + $efficiencyDepositExpend,
+                'consult_complain_deposit' => bcadd($securityDepositExpend, $efficiencyDepositExpend),
                 'poundage' => $poundage,
                 'take_poundage' => $takePoundage,
                 'order_finished_at' => $completeAt,

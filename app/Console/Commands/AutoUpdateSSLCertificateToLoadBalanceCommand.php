@@ -57,8 +57,8 @@ class AutoUpdateSSLCertificateToLoadBalanceCommand extends Command
         $uploadCertificate->setActionName('UploadServerCertificate');
         $uploadCertificate->setServerCertificateName('丸子代练');
         $uploadCertificate->setRegionId('cn-hangzhou');
-        $uploadCertificate->setPrivateKey(file_get_contents(config('aliyun.ssl_private_key')));
-        $uploadCertificate->setServerCertificate(file_get_contents(config('aliyun.ssl_certificate')));
+        $uploadCertificate->setPrivateKey(file_get_contents(config('aliyun.ssl_private_key_path')));
+        $uploadCertificate->setServerCertificate(file_get_contents(config('aliyun.ssl_certificate_path')));
         $uploadCertificateResult = $client->getAcsResponse($uploadCertificate);
 
         // 修改负载配置

@@ -656,7 +656,7 @@ class TmOrderController extends Controller
             $reason = $request->reason;
 
             $orderService = OrderService::init($userId, $orderNo);
-            $order = $orderService->sendComplainMessage($image, $reason);
+            $order = $orderService->sendComplainMessage(base64ToImg($image, 'complain'), $reason);
         } catch (OrderException $e) {
             return response()->apiFail($e->getMessage());
         } catch (UserAssetException $e) {

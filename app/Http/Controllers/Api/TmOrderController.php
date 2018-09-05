@@ -561,7 +561,7 @@ class TmOrderController extends Controller
     /**
      * 修改订单
      * @param Request $request
-     * @return bool
+     * @return mixed
      * @throws Exception
      */
     public function update(Request $request)
@@ -572,34 +572,35 @@ class TmOrderController extends Controller
             if (! isset($data) || ! $data) {
                 throw new Exception('接收信息为空');
             }
-            $decryptData = openssl_decrypt($data, 'aes-128-cbc', static::$key, false, static::$iv);
-            $data = json_decode($decryptData, true);
+
+            $decryptData = TmApiService::decryptOrderData($data);
+
             $orderNo = $data['order_no'];
             $orderService = OrderService::init(static::$creatorUserId, $orderNo);
-            $game = Game::where('name', $data['game_name'])->first();
-            $region = Region::where('name', $data['game_region'])->where('game_id', $game->id)->first();
-            $server = Server::where('name', $data['game_serve'])->where('region_id', $region->id)->first();
+            $game = Game::where('name', $decryptData['game_name'])->first();
+            $region = Region::where('name', $decryptData['game_region'])->where('game_id', $game->id)->first();
+            $server = Server::where('name', $decryptData['game_serve'])->where('region_id', $region->id)->first();
             $gameLevelingType = GameLevelingType::where('game_id', $game->id)->first();
 
             $order = $orderService->update(
                 $game->id,
                 $region->id,
                 $server->id,
-                $data['game_leveling_title'],
-                $data['game_account'],
-                $data['game_password'],
-                $data['game_role'],
-                $data['game_leveling_day'],
-                $data['game_leveling_hour'],
+                $decryptData['game_leveling_title'],
+                $decryptData['game_account'],
+                $decryptData['game_password'],
+                $decryptData['game_role'],
+                $decryptData['game_leveling_day'],
+                $decryptData['game_leveling_hour'],
                 $gameLevelingType->id,
-                $data['game_leveling_price'],
-                $data['game_leveling_security_deposit'],
-                $data['game_leveling_efficiency_deposit'],
-                $data['game_leveling_instructions'],
-                $data['game_leveling_requirements'],
-                $data['businessman_phone'],
-                $data['businessman_qq'],
-                $data['order_password']
+                $decryptData['game_leveling_price'],
+                $decryptData['game_leveling_security_deposit'],
+                $decryptData['game_leveling_efficiency_deposit'],
+                $decryptData['game_leveling_instructions'],
+                $decryptData['game_leveling_requirements'],
+                $decryptData['businessman_phone'],
+                $decryptData['businessman_qq'],
+                $decryptData['order_password']
             );
         } catch (OrderException $e) {
             return response()->apiFail($e->getMessage());

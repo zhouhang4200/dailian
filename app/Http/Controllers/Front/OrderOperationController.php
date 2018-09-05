@@ -240,6 +240,7 @@ class OrderOperationController extends Controller
      */
     public function cancelAnomaly()
     {
+        DB::beginTransaction();
         try {
             $order = OrderService::init(request()->user()->id, request('trade_no'))->cancelAnomaly();
             TmApiService::cancelAnomaly($order->trade_no);

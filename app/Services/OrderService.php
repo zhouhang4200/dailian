@@ -605,6 +605,8 @@ class OrderService
         }
         DB::beginTransaction();
         try {
+//            $order = GameLevelingOrder::where('trade_no', self::$order->trade_no)->lockForUpdate()->first();
+
             // 修改订单状态
             self::$order->status = 2;
             self::$order->save();

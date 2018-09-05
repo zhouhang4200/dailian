@@ -575,8 +575,7 @@ class TmOrderController extends Controller
 
             $decryptData = TmApiService::decryptOrderData($data);
 
-            $orderNo = $data['order_no'];
-            $orderService = OrderService::init(static::$creatorUserId, $orderNo);
+            $orderService = OrderService::init(static::$creatorUserId, $decryptData['order_no']);
             $game = Game::where('name', $decryptData['game_name'])->first();
             $region = Region::where('name', $decryptData['game_region'])->where('game_id', $game->id)->first();
             $server = Server::where('name', $decryptData['game_serve'])->where('region_id', $region->id)->first();

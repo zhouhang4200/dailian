@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -119,5 +120,14 @@ class GameLevelingOrderConsult extends Model
         } else {
             return '';
         }
+    }
+
+    /**
+     * @param $value
+     * @return string
+     */
+    public function getCreatedAtAttribute($value)
+    {
+        return Carbon::createFromTimestamp(strtotime($value))->toDateTimeString();
     }
 }

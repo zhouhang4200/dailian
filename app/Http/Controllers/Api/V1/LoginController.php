@@ -78,7 +78,7 @@ class LoginController extends Controller
                 return response()->apiJson(2001);
             }
         } catch (Exception $e) {
-            myLog('wx-login-error', ['失败原因：' => $e->getMessage()]);
+            myLog('wx-login-error', ['失败原因：' => $e->getMessage(), $e->getFile(), $e->getLine()]);
             return response()->apiJson(1003);
         }
     }

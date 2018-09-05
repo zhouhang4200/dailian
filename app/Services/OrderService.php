@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\OrderStatistic;
 use Exception;
 use App\Exceptions\UnknownException;
 use App\Exceptions\OrderException;
@@ -173,6 +174,21 @@ class OrderService
                 'top_at' => date('Y-m-d H:i:s'),
             ]);
 
+            // 写入订单统计表
+            OrderStatistic::create([
+                'date' => date('Y-m-d'),
+                'trade_no' => $tradeNO,
+                'status' => 1,
+                'game_id' => $game->id,
+                'game_name'=> $game->name,
+                'user_id' => self::$user->id,
+                'parent_user_id' => self::$user->parent_id,
+                'amount' => $amount,
+                'security_deposit' => $securityDeposit,
+                'efficiency_deposit' => $efficiencyDeposit,
+                'order_created_at' => $order->created_at,
+            ]);
+
             // 写入订单日志
             GameLevelingOrderLog::store('发布', $tradeNO, self::$user->id, self::$user->name, self::$user->parent_id, self::$user->name . ': 发布了订单');
         } catch (Exception $exception) {
@@ -230,6 +246,14 @@ class OrderService
             self::$order->take_parent_username = self::$user->parent->name;
             self::$order->take_at = date('Y-m-d H:i:s');
             self::$order->save();
+
+            // 更新统计数据
+            OrderStatistic::where('trade_no', self::$order->trade_no)->update([
+                'status' => 2,
+                'take_user_id' => self::$user->id,
+                'take_parent_user_id' => self::$user->parent_id,
+            ]);
+
             // 写入订单日志
             GameLevelingOrderLog::store('接单', self::$order->trade_no, self::$user->id, self::$user->name, self::$user->parent_id, self::$user->name . ': 进行操作 [接单]');
         }  catch (UserAssetException $exception) {
@@ -259,6 +283,12 @@ class OrderService
             // 修改订单状态
             self::$order->status = 13;
             self::$order->save();
+
+            // 更新统计数据
+            OrderStatistic::where('trade_no', self::$order->trade_no)->update([
+                'status' => 13
+            ]);
+
             // 写入订单日志
             GameLevelingOrderLog::store('撤单', self::$order->trade_no, self::$user->id, self::$user->name, self::$user->parent_id, self::$user->name . ': 进行操作 [撤单]');
         } catch (Exception $exception) {
@@ -378,12 +408,22 @@ class OrderService
             // 获取费率类型
             $gameLevelingType = GameLevelingType::find(self::$order->game_leveling_type_id);
             // 支出收入手费
-            UserAssetService::init(64, self::$order->take_user_id, bcmul(self::$order->amount, bcdiv($gameLevelingType->poundage, 100)), self::$order->trade_no)->expendFromBalance();
+            $poundage = bcmul(self::$order->amount, bcdiv($gameLevelingType->poundage, 100));
+            UserAssetService::init(64, self::$order->take_user_id, $poundage, self::$order->trade_no)->expendFromBalance();
 
             // 修改订单状态
+            $completeAt = date('Y-m-d H:i:s');
             self::$order->status = 10;
-            self::$order->complete_at = date('Y-m-d H:i:s');
+            self::$order->complete_at = $completeAt;
             self::$order->save();
+
+            // 更新统计数据 接单收入支出的手续费 订单结算时间
+            OrderStatistic::where('trade_no', self::$order->trade_no)->update([
+                'status' => 10,
+                'take_poundage' => $poundage,
+                'order_finished_at' => $completeAt,
+            ]);
+
             // 写入订单日志
             GameLevelingOrderLog::store('完成验收', self::$order->trade_no, self::$user->id, self::$user->name, self::$user->parent_id, self::$user->name . ': 进行操作 [完成验收]');
         } catch (Exception $exception) {
@@ -732,7 +772,11 @@ class OrderService
             $efficiencyDepositIncome= 0;
             // 接单人 解冻效率保证金
             $efficiencyDepositUnfrozen = 0;
-            // 1 2  amount 8 s 5 e 5
+            // 发单人手续费
+            $poundage = 0;
+            // 接单人手续费
+            $takePoundage = 0;
+
             if (self::$order->amount == self::$order->consult->amount) { // 协商 代练费全额支出
                 $expend = self::$order->amount;
                 $income = self::$order->amount;
@@ -777,6 +821,7 @@ class OrderService
                 UserAssetService::init(51, self::$order->take_user_id, $income, self::$order->trade_no)->income();
                 // 支出收入手费
                 UserAssetService::init(64, self::$order->take_user_id, bcmul($income, bcdiv($gameLevelingType->poundage, 100)), self::$order->trade_no)->expendFromBalance();
+                $takePoundage += bcmul($income, bcdiv($gameLevelingType->poundage, 100));
             }
             if ($unfrozen > 0) {
                 UserAssetService::init(41, self::$order->user_id, $unfrozen, self::$order->trade_no)->unfrozen();
@@ -789,6 +834,7 @@ class OrderService
                 UserAssetService::init(52, self::$order->user_id, $efficiencyDepositIncome, self::$order->trade_no)->income();
                 // 支出收入手费
                 UserAssetService::init(64, self::$order->user_id, bcmul($efficiencyDepositIncome, bcdiv($gameLevelingType->poundage, 100)), self::$order->trade_no)->expendFromBalance();
+                $poundage += bcmul($efficiencyDepositIncome, bcdiv($gameLevelingType->poundage, 100));
             }
             if ($efficiencyDepositUnfrozen > 0) {
                 UserAssetService::init(42, self::$order->take_user_id, $efficiencyDepositUnfrozen, self::$order->trade_no)->unfrozen();
@@ -801,15 +847,28 @@ class OrderService
                 UserAssetService::init(53, self::$order->user_id, $securityDepositIncome, self::$order->trade_no)->income();
                 // 支出收入手费
                 UserAssetService::init(64, self::$order->user_id, bcmul($securityDepositIncome, bcdiv($gameLevelingType->poundage, 100)), self::$order->trade_no)->expendFromBalance();
+                $poundage += bcmul($securityDepositIncome, bcdiv($gameLevelingType->poundage, 100));
             }
             if ($securityDepositUnfrozen > 0) {
                 UserAssetService::init(43, self::$order->take_user_id, $securityDepositUnfrozen, self::$order->trade_no)->unfrozen();
             }
 
             // 修改订单状态
+            $completeAt = date('Y-m-d H:i:s');
             self::$order->status = 8;
-            self::$order->complete_at = date('Y-m-d H:i:s');
+            self::$order->complete_at = $completeAt;
             self::$order->save();
+
+            // 更新统计数据
+            OrderStatistic::where('trade_no', self::$order->trade_no)->update([
+                'status' => 8,
+                'consult_complain_amount' => $expend,
+                'consult_complain_deposit' => bcadd($securityDepositExpend, $efficiencyDepositExpend),
+                'poundage' => $poundage,
+                'take_poundage' => $takePoundage,
+                'order_finished_at' => $completeAt,
+            ]);
+
             // 写入订单日志
             GameLevelingOrderLog::store('同意撤销', self::$order->trade_no, self::$user->id, self::$user->name, self::$user->parent_id, self::$user->name . ': 进行操作 [同意撤销]');
         } catch (Exception $exception) {
@@ -970,6 +1029,11 @@ class OrderService
             // 接单人 解冻效率保证金
             $efficiencyDepositUnfrozen = 0;
 
+            // 发单人收入手续费
+            $poundage = 0;
+            // 接单人收入手续费
+            $takePoundage = 0;
+
             if (self::$order->amount == $inputAmount) { // 仲裁 代练费全额支出
                 $expend = self::$order->amount;
                 $income = self::$order->amount;
@@ -1014,6 +1078,7 @@ class OrderService
                 UserAssetService::init(51, self::$order->take_user_id, $income, self::$order->trade_no)->income();
                 // 支出收入手费
                 UserAssetService::init(64, self::$order->take_user_id, bcmul($income, bcdiv($gameLevelingType->poundage, 100)), self::$order->trade_no)->expendFromBalance();
+                $takePoundage += bcmul($income, bcdiv($gameLevelingType->poundage, 100));
             }
             if ($unfrozen > 0) {
                 UserAssetService::init(41, self::$order->user_id, $unfrozen, self::$order->trade_no)->unfrozen();
@@ -1027,6 +1092,7 @@ class OrderService
                 UserAssetService::init(52, self::$order->user_id, $efficiencyDepositIncome, self::$order->trade_no)->income();
                 // 支出收入手费
                 UserAssetService::init(64, self::$order->user_id, bcmul($efficiencyDepositIncome, bcdiv($gameLevelingType->poundage, 100)), self::$order->trade_no)->expendFromBalance();
+                $poundage += bcmul($efficiencyDepositIncome, bcdiv($gameLevelingType->poundage, 100));
             }
             if ($efficiencyDepositUnfrozen > 0) {
                 UserAssetService::init(42, self::$order->take_user_id, $efficiencyDepositUnfrozen, self::$order->trade_no)->unfrozen();
@@ -1039,15 +1105,26 @@ class OrderService
                 UserAssetService::init(53, self::$order->user_id, $securityDepositIncome, self::$order->trade_no)->income();
                 // 支出收入手费
                 UserAssetService::init(64, self::$order->user_id, bcmul($securityDepositIncome, bcdiv($gameLevelingType->poundage, 100)), self::$order->trade_no)->expendFromBalance();
+                $poundage += bcmul($securityDepositIncome, bcdiv($gameLevelingType->poundage, 100));
             }
             if ($securityDepositUnfrozen > 0) {
                 UserAssetService::init(43, self::$order->take_user_id, $securityDepositUnfrozen, self::$order->trade_no)->unfrozen();
             }
             // 修改订单状态
+            $completeAt = date('Y-m-d H:i:s');
             self::$order->status = 9;
-            self::$order->complete_at = date('Y-m-d H:i:s');
+            self::$order->complete_at = $completeAt;
             self::$order->save();
-            // 更新仲裁数据
+
+            // 更新统计数据
+            OrderStatistic::where('trade_no', self::$order->trade_no)->update([
+                'status' => 9,
+                'consult_complain_amount' => $expend,
+                'consult_complain_deposit' => $$securityDepositExpend + $efficiencyDepositExpend,
+                'poundage' => $poundage,
+                'take_poundage' => $takePoundage,
+                'order_finished_at' => $completeAt,
+            ]);
 
             // 写入订单日志
             GameLevelingOrderLog::store('完成仲裁', self::$order->trade_no, 0, self::$user->name, 0, '客服: 进行操作 [完成仲裁]');
@@ -1423,6 +1500,28 @@ class OrderService
         }
         DB::commit();
         return self::$order;
+    }
+
+    /**
+     * @return mixed
+     * @throws OrderException
+     */
+    public function top()
+    {
+        // 检测当前操作用户是否是发单人
+        if (self::$order->parent_user_id != self::$user->parent_id) {
+            throw new OrderException('该订单不属于您,你无权操作', 7006);
+        }
+
+        self::$order->top = 1;
+        self::$order->top_at = date('Y-m-d H:i:s');
+        return self::$order->save();
+    }
+
+
+    private function orderStatisticDataUpdate()
+    {
+
     }
 }
 

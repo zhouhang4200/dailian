@@ -39,7 +39,7 @@ class OrderOperationController extends Controller
         } catch (UserAssetException $e) {
             return response()->ajaxFail($e->getMessage());
         } catch (Exception $e) {
-            return response()->ajaxFail($e->getMessage());
+            return response()->ajaxFail($e->getMessage(). $e->getFile(). $e->getLine());
         }
         DB::commit();
         return response()->ajaxSuccess('接单成功');

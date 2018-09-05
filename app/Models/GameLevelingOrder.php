@@ -770,4 +770,13 @@ class GameLevelingOrder extends Model
         return $this->hasOne(GameLevelingOrderApplyComplete::class, 'game_leveling_order_trade_no', 'trade_no');
 
     }
+
+    /**
+     * @param $value
+     * @return string
+     */
+    public function getCreatedAtAttribute($value)
+    {
+        return Carbon::createFromTimestamp(strtotime($value))->toDateTimeString();
+    }
 }

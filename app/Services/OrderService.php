@@ -1427,7 +1427,7 @@ class OrderService
 
 
             if ($image) {
-                $image['game_leveling_order_trade_no'] = self::$order->trade_no;
+                $image['trade_no'] = self::$order->trade_no;
                 $message->image()->create($image);
             }
         } catch (Exception $exception) {

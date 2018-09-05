@@ -146,6 +146,7 @@ Route::prefix('tm')->middleware('api.auth')->group(function () {
     Route::post('get-message', 'TmOrderController@getMessage'); // 获取留言
     Route::post('send-message', 'TmOrderController@sendMessage'); // 发送留言
     Route::post('get-complain-info', 'TmOrderController@getComplainInfo'); // 仲裁详情
+    Route::post('top', 'TmOrderController@top'); // 置顶
 });
 Route::post('tm/update', 'TmOrderController@update'); // 修改订单
 Route::post('tm/place-order', 'TmOrderController@placeOrder'); // 下单

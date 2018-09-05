@@ -782,4 +782,28 @@ class TmOrderController extends Controller
         }
         return response()->apiSuccess('成功', $data);
     }
+
+    /**
+     *  发送留言
+     * @param Request $request
+     * @return mixed
+     * @throws Exception
+     */
+    public static function top(Request $request)
+    {
+        try {
+            $orderNo = $request->order_no;
+            $userId = $request->user->id;
+
+            $orderService = OrderService::init($userId, $orderNo);
+            $order = $orderService->top();
+        } catch (OrderException $e) {
+            return response()->apiFail($e->getMessage());
+        } catch (UserAssetException $e) {
+            return response()->apiFail($e->getMessage());
+        } catch (Exception $e) {
+            return response()->apiFail('接单平台接口异常');
+        }
+        return response()->apiSuccess();
+    }
 }

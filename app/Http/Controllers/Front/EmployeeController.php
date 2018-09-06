@@ -74,6 +74,10 @@ class EmployeeController extends Controller
             return response()->json(['status' => 0, 'message' => '请输入正确的手机号']);
         }
 
+        if (isset($request->data['qq']) && ! is_numeric($request->data['qq'])) {
+            return response()->json(['status' => 0, 'message' => 'QQ号必须为数字']);
+        }
+
         // 判断手机号是否唯一
         $isSingle = User::where('phone', $request->data['phone'])->withTrashed()->first();
         if ($isSingle) {

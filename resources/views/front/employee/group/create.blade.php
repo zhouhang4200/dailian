@@ -32,6 +32,7 @@
             color: #fff;
         }
     </style>
+
 @endsection
 
 @section('main')

@@ -65,7 +65,7 @@ class HelpController extends Controller
                 $data['id'] = $article->id;
                 $data['title'] = $article->title;
                 $data['content'] = $article->content;
-                $data['created_at'] = $article->created_at->toDateTimeString();
+                $data['created_at'] = $article->created_at;
             }
 
             return response()->apiJson(0, $data);

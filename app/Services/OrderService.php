@@ -741,14 +741,22 @@ class OrderService
      */
     public function agreeConsult()
     {
-        // 状态为 撤销中 可取消撤销
-        if (self::$order->status != 4) {
+        // 状态为 撤销中 仲裁 可取消撤销
+        if ( ! in_array(self::$order->status, [4 ,5])) {
             throw new OrderException('同意撤销失败,订单当前状态为: ' . self::$order->getStatusDescribe(), 7005);
         }
+
+        // 如果当前状态是仲裁中，关且存在撤销则
+        if (self::$order->status == 5 && is_null(self::$order->complain)) {
+            throw new OrderException('该订单没有仲裁信息', 7010);
+        }
+
         // 检测当前操作用户与发起用户是否是同一人
         if (self::$order->consult->parent_user_id == self::$user->parent_id) {
             throw new OrderException('您不能同意自己发起的撤销', 7006);
         }
+
+
         DB::beginTransaction();
         try {
             // 记录撤销数据

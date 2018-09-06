@@ -18,27 +18,11 @@ class OrderWaitController extends Controller
      */
     public function index()
     {
-        $orders = GameLevelingOrder::searchCondition(request()->all())
-            ->select([
-                'status',
-                'game_id',
-                'trade_no',
-                'game_name',
-                'region_name',
-                'server_name',
-                'title',
-                'game_leveling_type_name',
-                'security_deposit',
-                'efficiency_deposit',
-                'hour',
-                'day',
-                'amount',
-                'take_order_password',
-            ])
-            ->with('game')
-            ->where('status', 1)
+        $orders = GameLevelingOrder::searchCondition(array_merge(request()->except('status'), ['status' => 1]))
+            ->orderBy('top', 'desc')
+            ->orderBy('top_at', 'desc')
             ->orderBy('id', 'desc')
-            ->paginate(request('page_size' , 20));
+            ->paginate(20);
 
         $orderList = [];
         foreach ($orders->items() as $key => $item) {

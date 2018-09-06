@@ -40,6 +40,7 @@ class ProfileController extends Controller
             $data['age'] = $user->age;
             $data['email'] = $user->email;
             $data['phone'] = $user->phone;
+            $data['contact_phone'] = $user->contact_phone;
             $data['wechat'] = $user->wechat;
             $data['qq'] = $user->qq;
             $data['avatar'] = $user->avatar;
@@ -88,6 +89,7 @@ class ProfileController extends Controller
             $user->qq = request('qq', $user->qq);
             $user->signature = request('signature', $user->signature);
             $user->email = request('email', $user->email);
+            $user->contact_phone = request('contact_phone', $user->contact_phone);
             $user->save();
 
             return response()->apiJson(0);

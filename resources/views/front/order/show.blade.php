@@ -372,10 +372,14 @@
                                             <button class="qs-btn qs-btn-primary qs-btn-sm qs-btn-table" style="width: 80px;"   data-no="{{ $order->trade_no }}" lay-submit lay-filter="apply-complain">申请仲裁</button>
                                         @endif
 
-                                        @if ($order->getStatusDescribe() == '撤销中' && optional($order->consult)->initiator == 1)
+                                        @if ($order->getStatusDescribe() == '仲裁中' && optional($order->consult)->initiator == 1)
                                                 <button class="qs-btn qs-btn-sm" style="width: 80px;"   data-no="{{ $order->trade_no }}" lay-submit lay-filter="agree-consult" >同意撤销</button>
-                                                <button class="qs-btn qs-btn-sm" style="width: 80px;"   data-no="{{ $order->trade_no }}" lay-submit lay-filter="reject-consult">不同意撤销</button>
-                                                <button class="qs-btn qs-btn-primary qs-btn-sm qs-btn-table" style="width: 80px;"   data-no="{{ $order->trade_no }}" lay-submit lay-filter="apply-complain">申请仲裁</button>
+                                        @endif
+
+                                        @if ($order->getStatusDescribe() == '撤销中' && optional($order->consult)->initiator == 1)
+                                            <button class="qs-btn qs-btn-sm" style="width: 80px;"   data-no="{{ $order->trade_no }}" lay-submit lay-filter="agree-consult" >同意撤销</button>
+                                            <button class="qs-btn qs-btn-sm" style="width: 80px;"   data-no="{{ $order->trade_no }}" lay-submit lay-filter="reject-consult">不同意撤销</button>
+                                            <button class="qs-btn qs-btn-primary qs-btn-sm qs-btn-table" style="width: 80px;"   data-no="{{ $order->trade_no }}" lay-submit lay-filter="apply-complain">申请仲裁</button>
                                         @endif
 
                                         @if ($order->getStatusDescribe() == '仲裁中' && optional($order->complain)->initiator == 2)

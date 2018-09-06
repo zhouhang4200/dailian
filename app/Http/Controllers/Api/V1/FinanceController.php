@@ -246,10 +246,10 @@ class FinanceController extends Controller
             $user = Auth::user();
 
             $data = [
-                'balance' => 100,
+                'balance' => auth()->user()->userAsset->balance,
                 'rate' => 0.01,
-                'tips' => '充值说明',
-                'min_amount' => 0.01,
+                'tips' => '提现金额最低10元且必须为整数，提现将收取1%的手续费，提现金额将在3个工作日（节假日顺延）转账到实名认证填写的银行卡上',
+                'min_amount' => 10,
                 'max_amount' => 1000,
             ];
 

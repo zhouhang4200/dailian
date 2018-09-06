@@ -4,6 +4,15 @@
 
 @section('css')
     <link rel="stylesheet" href="/front/css/help.css">
+    <style>
+        .layui-tab-title{
+            float: left;
+        }
+        .layui-tab-content{
+            float: right;
+            position: static !important;
+        }
+    </style>
 @endsection
 
 @section('main')

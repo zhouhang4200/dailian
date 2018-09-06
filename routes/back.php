@@ -39,6 +39,12 @@ Route::group(['middleware' =>  ['auth.admin']], function () {
             Route::post('send-message', 'GameLevelingOrderComplainController@sendMessage')->name('admin.game-leveling-order-complain.send-message');
             Route::post('confirm-arbitration', 'GameLevelingOrderComplainController@confirmArbitration')->name('admin.game-leveling-order-complain.confirm-arbitration');
         });
+
+        // 代练订单仲裁
+        Route::prefix('order-statistic')->group(function (){
+            Route::get('/', 'StatisticController@index')->name('admin.order-statistic');
+            Route::get('export', 'StatisticController@export')->name('admin.order-statistic.export');
+        });
     });
 
     // 游戏

@@ -230,8 +230,8 @@ $financeRoute = [
                         @endif
                         @if(Auth::user()->could('finance.balance-withdraw'))
                             <dd data-name="console"
-                                class="@if(Route::currentRouteName() == 'finance.balance-withdraw') layui-this  @endif" >
-                                <a href="{{ route('finance.balance-withdraw') }}">提现记录</a>
+                                class="@if(Route::currentRouteName() == 'finance.balance-withdraw.record') layui-this  @endif" >
+                                <a href="{{ route('finance.balance-withdraw.record') }}">提现记录</a>
                             </dd>
                         @endif
                         @if(Auth::user()->could('finance.balance-recharge.record'))

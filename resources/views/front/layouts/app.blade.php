@@ -24,6 +24,7 @@ $accountRoute = [
     'real-name-certification.edit',
     'real-name-certification.store',
     'real-name-certification.update',
+    'employee.group.create',
 ];
 
 $financeRoute = [
@@ -267,7 +268,7 @@ $financeRoute = [
                             @endif
                             @if(Auth::user()->could('employee.group'))
                             <dd data-name="console"
-                                class="@if(Route::currentRouteName() == 'employee.group') layui-this  @endif">
+                                class="@if(Route::currentRouteName() == 'employee.group' || Route::currentRouteName() == 'employee.group.create') layui-this  @endif">
                                 <a href="{{ route('employee.group') }}">岗位管理</a>
                             </dd>
                             @endif

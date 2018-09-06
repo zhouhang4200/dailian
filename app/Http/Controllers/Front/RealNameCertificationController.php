@@ -25,6 +25,10 @@ class RealNameCertificationController extends Controller
     {
         if (Auth::user()->isParent()) {
             $realNameCertification = RealNameCertification::where('user_id', Auth::user()->id)->with('user')->first();
+
+            if (! $realNameCertification) {
+                return view('front.real-name-certification.create');
+            }
             return view('front.real-name-certification.index', compact('realNameCertification'));
         } else {
             abort(404);

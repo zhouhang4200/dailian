@@ -31,4 +31,25 @@ class OrderStatistic extends Model
         'order_finished_at',
         'third',
     ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function gameLevelingOrder()
+    {
+        return $this->belongsTo(GameLevelingOrder::class, 'trade_no', 'trade_no');
+    }
+
+    public static function scopeFilter($query, $filters)
+    {
+        if ($filters['startDate']) {
+            $query->where('date', '>=', $filters['startDate']);
+        }
+
+        if ($filters['endDate']) {
+            $query->where('date', '<=', $filters['endDate']);
+        }
+
+        return $query;
+    }
 }

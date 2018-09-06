@@ -112,6 +112,11 @@ Route::group(['middleware' => 'auth'], function (){
             Route::get('/', 'FinanceReportDayController@index')->name('finance.finance-report-day')->middleware('permission:finance.finance-report-day');
             Route::get('export', 'FinanceReportDayController@export')->name('finance.finance-report-day.export');
         });
+        // 订单统计
+        Route::prefix('order-statistic')->group(function (){
+            Route::get('/', 'OrderStatisticController@index')->name('finance.order-statistic')->middleware('permission:finance.order-statistic');
+            Route::get('export', 'OrderStatisticController@export')->name('finance.order-statistic.export');
+        });
     });
 
     // 个人资料

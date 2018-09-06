@@ -145,7 +145,7 @@ $financeRoute = [
                     </a>
                 </li>
                 <li class="layui-nav-item" lay-unselect style="margin-right: 30px;">
-                    <a href="javascript:;">
+                    <a href="{{ route('profile') }}">
                         <img src="{{ auth()->user()->avatar ?? '' }}" class="layui-nav-img">
                         <cite>{{ optional(auth()->user())->name }}</cite>
                     </a>
@@ -185,8 +185,10 @@ $financeRoute = [
         <div class="layui-side layui-side-menu">
             <div class="layui-side-scroll">
                 <div class="layui-logo" lay-href="">
-                    <img src="/front/images/title.png" alt="">
-                    <p style="height: 25px;line-height: 25px; display: inline-block"></p>
+                    <a href="/">
+                        <img src="/front/images/title.png" alt="">
+                        <p style="height: 25px;line-height: 25px; display: inline-block"></p>
+                    </a>
                 </div>
 
                 <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu"

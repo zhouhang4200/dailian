@@ -73,7 +73,7 @@
                         <td colspan="999">暂时没有数据</td>
                     </tr>
                 @endforelse
-                @if($total)
+                @if($total && ! empty($total->takeCount))
                     <tr>
                         <td>总计</td>
                         <td>{{ $total->takeCount }}</td>

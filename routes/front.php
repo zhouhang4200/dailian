@@ -115,7 +115,7 @@ Route::group(['middleware' => 'auth'], function (){
         // 订单统计
         Route::prefix('order-statistic')->group(function (){
             Route::get('/', 'OrderStatisticController@index')->name('finance.order-statistic')->middleware('permission:finance.order-statistic');
-            Route::get('export', 'OrderStatisticController@export')->name('finance.order-statistic.export')->middleware('permission:finance.order-statistic.export');
+            Route::get('export', 'OrderStatisticController@export')->name('finance.order-statistic.export');
         });
     });
 

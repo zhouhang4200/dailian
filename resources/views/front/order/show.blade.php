@@ -225,7 +225,7 @@
                                 <div class="layui-col-lg6">
                                     <label class="layui-form-label">服</label>
                                     <div class="layui-input-block">
-                                        <input type="text" name="serve_name"   class="layui-input"  disabled="disabled" value="{{ $order->serve_name }}">
+                                        <input type="text" name="server_name"   class="layui-input"  disabled="disabled" value="{{ $order->server_name }}">
                                     </div>
                                 </div>
 
@@ -330,7 +330,7 @@
                                 <div class="layui-col-lg6">
                                     <label class="layui-form-label">代练小时</label>
                                     <div class="layui-input-block">
-                                        <input type="text" name="hours"  class="layui-input"  disabled="disabled" value="{{ $order->hours }}">
+                                        <input type="text" name="hour"  class="layui-input"  disabled="disabled" value="{{ $order->hour }}">
                                     </div>
                                 </div>
                             </div>
@@ -345,7 +345,7 @@
                                 <div class="layui-col-lg6">
                                     <label class="layui-form-label">商户QQ</label>
                                     <div class="layui-input-block">
-                                        <input type="text" name="hours"  class="layui-input"  disabled="disabled" value="{{ $order->hours }}">
+                                        <input type="text" name="user_phone"  class="layui-input"  disabled="disabled" value="{{ $order->user_phone }}">
                                     </div>
                                 </div>
                             </div>

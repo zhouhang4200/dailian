@@ -314,7 +314,7 @@ class OrderOperationController extends Controller
         $responseData = [
             'initiator' => $complainInfo->complain->initiator,
             'reason' => $complainInfo->complain->reason,
-            'created_at' => $complainInfo->complain->created_at->toDateTimeString(),
+            'created_at' => $complainInfo->complain->created_at,
             'images' => $complainInfo->complain->image()->select('path')->get()->pluck('path')->toArray(),
         ];
 

@@ -212,7 +212,7 @@ $financeRoute = [
                         </dl>
                     </li>
 
-                    @if(Auth::user()->could(['finance.asset-flow', 'finance.balance-withdraw', 'finance.balance-recharge.record', 'finance.order-statistic']))
+                    @if(Auth::user()->could(['finance.asset-flow', 'finance.balance-withdraw', 'finance.balance-recharge.record', 'finance.order-statistic', 'finance.order-statistic']))
                     <li data-name="home" class="layui-nav-item @if(in_array(Route::currentRouteName(), $financeRoute)) layui-nav-itemed @endif">
                         <a href="javascript:;" lay-tips="财务管理" lay-direction="2">
                             <i class="layui-icon iconfont  icon-finance-o"></i>

@@ -31,6 +31,7 @@ $financeRoute = [
     'finance.balance-withdraw.record',
     'finance.balance-recharge.record',
     'finance.finance-report-day',
+    'finance.order-statistic',
 ];
 
 ?>

@@ -25,7 +25,7 @@ class EmployeeController extends Controller
      */
     public function index(Request $request)
     {
-        $name = $request->name;
+        $phone = $request->phone;
         $station = $request->station;
         $userId = $request->userId;
         // 获取主账号分配的角色
@@ -33,7 +33,7 @@ class EmployeeController extends Controller
         // 获取所有的子账号
         $children = User::where('parent_id', Auth::user()->parent_id)->get();
         // 筛选
-        $filters = compact('name', 'userId', 'station');
+        $filters = compact('phone', 'userId', 'station');
 
         //状态2是封号，1是正常
         $users = User::employeeFilter($filters)
@@ -46,7 +46,7 @@ class EmployeeController extends Controller
             ])->render());
         }
 
-        return view('front.employee.index', compact('name', 'station', 'userId', 'users', 'userRoles', 'children'));
+        return view('front.employee.index', compact('phone', 'station', 'userId', 'users', 'userRoles', 'children'));
     }
 
     /**

@@ -40,6 +40,12 @@ class OrderStatistic extends Model
         return $this->belongsTo(GameLevelingOrder::class, 'trade_no', 'trade_no');
     }
 
+    /**
+     *  前台查找
+     * @param $query
+     * @param $filters
+     * @return mixed
+     */
     public static function scopeFilter($query, $filters)
     {
         if ($filters['startDate']) {
@@ -48,6 +54,35 @@ class OrderStatistic extends Model
 
         if ($filters['endDate']) {
             $query->where('date', '<=', $filters['endDate']);
+        }
+
+        return $query;
+    }
+
+    /**
+     *  后台查找
+     * @param $query
+     * @param $filters
+     * @return mixed
+     */
+    public static function scopeAdminFilter($query, $filters)
+    {
+        if ($filters['startDate']) {
+            $query->where('date', '>=', $filters['startDate']);
+        }
+
+        if ($filters['endDate']) {
+            $query->where('date', '<=', $filters['endDate']);
+        }
+
+        if ($filters['gameId']) {
+            $query->where('game_id', $filters['gameId']);
+        }
+
+        if ($filters['takeUserId']) {
+            $takeParentUserId = User::find($filters['takeUserId'])->parent_id;
+
+            $query->where('take_parent_user_id', $takeParentUserId);
         }
 
         return $query;

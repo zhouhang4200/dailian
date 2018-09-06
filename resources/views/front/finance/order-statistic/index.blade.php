@@ -91,7 +91,10 @@
                 </tbody>
             </table>
 
-            {{ $orderStatistics->appends(request()->all())->links() }}
+            {{ $orderStatistics->appends([
+                'start_date' => $startDate,
+                'end_date' => $endDate
+            ])->links() }}
             @endsection
         </div>
     </div>

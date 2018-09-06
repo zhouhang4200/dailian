@@ -125,8 +125,8 @@ class User extends Authenticatable
             $query->where('id', $filters['userId']);
         }
 
-        if ($filters['name']) {
-            $query->where('name', $filters['name']);
+        if ($filters['phone']) {
+            $query->where('phone', $filters['phone']);
         }
 
         if ($filters['station']) {

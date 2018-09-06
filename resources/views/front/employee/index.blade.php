@@ -13,6 +13,7 @@
         .layui-form-onswitch {
             border-color: #198cff;
             background-color: #198cff;
+            margin-top: 2px;
         }
         td a:hover{
             color:#fff;
@@ -38,7 +39,7 @@
                         </div>
                         <label class="layui-form-label" style="width: 45px; padding-left: 0px;">账号：</label>
                         <div class="layui-input-inline">
-                            <input type="text" class="layui-input" value="{{ $name ?? '' }}" name="name" placeholder="请输入">
+                            <input type="text" class="layui-input" value="{{ $phone ?? '' }}" name="phone" placeholder="请输入">
                         </div>
                         <label class="layui-form-label" style="width: 45px; padding-left: 0px;">岗位：</label>
                         <div class="layui-input-inline">
@@ -64,7 +65,7 @@
             <div class="layui-tab-item layui-show" lay-size="sm" id="staff">
                 @include('front.employee.list')
                 {!! $users->appends([
-                    'name' => $name,
+                    'phone' => $phone,
                     'userId' => $userId,
                     'station' => $station,
                 ])->render() !!}

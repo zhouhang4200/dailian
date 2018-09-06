@@ -8,6 +8,7 @@ $orderRoute = [
     'admin.game-leveling-order.log',
     'admin.game-leveling-order-complain',
     'admin.game-leveling-order-complain.show',
+    'admin.order-statistic',
 ];
 
 $financeRoute = [
@@ -88,6 +89,13 @@ $systemRoute = [
                                     'admin.game-leveling-order-complain',
                                 ])) class="active" @endif>
                                     仲裁订单
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('admin.order-statistic') }}" @if(in_array($currentRouteName, [
+                                    'admin.order-statistic',
+                                ])) class="active" @endif>
+                                    订单统计
                                 </a>
                             </li>
                         </ul>

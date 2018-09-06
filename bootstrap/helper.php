@@ -377,3 +377,21 @@ function randomNumber($count = 5) {
     }
     return $number;
 }
+
+
+if (!function_exists('toPercent')) {
+
+    /**
+     * 转化为百分比
+     * @param $jsonImages
+     * @return array
+     */
+    function toPercent($a, $b)
+    {
+        if (! $b || ! is_numeric($a) || ! is_numeric($b)) {
+            return "0%";
+        } else {
+            return (100*(bcdiv($a, $b, 4)+0))."%";
+        }
+    }
+}

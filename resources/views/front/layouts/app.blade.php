@@ -213,7 +213,7 @@ $financeRoute = [
                         @endif
                     </li>
 
-                    @if(Auth::user()->could('finance.asset-flow'))
+                    @if(Auth::user()->could(['finance.asset-flow', 'finance.balance-withdraw', 'finance.balance-recharge.record', 'finance.order-statistic']))
                     <li data-name="home" class="layui-nav-item @if(in_array(Route::currentRouteName(), $financeRoute)) layui-nav-itemed @endif">
                         <a href="javascript:;" lay-tips="财务管理" lay-direction="2">
                             <i class="layui-icon iconfont  icon-finance-o"></i>
@@ -248,6 +248,14 @@ $financeRoute = [
                                 <a href="{{ route('finance.balance-recharge.record') }}">充值记录</a>
                             </dd>
                         </dl>
+                        @endif
+                        @if(Auth::user()->could('finance.order-statistic'))
+                            <dl class="layui-nav-child">
+                                <dd data-name="console"
+                                    class="@if(Route::currentRouteName() == 'finance.order-statistic') layui-this  @endif" >
+                                    <a href="{{ route('finance.order-statistic') }}">订单统计</a>
+                                </dd>
+                            </dl>
                         @endif
                     </li>
                     @endif

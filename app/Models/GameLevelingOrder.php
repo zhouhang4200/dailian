@@ -779,4 +779,12 @@ class GameLevelingOrder extends Model
     {
         return Carbon::createFromTimestamp(strtotime($value))->toDateTimeString();
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function orderStatistic()
+    {
+        return $this->hasOne(OrderStatistic::class, 'trade_no', 'trade_no');
+    }
 }

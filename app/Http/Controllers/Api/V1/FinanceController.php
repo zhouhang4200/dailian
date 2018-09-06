@@ -246,7 +246,7 @@ class FinanceController extends Controller
             $user = Auth::user();
 
             $data = [
-                'balance' => 100,
+                'balance' => auth()->user()->userAsset->balance,
                 'rate' => 0.01,
                 'tips' => '充值说明',
                 'min_amount' => 0.01,

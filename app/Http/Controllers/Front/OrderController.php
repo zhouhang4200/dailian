@@ -141,7 +141,7 @@ class OrderController extends Controller
             // 写入状态描述
             $ordersArr[$key]['status_describe'] = $item->getStatusDescribe();
             // 隐藏部分密码
-            $ordersArr[$key]['game_password'] = str_replace(substr($ordersArr[$key]['game_password'], -4, 4), '****', $ordersArr[$key]['game_password']);
+            $ordersArr[$key]['game_password'] = str_replace(mb_substr($ordersArr[$key]['game_password'], -4, 4), '****', $ordersArr[$key]['game_password']);
             // 计算订单剩余代练时间
             $ordersArr[$key]['remaining_time'] = $item->getRemainingTime();
             // 计算订单获得金额 支付金额 手续费 利润 撤销发起人 仲裁发起人

@@ -75,8 +75,8 @@ layui.define(['laytpl', 'layer', 'element', 'util'], function(exports){
         ,alias: 'green' //墨绿
       },{
         main: '#20222A'
-        ,logo: '#F78400'
-        ,selected: '#F78400'
+        ,logo: '#198cff'
+        ,selected: '#198cff'
         ,alias: 'red' //橙色
       },{
         main: '#28333E'

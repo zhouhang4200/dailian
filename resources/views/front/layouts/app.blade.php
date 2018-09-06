@@ -146,7 +146,7 @@ $financeRoute = [
                 <li class="layui-nav-item" lay-unselect style="margin-right: 30px;">
                     <a href="javascript:;">
                         <img src="{{ auth()->user()->avatar ?? '' }}" class="layui-nav-img">
-                        <cite>{{ optional(auth()->user())->phone }}</cite>
+                        <cite>{{ optional(auth()->user())->name }}</cite>
                     </a>
                     <dl class="layui-nav-child" id="parent-id" lay-user-id="{{ optional(auth()->user())->parent_id }}">
                         <dd style="text-align: center;">

@@ -170,10 +170,13 @@ class BalanceRechargeController extends Controller
      */
     public function alipayNotify()
     {
+
         $alipay = Pay::alipay(config('pay.alipay'));
 
         try{
             $data = $alipay->verify();
+
+            myLog('alipay', [$data]);
 
             // 支付宝确认交易成功
             if (in_array($data->trade_status,  ['TRADE_SUCCESS', 'TRADE_FINISHED'])) {

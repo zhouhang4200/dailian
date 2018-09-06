@@ -88,8 +88,8 @@
         }
 
         .layui-layer-btn .layui-layer-btn0 {
-            border-color: #ff8500;
-            background-color: #ff8500;
+            border-color: #198cff;
+            background-color: #198cff;
             color: #fff;
         }
         .layui-table-edit:focus {

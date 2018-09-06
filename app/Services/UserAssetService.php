@@ -218,10 +218,6 @@ class UserAssetService
         DB::beginTransaction();
 
         $userAsset = UserAsset::where('user_id', self::$userId)->lockForUpdate()->first();
-        // 检测余额是否够本次提现
-        if ($userAsset->frozen < self::$amount) {
-            throw new UserAssetException('您的冻结金额不够本次解冻', 4008);
-        }
 
         // 检测用户相关冻结订单号总金额与需要解冻金额是否相符
         $frozen = UserAssetFlow::where('user_id', self::$userId)
@@ -231,7 +227,7 @@ class UserAssetService
             throw new UserAssetException('不存在相关的冻结记录', 4009);
         }
 
-        if ($frozen->amount < self::$amount) {
+        if ($frozen->frozen < self::$amount) {
             throw new UserAssetException('解冻金额大于冻结金额', 4010);
         }
 

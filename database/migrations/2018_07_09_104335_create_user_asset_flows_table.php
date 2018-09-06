@@ -16,7 +16,7 @@ class CreateUserAssetFlowsTable extends Migration
         Schema::create('user_asset_flows', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('user_id')->comment('用户ID');
-            $table->unsignedTinyInteger('type')->comment('类型');
+            $table->unsignedInteger('type')->comment('类型');
             $table->unsignedInteger('sub_type')->comment('子类型');
             $table->string('trade_no', 22)->comment('交易单号');
             $table->decimal('amount', 17 ,2)->comment('发生金额');

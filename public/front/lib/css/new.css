@@ -297,7 +297,7 @@ body .layui-laydate .layui-this {
 }
 .pagination > .active span {
     color: #fff;
-    background: #F78400;
-    border: 1px solid #F78400;
+    background: #198cff;
+    border: 1px solid #198cff;
 }
 /* 分页样式 */

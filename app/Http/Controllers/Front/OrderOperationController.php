@@ -518,6 +518,7 @@ class OrderOperationController extends Controller
     {
         return view('front.order-operation.message-list', [
             'messages' => GameLevelingOrderMessage::where('to_user_id', request()->user()->parent_id)
+                ->orderBy('id', 'desc')
                 ->where('status', 1)->get(),
         ]);
     }

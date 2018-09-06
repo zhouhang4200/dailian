@@ -79,7 +79,7 @@ class FinanceController extends Controller
 
             $data['type'] = config('user_asset.type')[$userAssetFlow->type];
             $data['amount'] = $userAssetFlow->amount;
-            $data['created_at'] = $userAssetFlow->created_at->toDateTimeString();
+            $data['created_at'] = $userAssetFlow->created_at;
             $data['remark'] = $userAssetFlow->remark;
 
             return response()->apiJson(0, $data);

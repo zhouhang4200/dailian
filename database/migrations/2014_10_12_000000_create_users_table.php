@@ -20,6 +20,7 @@ class CreateUsersTable extends Migration
             $table->unsignedInteger('age')->default(0)->comment('年龄');
             $table->string('email')->comment('邮箱');
             $table->string('phone')->comment('电话号码');
+            $table->string('contact_phone')->comment('电话号码');
             $table->string('password')->comment('登录密码');
             $table->string('pay_password')->comment('支付密码');;
             $table->string('wechat', 200)->nullable()->comment('微信账号');

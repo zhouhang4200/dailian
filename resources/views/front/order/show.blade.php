@@ -172,8 +172,8 @@
             }
         }
         .layui-layer-btn .layui-layer-btn0 {
-            background: #ff8500;
-            border: #ff8500;
+            background: #198cff;
+            border: #198cff;
         }
         /** 协商撤销样式重写 **/
         .consult-pop  .layui-form-label {

@@ -88,8 +88,8 @@
         }
 
         .layui-layer-btn .layui-layer-btn0 {
-            border-color: #ff8500;
-            background-color: #ff8500;
+            border-color: #198cff;
+            background-color: #198cff;
             color: #fff;
         }
         .layui-table-edit:focus {
@@ -241,7 +241,7 @@
     <script type="text/html" id="statusTemplate">
         @{{ d.status_describe }}  <br>
         @{{# if(d.timeout == 1 && d.status == 13)  { }}
-        <span style="color:#ff8500"> @{{ d.timeout_time }}</span>
+        <span style="color:#198cff"> @{{ d.timeout_time }}</span>
         @{{# } else if(d.status == 13 || d.status == 1) { }}
         @{{ d.status_time }}
         @{{# } else {  }}
@@ -289,7 +289,7 @@
                 padding-left: 15px;
             }
             .layui-laypage .layui-laypage-curr .layui-laypage-em {
-                background-color: #ff8500;
+                background-color: #198cff;
             }
         </style>
     </script>

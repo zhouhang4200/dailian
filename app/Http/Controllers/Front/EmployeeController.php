@@ -135,6 +135,10 @@ class EmployeeController extends Controller
             unset($data['pay_password']);
         }
 
+        if (isset($data['qq']) && ! is_numeric($data['qq'])) {
+            return response()->json(['status' => 0, 'message' => 'QQ号必须为数字']);
+        }
+
         try {
             // 关联到管理员-角色表
             $roleIds = $request->roles ?? [];

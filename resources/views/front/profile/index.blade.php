@@ -180,22 +180,22 @@
                 </div>
                 <div class="info-balance">
                     <div class="available-balance">可用余额：
-                        <span class="balance">{{ $user->userAsset ? $user->userAsset->balance + 0 : 0 }}</span>
+                        <span class="balance">{{ $user->parent->userAsset->balance + 0 }}</span>
                     </div>
                     <div class="blocked-balances">冻结金额：
-                        {{ $user->userAsset ? $user->userAsset->frozen + 0 : 0 }}
+                        {{ $user->parent->userAsset->frozen + 0 }}
                     </div>
                     <div class="blocked-balances">累计加款：
-                        {{ $user->userAsset ? $user->userAsset->total_recharge + 0 : 0 }}
+                        {{ $user->parent->userAsset->total_recharge + 0  }}
                     </div>
                     <div class="blocked-balances">累计提现：
-                        {{ $user->userAsset ? $user->userAsset->total_withdraw + 0 : 0 }}
+                        {{ $user->parent->userAsset->total_withdraw + 0  }}
                     </div>
                     <div class="blocked-balances">累计收入：
-                        {{ $user->userAsset ? $user->userAsset->total_income + 0 : 0 }}
+                        {{ $user->parent->userAsset->total_income + 0 }}
                     </div>
                     <div class="blocked-balances">累计支出：
-                        {{ $user->userAsset ? $user->userAsset->total_expend + 0 : 0 }}
+                        {{ $user->parent->userAsset->total_expend + 0 }}
                     </div>
                     <a href="{{ route('finance.balance-recharge') }}" class="qs-btn" style="color: #fff">余额充值</a>
                     <a href="{{ route('finance.balance-withdraw') }}" class="qs-btn" style="color: #fff">余额提现</a>

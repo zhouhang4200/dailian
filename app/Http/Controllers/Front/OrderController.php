@@ -73,7 +73,7 @@ class OrderController extends Controller
             ->orderBy('top', 'desc')
             ->orderBy('top_at', 'desc')
             ->orderBy('id', 'desc')
-            ->paginate(20);
+            ->paginate(10);
 
         return view('front.order.wait-list', [
             'orders' => $orders,

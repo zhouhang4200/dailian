@@ -202,15 +202,13 @@ $financeRoute = [
                                 class="@if(Route::currentRouteName() == 'order.wait-list') layui-this  @endif" >
                                 <a href="{{ route('order.wait-list') }}">接单中心</a>
                             </dd>
-                        </dl>
                         @if(Auth::user()->could(['order.take-list']))
-                        <dl class="layui-nav-child">
                             <dd data-name="console"
                                 class="@if(Route::currentRouteName() == 'order.take-list') layui-this  @endif" >
                                 <a href="{{ route('order.take-list') }}">接单管理</a>
                             </dd>
-                        </dl>
                         @endif
+                        </dl>
                     </li>
 
                     @if(Auth::user()->could(['finance.asset-flow', 'finance.balance-withdraw', 'finance.balance-recharge.record', 'finance.order-statistic']))
@@ -219,49 +217,40 @@ $financeRoute = [
                             <i class="layui-icon iconfont  icon-finance-o"></i>
                             <cite>财务管理</cite>
                         </a>
-                        @if(Auth::user()->could('finance.asset-flow'))
                         <dl class="layui-nav-child">
+                        @if(Auth::user()->could('finance.asset-flow'))
                             <dd data-name="console"
                                 class="@if(Route::currentRouteName() == 'finance.finance-report-day') layui-this  @endif" >
                                 <a href="{{ route('finance.finance-report-day') }}">资金日报</a>
                             </dd>
-                        </dl>
-                        <dl class="layui-nav-child">
                             <dd data-name="console"
                                 class="@if(Route::currentRouteName() == 'finance.asset-flow') layui-this  @endif" >
                                 <a href="{{ route('finance.asset-flow') }}">资金明细</a>
                             </dd>
-                        </dl>
                         @endif
                         @if(Auth::user()->could('finance.balance-withdraw'))
-                        <dl class="layui-nav-child">
                             <dd data-name="console"
                                 class="@if(Route::currentRouteName() == 'finance.balance-withdraw') layui-this  @endif" >
                                 <a href="{{ route('finance.balance-withdraw') }}">提现记录</a>
                             </dd>
-                        </dl>
                         @endif
                         @if(Auth::user()->could('finance.balance-recharge.record'))
-                        <dl class="layui-nav-child">
                             <dd data-name="console"
                                 class="@if(Route::currentRouteName() == 'finance.balance-recharge.record') layui-this  @endif" >
                                 <a href="{{ route('finance.balance-recharge.record') }}">充值记录</a>
                             </dd>
-                        </dl>
                         @endif
                         @if(Auth::user()->could('finance.order-statistic'))
-                            <dl class="layui-nav-child">
-                                <dd data-name="console"
-                                    class="@if(Route::currentRouteName() == 'finance.order-statistic') layui-this  @endif" >
-                                    <a href="{{ route('finance.order-statistic') }}">订单统计</a>
-                                </dd>
-                            </dl>
+                            <dd data-name="console"
+                                class="@if(Route::currentRouteName() == 'finance.order-statistic') layui-this  @endif" >
+                                <a href="{{ route('finance.order-statistic') }}">订单统计</a>
+                            </dd>
                         @endif
+                        </dl>
                     </li>
                     @endif
                     @if(Auth::user()->could(['employee.group', 'employee']) || Auth::user()->isParent())
-                    <li data-name="home"
-                        class="layui-nav-item @if(in_array(Route::currentRouteName(), $accountRoute)) layui-nav-itemed @endif">
+                    <li data-name="home" class="layui-nav-item @if(in_array(Route::currentRouteName(), $accountRoute)) layui-nav-itemed @endif">
                         <a href="javascript:;" lay-tips="账号管理" lay-direction="2">
                             <i class="layui-icon iconfont  icon-group-o"></i>
                             <cite>账号管理</cite>

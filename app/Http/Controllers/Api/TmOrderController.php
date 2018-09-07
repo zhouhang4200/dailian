@@ -419,6 +419,7 @@ class TmOrderController extends Controller
                 $decryptOrderData['game_leveling_efficiency_deposit'],
                 $decryptOrderData['game_leveling_instructions'],
                 $decryptOrderData['game_leveling_requirements'],
+                $decryptOrderData['businessman_phone'],
                 $decryptOrderData['creator_username'],
                 $decryptOrderData['businessman_phone'],
                 $decryptOrderData['businessman_qq'],

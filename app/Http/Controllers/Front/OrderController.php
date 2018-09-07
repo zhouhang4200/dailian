@@ -35,9 +35,9 @@ class OrderController extends Controller
         }
 
         $orders = GameLevelingOrder::searchCondition(array_merge(request()->except('status'), ['status' => 1]))
-            ->orderBy('top', 'desc')
-            ->orderBy('top_at', 'desc')
             ->orderBy('id', 'desc')
+            ->orderBy('top_at', 'desc')
+            ->orderBy('top', 'desc')
             ->paginate(20);
 //            ->explain();
 //        dd($orders);

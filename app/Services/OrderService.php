@@ -93,7 +93,8 @@ class OrderService
      * @param float $efficiencyDeposit 效率保证金
      * @param string $explain 代练说明
      * @param string $requirement 代练要求
-     * @param string $playerPhone 玩家手机
+     * @param string $username 发单商户名称
+     * @param string $userPhone 发单商户手机
      * @param string $userQQ 发单商户QQ
      * @param string $takeOrderPassword 接单密码
      * @param string $foreignTradeNO 外部订单号
@@ -117,9 +118,10 @@ class OrderService
         float $efficiencyDeposit,
         string $explain,
         string $requirement,
-        string $playerPhone,
-        string $userQQ,
-        string $takeOrderPassword,
+        string $username = '',
+        string $userPhone = '',
+        string $userQQ = '',
+        string $takeOrderPassword = '',
         string $foreignTradeNO = '',
         int $source = 1
     )
@@ -141,8 +143,12 @@ class OrderService
                 'foreign_trade_no' => $foreignTradeNO,
                 'user_id' => self::$user->id,
                 'username' => self::$user->name,
+                'user_qq' => self::$user->qq,
+                'user_phone' => self::$user->phone,
                 'parent_user_id' => self::$user->parent_id,
-                'parent_username' => optional(self::$user->parent)->name ?? self::$user->name,
+                'parent_username' => $username ? $username : (optional(self::$user->parent)->name ?? self::$user->name),
+                'parent_qq' => $userQQ ? $userQQ : optional(self::$user->parent)->qq ?? self::$user->qq,
+                'parent_phone' => $userPhone ? $userPhone : optional(self::$user->parent)->phone ?? self::$user->phone,
                 'order_type_id' => 1,
                 'game_type_id' => $game->game_type_id,
                 'game_class_id'=> $game->game_class_id,
@@ -166,12 +172,10 @@ class OrderService
                 'explain' => $explain,
                 'requirement' => $requirement,
                 'take_order_password' => $takeOrderPassword,
-                'player_phone' => $playerPhone,
-                'user_qq' => $userQQ,
                 'source' => $source,
                 'status' => 1,
                 'top' => 0,
-                'top_at' => date('Y-m-d H:i:s'),
+                'top_at' => '1937-01-01',
             ]);
 
             // 写入订单统计表
@@ -242,8 +246,12 @@ class OrderService
             self::$order->status = 2;
             self::$order->take_user_id = self::$user->id;
             self::$order->take_username = self::$user->name;
+            self::$order->take_user_qq = self::$user->qq;
+            self::$order->take_user_phone = self::$user->phone;
             self::$order->take_parent_user_id = self::$user->parent_id;
-            self::$order->take_parent_username = self::$user->parent->name;
+            self::$order->take_parent_username = optional(self::$user->parent)->name ?? self::$user->name;
+            self::$order->take_parent_qq = optional(self::$user->parent)->qq ?? self::$user->qq;
+            self::$order->take_parent_phone = optional(self::$user->parent)->phone ?? self::$user->phone;
             self::$order->take_at = date('Y-m-d H:i:s');
             self::$order->save();
 

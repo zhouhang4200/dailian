@@ -32,6 +32,10 @@ class RegisterController extends Controller
             }
 
             $code = Redis::get("user:verification-code:".request('phone'));
+
+            if (! $code) {
+                return response()->apiJson(1009); // 验证码已过期
+            }
             if (request('verification_code') != $code) {
                 return response()->apiJson(1006); // 验证码错误
             }

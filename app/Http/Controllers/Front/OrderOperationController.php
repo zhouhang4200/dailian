@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Front;
 
 use Exception;
+use App\Models\GameLevelingOrderAnomaly;
 use App\Exceptions\OrderException;
 use App\Exceptions\UserAssetException;
 use App\Models\GameLevelingOrder;
@@ -221,6 +222,7 @@ class OrderOperationController extends Controller
         DB::beginTransaction();
         try {
             $order = OrderService::init(request()->user()->id, request('trade_no'))->anomaly();
+            GameLevelingOrderAnomaly::create(['trade_no' => request('trade_no'), 'reason' => request('reason')]);
             TmApiService::anomaly($order->trade_no);
         } catch (OrderException $e) {
             return response()->ajaxFail($e->getMessage());

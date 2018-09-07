@@ -154,6 +154,10 @@ class OrderController extends Controller
             $ordersArr[$key]['profit'] = $item->getProfit();
             $ordersArr[$key]['consult_initiator'] = $item->getConsultInitiator();
             $ordersArr[$key]['complain_initiator'] = $item->getComplainInitiator();
+
+            $ordersArr[$key]['consult_amount'] = $item->consult ?  $item->consult->amount : 0;
+            $ordersArr[$key]['consult_deposit'] = $item->consult ?  $item->consult->security_deposit + $item->consult->efficiency_deposit : 0;
+            $ordersArr[$key]['consult_reason'] = $item->consult ?  $item->consult->reason : '';
         }
 
         return [

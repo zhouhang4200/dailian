@@ -201,23 +201,29 @@
     });
     // 同意撤销
     form.on('submit(agree-consult)', function (data) {
-    var index = layer.load();
-        $.post('{{ route('order.operation.agree-consult') }}', {trade_no: $(data.elem).attr('data-no')}, function (result) {
-    layer.close(index);
-            if (result.status == 1) {
-                layer.closeAll();
-                @if($type == 'list')
-                    layer.msg(result.message);
-                    reloadOrderList();
-                @else
-                    layer.msg(result.message,{time:500}, function(){
-                        location.reload();
-                    });
-                @endif
-            } else {
-                layer.alert(result.message);
-            }
-        }, 'json');
+        var amount = $(data.elem).attr('data-consult-amount');
+        var deposit = $(data.elem).attr('data-consult-deposit');
+        var reason = $(data.elem).attr('data-consult-reason');
+        layer.confirm('对方进行操作【申请撤销】，【对方支付代练费'+amount+'元，你支付保证金'+deposit+'元，原因：'+reason+'】，确定同意撤销？', {icon: 3}, function(yes){
+            var index = layer.load();
+                $.post('{{ route('order.operation.agree-consult') }}', {trade_no: $(data.elem).attr('data-no')}, function (result) {
+            layer.close(index);
+                    if (result.status == 1) {
+                        layer.closeAll();
+                        @if($type == 'list')
+                            layer.msg(result.message);
+                            reloadOrderList();
+                        @else
+                            layer.msg(result.message,{time:500}, function(){
+                                location.reload();
+                            });
+                        @endif
+                    } else {
+                        layer.alert(result.message);
+                    }
+                }, 'json');
+            layer.close(yes);
+        });
         return false;
     });
     // 不同意撤销

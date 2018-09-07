@@ -89,7 +89,7 @@
                                     <td>{{ toPercent($orderStatistic->consultCount, $orderStatistic->orderCount) }}</td>
                                     <td>{{ $orderStatistic->complainCount }}</td>
                                     <td>{{ toPercent($orderStatistic->complainCount, $orderStatistic->orderCount) }}</td>
-                                    <td>{{ $orderStatistic->doneCount ? sec2Time(intval(bcdiv($orderStatistic->doneTime, $orderStatistic->doneCount, 0))) : 0 }}</td>
+                                    <td>{{ $orderStatistic->doneCount ? (sec2Time(intval(bcdiv($orderStatistic->doneTime, $orderStatistic->doneCount, 0))) ?: '--') : '--' }}</td>
                                     <td>{{ $orderStatistic->doneCount ? bcdiv($orderStatistic->doneSecurityDeposit, $orderStatistic->doneCount, 2)+0 : 0 }}</td>
                                     <td>{{ $orderStatistic->doneCount ? bcdiv($orderStatistic->doneEfficiencyDeposit, $orderStatistic->doneCount, 2)+0 : 0 }}</td>
                                     <td>{{ $orderStatistic->doneCount ? bcdiv($orderStatistic->doneAmount, $orderStatistic->doneCount, 2)+0 : 0 }}</td>
@@ -125,7 +125,7 @@
                                 <td>{{ toPercent($total->consultCount, $total->orderCount) }}</td>
                                 <td>{{ $total->complainCount }}</td>
                                 <td>{{ toPercent($total->complainCount, $total->orderCount) }}</td>
-                                <td>{{ $total->doneCount ? sec2Time(intval(bcdiv($total->doneTime, $total->doneCount, 0))) : 0 }}</td>
+                                <td>{{ $total->doneCount ? (sec2Time(intval(bcdiv($total->doneTime, $total->doneCount, 0))) ?: '--') : '--' }}</td>
                                 <td>{{ $total->doneCount ? bcdiv($total->doneSecurityDeposit, $total->doneCount, 2)+0 : 0 }}</td>
                                 <td>{{ $total->doneCount ? bcdiv($total->doneEfficiencyDeposit, $total->doneCount, 2)+0 : 0 }}</td>
                                 <td>{{ $total->doneCount ? bcdiv($total->doneAmount, $total->doneCount, 2)+0 : 0 }}</td>

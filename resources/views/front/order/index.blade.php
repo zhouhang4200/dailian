@@ -106,7 +106,8 @@
                 <th>效率保证金</th>
                 <th>安全保证金</th>
                 <th>代练时间</th>
-                <th></th>
+                <th>发布人</th>
+                <th>操作</th>
             </tr>
             </thead>
             <tbody>
@@ -126,6 +127,7 @@
                 <td class="price">¥ {{ $item->efficiency_deposit }}</td>
                 <td class="price">￥{{ $item->security_deposit }}</td>
                 <td>{{ $item->day ? $item->day . '天' : '' }}{{ $item->hour }}小时</td>
+                <td>{{ $item->parent_username}}</td>
                 <td>
                     <button class="layui-btn layui-btn-primary layui-btn-sm"
                             lay-submit lay-filter="take"

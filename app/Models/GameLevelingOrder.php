@@ -160,6 +160,10 @@ class GameLevelingOrder extends Model
             $build->where('game_id', $condition['game_id']);
         }
 
+        if (isset($condition['trade_no']) && $condition['trade_no']) {
+            $build->where('trade_no', $condition['trade_no']);
+        }
+
         if (isset($condition['start_time']) && $condition['start_time']) {
             $build->where('created_at', '>=',$condition['start_time']);
         }

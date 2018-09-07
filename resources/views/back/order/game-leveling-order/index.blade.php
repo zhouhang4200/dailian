@@ -13,7 +13,9 @@
                     <div class="layui-tab-item layui-show">
                         <form id="search-flow" action="">
                             <div class="row">
-
+                                <div class="col-md-2">
+                                    <input type="text" class="form-control" name="trade_no" placeholder="订单号" value="{{ request('trade_no') }}">
+                                </div>
                                 <div class="form-group col-md-2">
                                     <select class="form-control" name="type">
                                         <option value="">游戏</option>

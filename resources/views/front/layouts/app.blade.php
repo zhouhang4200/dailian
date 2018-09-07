@@ -198,7 +198,7 @@ $financeRoute = [
                     <li data-name="home"
                         class="layui-nav-item @if(in_array(Route::currentRouteName(), $orderRoute)) layui-nav-itemed @endif">
                         <a href="javascript:;" lay-tips="接单管理" lay-direction="2">
-                            <i class="layui-icon iconfont  icon-group-o"></i>
+                            <i class="layui-icon iconfont icon-order"></i>
                             <cite>订单管理</cite>
                         </a>
                         <dl class="layui-nav-child">
@@ -284,7 +284,7 @@ $financeRoute = [
                     <li data-name="home"
                         class="layui-nav-item @if(in_array(Route::currentRouteName(), ['help'])) layui-nav-itemed @endif">
                         <a href="{{ route('help') }}" lay-tips="帮助中心" lay-direction="2">
-                            <i class="layui-icon iconfont  icon-finance-o"></i>
+                            <i class="layui-icon iconfont icon-feedback"></i>
                             <cite>帮助中心</cite>
                         </a>
 
@@ -293,7 +293,7 @@ $financeRoute = [
                     <li data-name="home"
                         class="layui-nav-item @if(in_array(Route::currentRouteName(), ['notice'])) layui-nav-itemed @endif">
                         <a href="{{ route('notice') }}" lay-tips="公告中心" lay-direction="2">
-                            <i class="layui-icon iconfont  icon-finance-o"></i>
+                            <i class="layui-icon iconfont  icon-systemprompt"></i>
                             <cite>公告中心</cite>
                         </a>
                     </li>

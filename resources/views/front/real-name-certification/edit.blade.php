@@ -93,7 +93,7 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label">*开户银行卡号</label>
                             <div class="layui-input-block">
-                                <input type="text" name="bank_card"  lay-verify="required|number" value="{{ $realNameCertification->bank_card }}"
+                                <input type="text" name="bank_card"  lay-verify="required|bankcode" value="{{ $realNameCertification->bank_card }}"
                                        autocomplete="off" placeholder="请输入开户银行卡号" class="layui-input">
                             </div>
                         </div>
@@ -172,6 +172,13 @@
     <script>
         layui.use(['form', 'upload'], function () {
             var $ = layui.jquery, upload = layui.upload, layer = layui.layer;var form = layui.form;
+
+            form.verify({
+                bankcode:[
+                    /^([1-9]{1})(\d{14}|\d{18})$/,
+                    '请输入正确的银行卡号'
+                ]
+            });
 
             upload.render({
                 elem: '.upload-images',

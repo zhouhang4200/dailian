@@ -29,14 +29,10 @@ class PasswordController extends Controller
                 return response()->apiJson(1006); // 验证码错误
             }
 
-            $user = Auth::user();
+            $user = User::where('phone', request('phone'))->first();
 
             if (! $user) {
                 return response()->apiJson(2006);
-            }
-
-            if ($user->phone != request('phone')) {
-                return response()->apiJson(2014);
             }
 
             $user->password = bcrypt(request('new_password'));

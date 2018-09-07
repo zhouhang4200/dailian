@@ -41,7 +41,7 @@ class RegisterController extends Controller
             $datas['password'] = bcrypt(request('password'));
 //            $datas['pay_password'] = bcrypt(request('password'));
             $datas['name'] = request('name') ?? str_random(5);
-            $datas['email'] = request('email') ?? str_random(7)."@163.com";
+//            $datas['email'] = request('email') ?? str_random(7)."@163.com";
             $datas['avatar'] = asset('/front/images/default_avatar.png');
             $datas['status'] = 1;
 

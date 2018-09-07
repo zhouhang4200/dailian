@@ -343,7 +343,7 @@ class GameLevelingOrder extends Model
                         'range' => [
                             'amount' => [
                                 'gte' => 10,
-                                'lte' => 200,
+                                'lte' => 100,
                             ]
                         ]
                     ]

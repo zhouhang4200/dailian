@@ -50,11 +50,13 @@ class OrderController extends Controller
         ]);
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function indexDetail()
     {
         $detail = GameLevelingOrder::searchCondition(['trade_no' => request('trade_no')])
             ->with('game')
-            ->where('status', 1)
             ->get()
             ->toArray();
 
@@ -68,9 +70,9 @@ class OrderController extends Controller
         unset($detail[0]['game']);
         unset($detail[0]['take_order_password']);
 
-        return response()->apiJson(0, $detail[0] ?? []);
-
-        return view('front.order.index-detail');
+        return view('front.order.index-detail')->with([
+            'detail' => $detail[0] ?? []
+        ]);
     }
 
     /**

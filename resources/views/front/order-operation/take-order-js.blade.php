@@ -14,7 +14,7 @@
                 shadeClose: true,
                 resize:false,
                 shade: 0.2,
-                area: ['800px', '65%'],
+                area: ['800px', '60%'],
                 content: '{{ route('order.detail') }}/' + $(data.elem).attr('data-trade_no')
             });
         });

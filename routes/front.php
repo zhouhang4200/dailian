@@ -15,6 +15,7 @@
 Route::get('/', 'HomeController@index')->name('home');
 // 待接单列表
 Route::get('order', 'OrderController@index')->name('order');
+Route::get('order/detail/{trade_no?}', 'OrderController@indexDetail')->name('order.detail');
 Route::post('order/get-server', 'OrderController@getServers')->name('order.get-server');
 // 公告中心
 Route::get('notice', 'NoticeController@index')->name('notice');
@@ -55,6 +56,7 @@ Route::group(['middleware' => 'auth'], function (){
         Route::post('take-list', 'OrderController@takeListData')->name('order.take-list');
         // 订单详情
         Route::get('/{trade_no?}', 'OrderController@show')->name('order.show');
+
         // 订单操作
         Route::prefix('operation')->group(function (){
             Route::post('take', 'OrderOperationController@take')->name('order.operation.take'); // 接单

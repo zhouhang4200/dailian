@@ -18,11 +18,11 @@ class OrderWaitController extends Controller
      */
     public function index()
     {
-        $orders = GameLevelingOrder::searchCondition(array_merge(request()->except('status'), ['status' => 1]))
-            ->orderBy('top', 'desc')
-            ->orderBy('top_at', 'desc')
+        $orders = GameLevelingOrder::searchCondition(array_merge(request()->except('status')))
+            ->where('status', 1)
             ->orderBy('id', 'desc')
-            ->paginate(20);
+            ->orderBy('top_at', 'desc')
+            ->paginate(request('page_size', 10));
 
         $orderList = [];
         foreach ($orders->items() as $key => $item) {

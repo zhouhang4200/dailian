@@ -167,7 +167,11 @@ class ProfileController extends Controller
                 return response()->apiJson(1006); // 验证码错误
             }
 
+
             $user = Auth::user();
+            if ($user->phone != request('phone')) {
+                return response()->apiJson(2014);
+            }
 
             $user->pay_password = bcrypt(request('new_pay_password'));
             $user->save();

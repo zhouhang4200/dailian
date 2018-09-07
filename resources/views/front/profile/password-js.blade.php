@@ -91,6 +91,7 @@ form.on('submit(confirm-reset-pay-password)', function(data){
 
 $("body").on('click',".send-code",function(){
     setTime();
+    return false
 });
 
 var countdown = 59;

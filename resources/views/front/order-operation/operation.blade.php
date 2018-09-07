@@ -90,10 +90,23 @@
         return false;
     });
 
-    // 异常
+    // 异常提示框
     form.on('submit(anomaly)', function (data) {
+        $('.anomaly-pop input[name=trade_no]').val($(data.elem).attr('data-no'));
+        layer.open({
+        type: 1,
+        shade: 0.2,
+        title: '异常',
+        area: ['450px'],
+        content: $('.anomaly-pop')
+        });
+        return false;
+    });
+
+    // 确认提交异常
+    form.on('submit(confirm-anomaly)', function (data) {
         var index = layer.load();
-        $.post('{{ route('order.operation.anomaly') }}', {trade_no: $(data.elem).attr('data-no')}, function (result) {
+        $.post('{{ route('order.operation.anomaly') }}', {trade_no: data.field.trade_no, reason:data.field.reason}, function (result) {
         layer.close(index);
             if (result.status) {
                 @if($type == 'list')

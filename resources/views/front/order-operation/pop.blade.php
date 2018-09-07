@@ -244,3 +244,17 @@
     </span>
 </div>
 <div class="layui-carousel" id="carousel" style="display: none"></div>
+
+<div class="anomaly-pop" style="display: none; padding: 20px">
+    <form class="layui-form">
+        <input type="hidden" name="trade_no">
+        <div class="layui-form-item">
+                <textarea placeholder="请输入异常原因" name="reason"  class="layui-textarea" style="width: 100%; "></textarea>
+        </div>
+        <div class="layui-form-item" style="text-align: center; padding-top: 10px;">
+                <button class="qs-btn layui-btn-normal"  lay-submit lay-filter="confirm-anomaly">确认
+                </button>
+                <span cancel class="qs-btn  layui-btn-normal cancel" style="margin-left: 20px">取消</span>
+        </div>
+    </form>
+</div>

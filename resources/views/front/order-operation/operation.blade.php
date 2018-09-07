@@ -280,7 +280,7 @@
         }, function (result) {
             layer.close(index1);
             if (result.status) {
-                layer.close();
+                layer.closeAll();
                 @if($type == 'list')
                     layer.msg(result.message);
                     reloadOrderList();

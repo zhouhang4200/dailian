@@ -152,7 +152,7 @@ Route::group(['middleware' =>  ['auth.admin']], function () {
         // 罚款
         Route::prefix('fine-ticket')->group(function () {
             Route::get('/', 'FineTicketController@index')->name('admin.user.fine-ticket');
-            Route::get('create', 'FineTicketController@create');
+            Route::get('create', 'FineTicketController@create')->name('admin.user.fine-ticket.create');
             Route::post('create', 'FineTicketController@store')->name('admin.user.fine-ticket.create');
             Route::post('unfrozen', 'FineTicketController@unfrozen')->name('admin.user.fine-ticket.unfrozen');
             Route::post('fine', 'FineTicketController@fine')->name('admin.user.fine-ticket.fine');

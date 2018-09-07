@@ -175,7 +175,7 @@ class OrderService
                 'source' => $source,
                 'status' => 1,
                 'top' => 0,
-                'top_at' => '1937-01-01 00:00:00',
+                'top_at' => '1971-01-01 00:00:00',
             ]);
 
             // 写入订单统计表

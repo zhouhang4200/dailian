@@ -280,6 +280,7 @@
         }, function (result) {
             layer.close(index1);
             if (result.status) {
+                layer.close();
                 @if($type == 'list')
                     layer.msg(result.message);
                     reloadOrderList();
@@ -288,7 +289,7 @@
                         location.reload();
                     });
                 @endif
-                layer.close();
+
             } else {
                 layer.alert(result.message);
             }

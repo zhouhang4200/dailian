@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Front;
 
+use App\Models\Game;
 use DB;
 use Auth;
 use Cache;

@@ -6,6 +6,19 @@
             isOutAnim: false
         });
 
+        // 查看详情
+        form.on('submit(detail)', function (data) {
+
+            layer.open({
+                type: 2,
+                shadeClose: true,
+                resize:false,
+                shade: 0.2,
+                area: ['800px', '60%'],
+                content: '{{ route('order.detail') }}/' + $(data.elem).attr('data-trade_no')
+            });
+        });
+
         form.on('submit(take)', function (data) {
 
             if ($(data.elem).attr('data-guest')) {

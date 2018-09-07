@@ -107,7 +107,9 @@ $systemRoute = [
                         'admin.user.show',
                         'admin.user.certification',
                         'admin.user.certification-list',
-                        'admin.user.certification-show'
+                        'admin.user.certification-show',
+                        'admin.user.fine-ticket',
+                        'admin.user.fine-ticket.create',
                         ])) class="open active" @endif>
                         <a href="#" class="dropdown-toggle">
                             <i class="fa fa-users"></i>

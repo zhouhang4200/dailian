@@ -37,7 +37,6 @@ class OrderController extends Controller
         $orders = GameLevelingOrder::searchCondition(array_merge(request()->except('status'), ['status' => 1]))
             ->orderBy('id', 'desc')
             ->orderBy('top_at', 'desc')
-            ->orderBy('top', 'desc')
             ->paginate(20);
 //            ->explain();
 //        dd($orders);
@@ -48,6 +47,31 @@ class OrderController extends Controller
             'regions' => $regions,
             'servers' => $servers,
             'gameLevelingTypes' => $gameLevelingTypes,
+        ]);
+    }
+
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function indexDetail()
+    {
+        $detail = GameLevelingOrder::searchCondition(['trade_no' => request('trade_no')])
+            ->with('game')
+            ->get()
+            ->toArray();
+
+        unset($detail[0]['id']);
+        $detail[0]['top'] = strlen($detail[0]['take_order_password']) ? 1 : 2;
+        $detail[0]['private'] = strlen($detail[0]['take_order_password']) ? 1 : 2;
+        $detail[0]['icon'] = $detail[0]['game']['icon'];
+
+        unset($detail[0]['id']);
+        unset($detail[0]['game_id']);
+        unset($detail[0]['game']);
+        unset($detail[0]['take_order_password']);
+
+        return view('front.order.index-detail')->with([
+            'detail' => $detail[0] ?? []
         ]);
     }
 

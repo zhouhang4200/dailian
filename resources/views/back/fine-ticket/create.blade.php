@@ -54,7 +54,7 @@
 
                                         <div class="form-group">
                                             <label for="">罚款关联订单号</label>
-                                            <input type="text" lay-verify="" class="form-control" name="trade_no">
+                                            <input type="text" lay-verify="" class="form-control" name="relation_trade_no">
                                         </div>
 
                                         <div class="form-group">
@@ -68,8 +68,8 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="">*备注</label>
-                                            <textarea type="text" lay-verify="required" class="form-control" name="remark"></textarea>
+                                            <label for="">备注</label>
+                                            <textarea type="text" lay-verify="" class="form-control" name="remark"></textarea>
                                         </div>
 
                                         <button class="btn btn-success" lay-submit="" lay-filter="store">确认</button>

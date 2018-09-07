@@ -356,7 +356,7 @@
                         <td>{{ $item->parent_username}}</td>
                         <td>
                             <button class="layui-btn layui-btn-primary layui-btn-sm"
-                                    lay-submit lay-filter="take"
+                                    lay-submit lay-filter="detail"
                                     data-trade_no="{{ $item->trade_no }}"
                                     data-take_password="{{ $item->take_order_password ? 1 : 2 }}"
                                     data-guest="{{ $guest }}"

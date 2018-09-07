@@ -170,6 +170,40 @@ class UserAssetService
     }
 
     /**
+     * @return bool
+     * @throws UnknownException
+     * @throws UserAssetException
+     */
+    public function agreeWithdraw()
+    {
+        if (self::$type != 2) {
+            throw new UserAssetException('请检查传入的子类型是否正确', 4007);
+        }
+
+        DB::beginTransaction();
+
+        $userAsset = UserAsset::where('user_id', self::$userId)->lockForUpdate()->first();
+        // 检测冻结余额是否够本次支出
+
+        if ($userAsset->frozen < self::$amount) {
+            throw new UserAssetException('冻结金额不够本次提现', 4008);
+        }
+
+        try {
+            // 写流水
+            $this->flow($userAsset->balance,  bcsub($userAsset->frozen, self::$amount));
+
+            // 更新用户冻结余额
+            $userAsset->frozen = bcsub($userAsset->frozen, self::$amount);
+            $userAsset->save();
+        } catch (Exception $exception) {
+            throw new UnknownException($exception->getMessage());
+        }
+        DB::commit();
+        return true;
+    }
+
+    /**
      * 冻结
      * @return bool
      * @throws UserAssetException

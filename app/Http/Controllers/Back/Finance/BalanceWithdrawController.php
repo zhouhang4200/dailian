@@ -18,7 +18,7 @@ class BalanceWithdrawController extends Controller
     public function index()
     {
         $balanceWithdraws = BalanceWithdraw::condition(request()->all())->with(['userAssetFlows' =>  function ($query) {
-            $query->latest('id')->first();
+            $query->latest('id');
         }])->latest('id')->paginate(20);
 
         return view('back.finance.balance-withdraw.index', ['balanceWithdraws' => $balanceWithdraws,]);
@@ -40,11 +40,10 @@ class BalanceWithdrawController extends Controller
 
             $userAssetFlow = UserAssetFlow::where('trade_no', $balanceWithdraw->trade_no)->first();
 
-            UserAssetService::init(35, $userAssetFlow->user_id, $userAssetFlow->amount, $userAssetFlow->trade_no)->expendFromFrozen();
-        }
-        catch (Exception $e) {
+            UserAssetService::init(23, $userAssetFlow->user_id, $userAssetFlow->amount, $userAssetFlow->trade_no)->agreeWithdraw();
+        } catch (Exception $e) {
             DB::rollback();
-            return response()->json(['status' => 0, 'message' => '失败']);
+            return response()->json(['status' => 0, 'message' => '失败' . $e->getMessage()]);
         }
         DB::commit();
         return response()->json(['status' => 1, 'message' => '成功']);

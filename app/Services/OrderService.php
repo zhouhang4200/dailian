@@ -94,6 +94,7 @@ class OrderService
      * @param string $explain 代练说明
      * @param string $requirement 代练要求
      * @param string $username 发单商户名称
+     * @param string $playerPhone 玩家电话
      * @param string $userPhone 发单商户手机
      * @param string $userQQ 发单商户QQ
      * @param string $takeOrderPassword 接单密码
@@ -118,6 +119,7 @@ class OrderService
         float $efficiencyDeposit,
         string $explain,
         string $requirement,
+        string $playerPhone = '',
         string $username = '',
         string $userPhone = '',
         string $userQQ = '',
@@ -176,6 +178,7 @@ class OrderService
                 'status' => 1,
                 'top' => 0,
                 'top_at' => '1971-01-01 00:00:00',
+                'player_phone' => $playerPhone,
             ]);
 
             // 写入订单统计表

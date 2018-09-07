@@ -106,9 +106,8 @@
                 <th>效率保证金</th>
                 <th>安全保证金</th>
                 <th>代练时间</th>
-                <th>代练时间</th>
                 <th>发布人</th>
-                <th></th>
+                <th>操作</th>
             </tr>
             </thead>
             <tbody>

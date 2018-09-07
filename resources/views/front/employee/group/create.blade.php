@@ -46,6 +46,9 @@
             border-color: #198cff;
             color: #fff;
         }
+        .layui-logo a img{
+            padding-bottom: 8px;
+        }
     </style>
 
 @endsection

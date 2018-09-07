@@ -58,6 +58,10 @@ class ProfileController extends Controller
         } else {
             $user = Auth::user()->parent;
         }
+
+        if ($request->data['qq'] && ! is_numeric($request->data['qq'])) {
+            return response()->json(['status' => 0, 'message' => 'QQ号必须为数字!']);
+        }
         $user->name = $request->data['name'];
         $user->age = $request->data['age'];
         $user->qq = $request->data['qq'];

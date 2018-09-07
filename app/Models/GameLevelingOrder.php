@@ -342,8 +342,8 @@ class GameLevelingOrder extends Model
                     'must' =>  [
                         'range' => [
                             'amount' => [
-                                'gt' => 10,
-                                'lt' => 200,
+                                'gte' => 10,
+                                'lte' => 200,
                             ]
                         ]
                     ]
@@ -357,8 +357,8 @@ class GameLevelingOrder extends Model
                     'must' =>  [
                         'range' => [
                             'amount' => [
-                                'gt' => 100,
-                                'lt' => 200,
+                                'gte' => 100,
+                                'lte' => 200,
                             ]
                         ]
                 ]

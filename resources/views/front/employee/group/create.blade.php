@@ -1,6 +1,21 @@
 @extends('front.layouts.app')
 
 @section('title', '账号 - 岗位添加')
+<style>
+    a {
+        text-decoration : none !important;
+    }
+    li a {
+        height:56px !important;
+    }
+
+    dd a {
+        height:40px !important;
+    }
+    .layui-nav-child {
+        margin-bottom: 0px;
+    }
+</style>
 
 @section('css')
     <link rel="stylesheet" type="text/css" href="/back/css/bootstrap/bootstrap.min.css"/>

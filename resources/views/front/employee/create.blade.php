@@ -59,15 +59,15 @@
                     </div>
                 </div>
                 <div class="layui-form-item">
-                    <label class="layui-form-label">*QQ号</label>
+                    <label class="layui-form-label">QQ号</label>
                     <div class="layui-input-block">
-                        <input type="text" name="qq" value="" lay-verify="required|number" placeholder="" autocomplete="off" class="layui-input">
+                        <input type="text" name="qq" value="" lay-verify="" placeholder="" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
-                    <label class="layui-form-label">*微信号</label>
+                    <label class="layui-form-label">微信号</label>
                     <div class="layui-input-block">
-                        <input type="text" name="wechat" value="" lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+                        <input type="text" name="wechat" value="" lay-verify="" placeholder="" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">

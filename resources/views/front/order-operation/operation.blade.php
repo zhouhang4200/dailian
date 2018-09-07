@@ -270,7 +270,7 @@
             layer.alert('请至少上传一张图片');
             return false;
         }
-    var index1 = layer.load();
+        var index1 = layer.load();
         $.post('{{ route('order.operation.apply-complain') }}', {
             trade_no: data.field.trade_no,
             reason: data.field.reason,
@@ -278,7 +278,7 @@
             image_2: pic2,
             image_3: pic3
         }, function (result) {
-    layer.close(index1);
+            layer.close(index1);
             if (result.status) {
                 @if($type == 'list')
                     layer.msg(result.message);
@@ -288,6 +288,7 @@
                         location.reload();
                     });
                 @endif
+                layer.close();
             } else {
                 layer.alert(result.message);
             }

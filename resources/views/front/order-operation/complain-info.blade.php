@@ -16,7 +16,7 @@
             </thead>
             <tbody>
             <tr>
-                <td>{{ $order->complain->parent_user_id == request()->user()->parent_id ? '您' : '对方' }}</td>
+                <td>{{ $order->complain->parent_user_id == request()->user()->parent_id ? '我方' : '对方' }}</td>
                 <td>{{ $order->complain->created_at }}</td>
                 <td>{{ $order->complain->reason }}</td>
             </tr>
@@ -51,7 +51,7 @@
             <tbody>
             @forelse($order->message as $msg)
                 <tr>
-                    <td>{{ $msg->from_user_id == request()->user()->parent_id ? '您' : '对方'}}</td>
+                    <td>{{ $msg->from_user_id == request()->user()->parent_id ? '我方' : ($msg->initiator == 3 ? '客服' : '对方')}}</td>
                     <td>{{ $msg->content }}</td>
                     <td>{{ $msg->created_at }}</td>
                     <td class="">

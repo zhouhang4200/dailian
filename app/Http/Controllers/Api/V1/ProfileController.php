@@ -301,6 +301,7 @@ class ProfileController extends Controller
      * @param Request $request
      * @return mixed
      * @throws Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function verificationCode(Request $request)
     {

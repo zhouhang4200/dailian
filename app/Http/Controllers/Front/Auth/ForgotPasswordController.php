@@ -39,4 +39,9 @@ class ForgotPasswordController extends Controller
     {
         return view('front.auth.passwords.email');
     }
+
+    public function showResetForm()
+    {
+        return view('front.auth.passwords.reset');
+    }
 }

@@ -13,7 +13,10 @@
         .layui-form-onswitch {
             border-color: #198cff;
             background-color: #198cff;
-            margin-top: 2px;
+            margin-top: 3px;
+        }
+        .layui-form-switch {
+            margin-top: 3px;
         }
         td a:hover{
             color:#fff;

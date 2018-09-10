@@ -39,7 +39,7 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">提现金额</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="amount" lay-verify="required|min_amount" placeholder="请输入" autocomplete="off" class="layui-input">
+                        <input type="text" name="amount" lay-verify="required|min_amount|integer" placeholder="请输入" autocomplete="off" class="layui-input">
                     </div>
                 </div>
 
@@ -97,7 +97,13 @@
                     if (parseInt(value) < parseInt(minAmount)) {
                         return '最小提现金额为' + minAmount + '元';
                     }
+                },
+                integer: function (value, item) {
+                    if (!/^[1-9]\d*$/.test(value)) {
+                        return '提现金额必须为整数';
+                    }
                 }
+
             });
 
             // 确认提现

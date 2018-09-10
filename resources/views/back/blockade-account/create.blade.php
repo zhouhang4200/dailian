@@ -54,7 +54,7 @@
                                     </div>
                                 </div>
                                 <div class="layui-form-item">
-                                    <label class="layui-form-label">*备注</label>
+                                    <label class="layui-form-label">备注</label>
                                     <div class="layui-input-block">
                                         <textarea id="content" name="remark" lay-verify="content" placeholder="" class="layui-textarea"></textarea>
                                     </div>

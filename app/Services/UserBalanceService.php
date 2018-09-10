@@ -20,6 +20,7 @@ class UserBalanceService
      * @return BalanceWithdraw|\Illuminate\Database\Eloquent\Model
      * @throws UserAssetException
      * @throws UserException
+     * @throws \Exception
      */
    public static function withdraw($amount, $user, $alipayAccount, $alipayName)
    {
@@ -38,7 +39,7 @@ class UserBalanceService
 
        // 创建提现记录
        return BalanceWithdraw::create([
-           'user_id' => $user->parent_id,
+           'user_id' => $user->id,
            'trade_no' => generateOrderNo(),
            'real_amount' => $amount,
            'amount' => request('amount'),

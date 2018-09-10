@@ -100,7 +100,7 @@ class FinanceController extends Controller
      */
     public function withdraw(Request $request)
     {
-        $user = Auth::user();
+        $user = auth()->user()->parent;
 
         // 提现权限
         if (! $user->could('finance.balance-withdraw')) {

@@ -33,7 +33,7 @@ class BalanceWithdrawController extends Controller
             // 生成提现单
             $record = UserBalanceService::withdraw(
                 request('amount'),
-                auth()->user(),
+                auth()->user()->parent,
                 request('alipay_account'),
                 request('alipay_name')
             );

@@ -83,19 +83,6 @@
                                                                     <table class="table table-striped table-hover">
                                                                         <tbody>
                                                                         <tr>
-                                                                            <td>发单获得双金</td>
-                                                                            <td>1</td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td>打手获得代练费</td>
-                                                                            <td>2</td>
-                                                                        </tr>
-
-
-
-
-
-                                                                        <tr>
                                                                             <td>订单号</td>
                                                                             <td>{{ $order->trade_no }}</td>
                                                                         </tr>
@@ -116,23 +103,97 @@
                                                                             <td>{{ $order->game_role }}</td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td>标题</td>
+                                                                            <td>发单获得双金</td>
+                                                                            <td>{{ $order->orderStatistic->consult_complain_deposit+0 }}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>打手获得代练费</td>
+                                                                            <td>{{ $order->orderStatistic->consult_complain_amount+0 }}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>发单手续费</td>
+                                                                            <td>{{ $order->orderStatistic->poundage+0 }}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>接单手续费</td>
+                                                                            <td>{{ $order->orderStatistic->take_poundage+0 }}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>实际获得双金</td>
+                                                                            <td>{{  $order->orderStatistic->consult_complain_deposit - $order->orderStatistic->poundage+0}}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>实际获得代练费</td>
+                                                                            <td>{{  $order->orderStatistic->consult_complain_amount - $order->orderStatistic->take_poundage+0}}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>代练价格</td>
+                                                                            <td>{{ $order->amount+0 }}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>安全保证金</td>
+                                                                            <td>{{ $order->security_deposit+0 }}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>效率保证金</td>
+                                                                            <td>{{ $order->efficiency_deposit+0 }}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>账号</td>
+                                                                            <td>{{ $order->game_account }}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>密码</td>
+                                                                            <td>{{ $order->game_password }}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>角色名称</td>
+                                                                            <td>{{ $order->game_role }}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>代练标题</td>
                                                                             <td>{{ $order->title }}</td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td>金额</td>
-                                                                            <td>{{ $order->amount }}</td>
+                                                                            <td>代练说明</td>
+                                                                            <td>{{ $order->explain }}</td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td>安全/效率(保证金)</td>
-                                                                            <td>{{ $order->security_deposit }} / {{ $order->efficiency_deposit }}</td>
+                                                                            <td>代练要求</td>
+                                                                            <td>{{ $order->requirement }}</td>
                                                                         </tr>
-
                                                                         <tr>
-                                                                            <td>代练(天/小时)</td>
-                                                                            <td>{{ $order->day }} 天 {{ $order->hour }} 小时</td>
+                                                                            <td>代练时间（天）</td>
+                                                                            <td>{{ $order->day }}</td>
                                                                         </tr>
-
+                                                                        <tr>
+                                                                            <td>代练时间（小时）</td>
+                                                                            <td>{{ $order->hour }}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>玩家电话</td>
+                                                                            <td>{{ $order->player_phone }}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>发单时间</td>
+                                                                            <td>{{ $order->created_at }}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>接单时间</td>
+                                                                            <td>{{ $order->take_at }}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>提验时间</td>
+                                                                            <td>{{ $order->apply_complete_at ?: '--' }}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>结算时间</td>
+                                                                            <td>{{ $order->complete_at ?: '--' }}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>接单密码</td>
+                                                                            <td>{{ $order->take_order_password ?: '--' }}</td>
+                                                                        </tr>
                                                                         </tbody>
                                                                     </table>
                                                                 </div>

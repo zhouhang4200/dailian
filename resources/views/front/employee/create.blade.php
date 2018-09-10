@@ -44,12 +44,6 @@
                     </div>
                 </div>
                 <div class="layui-form-item">
-                    <label class="layui-form-label">*支付密码</label>
-                    <div class="layui-input-block">
-                        <input type="password" name="pay_password" value="" lay-verify="required|password" placeholder="" autocomplete="off" class="layui-input">
-                    </div>
-                </div>
-                <div class="layui-form-item">
                     <label class="layui-form-label">岗位</label>
                     <div class="layui-input-block">
                         @forelse($userRoles as $userRole)
@@ -89,7 +83,7 @@
 
             form.verify({
                 length: [
-                    /^\S{1,30}$/
+                    /^[\S]{1,30}$/
                     ,'长度超出允许范围'
                 ]
                 ,password: [
@@ -114,7 +108,6 @@
                     roles:roles,
                     data:data.field,
                     password:encrypt(data.field.password),
-                    pay_password:encrypt(data.field.pay_password),
                 }, function (result) {
                     layer.msg(result.message, {time:500}, function() {
                         if (result.status == 1) {

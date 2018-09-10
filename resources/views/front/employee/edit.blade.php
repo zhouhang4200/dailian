@@ -45,12 +45,6 @@
                     </div>
                 </div>
                 <div class="layui-form-item">
-                    <label class="layui-form-label">支付密码</label>
-                    <div class="layui-input-block">
-                        <input type="password" name="pay_password" value="" lay-verify="" placeholder="不填写则为原密码" autocomplete="off" class="layui-input">
-                    </div>
-                </div>
-                <div class="layui-form-item">
                     <label class="layui-form-label">岗位</label>
                     <div class="layui-input-block">
                         @forelse($userRoles as $userRole)
@@ -111,7 +105,7 @@
                     roles.push($(this).val());
                 });
 
-                $.post("{{ route('employee.update') }}", {id:id,roles:roles,data:data.field,password:encrypt(data.field.password),pay_password:encrypt(data.field.pay_password)}, function (result) {
+                $.post("{{ route('employee.update') }}", {id:id,roles:roles,data:data.field,password:encrypt(data.field.password)}, function (result) {
                     layer.msg(result.message, {time:500}, function () {
                         if(result.status == 1) {
                             window.location.href="{{ route('employee') }}";

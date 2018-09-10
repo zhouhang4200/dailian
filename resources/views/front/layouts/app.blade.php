@@ -159,9 +159,11 @@ $financeRoute = [
                             <a href="javascript:" id="change-password">修改登录密码</a>
                         </dd>
                         <hr>
+                        @if(Auth::user()->isParent())
                         <dd style="text-align: center;">
                             <a href="javascript:" id="change-pay-password">修改支付密码</a>
                         </dd>
+                        @endif
                         <hr>
                         <dd style="text-align: center;" id="logout">
                             <a href="{{ route('logout') }}" onclick="event.preventDefault();">
@@ -274,7 +276,7 @@ $financeRoute = [
                             @endif
                             @if(Auth::user()->could('employee'))
                             <dd data-name="console"
-                                class="@if(Route::currentRouteName() == 'employee') layui-this  @endif">
+                                class="@if(Route::currentRouteName() == 'employee' || Route::currentRouteName() == 'employee.create') layui-this  @endif">
                                 <a href="{{ route('employee') }}">员工管理</a>
                             </dd>
                             @endif

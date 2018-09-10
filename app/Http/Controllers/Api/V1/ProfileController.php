@@ -50,6 +50,7 @@ class ProfileController extends Controller
             $data['frozen'] = $user->userAsset ? $user->userAsset->frozen : 0;
             $data['signature'] = $user->signature;
             $data['pay_password'] = ! empty($user->pay_password) ? 1 : 2;
+            $data['is_parent'] = $user->isParent() ? 1 : 0;
 
             return response()->apiJson(0, $data);
         } catch (Exception $e) {
@@ -136,11 +137,24 @@ class ProfileController extends Controller
             }
             $user = Auth::user();
 
+            if (! $user->isParent()) {
+                return response()->apiJson(3009);  // 只有主账号才能修改支付密码
+            }
+
             if (! Hash::check(request('old_pay_password'), $user->pay_password)) {
                 return response()->apiJson(3003); // 原密码错误
             }
             $user->pay_password = bcrypt(request('new_pay_password'));
             $user->save();
+            // 修改子账号支付密码
+            $children = User::where('parent_id', $user->parent_id)->get();
+
+            if ($children->count() > 0) {
+                foreach($children as $child) {
+                    $child->pay_password = bcrypt(request('new_pay_password'));
+                    $child->save();
+                }
+            }
 
             return response()->apiJson(0);
         } catch (Exception $e) {
@@ -168,13 +182,23 @@ class ProfileController extends Controller
             }
 
 
-            $user = Auth::user();
+            $user = User::find(Auth::user()->parent_id);
             if ($user->phone != request('phone')) {
-                return response()->apiJson(2014);
+                return response()->apiJson(2015);
             }
 
             $user->pay_password = bcrypt(request('new_pay_password'));
             $user->save();
+
+            // 修改子账号支付密码
+            $children = User::where('parent_id', $user->parent_id)->get();
+
+            if ($children->count() > 0) {
+                foreach($children as $child) {
+                    $child->pay_password = bcrypt(request('new_pay_password'));
+                    $child->save();
+                }
+            }
 
             return response()->apiJson(0);
         } catch (Exception $e) {
@@ -310,7 +334,13 @@ class ProfileController extends Controller
 
             if (request('type') == 2 || request('type') == 3) { // 手机号没有被注册
                 if (! $user) {
-                    return response()->apiJson(2004); // 请填写注册时候的手机号
+                    return response()->apiJson(2004);
+                }
+            }
+            // 找回支付密码
+            if (request('type') == 3) {
+                if (! $user->isParent()) {
+                    return response()->apiJson(2015);
                 }
             }
 

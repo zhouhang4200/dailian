@@ -114,6 +114,7 @@ class OrderTakeController extends Controller
                 'take_at',
                 'complete_at',
                 'parent_user_id',
+                'parent_user_qq',
                 'player_name',
                 'player_phone',
                 'player_qq',

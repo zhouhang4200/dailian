@@ -154,7 +154,7 @@ $financeRoute = [
                         <dd style="text-align: center;">
                             <a href="{{ route('profile') }}">基本资料</a>
                         </dd>
-                        <hr/>
+                        <hr>
                         <dd style="text-align: center;">
                             <a href="javascript:" id="change-password">修改登录密码</a>
                         </dd>
@@ -163,8 +163,8 @@ $financeRoute = [
                         <dd style="text-align: center;">
                             <a href="javascript:" id="change-pay-password">修改支付密码</a>
                         </dd>
-                        @endif
                         <hr>
+                        @endif
                         <dd style="text-align: center;" id="logout">
                             <a href="{{ route('logout') }}" onclick="event.preventDefault();">
                                 退出

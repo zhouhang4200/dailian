@@ -20,7 +20,7 @@
 <div class="layui-card qs-text">
     <div class="layui-card-body">
         <div style="padding-top:5px; padding-bottom:10px; float:right">
-            <a href="{{ route('employee.group.create') }}" style="color:#fff"><button class="qs-btn layui-btn-normal layui-btn-small"><i class="iconfont icon-add"></i><span style="padding-left: 3px">添加</span></button></a>
+            <a href="{{ route('employee.group.create') }}" style="color:#fff"><button class="qs-btn layui-btn-normal layui-btn-small"><span style="padding-left: 3px">添加</span></button></a>
         </div>
         <form class="layui-form" method="" action="" id="role">
             @include('front.employee.group.list', ['userRoles' => $userRoles])

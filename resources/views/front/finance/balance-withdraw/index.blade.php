@@ -24,7 +24,7 @@
             <fieldset class="layui-elem-field">
                 <legend>提现</legend>
                 <div class="layui-field-box">
-                    提示：提现金额最低10元且必须为整数，提现将收取1%的手续费，提现金额将在3个工作日（节假日顺延）转账到实名认证填写的银行卡上
+                    提示：{{ \Setting::get('withdraw.tips') }}
                 </div>
             </fieldset>
 
@@ -39,7 +39,7 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">提现金额</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="amount" lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
+                        <input type="text" name="amount" lay-verify="required|min_amount" placeholder="请输入" autocomplete="off" class="layui-input">
                     </div>
                 </div>
 
@@ -90,8 +90,19 @@
         layui.use(['form', 'element'], function(){
             var form = layui.form, layer = layui.layer, element = layui.element;
 
+            var minAmount = '{{ \Setting::get('withdraw.min_amount') }}';
+
+            form.verify({
+                min_amount: function(value, item){
+                    if (parseInt(value) < parseInt(minAmount)) {
+                        return '最小提现金额为' + minAmount + '元';
+                    }
+                }
+            });
+
             // 确认提现
             form.on('submit(confirm-withdraw)', function (data) {
+
                 $.post('{{ route('finance.balance-withdraw') }}', {
                     amount:data.field.amount,
                     password:encrypt(data.field.password)
@@ -125,8 +136,8 @@
                 }
                 // 计算手续费
                 var poundage = amount * 0.01;
-                $('.poundage').css('color', '#000').html(poundage);
-                $('.real-amount').css('color', '#000').html(amount - poundage);
+                $('.poundage').css('color', '#000').html(poundage.toFixed(2));
+                $('.real-amount').css('color', '#000').html((amount - poundage).toFixed(2));
 
                 if (!amount) {
                     $('.poundage').css('color', '#cecece').html('输入提现金额计算');

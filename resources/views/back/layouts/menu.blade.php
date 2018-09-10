@@ -52,6 +52,7 @@ $systemRoute = [
     'admin.admin-permission-group',
     'admin.admin-permission-group.create',
     'admin.admin-permission-group.update',
+    'admin.setting',
 ];
 
 
@@ -320,6 +321,11 @@ $systemRoute = [
                             <li>
                                 <a href="{{ route('admin.admin-permission-group') }}" @if($currentRouteName == 'admin.admin-permission-group') class="active" @endif>
                                     权限组管理
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('admin.setting') }}" @if($currentRouteName == 'admin.setting') class="active" @endif>
+                                    系统设置
                                 </a>
                             </li>
                         </ul>

@@ -82,7 +82,6 @@ class OrderWaitController extends Controller
             'take_order_password',
         ])
             ->with('game')
-            ->where('status', 1)
             ->get()
             ->toArray();
 

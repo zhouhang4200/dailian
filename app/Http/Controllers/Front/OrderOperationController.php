@@ -38,7 +38,7 @@ class OrderOperationController extends Controller
         } catch (OrderException $e) {
             return response()->ajaxFail($e->getMessage());
         } catch (UserAssetException $e) {
-            return response()->ajaxFail($e->getMessage());
+            return response()->ajaxFail($e->getMessage(), [], $e->getCode());
         } catch (Exception $e) {
             return response()->ajaxFail($e->getMessage(). $e->getFile(). $e->getLine());
         }

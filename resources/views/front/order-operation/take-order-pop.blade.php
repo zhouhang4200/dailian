@@ -1,3 +1,4 @@
+@if(!Auth::guest())
 <div id="take-pop" style="padding: 24px 0 15px 15px;display: none">
     <form class="layui-form" action="" method="post">
         <input type="hidden" name="trade_no">
@@ -44,3 +45,4 @@
         </div>
     </form>
 </div>
+@endif

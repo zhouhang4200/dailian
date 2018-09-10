@@ -80,6 +80,15 @@
                     }, function() {
                         window.location.href = "{{ route('order.show') }}/" + data.field.trade_no;
                     });
+                } else if (result.status == 4001) {
+                    layer.confirm('您的账号余额不足，是否前往充值？', {
+                        btn: ['立即前往', '取消'],
+                        btnAlign: 'c'
+                    }, function(index, layero){
+                        window.location.href = "{{ route('finance.balance-recharge') }}";
+                    }, function(index){
+                        layer.close();
+                    });
                 } else {
                     layer.msg(result.message);
                 }

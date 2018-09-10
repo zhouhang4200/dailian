@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Front\Finance;
 
+use App\Exceptions\UserException;
+use App\Services\UserBalanceService;
 use DB;
 use App\Exceptions\UserAssetException;
 use App\Models\BalanceWithdraw;
@@ -26,37 +28,22 @@ class BalanceWithdrawController extends Controller
      */
     public function store()
     {
-        if (optional(auth()->user()->parent->realNameCertification)->status != 2) {
-            return response()->ajaxFail('您的账号没有进行实名认证,不能进行提现');
-        }
-
-        if (! \Hash::check(clientRSADecrypt(request('password')), auth()->user()->pay_password)) {
-            return response()->ajaxFail('支付密码错误');
-        }
-        // 计算手续费
-        $poundage = bcmul(request('amount'), 0.01);
-        // 实际到账金额
-        $amount = bcsub(request('amount'), $poundage);
-
         DB::beginTransaction();
         try {
-            // 创建提现记录
-            $record = BalanceWithdraw::create([
-                'user_id' => auth()->user()->parent_id,
-                'trade_no' => generateOrderNo(),
-                'real_amount' => $amount,
-                'amount' => request('amount'),
-                'poundage' => $poundage,
-                'real_name' => auth()->user()->parent->realNameCertification->real_name,
-                'bank_card' => auth()->user()->parent->realNameCertification->bank_card,
-                'bank_name' => auth()->user()->parent->realNameCertification->bank_name,
-                'status' => 1
-            ]);
+            // 生成提现单
+            $record = UserBalanceService::withdraw(
+                request('amount'),
+                auth()->user(),
+                request('alipay_account'),
+                request('alipay_name')
+            );
             // 冻结资金
-            UserAssetService::init(35, auth()->user()->parent_id, $amount, $record->trade_no)->frozen();
-        } catch (UserAssetException $exception) {
-            return response()->ajaxFail($exception->getMessage());
-        } catch (\Exception $exception) {
+            UserAssetService::init(35, $record->user_id, $record->amount, $record->trade_no)->frozen();
+        } catch (UserException $exception) {
+            return response()->ajaxFail($exception->getMessage(), [], $exception->getCode());
+        }  catch (UserAssetException $exception) {
+            return response()->ajaxFail($exception->getMessage(), [], $exception->getCode());
+        }  catch (\Exception $exception) {
             return response()->ajaxFail($exception->getMessage());
         }
         DB::commit();

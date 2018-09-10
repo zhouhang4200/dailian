@@ -120,7 +120,7 @@ class UserAssetService
     }
 
     /**
-     * 提现
+     * 生成提现单
      * @return bool
      * @throws UserAssetException
      * @throws Exception
@@ -138,6 +138,7 @@ class UserAssetService
         if ($userAsset->balance < self::$amount) {
             throw new UserAssetException('您的余额不够,请调整提现金额', 4001);
         }
+
         // 获取用户认证信息
         $realNameCertification = RealNameCertification::where('user_id', self::$userId)->first();
         if (! $realNameCertification) {
@@ -145,7 +146,6 @@ class UserAssetService
         }
 
         try {
-
             // 写流水
             $this->flow(bcsub($userAsset->balance, self::$amount), bcadd($userAsset->frozen, self::$amount));
             // 生成提现单

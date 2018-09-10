@@ -21,6 +21,9 @@ class BalanceWithdraw extends Model
         'real_name',
         'bank_card',
         'bank_name' ,
+        'alipay_account' ,
+        'alipay_name' ,
+        'bank_name' ,
         'status' ,
         'remark' ,
     ];

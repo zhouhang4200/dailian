@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Exceptions\UserAssetException;
+use App\Exceptions\UserException;
+use App\Services\UserBalanceService;
 use DB;
 use Auth;
 use Hash;
@@ -97,50 +100,33 @@ class FinanceController extends Controller
      */
     public function withdraw(Request $request)
     {
+        $user = Auth::user();
+
+        // 提现权限
+        if (! $user->could('finance.balance-withdraw')) {
+            return response()->apiJson(1005);
+        }
+
+        if (is_null(request('amount'))) {
+            return response()->apiJson(1001); // 参数缺失
+        }
+
         DB::beginTransaction();
         try {
-            $user = Auth::user();
-
-            // 提现权限
-            if (! $user->could('finance.balance-withdraw')) {
-                return response()->apiJson(1005);
-            }
-
-            if (is_null(request('amount'))) {
-                return response()->apiJson(1001); // 参数缺失
-            }
-
-            if (! $user->parent->realNameCertification) {
-                return response()->apiJson(3005); // 实名认证申请信息不存在
-            }
-
-            if (! Hash::check(request('pay_password'), $user->pay_password)) {
-                return response()->apiJson(4002); // 支付密码错误
-            }
-
-            // 计算手续费
-            $poundage = bcmul(request('amount'), 0.01);
-            // 实际到账金额
-            $amount = bcsub(request('amount'), $poundage);
-
-            // 创建提现记录
-            $record = BalanceWithdraw::create([
-                'user_id' => $user->parent_id,
-                'trade_no' => generateOrderNo(),
-                'real_amount' => $amount,
-                'amount' => request('amount'),
-                'poundage' => $poundage,
-                'real_name' => $user->parent->realNameCertification->real_name,
-                'bank_card' => $user->parent->realNameCertification->bank_card,
-                'bank_name' => $user->parent->realNameCertification->bank_name,
-                'status' => 1
-            ]);
+            // 生成提现单
+            $record = UserBalanceService::withdraw(
+                request('amount'),
+                $user,
+                request('alipay_account'),
+                request('alipay_name')
+            );
             // 冻结资金
-            UserAssetService::init(35, $user->parent_id, $amount, $record->trade_no)->frozen();
-        } catch (UserAssetBalanceException $balanceException) {
-            return response()->apiJson(4001);
-        } catch (Exception $e) {
-            myLog('wx-profile-withdraw-error', ['用户:' => $user->id ?? '', '失败:' => $e->getMessage()]);
+            UserAssetService::init(35, $record->user_id, $record->amount, $record->trade_no)->frozen();
+        } catch (UserException $exception) {
+            return response()->apiJson($exception->getCode());
+        }  catch (UserAssetException $exception) {
+            return response()->apiJson($exception->getCode());
+        }  catch (\Exception $exception) {
             return response()->apiJson(1003);
         }
         DB::commit();

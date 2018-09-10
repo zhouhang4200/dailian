@@ -57,12 +57,26 @@
                     </div>
                 </div>
 
+                {{--<div class="layui-form-item">--}}
+                    {{--<label class="layui-form-label">提现到银行卡</label>--}}
+                    {{--<div class="layui-input-inline">--}}
+                        {{--<div class="" style="line-height: 30px">--}}
+                            {{--{{ optional(auth()->user()->parent->realNameCertification)->bank_card }}--}}
+                        {{--</div>--}}
+                    {{--</div>--}}
+                {{--</div>--}}
+
                 <div class="layui-form-item">
-                    <label class="layui-form-label">提现到银行卡</label>
+                    <label class="layui-form-label">支付宝账号</label>
                     <div class="layui-input-inline">
-                        <div class="" style="line-height: 30px">
-                            {{ optional(auth()->user()->parent->realNameCertification)->bank_card }}
-                        </div>
+                        <input type="text" name="alipay_account" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">支付宝姓名</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="alipay_name" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
                     </div>
                 </div>
 
@@ -111,6 +125,8 @@
 
                 $.post('{{ route('finance.balance-withdraw') }}', {
                     amount:data.field.amount,
+                    alipay_account:data.field.alipay_account,
+                    alipay_name:data.field.alipay_name,
                     password:encrypt(data.field.password)
                 }, function (result) {
                     if (result.status == 1) {

@@ -56,10 +56,11 @@
                                 <th>主账号ID</th>
                                 <th>当前余额</th>
                                 <th>当前冻结</th>
-                                <th>姓名</th>
-                                <th>开户行</th>
-                                <th>卡号</th>
+                                <th>实名认证姓名</th>
+                                <th>支付宝姓名</th>
+                                <th>支付宝账号</th>
                                 <th>提现金额</th>
+                                <th>应到账金额</th>
                                 <th>状态</th>
                                 <th>拒绝原因</th>
                                 <th>创建时间</th>
@@ -75,9 +76,10 @@
                                     <td>{{ optional(optional($balanceWithdraw->userAssetFlows)[0])->balance }}</td>
                                     <td>{{ optional(optional($balanceWithdraw->userAssetFlows)[0])->frozen }}</td>
                                     <td>{{ $balanceWithdraw->real_name ?? '' }}</td>
-                                    <td>{{ $balanceWithdraw->bank_name ?? '' }}</td>
-                                    <td>{{ $balanceWithdraw->bank_card ?? '' }}</td>
-                                    <td>{{ $balanceWithdraw->amount+0 }}</td>
+                                    <td>{{ $balanceWithdraw->alipay_account ?? '' }}</td>
+                                    <td>{{ $balanceWithdraw->alipay_name ?? '' }}</td>
+                                    <td>{{ $balanceWithdraw->amount + 0 }}</td>
+                                    <td>{{ $balanceWithdraw->real_amount + 0 }}</td>
                                     <td>{{ config('user_asset.withdraw_status')[$balanceWithdraw->status] }}</td>
                                     <td>{{ $balanceWithdraw->remark ?? '--' }}</td>
                                     <td>{{ $balanceWithdraw->created_at }}</td>

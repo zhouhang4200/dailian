@@ -64,7 +64,7 @@
             </div>
         </div>
         <div class="layui-col-sm4">
-            <label class="layui-form-label">安全证金</label>
+            <label class="layui-form-label">安全保证金</label>
             <div class="layui-input-block">
                 <input type="text" class="layui-input" value="{{ $detail['security_deposit'] }}">
             </div>

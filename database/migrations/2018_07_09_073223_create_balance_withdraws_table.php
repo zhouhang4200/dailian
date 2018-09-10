@@ -20,9 +20,11 @@ class CreateBalanceWithdrawsTable extends Migration
             $table->decimal('amount', 17, 2)->comment('提现金额');
             $table->decimal('real_amount', 17, 2)->comment('实际到账金额');
             $table->decimal('poundage', 17, 2)->comment('手续费');
-            $table->string('real_name', 60)->comment('开户名');
-            $table->string('bank_card', 60)->comment('开户名');
-            $table->string('bank_name', 200)->comment('开户行');
+            $table->string('real_name', 60)->nullable()->comment('开户名');
+            $table->string('bank_card', 60)->nullable()->comment('开户名');
+            $table->string('bank_name', 200)->nullable()->comment('开户行');
+            $table->string('alipay_account', 100)->nullable()->comment('支付宝账号');
+            $table->string('alipay_name', 100)->nullable()->comment('支付宝账户名');
             $table->unsignedInteger('status')->comment('状态 1 审核中 2 提成 3 失败');
             $table->string('remark')->nullable()->comment('失败原因');
             $table->timestamps();

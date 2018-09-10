@@ -19,16 +19,17 @@ class OrderWaitController extends Controller
     public function index()
     {
         $orders = GameLevelingOrder::searchCondition(array_merge(request()->except('status'), ['status' => 1]))
-            ->orderBy('id', 'desc')
             ->orderBy('top_at', 'desc')
+            ->orderBy('id', 'desc')
             ->paginate(request('page_size', 10));
 
         $orderList = [];
         foreach ($orders->items() as $key => $item) {
             $itemArr = $item->toArray();
 
-            $itemArr['top'] = strlen($itemArr['take_order_password']) ? 1 : 2;
+            $itemArr['top'] = $itemArr['top'] == 1 ? 1 : 2;
             $itemArr['private'] = strlen($itemArr['take_order_password']) ? 1 : 2;
+            $itemArr['official'] = config('app.official') ==  $itemArr['parent_user_id'] ? 1 : 2;
             $itemArr['icon'] = $item['game']['icon'];
 
             unset($itemArr['id']);
@@ -81,7 +82,6 @@ class OrderWaitController extends Controller
             'take_order_password',
         ])
             ->with('game')
-            ->where('status', 1)
             ->get()
             ->toArray();
 

@@ -55,9 +55,9 @@
                 </div>
                 <div style="float: left">
                     <div class="layui-inline" >
-                        <button class="qs-btn layui-btn-normal layui-btn-small" lay-submit="" lay-filter="demo1" style="margin-left: 10px"><i class="iconfont icon-search"></i><span style="padding-left: 3px">查询</span></button>
+                        <button class="qs-btn layui-btn-normal layui-btn-small" lay-submit="" lay-filter="demo1" style="margin-left: 10px"><span style="padding-left: 3px">查询</span></button>
                         &nbsp;
-                        <a href="{{ route('employee.create') }}" style="color:#fff; float:right;" class="qs-btn layui-btn-normal layui-btn-small"><i class="iconfont icon-add"></i><span style="padding-left: 3px">添加</span></a>
+                        <a href="{{ route('employee.create') }}" style="color:#fff; float:right;" class="qs-btn layui-btn-normal layui-btn-small"><span style="padding-left: 3px">添加</span></a>
                     </div>
                 </div>
             </form>

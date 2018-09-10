@@ -98,7 +98,6 @@ var countdown = 59;
 function setTime() {
     if (countdown == 59) {
         $.post('{{ route('profile.reset-pay-password-verification-code') }}', function(result){
-            console.log(result);
         }, 'json');
     }
     if (countdown == '-1') {

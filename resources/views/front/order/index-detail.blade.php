@@ -1,5 +1,6 @@
 <html>
 <header>
+    <meta name="_token" content="{{ csrf_token() }}" >
     <link rel="stylesheet" href="/front/lib/js/layui/css/layui.css" media="all">
     <link rel="stylesheet" href="/front/lib/css/admin.css" media="all">
     <link rel="stylesheet" href="/front/lib/css/new.css">
@@ -118,6 +119,11 @@
 </body>
 <script src="/js/jquery-1.11.0.min.js"></script>
 <script src="/front/lib/js/layui/layui.js"></script>
+<script src="/js/encrypt.js"></script>
+<script src="/front/js/helper.js"></script>
+<script>
+    $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')}});
+</script>
 @include('front.order-operation.take-order-js', [
     'js' => 'front.profile.password-js'
 ])

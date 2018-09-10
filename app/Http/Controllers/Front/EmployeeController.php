@@ -68,36 +68,42 @@ class EmployeeController extends Controller
      */
     public function store(Request $request)
     {
-        // 判断手机号位数是否正确
-        $isRight = strlen($request->data['phone']);
+        try {
+            // 判断手机号位数是否正确
+            $isRight = strlen($request->data['phone']);
 
-        if ($isRight != 11) {
-            return response()->json(['status' => 0, 'message' => '请输入正确的手机号']);
+            if ($isRight != 11) {
+                return response()->json(['status' => 0, 'message' => '请输入正确的手机号']);
+            }
+
+            if (isset($request->data['qq']) && ! is_numeric($request->data['qq'])) {
+                return response()->json(['status' => 0, 'message' => 'QQ号必须为数字']);
+            }
+
+            // 判断手机号是否唯一
+            $isSingle = User::where('phone', $request->data['phone'])->withTrashed()->first();
+            if ($isSingle) {
+                return response()->json(['status' => 0, 'message' => '账号已存在']);
+            }
+
+            $parentUser = User::find(Auth::user()->parent_id);
+            // 数据
+            $data = $request->data;
+            $data['password'] = bcrypt(clientRSADecrypt($request->password));
+            $data['pay_password'] = $parentUser->pay_password;
+            $data['parent_id'] = Auth::user()->parent_id;
+            $data['avatar'] = "/front/images/default_avatar.png";
+            $data['email'] = '';
+            $roleIds = $request->roles ?: [];
+
+            // 添加子账号同时添加角色
+            $user = User::create($data);
+            $user->roles()->sync($roleIds);
+            // 清除缓存
+            Cache::forget('permission:user:'.$user->id);
+        } catch (\Exception $e) {
+            return response()->json(['status' => 0, 'message' => '服务异常']);
         }
-
-        if (isset($request->data['qq']) && ! is_numeric($request->data['qq'])) {
-            return response()->json(['status' => 0, 'message' => 'QQ号必须为数字']);
-        }
-
-        // 判断手机号是否唯一
-        $isSingle = User::where('phone', $request->data['phone'])->withTrashed()->first();
-        if ($isSingle) {
-            return response()->json(['status' => 0, 'message' => '账号已存在']);
-        }
-        // 数据
-        $data = $request->data;
-        $data['password'] = bcrypt(clientRSADecrypt($request->password));
-        $data['pay_password'] = bcrypt(clientRSADecrypt($request->pay_password));
-        $data['parent_id'] = Auth::user()->parent_id;
-        $data['avatar'] = "/front/images/default_avatar.png";
-        $data['email'] = '';
-        $roleIds = $request->roles ?: [];
-
-        // 添加子账号同时添加角色
-        $user = User::create($data);
-        $user->roles()->sync($roleIds);
-        // 清除缓存
-        Cache::forget('permission:user:'.$user->id);
 
         return response()->json(['status' => 1, 'message' => '添加成功']);
     }

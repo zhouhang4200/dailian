@@ -1,5 +1,7 @@
 @extends('front.auth.layouts.app')
 
+@section('title', '丸子平台-重置登录密码')
+
 @section('css')
     <link rel="stylesheet" href="/front/lib/css/email.css">
 @section('header')
@@ -9,7 +11,7 @@
 @endsection
 
 @section('main')
-    <div class="container">
+    <div class="container" style="padding: 30px 30px 2px 30px">
         <div class="title">重置密码</div>
         <form method="POST" action="{{ route('password.reset') }}"  class="layui-form" >
             {!! csrf_field() !!}
@@ -54,32 +56,38 @@
                 <button class="layui-btn layui-btn-normal" lay-submit lay-filter="confirm" style="width: 100%">确认</button>
             </div>
         </form>
+        <div class="layui-form-item login-link" style="margin-top: 10px">
+            <a href="{{  route('login') }}" class="login" style="float: left;">立即登录</a>
+        </div>
     </div>
 @endsection
 
 @section('js')
     <script>
         layui.use(['form', 'layedit', 'laydate'], function(){
-            var form = layui.form
-                ,layer = layui.layer;
-
-            var errorPassword = "{{ $errors->count() > 0 && array_key_exists('password', $errors->toArray()) && $errors->toArray()['password'] ? '请按要求填写密码!' : '' }}";
-            var errorEmail = "{{ $errors->count() > 0 && array_key_exists('email', $errors->toArray()) && $errors->toArray()['email'] ? '邮箱填写错误!' : '' }}";
-
-            if(errorEmail) {
-                layer.msg(errorEmail, {icon: 5, time:1500});
-            } else if (errorPassword) {
-                layer.msg(errorPassword, {icon: 5, time:1500});
-            }
+            var form = layui.form, layer = layui.layer;
 
             form.on('submit(confirm)', function (data) {
+
+                if(data.field.password != data.field.new_password) {
+                    layer.msg('两次输入密码不一至');
+                    return false;
+                }
+
                $.post('{{ route('password.reset') }}', {
                    'phone': data.field.phone,
                    'new_password': data.field.new_password,
                    'verification_code': data.field.verification_code
                }, function (result) {
                     if (result.code == 0) {
-                        layer.msg(result.message);
+                        layer.confirm('密码修改成功', {
+                            btn: ['前往登录', '取消'],
+                            btnAlign: 'c'
+                        }, function(index, layero){
+                            window.location.href = '{{ route('login') }}'
+                        }, function(index){
+                            layer.close();
+                        });
                     } else {
                         layer.msg(result.message);
                     }
@@ -104,6 +112,8 @@
                     $.post('{{ route('password.reset.verification-code') }}',  {phone:phone, type:2}, function(result){
                         if (result.code != 0) {
                             return layer.msg(result.message);
+                        } else {
+                            return layer.msg('验证码发送成功请注意查收');
                         }
                     }, 'json');
                 }

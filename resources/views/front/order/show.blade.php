@@ -345,7 +345,7 @@
                                 <div class="layui-col-lg6">
                                     <label class="layui-form-label">商户QQ</label>
                                     <div class="layui-input-block">
-                                        <input type="text" name="parent_qq"  class="layui-input"  disabled="disabled" value="{{ $order->parent_qq }}">
+                                        <input type="text" name="parent_qq"  class="layui-input"  disabled="disabled" value="{{ $order->parent_user_qq }}">
                                     </div>
                                 </div>
                             </div>

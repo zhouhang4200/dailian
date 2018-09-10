@@ -12,7 +12,9 @@
             <div class="layui-input-inline">
                 <input type="password" name="pay_password" required lay-verify="required" placeholder="请输入支付密码" autocomplete="off" class="layui-input">
             </div>
+            @if(Auth::user()->isParent())
             <div class="layui-form-mid layui-word-aux reset-pay-password" id="">忘记密码</div>
+            @endif
         </div>
         <div class="layui-form-item">
             <div class="layui-input-block">

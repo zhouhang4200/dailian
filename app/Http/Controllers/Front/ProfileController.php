@@ -221,7 +221,7 @@ class ProfileController extends Controller
 
         try {
             cache()->put(config('redis_key.profile.pay_password_verification_code') . auth()->id(), $code, 1);
-//            SmSApiService::send(request()->user()->phone, $code);
+            SmSApiService::send(request()->user()->phone, $code);
         } catch (\Exception $exception) {
 
         }

@@ -6,14 +6,14 @@ use DB;
 use Auth;
 use Hash;
 use Exception;
-use App\Exceptions\UserAsset\UserAssetBalanceException;
 use App\Services\UserAssetService;
 use App\Models\BalanceRecharge;
 use App\Models\BalanceWithdraw;
 use App\Models\UserAssetFlow;
+use Yansongda\Pay\Pay;
+use Unisharp\Setting\SettingFacade;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Yansongda\Pay\Pay;
 
 /**
  *  资金管理
@@ -247,10 +247,10 @@ class FinanceController extends Controller
 
             $data = [
                 'balance' => auth()->user()->userAsset->balance,
-                'rate' => 0.01,
-                'tips' => '提现金额最低10元且必须为整数，提现将收取1%的手续费，提现金额将在3个工作日（节假日顺延）转账到填写的支付宝账号上',
-                'min_amount' => 10,
-                'max_amount' => 1000,
+                'rate' => SettingFacade::get('withdraw.rate'),
+                'tips' => SettingFacade::get('withdraw.tips'),
+                'min_amount' => SettingFacade::get('withdraw.min_amount'),
+                'max_amount' => SettingFacade::get('withdraw.max_amount'),
             ];
 
         } catch (Exception $e) {

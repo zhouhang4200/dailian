@@ -201,6 +201,11 @@ Route::group(['middleware' =>  ['auth.admin']], function () {
     });
 
     Route::prefix('system')->namespace('System')->group(function () {
+        // 系统设置
+        Route::prefix('setting')->group(function () {
+            Route::get('/', 'SettingController@index')->name('admin.setting');
+            Route::post('update/{id}', 'SettingController@update')->name('admin.setting.update');
+        });
         // 管理员
         Route::prefix('user')->group(function () {
             Route::get('/', 'AdminUserController@index')->name('admin.admin-user');

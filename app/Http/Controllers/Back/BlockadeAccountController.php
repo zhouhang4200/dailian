@@ -144,7 +144,7 @@ class BlockadeAccountController extends Controller
 
             return response()->ajaxSuccess('添加成功');
         } catch (Exception $e) {
-            return response()->ajaxFail('添加失败');
+            return response()->ajaxFail('添加失败' . $e->getMessage());
         }
     }
 

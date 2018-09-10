@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Back\System;
 
-use App\MOdels\AdminPermissionGroup;
+use App\Models\AdminPermissionGroup;
 use App\Http\Controllers\Controller;
 
 /**

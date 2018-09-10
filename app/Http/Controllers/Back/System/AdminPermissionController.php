@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Back\System;
 
 use App\Models\AdminPermission;
 use App\Http\Controllers\Controller;
-use App\MOdels\AdminPermissionGroup;
+use App\Models\AdminPermissionGroup;
 
 /**
  * Class AdminPermissionController

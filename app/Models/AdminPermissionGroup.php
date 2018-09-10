@@ -4,6 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class AdminPermissionGroup
+ * @package App\Models
+ */
 class AdminPermissionGroup extends Model
 {
     public $fillable = ['name'];

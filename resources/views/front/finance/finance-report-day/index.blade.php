@@ -53,7 +53,6 @@
                 @forelse ($reports as $item)
                     <tr>
                         <td>{{ $item->date }}</td>
-                        <td>{{ $item->user_id }}</td>
                         <td>{{ $item->getOpeningBalance() }}</td>
                         <td>{{ $item->recharge }}</td>
                         <td>{{ $item->income }}</td>

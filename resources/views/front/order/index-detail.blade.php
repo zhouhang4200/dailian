@@ -1,25 +1,16 @@
-<html>
-<header>
-    <meta name="_token" content="{{ csrf_token() }}" >
-    <link rel="stylesheet" href="/front/lib/js/layui/css/layui.css" media="all">
-    <link rel="stylesheet" href="/front/lib/css/admin.css" media="all">
-    <link rel="stylesheet" href="/front/lib/css/new.css">
-    <link id="layuicss-layer" rel="stylesheet" href="/front/lib/js/layui/css/modules/layer/default/layer.css" media="all">
-</header>
 <style>
     body {
         background-color: #fff;
     }
     .title {
         height: 30px;
-        line-height: 30px;
+        line-height: 36px;
     }
     .layui-input,.layui-textarea {
        background-color: #f7f7f7;
     }
 </style>
-<body>
-<form class="layui-form" action="" lay-filter="component-form-group" id="form-order" style="padding: 20px 30px 0 0;">
+<form class="layui-form" action="" lay-filter="component-form-group" id="form-order" style="padding: 20px 30px 20px 0;">
 
     <div class="layui-row  layui-form-item">
         <div class="layui-col-sm4">
@@ -114,17 +105,3 @@
 
     </div>
 </form>
-@include('front.order-operation.take-order-pop')
-@include('front.profile.password-pop')
-</body>
-<script src="/js/jquery-1.11.0.min.js"></script>
-<script src="/front/lib/js/layui/layui.js"></script>
-<script src="/js/encrypt.js"></script>
-<script src="/front/js/helper.js"></script>
-<script>
-    $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')}});
-</script>
-@include('front.order-operation.take-order-js', [
-    'js' => 'front.profile.password-js'
-])
-</html>

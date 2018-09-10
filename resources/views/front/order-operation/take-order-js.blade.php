@@ -1,24 +1,23 @@
 <script>
     layui.use(['form', 'laydate', 'element'], function () {
         var form = layui.form ,layer = layui.layer, element = layui.element, laydate = layui.laydate;
-
         layer.config({
             isOutAnim: false
         });
-
         // 查看详情
         form.on('submit(detail)', function (data) {
-
-            layer.open({
-                type: 2,
-                shadeClose: true,
-                resize:false,
-                shade: 0.2,
-                area: ['800px', '60%'],
-                content: '{{ route('order.detail') }}/' + $(data.elem).attr('data-trade_no')
+            var url = "{{ route('order.detail') }}/" + $(data.elem).attr('data-trade_no');
+            $.get(url, function (result) {
+                layer.open({
+                    type: 1,
+                    shadeClose: true,
+                    resize: false,
+                    shade: 0.2,
+                    area: ['50%'],
+                    content: result
+                }, 'json');
             });
         });
-
         form.on('submit(take)', function (data) {
 
             if ($(data.elem).attr('data-guest')) {
@@ -102,7 +101,7 @@
             layer.closeAll();
         });
         @if(isset($js))
-            @include($js)
+        @include($js)
         @endif
     });
 </script>

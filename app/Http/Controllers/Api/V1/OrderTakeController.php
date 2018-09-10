@@ -37,6 +37,8 @@ class OrderTakeController extends Controller
                 'amount',
                 'take_order_password',
                 'created_at',
+                'created_at',
+                'top',
             ])
             ->where('take_parent_user_id', auth()->user()->parent_id)
             ->orderBy('id', 'desc')

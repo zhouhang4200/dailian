@@ -247,7 +247,7 @@ class FinanceController extends Controller
 
             $data = [
                 'balance' => auth()->user()->userAsset->balance,
-                'rate' => SettingFacade::get('withdraw.rate'),
+                'rate' => bcmul(SettingFacade::get('withdraw.rate'), 100, 2),
                 'tips' => SettingFacade::get('withdraw.tips'),
                 'min_amount' => SettingFacade::get('withdraw.min_amount'),
                 'max_amount' => SettingFacade::get('withdraw.max_amount'),

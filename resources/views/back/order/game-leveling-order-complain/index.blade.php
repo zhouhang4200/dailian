@@ -3,6 +3,13 @@
 @section('title', ' | 订单列表')
 
 <style>
+    .layui-badge-dot {
+        padding-left: 0px;
+        border-left-width: 3px;
+        margin-left: 4px;
+        margin-right: -5px;
+    }
+
 </style>
 
 @section('content')
@@ -136,7 +143,7 @@
                 var id = 'complain_message_'+message;
                 var data = document.getElementById(id);
                 var createSpan = document.createElement("span");
-                createSpan.className = "layui-badge-dot layui-bg-orange";
+                createSpan.className = "layui-badge-dot";
 
                 data.appendChild(createSpan);
             });

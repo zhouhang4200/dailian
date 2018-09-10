@@ -83,6 +83,19 @@
                                                                     <table class="table table-striped table-hover">
                                                                         <tbody>
                                                                         <tr>
+                                                                            <td>发单获得双金</td>
+                                                                            <td>1</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>打手获得代练费</td>
+                                                                            <td>2</td>
+                                                                        </tr>
+
+
+
+
+
+                                                                        <tr>
                                                                             <td>订单号</td>
                                                                             <td>{{ $order->trade_no }}</td>
                                                                         </tr>

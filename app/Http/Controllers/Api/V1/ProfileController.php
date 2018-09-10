@@ -146,15 +146,6 @@ class ProfileController extends Controller
             }
             $user->pay_password = bcrypt(request('new_pay_password'));
             $user->save();
-            // 修改子账号支付密码
-            $children = User::where('parent_id', $user->parent_id)->get();
-
-            if ($children->count() > 0) {
-                foreach($children as $child) {
-                    $child->pay_password = bcrypt(request('new_pay_password'));
-                    $child->save();
-                }
-            }
 
             return response()->apiJson(0);
         } catch (Exception $e) {
@@ -193,16 +184,6 @@ class ProfileController extends Controller
 
             $user->pay_password = bcrypt(request('new_pay_password'));
             $user->save();
-
-            // 修改子账号支付密码
-            $children = User::where('parent_id', $user->parent_id)->get();
-
-            if ($children->count() > 0) {
-                foreach($children as $child) {
-                    $child->pay_password = bcrypt(request('new_pay_password'));
-                    $child->save();
-                }
-            }
 
             return response()->apiJson(0);
         } catch (Exception $e) {

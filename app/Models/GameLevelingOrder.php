@@ -70,6 +70,8 @@ class GameLevelingOrder extends Model
         'username',
         'parent_user_id',
         'parent_username',
+        'parent_user_qq',
+        'parent_user_phone',
         'order_type_id',
         'game_type_id',
         'game_class_id',

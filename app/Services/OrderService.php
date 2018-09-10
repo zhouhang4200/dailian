@@ -149,7 +149,7 @@ class OrderService
                 'user_phone' => self::$user->phone,
                 'parent_user_id' => self::$user->parent_id,
                 'parent_username' => $username ? $username : (optional(self::$user->parent)->name ?? self::$user->name),
-                'parent_user_qq' => $userQQ ? $userQQ : optional(self::$user->parent)->qq ?? self::$user->qq,
+                'parent_user_qq' => $userQQ ? $userQQ : (optional(self::$user->parent)->qq ?? self::$user->qq),
                 'parent_user_phone' => $userPhone ? $userPhone : optional(self::$user->parent)->phone ?? self::$user->phone,
                 'order_type_id' => 1,
                 'game_type_id' => $game->game_type_id,

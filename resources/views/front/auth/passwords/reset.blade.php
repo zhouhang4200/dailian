@@ -21,6 +21,21 @@
                        autocomplete="off" class="layui-input">
                 </div>
             </div>
+
+            <div class="layui-form-item">
+                <div class="layui-row">
+                    <div class="layui-col-xs7">
+                        <label class="layui-form-label"><i class="iconfont icon-youxiang"></i></label>
+                        <input type="text" name="vercode"  lay-verify="required" placeholder="图形验证码" class="layui-input">
+                    </div>
+                    <div class="layui-col-xs5">
+                        <div style="margin-left: 10px;">
+                            <button class="layui-btn layui-btn-normal" lay-submit lay-filter="formDemo" style="width: 100%">获取验证码</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="layui-form-item">
                 <label class="layui-form-label"><i class="iconfont icon-ad77"></i></label>
                 <div class="layui-input-block">

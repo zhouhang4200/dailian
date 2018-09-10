@@ -51,6 +51,6 @@ class UserBalanceService
            'bank_name' => auth()->user()->parent->realNameCertification->bank_name,
            'status' => 1
        ]);
-
    }
 }
+

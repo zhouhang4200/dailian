@@ -135,8 +135,10 @@
             socket.on("complain_message:all", function (message) {
                 var id = 'complain_message_'+message;
                 var data = document.getElementById(id);
-                var node = "<span class='layui-badge-dot'></span>";
-                data.prepend(node);
+                var createSpan = document.createElement("span");
+                createSpan.className = "layui-badge-dot layui-bg-orange";
+
+                data.appendChild(createSpan);
             });
         })(window);
     </script>

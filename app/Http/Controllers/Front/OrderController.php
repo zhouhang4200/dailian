@@ -70,9 +70,10 @@ class OrderController extends Controller
         unset($detail[0]['game']);
         unset($detail[0]['take_order_password']);
 
-        return view('front.order.index-detail')->with([
+
+        return response()->json(view()->make('front.order.index-detail', [
             'detail' => $detail[0] ?? []
-        ]);
+        ])->render());
     }
 
     /**

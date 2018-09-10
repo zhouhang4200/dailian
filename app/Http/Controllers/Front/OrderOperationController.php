@@ -487,7 +487,7 @@ class OrderOperationController extends Controller
     /**
      * @param $tradeNO
      * @return \Illuminate\Http\JsonResponse
-     * @throws \App\Exceptions\Order\OrderException
+     * @throws OrderException
      */
     public function message($tradeNO)
     {

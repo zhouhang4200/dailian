@@ -114,6 +114,9 @@ class OrderTakeController extends Controller
                 'take_at',
                 'complete_at',
                 'parent_user_id',
+                'player_name',
+                'player_phone',
+                'player_qq',
             ])
             ->with(['consult', 'complain'])
             ->get();
@@ -128,6 +131,7 @@ class OrderTakeController extends Controller
         $detail[0]['complain_describe'] = optional($detail[0]->complain)->getComplainDescribe();
         $detail[0]['consult_describe'] = optional($detail[0]->consult)->getConsultDescribe();
         $detail[0]['complain_result'] = optional($detail[0]->complain)->getComplainResult();
+        $detail[0]['player_name'] = '号主';
 
         unset($detail[0]['id']);
         unset($detail[0]['consult']);

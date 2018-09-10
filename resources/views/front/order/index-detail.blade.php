@@ -107,7 +107,7 @@
 
     <div  style="text-align: center;">
         @if($detail['status'] == 1)
-            <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="take">立即接单</button>
+            <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="take" data-trade_no="{{ $detail['trade_no'] }}">立即接单</button>
         @else
 
         @endif

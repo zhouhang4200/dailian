@@ -70,8 +70,9 @@ class LoginController extends Controller
                     'qq' => $user->qq,
                     'avatar' => asset($user->avatar),
                     'status' => $user->status,
-                    'token' => $user->createToken('WanZiXiaoChengXu')->accessToken,
                     'has_openid' => $user->wechat_open_id ? 1 : 0,
+                    'is_parent' => $user->isParent() ? 1 : 0,
+                    'token' => $user->createToken('WanZiXiaoChengXu')->accessToken,
                 ];
                 return response()->apiJson(0, $data);
             } else {

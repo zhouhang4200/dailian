@@ -18,9 +18,7 @@ class OrderTakeController extends Controller
      */
     public function index()
     {
-        $orders = GameLevelingOrder::searchCondition(array_merge([
-            'take_parent_user_id' => auth()->user()->parent_id],
-            request()->except('take_parent_user_id')))
+        $orders = GameLevelingOrder::searchCondition(request()->except('take_parent_user_id'))
             ->select([
                 'game_id',
                 'parent_user_id',
@@ -40,6 +38,7 @@ class OrderTakeController extends Controller
                 'take_order_password',
                 'created_at',
             ])
+            ->where('take_parent_user_id', auth()->user()->parent_id)
             ->orderBy('id', 'desc')
             ->with(['game', 'consult', 'complain'])
             ->paginate(request('page_size', 20));
@@ -49,7 +48,8 @@ class OrderTakeController extends Controller
         foreach ($orders->items() as $key => $item) {
             $itemArr = $item->toArray();
 
-            $itemArr['top'] = empty($itemArr['take_order_password']) ? 2 : 1;
+            $itemArr['official'] = $itemArr['parent_user_id'] == config('official') ? 1 : 2;
+            $itemArr['top'] = $itemArr['top'] == 0 ? 2 : 1;
             $itemArr['private'] = empty($itemArr['take_order_password']) ? 2 : 1;
             $itemArr['icon'] = $item['game']['icon'];
             $itemArr['initiator'] = $item['parent_user_id'] == $currentUserParentId ? 1 : 2;
@@ -121,7 +121,6 @@ class OrderTakeController extends Controller
         }
 
         $detail[0]['initiator'] = $detail[0]['parent_user_id'] == request()->user()->parent_id ? 1 : 2;
-//        $detail[0]['consult_initiator'] = (int) optional($detail[0]['consult'])['initiator'];
         $detail[0]['consult_initiator'] = optional($detail[0]->consult)->getConsultInitiator();;
         $detail[0]['complain_initiator'] = (int) (optional($detail[0]['complain'])['initiator']);
         $detail[0]['complain_describe'] = optional($detail[0]->complain)->getComplainDescribe();

@@ -33,7 +33,7 @@ class OrderOperationController extends Controller
         }
         DB::beginTransaction();
         try {
-            OrderService::init(request()->user()->id, request('trade_no'))->take(request('pay_password'), request('take_password'));
+            OrderService::init(request()->user()->id, request('trade_no'))->take(clientRSADecrypt(request('pay_password')), clientRSADecrypt(request('take_password')));
             $order = GameLevelingOrder::where('trade_no', request('trade_no'))->first();
             TmApiService::take($order);
         } catch (OrderException $exception) {

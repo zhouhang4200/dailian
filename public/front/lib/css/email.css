@@ -41,7 +41,8 @@
 .main .container .layui-form .layui-form-item .layui-input-block {
   margin-left: 0px;
 }
-.main .container .layui-form .layui-form-item .layui-input-block .layui-input {
+
+.main .container .layui-form .layui-form-item  .layui-input {
   width: 100%;
   font-size: 14px;
   line-height: 18px;

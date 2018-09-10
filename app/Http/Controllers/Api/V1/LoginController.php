@@ -33,7 +33,7 @@ class LoginController extends Controller
                 return response()->apiJson(2006); // 用户不存在
             }
 
-            if(Hash::check(request('password'), $user->password)) {
+            if(Hash::check(clientRSADecrypt(request('password')), $user->password)) {
                 if ($user->status == 2) {
                     return response()->apiJson(2007); // 用户被禁用
                 }

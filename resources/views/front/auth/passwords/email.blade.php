@@ -10,14 +10,34 @@
 
 @section('main')
     <div class="container">
-        <div class="title">注册邮箱地址</div>
+        <div class="title">重置登录密码</div>
         <form method="POST" action="{{ route('password.email') }}"  class="layui-form">
             {!! csrf_field() !!}
             <div class="layui-form-item">
-                <label class="layui-form-label"><i class="iconfont icon-youxiang"></i></label>
+                <label class="layui-form-label"><i class="iconfont icon-dianhua"></i></label>
                 <div class="layui-input-block">
-                    <input type="email" name="email" required="" lay-verify="required" placeholder="请输入邮箱"
-                           value="{{ old('email') }}" autocomplete="off" class="layui-input">
+                    <input type="text" name="phone" required="" lay-verify="required" placeholder="请输入注册手机号"
+                           value="{{ old('phone') }}" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-row">
+                    <div class="layui-col-xs7">
+                        <label class="layui-form-label"><i class="iconfont icon-youxiang"></i></label>
+                        <input type="text" name="vercode"  lay-verify="required" placeholder="图形验证码" class="layui-input">
+                    </div>
+                    <div class="layui-col-xs5">
+                        <div style="margin-left: 10px;">
+                            <button class="layui-btn layui-btn-normal" lay-submit lay-filter="formDemo" style="width: 100%">获取验证码</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label"><i class="iconfont icon-ad77"></i></label>
+                <div class="layui-input-block">
+                    <input type="text" name="phone" required="" lay-verify="required" placeholder="请输入新密码"
+                           value="{{ old('phone') }}" autocomplete="off" class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item">

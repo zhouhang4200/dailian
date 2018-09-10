@@ -201,7 +201,13 @@ class ProfileController extends Controller
         $newPayPassword = clientRSADecrypt(request('password'));
 
         $currentUser = request()->user();
-        if (request('verification_code') != cache()->get(config('redis_key.profile.pay_password_verification_code') . auth()->id())) {
+
+        $code = cache()->get(config('redis_key.profile.pay_password_verification_code') . auth()->id());
+
+        if (! $code) {
+            return response()->json(['status' => 0, 'message' => '验证码已过期或不存在']);
+        }
+        if (request('verification_code') != $code) {
             return response()->json(['status' => 0, 'message' => '验证码错误']);
         }
         $currentUser->pay_password = bcrypt($newPayPassword);

@@ -275,8 +275,10 @@ class ProfileController extends Controller
             $data['identity_card_hand'] = asset($certification->identity_card_hand);
             $data['bank_name'] = $certification->bank_name;
             $data['status'] = $certification->status;
-            $data['status'] = $certification->status;
-            $data['remark'] = $certification->remark;
+            $data['remark'] = '';
+            if ($certification->status == 3) {
+                $data['remark'] = '认证审核不通过，'.$certification->remark;
+            }
 
             return response()->apiJson(0, $data);
         } catch (Exception $e) {

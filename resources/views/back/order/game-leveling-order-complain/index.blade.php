@@ -2,6 +2,9 @@
 
 @section('title', ' | 订单列表')
 
+<style>
+</style>
+
 @section('content')
     <div class="main-box">
         <div class="main-box-body clearfix">
@@ -65,7 +68,7 @@
                             @forelse ($complainOrders as $item)
                                 <tr>
 
-                                    <td>{{ $item->id }}</td>
+                                    <td >{{ $item->id }}</td>
                                     <td>
                                         @if($item->parent_user_id == optional($item->order)->parent_user_id )
                                             {{ optional($item->order)->parent_user_id }} <br/>
@@ -92,7 +95,7 @@
                                     <td>{{ $item->dispose_at }}</td>
                                     <td>
                                         @if($item->status == 1)
-                                            <a href="{{ route('admin.game-leveling-order-complain.show', ['trade_no' => $item->game_leveling_order_trade_no]) }}" type="button" class="btn btn-success" data-id="">处理</a>
+                                            <a href="{{ route('admin.game-leveling-order-complain.show', ['trade_no' => $item->game_leveling_order_trade_no]) }}" type="button" class="btn btn-success" data-id="" id="complain_message_{{ $item->game_leveling_order_trade_no  }}">处理</a>
                                         @elseif($item->status == 2)
                                             <a href="{{ route('admin.game-leveling-order-complain.show', ['trade_no' => $item->game_leveling_order_trade_no]) }}" type="button" class="btn btn-success" data-id="">查看</a>
                                         @endif
@@ -112,6 +115,7 @@
 @endsection
 
 @section('js')
+    <script src="//cdn.bootcss.com/socket.io/1.3.7/socket.io.min.js"></script>
     <script>
         $('#export').click(function () {
             var url = "?export=1&" + $('#search-flow').serialize();
@@ -125,5 +129,15 @@
                 window.location.href="{{ route('admin.game-leveling-order-complain') }}?status=" + this.getAttribute('lay-id');
             });
         });
+
+        (function () {
+            var socket=io("{{ env('SOCKET') }}");
+            socket.on("complain_message:all", function (message) {
+                var id = 'complain_message_'+message;
+                var data = document.getElementById(id);
+                var node = "<span class='layui-badge-dot'></span>";
+                data.prepend(node);
+            });
+        })(window);
     </script>
 @endsection

@@ -2,8 +2,9 @@
 
 namespace App\Services;
 
-use App\Models\OrderStatistic;
+use Redis;
 use Exception;
+use App\Models\OrderStatistic;
 use App\Exceptions\UnknownException;
 use App\Exceptions\OrderException;
 use App\Exceptions\UserAssetException;
@@ -1444,11 +1445,16 @@ class OrderService
                 ]);
             }
 
-
             if ($image) {
                 $image['trade_no'] = self::$order->trade_no;
                 $message->image()->create($image);
             }
+
+            // 写入redis广播，后端仲裁提示红点用
+            Redis::publish('complain_message', json_encode([
+                'event' => 'all',
+                'data' => $message->game_leveling_order_trade_no
+            ]));
         } catch (Exception $exception) {
             throw new UnknownException($exception->getMessage());
         }

@@ -188,15 +188,6 @@ class ProfileController extends Controller
         $currentUser->pay_password = bcrypt($newPayPassword);
         $currentUser->save();
 
-        $children = User::where('parent_id', Auth::user()->parent_id)->get();
-
-        if ($children->count() > 0) {
-            foreach($children as $child) {
-                $child->pay_password = bcrypt($newPayPassword);
-                $child->save();
-            }
-        }
-
         return response()->json(['status' => 1, 'message' => '修改成功']);
     }
 
@@ -215,15 +206,6 @@ class ProfileController extends Controller
         }
         $currentUser->pay_password = bcrypt($newPayPassword);
         $currentUser->save();
-
-        $children = User::where('parent_id', Auth::user()->parent_id)->get();
-
-        if ($children->count() > 0) {
-            foreach($children as $child) {
-                $child->pay_password = bcrypt($newPayPassword);
-                $child->save();
-            }
-        }
 
         return response()->json(['status' => 1, 'message' => '修改成功']);
     }

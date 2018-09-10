@@ -18,6 +18,7 @@
         "predis/predis": "^1.1",
         "santik/sql-elasticsearch-query-converter": "^0.1.5",
         "simplesoftwareio/simple-qrcode": "^2.0",
+        "unisharp/laravel-settings": "^2.0",
         "yansongda/laravel-pay": "^2.0"
     },
     "require-dev": {

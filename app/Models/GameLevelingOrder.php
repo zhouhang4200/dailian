@@ -627,7 +627,7 @@ class GameLevelingOrder extends Model
      */
     public function getComplainDescribe()
     {
-        if (! is_null($this->complain)) {
+        if (! is_null($this->complain) && $this->complain->status != 3) {
             // 当前用户父Id 等于仲裁发起人
             if ($this->complain->parent_user_id == request()->user()->parent_id) {
                 return sprintf("你发起仲裁 <br/> 原因: %s",

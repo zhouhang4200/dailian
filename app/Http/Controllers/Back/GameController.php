@@ -6,6 +6,7 @@ use App\Models\Game;
 use App\Http\Controllers\Controller;
 use App\Models\GameClass;
 use App\Models\GameType;
+use Illuminate\Support\Facades\Validator;
 
 /**
  * Class GameController
@@ -41,10 +42,22 @@ class GameController extends Controller
     public function store()
     {
         try {
+
+            if (! request()->hasFile('icon')) {
+                request()->flash();
+                return redirect(route('admin.game.create'))->with('fail', '请传入游戏图标');
+            }
+
+            $path = '';
+            if (request()->file('icon')) {
+                $img = request()->file('icon');
+                $path = '/storage/' . $img->store(date('Ymd'), 'public');
+            }
+
             Game::create([
                 'name' => request('name'),
-                'icon' => request('icon'),
-                'initials' => request('icon'),
+                'icon' => $path,
+                'initials' => getFirstChar(request('name')) == null ? substr(request('name'), 0 ,1) : getFirstChar(request('name')),
                 'game_type_id' => request('game_type_id'),
                 'game_class_id' => request('game_class_id'),
             ]);
@@ -74,13 +87,18 @@ class GameController extends Controller
     public function update($id)
     {
         try {
-            $game = Game::find($id);
-            $game->name = request('name');
-            $game->icon = request('icon');
-            $game->initials = request('initials');
-            $game->game_type_id = request('game_type_id');
-            $game->game_class_id = request('game_class_id');
-            $game->save();
+            $updateData = [
+                'name' => request('name'),
+                'initials' => getFirstChar(request('name')) == null ? substr(request('name'), 0 ,1) : getFirstChar(request('name')),
+                'game_type_id' =>  request('game_type_id'),
+                'game_class_id' =>  request('game_class_id'),
+            ];
+
+            if (request()->file('icon')) {
+                $updateData['icon'] = '/storage/' .  request()->file('icon')->store('game', 'public');
+            }
+
+            Game::where('id' , $id)->update($updateData);
 
             return redirect(route('admin.game.update', ['id' => $id]))->with('success', '更新成功');
         } catch (\Exception $exception) {

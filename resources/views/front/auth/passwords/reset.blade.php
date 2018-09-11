@@ -76,7 +76,7 @@
 
                $.post('{{ route('password.reset') }}', {
                    'phone': data.field.phone,
-                   'new_password': data.field.new_password,
+                   'new_password': encrypt(data.field.new_password),
                    'verification_code': data.field.verification_code
                }, function (result) {
                     if (result.code == 0) {

@@ -558,9 +558,9 @@ class GameLevelingOrder extends Model
     {
         // 当前用户为发单用户 否则 就是接单用户
         if (request()->user()->parent_id == $this->parent_id) {
-            if (optional($this->consult)->status && optional($this->consult)->status == 3) {
+            if (optional($this->consult)->status && optional($this->consult)->status == 2) {
                 return $this->consult->amount;
-            } else if (optional($this->complain)->status && optional($this->complain)->status == 3) {
+            } else if (optional($this->complain)->status && optional($this->complain)->status == 2) {
                 return $this->complain->amount;
             } else if ($this->status == 10) {
                 return $this->amount;
@@ -568,9 +568,9 @@ class GameLevelingOrder extends Model
                 return 0;
             }
         } else {
-            if (optional($this->consult)->status && optional($this->consult)->status == 3) {
+            if (optional($this->consult)->status && optional($this->consult)->status == 2) {
                 return bcadd($this->consult->security_deposit, $this->consult->efficiency_deposit);
-            } else if (optional($this->complain)->status && optional($this->complain)->status == 3) {
+            } else if (optional($this->complain)->status && optional($this->complain)->status == 2) {
                 return bcadd($this->complain->security_deposit, $this->complain->efficiency_deposit);
             } else {
                 return 0;
@@ -592,17 +592,17 @@ class GameLevelingOrder extends Model
     {
         // 当前用户为发单用户 否则 就是接单用户
         if (request()->user()->parent_id == $this->parent_id) {
-            if (optional($this->consult)->status && optional($this->consult)->status == 3) {
+            if (optional($this->consult)->status && optional($this->consult)->status == 2) {
                 return bcadd($this->consult->security_deposit, $this->consult->efficiency_deposit);
-            } else if (optional($this->complain)->status && optional($this->complain)->status == 3) {
+            } else if (optional($this->complain)->status && optional($this->complain)->status == 2) {
                 return bcadd($this->complain->security_deposit, $this->complain->efficiency_deposit);
             } else {
                 return 0;
             }
         } else {
-            if (optional($this->consult)->status && optional($this->consult)->status == 3) {
+            if (optional($this->consult)->status && optional($this->consult)->status == 2) {
                 return $this->consult->amount;
-            } else if (optional($this->complain)->status && optional($this->complain)->status == 3) {
+            } else if (optional($this->complain)->status && optional($this->complain)->status == 2) {
                 return $this->complain->amount;
             } else if ($this->status == 10) {
                 return $this->amount;
@@ -658,7 +658,7 @@ class GameLevelingOrder extends Model
      */
     public function getConsultDescribe()
     {
-        if (! is_null($this->consult) && optional($this->consult)->status != 2) {
+        if (! is_null($this->consult) && optional($this->consult)->status != 3) {
 
             if ($this->consult->initiator == 1) { // 如果发起人为发单方
 

@@ -93,19 +93,19 @@
                                     <td>{{ $orderStatistic->doneCount ? bcdiv($orderStatistic->doneSecurityDeposit, $orderStatistic->doneCount, 2)+0 : 0 }}</td>
                                     <td>{{ $orderStatistic->doneCount ? bcdiv($orderStatistic->doneEfficiencyDeposit, $orderStatistic->doneCount, 2)+0 : 0 }}</td>
                                     <td>{{ $orderStatistic->doneCount ? bcdiv($orderStatistic->doneAmount, $orderStatistic->doneCount, 2)+0 : 0 }}</td>
-                                    <td>{{ $orderStatistic->doneAmount }}</td>
+                                    <td>{{ $orderStatistic->doneAmount+0 }}</td>
                                     <td>{{ $orderStatistic->completeCount ? bcdiv($orderStatistic->completeIncome, $orderStatistic->completeCount, 2)+0 : 0 }}</td>
-                                    <td>{{ $orderStatistic->completeIncome }}</td>
+                                    <td>{{ $orderStatistic->completeIncome+0 }}</td>
                                     <td>{{ $orderStatistic->consultCount ? bcdiv($orderStatistic->consultExpend, $orderStatistic->consultCount, 2)+0 : 0 }}</td>
-                                    <td>{{ $orderStatistic->consultExpend }}</td>
+                                    <td>{{ $orderStatistic->consultExpend+0 }}</td>
                                     <td>{{ $orderStatistic->consultCount ? bcdiv($orderStatistic->consultIncome, $orderStatistic->consultCount, 2)+0 : 0 }}</td>
-                                    <td>{{ $orderStatistic->consultIncome }}</td>
+                                    <td>{{ $orderStatistic->consultIncome+0 }}</td>
                                     <td>{{ $orderStatistic->complainCount ? bcdiv($orderStatistic->complainExpend, $orderStatistic->complainCount, 2)+0 : 0 }}</td>
-                                    <td>{{ $orderStatistic->complainExpend }}</td>
+                                    <td>{{ $orderStatistic->complainExpend+0 }}</td>
                                     <td>{{ $orderStatistic->complainCount ? bcdiv($orderStatistic->complainIncome, $orderStatistic->complainCount, 2)+0 : 0 }}</td>
-                                    <td>{{ $orderStatistic->complainIncome }}</td>
+                                    <td>{{ $orderStatistic->complainIncome+0 }}</td>
                                     <td>{{ $orderStatistic->doneCount ? bcdiv($orderStatistic->poundageExpend, $orderStatistic->doneCount, 2)+0 : 0 }}</td>
-                                    <td>{{ $orderStatistic->poundageExpend }}</td>
+                                    <td>{{ $orderStatistic->poundageExpend+0 }}</td>
                                     <td>{{ $orderStatistic->doneCount ? bcdiv($orderStatistic->completeIncome+$orderStatistic->consultIncome+$orderStatistic->complainIncome-$orderStatistic->consultExpend-$orderStatistic->complainExpend-$orderStatistic->poundageExpend+0, $orderStatistic->doneCount, 2)+0 : 0 }}</td>
                                     <td>{{ $orderStatistic->completeIncome+$orderStatistic->consultIncome+$orderStatistic->complainIncome-$orderStatistic->consultExpend-$orderStatistic->complainExpend-$orderStatistic->poundageExpend+0 }}</td>
                                 </tr>
@@ -129,19 +129,19 @@
                                 <td>{{ $total->doneCount ? bcdiv($total->doneSecurityDeposit, $total->doneCount, 2)+0 : 0 }}</td>
                                 <td>{{ $total->doneCount ? bcdiv($total->doneEfficiencyDeposit, $total->doneCount, 2)+0 : 0 }}</td>
                                 <td>{{ $total->doneCount ? bcdiv($total->doneAmount, $total->doneCount, 2)+0 : 0 }}</td>
-                                <td>{{ $total->doneAmount }}</td>
+                                <td>{{ $total->doneAmount+0 }}</td>
                                 <td>{{ $total->completeCount ? bcdiv($total->completeIncome, $total->completeCount, 2)+0 : 0 }}</td>
-                                <td>{{ $total->completeIncome }}</td>
+                                <td>{{ $total->completeIncome+0 }}</td>
                                 <td>{{ $total->consultCount ? bcdiv($total->consultExpend, $total->consultCount, 2)+0 : 0 }}</td>
-                                <td>{{ $total->consultExpend }}</td>
+                                <td>{{ $total->consultExpend+0 }}</td>
                                 <td>{{ $total->consultCount ? bcdiv($total->consultIncome, $total->consultCount, 2)+0 : 0 }}</td>
-                                <td>{{ $total->consultIncome }}</td>
+                                <td>{{ $total->consultIncome+0 }}</td>
                                 <td>{{ $total->complainCount ? bcdiv($total->complainExpend, $total->complainCount, 2)+0 : 0 }}</td>
-                                <td>{{ $total->complainExpend }}</td>
+                                <td>{{ $total->complainExpend+0 }}</td>
                                 <td>{{ $total->complainCount ? bcdiv($total->complainIncome, $total->complainCount, 2)+0 : 0 }}</td>
-                                <td>{{ $total->complainIncome }}</td>
+                                <td>{{ $total->complainIncome+0 }}</td>
                                 <td>{{ $total->doneCount ? bcdiv($total->poundageExpend, $total->doneCount, 2)+0 : 0 }}</td>
-                                <td>{{ $total->poundageExpend }}</td>
+                                <td>{{ $total->poundageExpend+0 }}</td>
                                 <td>{{ $total->doneCount ? bcdiv($total->completeIncome+$total->consultIncome+$total->complainIncome-$total->consultExpend-$total->complainExpend-$total->poundageExpend+0, $total->doneCount, 2)+0 : 0 }}</td>
                                 <td>{{ $total->completeIncome+$total->consultIncome+$total->complainIncome-$total->consultExpend-$total->complainExpend-$total->poundageExpend+0 }}</td>
                             </tr>

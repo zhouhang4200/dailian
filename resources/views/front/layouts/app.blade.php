@@ -142,7 +142,10 @@ $financeRoute = [
                     <a href="javascript:" class="message-list">
                         <i class="layui-icon layui-icon-notice"></i>
                         <!-- 如果有新消息，则显示小圆点 -->
-                        <span class="layui-badge-dot"></span>
+                        @if (\App\Models\GameLevelingOrderMessage::where('to_user_id', auth()->user()->parent_id)->where('status', 1)->count())
+                            <span class="layui-badge-dot"></span>
+                        @endif
+
                     </a>
                 </li>
                 <li class="layui-nav-item" lay-unselect style="margin-right: 30px;">

@@ -45,7 +45,7 @@
                     <button class="qs-btn" lay-submit="" lay-filter="login">登录</button>
                 </div>
                 <div class="layui-form-item login-link" style="margin-bottom: 20px">
-                    <a href="{{ route('password.request') }}" class = "login" style="float: right;">忘记密码</a>
+                    <a href="{{ route('password.reset') }}" class = "login" style="float: right;">忘记密码</a>
                     <a href="{{ route('register') }}" style="float: left;">立即注册</a>
                 </div>
             </form>

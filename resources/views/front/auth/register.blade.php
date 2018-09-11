@@ -51,12 +51,12 @@
                         <input type="text" name="name"  autocomplete="off" lay-verify="required" placeholder="请输入昵称" class="layui-input">
                     </div>
                 </div>
-                <div class="layui-form-item">
-                    <label class="layui-form-label"><i class="iconfont icon-youxiang"></i></label>
-                    <div class="layui-input-block">
-                        <input type="text" name="email" autocomplete="off" lay-verify="required|email" placeholder="请输入邮箱" class="layui-input">
-                    </div>
-                </div>
+                {{--<div class="layui-form-item">--}}
+                    {{--<label class="layui-form-label"><i class="iconfont icon-youxiang"></i></label>--}}
+                    {{--<div class="layui-input-block">--}}
+                        {{--<input type="text" name="email" autocomplete="off" lay-verify="required|email" placeholder="请输入邮箱" class="layui-input">--}}
+                    {{--</div>--}}
+                {{--</div>--}}
                 <div class="layui-form-item"  style="height:45px">
                     {!! Geetest::render() !!}
                 </div>

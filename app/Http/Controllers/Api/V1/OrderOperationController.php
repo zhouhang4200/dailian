@@ -408,7 +408,7 @@ class OrderOperationController extends Controller
         }
 
         try {
-            OrderService::init(request()->user()->id, request('trade_no'))->sendMessage(request('content'));
+            $message = OrderService::init(request()->user()->id, request('trade_no'))->sendMessage(request('content'));
         } catch (UserAssetException $exception) {
             return response()->apiJson($exception->getCode());
         } catch (OrderException $exception) {
@@ -417,7 +417,12 @@ class OrderOperationController extends Controller
             return response()->apiJson(1003);
         }
 
-        return response()->apiJson(0);
+        return response()->apiJson(0, [
+            'initiator' => $message->initiator,
+            'content' => $message->content,
+            'created_at' => $message->created_at,
+            'avatar' => User::where('id',  $message->from_user_id)->value('avatar')
+        ]);
     }
 
     /**
@@ -427,12 +432,12 @@ class OrderOperationController extends Controller
      */
     public function anomaly()
     {
-        if (! request('trade_no')) {
+        if (! request('trade_no') || ! request('reason')) {
             return response()->apiJson(1001);
         }
         DB::beginTransaction();
         try {
-            OrderService::init(request()->user()->id, request('trade_no'))->anomaly();
+            OrderService::init(request()->user()->id, request('trade_no'))->anomaly(request('reason'));
 
             TmApiService::anomaly(request('trade_no'));
         } catch (UserAssetException $exception) {

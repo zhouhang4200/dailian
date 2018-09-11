@@ -27,6 +27,7 @@ class MessageController extends Controller
             $messages = GameLevelingOrderMessage::where('to_user_id', $user->parent_id)
                 ->where('created_at', '>=', $last7Days)
                 ->where('created_at', '<=', Carbon::now())
+                ->orderBy('id', 'desc')
                 ->get();
 
             if ($messages->count() < 1) {

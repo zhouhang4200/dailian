@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\GameLevelingOrderAnomaly;
 use Redis;
 use Exception;
 use App\Models\OrderStatistic;
@@ -576,7 +577,7 @@ class OrderService
      * @throws OrderException
      * @throws Exception
      */
-    public function anomaly()
+    public function anomaly($reason)
     {
         // 只有代练中订单可进行异常标记
         if (self::$order->status != 2) {
@@ -590,6 +591,8 @@ class OrderService
             // 修改订单状态
             self::$order->status = 6;
             self::$order->save();
+            // 写入异常原因
+            GameLevelingOrderAnomaly::create(['trade_no' => self::$order->trade_no, 'reason' => $reason]);
             // 写入订单日志
             GameLevelingOrderLog::store('提交异常', self::$order->trade_no, self::$user->id, self::$user->name, self::$user->parent_id, self::$user->name . ': 进行操作 [提交异常]');
         } catch (Exception $exception) {
@@ -1495,7 +1498,7 @@ class OrderService
         DB::beginTransaction();
         try {
             if (self::$user->parent_id == self::$order->parent_user_id) {
-                GameLevelingOrderMessage::create([
+                $message = GameLevelingOrderMessage::create([
                     'initiator' => 1,
                     'game_leveling_order_trade_no' => self::$order->trade_no,
                     'from_user_id' => self::$order->user_id,
@@ -1507,7 +1510,7 @@ class OrderService
                     'type' => 2,
                 ]);
             } else {
-                GameLevelingOrderMessage::create([
+                $message = GameLevelingOrderMessage::create([
                     'initiator' => 2,
                     'game_leveling_order_trade_no' => self::$order->trade_no,
                     'from_user_id' => self::$order->take_user_id,
@@ -1524,7 +1527,7 @@ class OrderService
             throw new UnknownException($exception->getMessage());
         }
         DB::commit();
-        return self::$order;
+        return $message;
     }
 
     /**

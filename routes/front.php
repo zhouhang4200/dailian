@@ -162,10 +162,12 @@ Route::namespace('Auth')->group(function (){
     // 密码找回
     Route::prefix('password')->group(function (){
         Route::post('email', 'ForgotPasswordController@sendResetLinkEmail')->name('password.email');
-        Route::get('reset', 'ForgotPasswordController@showLinkRequestForm')->name('password.request');
-        Route::post('reset', 'ResetPasswordController@reset');
-        Route::get('reset/{token}', 'ResetPasswordController@showResetForm')->name('password.reset');
+        Route::get('reset', 'ForgotPasswordController@showResetForm')->name('password.reset');
+        Route::post('reset', 'ResetPasswordController@reset')->name('password.reset');
+//        Route::get('reset/{token}', 'ResetPasswordController@showResetForm')->name('password.reset');
     });
     Route::get('register', 'RegisterController@showRegistrationForm')->name('register');
     Route::post('register', 'RegisterController@register');
+    // 获取验证码
+    Route::post('verification-code', 'ResetPasswordController@verificationCode')->name('password.reset.verification-code');
 });

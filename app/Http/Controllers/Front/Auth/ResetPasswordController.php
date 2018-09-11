@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers\Front\Auth;
 
+use App\Http\Controllers\Api\V1\PasswordController;
+use App\Http\Controllers\Api\V1\ProfileController;
 use App\Http\Controllers\Controller;
+use App\Services\SmSApiService;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 
@@ -52,5 +56,24 @@ class ResetPasswordController extends Controller
         return view('front.auth.passwords.reset')->with(
             ['token' => $token, 'email' => $request->email]
         );
+    }
+
+    /**
+     * @return mixed
+     * @throws Exception
+     */
+    public function reset()
+    {
+        return (new PasswordController())->refund(request());
+    }
+
+    /**
+     * 发送验证码
+     * @throws Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function verificationCode()
+    {
+        return (new ProfileController())->verificationCode(request());
     }
 }

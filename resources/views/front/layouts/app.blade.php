@@ -3,6 +3,7 @@
 $orderRoute = [
     'order.take-list',
     'order.wait-list',
+    'order.show',
 ];
 
 $accountRoute = [
@@ -213,7 +214,7 @@ $financeRoute = [
                             </dd>
                         @if(Auth::user()->could(['order.take-list']))
                             <dd data-name="console"
-                                class="@if(Route::currentRouteName() == 'order.take-list') layui-this  @endif" >
+                                class="@if(Route::currentRouteName() == 'order.take-list' || Route::currentRouteName() == 'order.show') layui-this  @endif" >
                                 <a href="{{ route('order.take-list') }}">接单管理</a>
                             </dd>
                         @endif
@@ -273,7 +274,7 @@ $financeRoute = [
                             @endif
                             @if(Auth::user()->could('employee.group'))
                             <dd data-name="console"
-                                class="@if(Route::currentRouteName() == 'employee.group' || Route::currentRouteName() == 'employee.group.create') layui-this  @endif">
+                                class="@if(Route::currentRouteName() == 'employee.group' || Route::currentRouteName() == 'employee.group.create' || Route::currentRouteName() == 'employee.group.edit') layui-this  @endif">
                                 <a href="{{ route('employee.group') }}">岗位管理</a>
                             </dd>
                             @endif

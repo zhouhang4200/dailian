@@ -168,6 +168,7 @@ class FinanceController extends Controller
                 'notify_url' => route('api.finance.wechat-notify'),
                 'openid' => $user->wechat_open_id,
             ];
+            myLog('wx-prm', [$order]);
             $result = Pay::wechat(config('pay.wechat'))->miniapp($order);
 
             if (! $result) {

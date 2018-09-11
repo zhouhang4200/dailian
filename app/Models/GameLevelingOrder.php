@@ -59,6 +59,11 @@ class GameLevelingOrder extends Model
                 "format" =>  "YYYY-MM-dd HH:mm:ss",
                 "store" => true,
             ],
+            'take_at' => [
+                'type' => 'date',
+                "format" =>  "YYYY-MM-dd HH:mm:ss",
+                "store" => true,
+            ],
         ]
     ];
 

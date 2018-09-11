@@ -74,7 +74,6 @@
                             <tbody>
                             @forelse ($complainOrders as $item)
                                 <tr>
-
                                     <td >{{ $item->id }}</td>
                                     <td>
                                         @if($item->parent_user_id == optional($item->order)->parent_user_id )
@@ -102,7 +101,11 @@
                                     <td>{{ $item->dispose_at }}</td>
                                     <td>
                                         @if($item->status == 1)
-                                            <a href="{{ route('admin.game-leveling-order-complain.show', ['trade_no' => $item->game_leveling_order_trade_no]) }}" type="button" class="btn btn-success" data-id="" id="complain_message_{{ $item->game_leveling_order_trade_no  }}">处理</a>
+                                            <a href="{{ route('admin.game-leveling-order-complain.show', ['trade_no' => $item->game_leveling_order_trade_no]) }}" type="button" class="btn btn-success" data-id="" id="complain_message_{{ $item->game_leveling_order_trade_no  }}">
+                                                处理@if(Redis::get("complain_message:".$item->game_leveling_order_trade_no))
+                                                    <span class='layui-badge-dot'></span>
+                                                @endif
+                                            </a>
                                         @elseif($item->status == 2)
                                             <a href="{{ route('admin.game-leveling-order-complain.show', ['trade_no' => $item->game_leveling_order_trade_no]) }}" type="button" class="btn btn-success" data-id="">查看</a>
                                         @endif

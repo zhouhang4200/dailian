@@ -1461,6 +1461,8 @@ class OrderService
                 'event' => 'all',
                 'data' => $message->game_leveling_order_trade_no
             ]));
+
+            Redis::set('complain_message:'.$message->game_leveling_order_trade_no, '1');
         } catch (Exception $exception) {
             throw new UnknownException($exception->getMessage());
         }

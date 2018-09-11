@@ -52,6 +52,7 @@ class GameLevelingOrderComplainController extends Controller
                 ])->render()
             ]);
         }
+        \Redis::del("complain_message:".$tradeNO);
 //        dd(GameLevelingOrder::getOrderByCondition(['trade_no' =>  $tradeNO])->first());
         return view('back.order.game-leveling-order-complain.show', [
             'order' => GameLevelingOrder::getOrderByCondition(['trade_no' =>  $tradeNO])->first()

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Events\NotificationEvent;
 use App\Exceptions\UserAssetException;
 use App\Exceptions\UserException;
 use App\Services\UserBalanceService;
@@ -167,6 +168,7 @@ class FinanceController extends Controller
                 'notify_url' => route('api.finance.wechat-notify'),
                 'openid' => $user->wechat_open_id,
             ];
+            myLog('wx-prm', [$order]);
             $result = Pay::wechat(config('pay.wechat'))->miniapp($order);
 
             if (! $result) {
@@ -191,6 +193,7 @@ class FinanceController extends Controller
 
         try{
             $data = $wechat->verify();
+            myLog('wx-notify', [$data]);
             // 支付宝确认交易成功
             if ($data->result_code == 'SUCCESS') {
                 // 查找充值订单为用户加款
@@ -205,12 +208,6 @@ class FinanceController extends Controller
                     UserAssetService::init(12, $order->user_id, $order->amount, $order->trade_no)->recharge();
                     $order->status = 2;
                     $order->save();
-
-                    // 发送通知
-                    event((new NotificationEvent('recharge', [
-                        'user_id' => $order->user_id,
-                        'message' => '充值成功'
-                    ])));
                 }
             }
         } catch (Exception $e) {

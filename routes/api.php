@@ -14,6 +14,9 @@ use Illuminate\Http\Request;
 */
 
 Route::namespace('V1')->prefix('v1')->group(function () {
+
+    Route::any('finance/wechat-notify', 'FinanceController@wechatNotify')->name('api.finance.wechat-notify');
+
     Route::middleware('api.sign')->group(function () {
         Route::post('login', 'LoginController@login'); // 登录
         Route::post('register', 'RegisterController@register'); // 注册
@@ -69,7 +72,6 @@ Route::namespace('V1')->prefix('v1')->group(function () {
             Route::post('withdraw', 'FinanceController@withdraw'); // 提现
             Route::post('withdraw-info', 'FinanceController@withdrawInfo'); // 提现信息
             Route::post('recharge', 'FinanceController@recharge'); // 充值
-            Route::any('wechat-notify', 'FinanceController@wechatNotify')->name('api.finance.wechat-notify');
         });
         // 留言
         Route::prefix('message')->group(function () {

@@ -19,7 +19,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label"><i class="iconfont icon-youxiang"></i></label>
                 <div class="layui-input-block">
-                    <input type="text" name="phone" required="" lay-verify="required" placeholder="请输入邮箱" value="{{ old('phone') }}"
+                    <input type="text" name="phone" required="" lay-verify="required" placeholder="请输入手机号" value="{{ old('phone') }}"
                        autocomplete="off" class="layui-input">
                 </div>
             </div>
@@ -76,7 +76,7 @@
 
                $.post('{{ route('password.reset') }}', {
                    'phone': data.field.phone,
-                   'new_password': data.field.new_password,
+                   'new_password': encrypt(data.field.new_password),
                    'verification_code': data.field.verification_code
                }, function (result) {
                     if (result.code == 0) {

@@ -3,8 +3,13 @@
 namespace App\Exceptions;
 
 use Exception;
+use League\OAuth2\Server\Exception\OAuthServerException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
+/**
+ * Class Handler
+ * @package App\Exceptions
+ */
 class Handler extends ExceptionHandler
 {
     /**
@@ -16,6 +21,7 @@ class Handler extends ExceptionHandler
         OrderException::class,
         UnknownException::class,
         UserAssetException::class,
+        OAuthServerException::class,
     ];
 
     /**

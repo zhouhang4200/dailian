@@ -113,7 +113,7 @@ class ProfileController extends Controller
                 return response()->apiJson(1001); // 参数缺失
             }
             $user = Auth::user();
-            $user->pay_password = bcrypt(request('pay_password'));
+            $user->pay_password = bcrypt(clientRSADecrypt(request('pay_password')));
             $user->save();
 
             return response()->apiJson(0);
@@ -141,10 +141,10 @@ class ProfileController extends Controller
                 return response()->apiJson(3009);  // 只有主账号才能修改支付密码
             }
 
-            if (! Hash::check(request('old_pay_password'), $user->pay_password)) {
+            if (! Hash::check(clientRSADecrypt(request('old_pay_password')), $user->pay_password)) {
                 return response()->apiJson(3003); // 原密码错误
             }
-            $user->pay_password = bcrypt(request('new_pay_password'));
+            $user->pay_password = bcrypt(clientRSADecrypt(request('new_pay_password')));
             $user->save();
 
             return response()->apiJson(0);
@@ -182,7 +182,7 @@ class ProfileController extends Controller
                 return response()->apiJson(2015);
             }
 
-            $user->pay_password = bcrypt(request('new_pay_password'));
+            $user->pay_password = bcrypt(clientRSADecrypt(request('new_pay_password')));
             $user->save();
 
             return response()->apiJson(0);

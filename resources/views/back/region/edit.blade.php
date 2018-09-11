@@ -55,7 +55,7 @@
                                         </div>
 
                                         <button class="btn btn-success" lay-submit="" lay-filter="store">确认</button>
-                                        <a  href="{{ route('admin.region') }}" type="button" class="layui-btn layui-btn-normal " ><r>返回列表</r></a>
+                                        <a  href="{{ route('admin.region') }}" type="button" class="btn btn-success" ><r>返回列表</r></a>
                                     </form>
                                 </div>
                             </div>

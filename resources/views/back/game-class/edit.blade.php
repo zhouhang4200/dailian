@@ -48,7 +48,7 @@
 
 
                                         <button class="btn btn-success" lay-submit="" lay-filter="store">确认</button>
-                                        <a  href="{{ route('admin.game-class') }}" type="button" class="layui-btn layui-btn-normal " >返回列表</a>
+                                        <a  href="{{ route('admin.game-class') }}" type="button" class="btn btn-success" >返回列表</a>
                                     </form>
                                 </div>
                             </div>

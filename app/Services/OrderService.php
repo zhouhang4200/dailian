@@ -181,6 +181,8 @@ class OrderService
                 'top' => 0,
                 'top_at' => '1971-01-01 00:00:00',
                 'take_at' => '1971-01-01 00:00:00',
+                'complete_at' => '1971-01-01 00:00:00',
+                'apply_complete_at' => '1971-01-01 00:00:00',
                 'player_phone' => $playerPhone,
             ]);
 

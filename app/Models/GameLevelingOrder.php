@@ -28,41 +28,69 @@ class GameLevelingOrder extends Model
      */
     protected $mapping = [
         'properties' => [
+            "amount" => [
+                "type" => "double"  
+            ],
+            "security_deposit" => [
+                "type" => "double"
+            ],
+            "efficiency_deposit" => [
+                "type" => "double"
+            ],
             'title' => [
-                'type' => 'text',
+                "type" => 'text',
                 "analyzer" => "ik_smart",
                 "search_analyzer" => "ik_smart",
 
             ],
-            'explain' => [
-                'type' => 'text',
+            "explain" => [
+                "type" => 'text',
                 "analyzer" => "ik_smart",
                 "search_analyzer" => "ik_smart",
             ],
-            'requirement' => [
-                'type' => 'text',
+            "requirement" => [
+                "type" => 'text',
                 "analyzer" => "ik_smart",
                 "search_analyzer" => "ik_smart",
             ],
-            'top_at' => [
-                'type' => 'date',
+            "top_at" => [
+                "type" => 'date',
                 "format" =>  "YYYY-MM-dd HH:mm:ss",
                 "store" => true,
             ],
-            'created_at' => [
-                'type' => 'date',
+            "created_at" => [
+                "type" => 'date',
                 "format" =>  "YYYY-MM-dd HH:mm:ss",
                 "store" => true,
             ],
-            'updated_at' => [
-                'type' => 'date',
+            "updated_at" => [
+                "type" => 'date',
                 "format" =>  "YYYY-MM-dd HH:mm:ss",
                 "store" => true,
             ],
-            'take_at' => [
-                'type' => 'date',
+            "take_at" => [
+                "type" => 'date',
                 "format" =>  "YYYY-MM-dd HH:mm:ss",
                 "store" => true,
+            ],
+            "complete_at" => [
+                "type" => 'date',
+                "format" =>  "YYYY-MM-dd HH:mm:ss",
+                "store" => true,
+            ],
+//            "apply_complete_at" => [
+//                "type" => 'date',
+//                "format" =>  "YYYY-MM-dd HH:mm:ss",
+//                "store" => true,
+//            ],
+            "day" => [
+                "type" => 'integer',
+            ],
+            "hour" => [
+                "type" => 'integer',
+            ],
+            "status" => [
+                "type" => 'integer',
             ],
         ]
     ];

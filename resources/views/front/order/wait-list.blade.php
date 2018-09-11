@@ -152,7 +152,11 @@
             box-sizing: border-box;
         }
         .layui-card .layui-form .layui-form-item .layui-inline .layui-input-inline {
-            margin-right: 20px;
+            /*margin-right: 20px;*/
+        }
+        .layui-form-item .layui-inline {
+            margin-bottom: 5px;
+            margin-right: 0;
         }
         /*.layui-card .layui-form .layui-form-item .layui-inline .layui-input-inline input {*/
             /*height: 35px;*/

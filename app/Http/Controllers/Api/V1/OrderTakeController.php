@@ -37,10 +37,11 @@ class OrderTakeController extends Controller
                 'amount',
                 'take_order_password',
                 'created_at',
-                'created_at',
+                'take_at',
                 'top',
             ])
             ->where('take_parent_user_id', auth()->user()->parent_id)
+            ->orderBy('take_at', 'desc')
             ->orderBy('id', 'desc')
             ->with(['game', 'consult', 'complain'])
             ->paginate(request('page_size', 20));

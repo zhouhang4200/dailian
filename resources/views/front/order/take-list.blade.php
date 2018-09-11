@@ -134,7 +134,7 @@
                         <div class="layui-col-md4">
                             <div class="layui-form-item last-item">
                                 <label class="layui-form-label">发布时间</label>
-                                <div class="layui-input-block">
+                                <div class="layui-input-block" style="margin-left: 40px;">
                                     <input type="text"  class="layui-input qsdate" id="start-time" autocomplete="off" name="start_time" placeholder="开始日期">
                                     <div class="layui-form-mid">
                                         -

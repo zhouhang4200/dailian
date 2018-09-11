@@ -10,8 +10,10 @@
             $.get(url, function (result) {
                 layer.open({
                     type: 1,
+                    title: '订单详情',
                     shadeClose: true,
                     resize: false,
+                    scrollbar: false,
                     shade: 0.2,
                     area: ['50%'],
                     content: result

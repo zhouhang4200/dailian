@@ -698,7 +698,7 @@ class OrderService
         DB::beginTransaction();
         try {
             // 记录撤销数据
-            GameLevelingOrderConsult::where('game_leveling_order_trade_no', self::$order->trade_no)->update(['status' => 2]);
+            GameLevelingOrderConsult::where('game_leveling_order_trade_no', self::$order->trade_no)->update(['status' => 3]);
             // 记录订单前一个状态
             $previousStatus = GameLevelingOrderPreviousStatus::getLatestBy(self::$order->trade_no);
             // 修改订单状态
@@ -734,7 +734,7 @@ class OrderService
         DB::beginTransaction();
         try {
             // 更新撤销数据
-            GameLevelingOrderConsult::where('game_leveling_order_trade_no', self::$order->trade_no)->update(['status' => 2]);
+            GameLevelingOrderConsult::where('game_leveling_order_trade_no', self::$order->trade_no)->update(['status' => 3]);
 
             // 修改订单状态
             self::$order->status = GameLevelingOrderPreviousStatus::getLatestBy(self::$order->trade_no);

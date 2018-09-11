@@ -146,7 +146,7 @@
                         <div class="layui-col-md2">
                             <div class="layui-form-item last-item">
                                 <div class="layui-input-block last-item-btn">
-                                    <button class="qs-btn" lay-submit="" lay-filter="search" style="height: 30px;line-height: 30px;float: left;font-size: 12px;">搜索</button>
+                                    <button class="qs-btn" lay-submit="" lay-filter="search" style="height: 30px;line-height: 30px;float: left;font-size: 12px;">查询</button>
                                     <button class="qs-btn" lay-submit="" lay-filter="export" style="margin-left:10px;height: 30px;line-height: 30px;float: left;font-size: 12px;">导出</button>
                                 </div>
                             </div>

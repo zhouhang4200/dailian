@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Models\GameLevelingOrderAnomaly;
 use Redis;
 use Exception;
 use App\Models\OrderStatistic;
@@ -18,6 +17,7 @@ use App\Models\GameLevelingType;
 use App\Models\GameLevelingOrder;
 use App\Models\GameLevelingOrderLog;
 use App\Models\GameLevelingOrderConsult;
+use App\Models\GameLevelingOrderAnomaly;
 use App\Models\GameLevelingOrderMessage;
 use App\Models\GameLevelingOrderComplain;
 use App\Models\GameLevelingOrderApplyComplete;

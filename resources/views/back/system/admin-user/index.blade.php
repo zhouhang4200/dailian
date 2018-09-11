@@ -44,7 +44,7 @@
                                 <td>{{ $item->email }}</td>
                                 <td>{{ implode(',', $item->cachedRoles()->pluck('name', 'id')->toArray()) }}</td>
                                 <td>
-                                    <a href="{{ route('admin.admin-user.update', ['id' => $item->id]) }}" class="layui-btn layui-btn-normal layui-btn-mini">
+                                    <a href="{{ route('admin.admin-user.update', ['id' => $item->id]) }}" class="btn btn-success">
                                        修改
                                     </a>
                                 </td>

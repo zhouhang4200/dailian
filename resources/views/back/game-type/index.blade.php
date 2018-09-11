@@ -65,8 +65,8 @@
                                     <td>{{ $item->updated_at }}</td>
                                     <td>{{ $item->updated_at }}</td>
                                     <td>
-                                        <a href="{{ route('admin.game-type.update', ['id' => $item->id]) }}" class="layui-btn layui-btn-normal layui-btn-mini complete" data-id="">修改</a>
-                                        <button type="button" class="layui-btn layui-btn-mini layui-btn-danger refuse" data-url="{{ route('admin.game-type.delete', ['id' => $item->id]) }}" lay-submit lay-filter="delete">删除</button>
+                                        <a href="{{ route('admin.game-type.update', ['id' => $item->id]) }}" class="btn btn-success" data-id="">修改</a>
+                                        <button type="button" class="btn btn-danger refuse" data-url="{{ route('admin.game-type.delete', ['id' => $item->id]) }}" lay-submit lay-filter="delete">删除</button>
                                     </td>
                                 </tr>
                             @empty

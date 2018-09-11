@@ -86,8 +86,8 @@
                                     <td>{{ $balanceWithdraw->updated_at }}</td>
                                     <td>
                                         @if ($balanceWithdraw->status == 1)
-                                            <button type="button" class="layui-btn layui-btn-normal layui-btn-mini complete" data-id="{{ $balanceWithdraw->id }}">完成</button>
-                                            <button type="button" class="layui-btn layui-btn-mini layui-btn-danger refuse" data-id="{{ $balanceWithdraw->id }}">拒绝</button>
+                                            <button type="button" class="btn btn-success complete" data-id="{{ $balanceWithdraw->id }}">完成</button>
+                                            <button type="button" class="btn btn-danger refuse" data-id="{{ $balanceWithdraw->id }}">拒绝</button>
                                         @else
                                             ---
                                         @endif

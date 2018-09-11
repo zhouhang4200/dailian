@@ -16,7 +16,7 @@
                             <input type="hidden" name="category_id" value="">
                             <div class="row">
                                 <div class="col-md-2">
-                                    <input type="text" class="layui-input" name="name"  placeholder="权限名" value="{{ request('name') }}">
+                                    <input type="text" class="form-control" name="name"  placeholder="权限名" value="{{ request('name') }}">
                                 </div>
                                 <div class="col-md-2">
                                     <button class="btn btn-success" lay-submit="" lay-filter="search">搜索</button>
@@ -47,7 +47,7 @@
                                 <td>{{ optional($item->group)->name }}</td>
                                 <td>{{ $item->route_name }}</td>
                                 <td>
-                                    <a href="{{ route('admin.admin-permission.update', ['id' => $item->id]) }}" class="layui-btn layui-btn-normal layui-btn-mini">
+                                    <a href="{{ route('admin.admin-permission.update', ['id' => $item->id]) }}" class="btn btn-success">
                                         修改
                                     </a>
                                 </td>

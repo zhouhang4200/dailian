@@ -30,13 +30,13 @@
                                 <div class="layui-form-item">
                                     <label class="layui-form-label">*序号</label>
                                     <div class="layui-input-block">
-                                        <input type="text" name="sort" lay-verify="required|number" value="{{ $article->sort }}" autocomplete="off" placeholder="" class="layui-input">
+                                        <input type="text" name="sort" lay-verify="required|number" value="{{ $article->sort }}" autocomplete="off" placeholder="" class="form-control">
                                     </div>
                                 </div>
                                 <div class="layui-form-item">
                                     <label class="layui-form-label">*标题</label>
                                     <div class="layui-input-block">
-                                        <input type="text" name="title" value="{{ $article->title }}" lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+                                        <input type="text" name="title" value="{{ $article->title }}" lay-verify="required" placeholder="" autocomplete="off" class="form-control">
                                     </div>
                                 </div>
                                 <div class="layui-form-item">
@@ -57,8 +57,8 @@
                                 </div>
                                 <div class="layui-form-item">
                                     <div class="layui-input-block">
-                                        <button class="layui-btn layui-btn-normal" lay-submit="" lay-id="{{ $article->id }}" lay-filter="update">确认</button>
-                                        <button type="button" class="layui-btn layui-btn-normal cancel" >取消</button>
+                                        <button class="btn btn-success" lay-submit="" lay-id="{{ $article->id }}" lay-filter="update">确认</button>
+                                        <button type="button" class="btn btn-danger cancel" >取消</button>
                                     </div>
                                 </div>
                             </form>

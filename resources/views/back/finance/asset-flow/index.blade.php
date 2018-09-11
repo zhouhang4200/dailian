@@ -31,7 +31,7 @@
                                 </div>
 
                                 <div class="form-group col-md-2">
-                                    <input type="text" class="layui-input" name="user_id" placeholder="用户ID" value="{{ request('user_id') }}">
+                                    <input type="text" class="form-control" name="user_id" placeholder="用户ID" value="{{ request('user_id') }}">
                                 </div>
 
                                 <div class="col-md-2">

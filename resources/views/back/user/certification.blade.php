@@ -16,10 +16,10 @@
                         <form class="layui-form" id="search-flow">
                             <div class="row">
                                 <div class="col-md-2">
-                                    <input type="text" class="layui-input" name="name"  placeholder="用户名" value="{{ $name }}">
+                                    <input type="text" class="form-control" name="name"  placeholder="用户名" value="{{ $name }}">
                                 </div>
-                                <div class="col-md-2">
-                                    <select class="form-control" name="status">
+                                <div class="form-group col-md-2">
+                                    <select class="form-control" name="status" lay-ignore>
                                         <option value="">状态</option>
                                             <option value="1" {{ 1 == $status ? 'selected' : '' }}>审核中</option>
                                             <option value="2" {{ 2 == $status ? 'selected' : '' }}>通过</option>
@@ -27,10 +27,10 @@
                                     </select>
                                 </div>
                                 <div class="col-md-2">
-                                    <input type="text" class="layui-input" id="startDate" name="startDate"  placeholder="开始时间" value="{{ $startDate }}">
+                                    <input type="text" class="form-control" id="startDate" name="startDate"  placeholder="开始时间" value="{{ $startDate }}">
                                 </div>
                                 <div class="col-md-2">
-                                    <input type="text" class="layui-input" id="endDate" name="endDate"  placeholder="结束时间" value="{{ $endDate }}">
+                                    <input type="text" class="form-control" id="endDate" name="endDate"  placeholder="结束时间" value="{{ $endDate }}">
                                 </div>
                                 <div class="col-md-2">
                                     <button class="btn btn-success" lay-submit="" lay-filter="search">搜索</button>

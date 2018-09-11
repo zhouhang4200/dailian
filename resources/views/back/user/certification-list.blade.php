@@ -26,7 +26,7 @@
                 <td>{{ $statusName[$certification->status] }}</td>
                 <td>{{ $certification->created_at }}</td>
                 <td style="text-align: center;">
-                    <a href="{{ route('admin.user.certification-show', ['id' => $certification->id])  }}" class="layui-btn layui-btn layui-btn-normal layui-btn-mini">详情</a>
+                    <a href="{{ route('admin.user.certification-show', ['id' => $certification->id])  }}" class="btn btn-success">详情</a>
                 </td>
             </tr>
         @empty

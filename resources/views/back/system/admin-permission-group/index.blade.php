@@ -43,7 +43,7 @@
                                 <td>{{ $item->id }}</td>
                                 <td>{{ $item->name }}</td>
                                 <td>
-                                    <a href="{{ route('admin.admin-permission-group.update', ['id' => $item->id]) }}" class="layui-btn layui-btn-normal layui-btn-mini">
+                                    <a href="{{ route('admin.admin-permission-group.update', ['id' => $item->id]) }}" class="btn btn-success">
                                        修改
                                     </a>
                                 </td>

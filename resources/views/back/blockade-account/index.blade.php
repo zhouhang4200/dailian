@@ -37,13 +37,13 @@
                         <form class="layui-form" id="search-flow" lay-filter="tab">
                             <div class="row">
                                 <div class="col-md-2">
-                                    <input type="text" class="layui-input" name="nameOrId"  placeholder="昵称或ID" value="">
+                                    <input type="text" class="form-control" name="nameOrId"  placeholder="昵称或ID" value="">
                                 </div>
                                 <div class="col-md-2">
-                                    <input type="text" class="layui-input" id="start_time" name="start_time"  placeholder="开始时间" value="">
+                                    <input type="text" class="form-control" id="start_time" name="start_time"  placeholder="开始时间" value="">
                                 </div>
                                 <div class="col-md-2">
-                                    <input type="text" class="layui-input" id="end_time" name="end_time"  placeholder="结束时间" value="">
+                                    <input type="text" class="form-control" id="end_time" name="end_time"  placeholder="结束时间" value="">
                                 </div>
                                 <div class="col-md-2">
                                     <button class="btn btn-success" lay-submit="" lay-filter="search">搜索</button>

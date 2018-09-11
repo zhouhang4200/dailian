@@ -13,8 +13,8 @@
                 <td>{{ $article->sort }}</td>
                 <td>{{ $article->title }}</td>
                 <td>
-                    <a type="button" class="layui-btn layui-btn-normal edit" href="{{ route('admin.article.help-edit', ['id' => $article->id]) }}?category_id={{ $categoryId }}" data-id="{{ $article->id }}" category-id="{{ $categoryId }}">编辑</a>
-                    <button lay-submit="" lay-filter="article-delete" class="layui-btn layui-btn-danger delete" lay-id="{{ $article->id }}" category-id="{{ $categoryId }}">删除</button>
+                    <a type="button" class="btn btn-success edit" href="{{ route('admin.article.help-edit', ['id' => $article->id]) }}?category_id={{ $categoryId }}" data-id="{{ $article->id }}" category-id="{{ $categoryId }}">编辑</a>
+                    <button lay-submit="" lay-filter="article-delete" class="btn btn-danger delete" lay-id="{{ $article->id }}" category-id="{{ $categoryId }}">删除</button>
                 </td>
             </tr>
         @empty

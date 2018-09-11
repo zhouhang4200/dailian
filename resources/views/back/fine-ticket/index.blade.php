@@ -16,13 +16,13 @@
                             <input type="hidden" name="status" value="{{ request('status') }}">
                             <div class="row">
                                 <div class="col-md-2">
-                                    <input type="text" class="layui-input" name="user_id"  placeholder="用户ID" value="{{ request('user_id') }}">
+                                    <input type="text" class="form-control" name="user_id"  placeholder="用户ID" value="{{ request('user_id') }}">
                                 </div>
                                 <div class="col-md-2">
-                                    <input type="text" class="layui-input" id="start-time" name="start_time"  autocomplete="off" placeholder="开始时间" value="{{ request('start_time') }}">
+                                    <input type="text" class="form-control" id="start-time" name="start_time"  autocomplete="off" placeholder="开始时间" value="{{ request('start_time') }}">
                                 </div>
                                 <div class="col-md-2">
-                                    <input type="text" class="layui-input" id="end-time" name="end_time"  autocomplete="off" placeholder="结束时间" value="{{ request('end_time') }}">
+                                    <input type="text" class="form-control" id="end-time" name="end_time"  autocomplete="off" placeholder="结束时间" value="{{ request('end_time') }}">
                                 </div>
                                 <div class="col-md-2">
                                     <a href="{{ route('admin.user.fine-ticket.create') }}" class="btn btn-success">添加罚款</a>

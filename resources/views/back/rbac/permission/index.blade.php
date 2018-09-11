@@ -27,7 +27,7 @@
                         </ul>
                         <div class="layui-tab-content">
                             <form class="layui-form" action="">
-                                <button class="layui-btn layui-btn-normal layui-btn-small" lay-submit="" lay-filter="create">新增</button>
+                                <button class="btn btn-success" lay-submit="" lay-filter="create">新增</button>
                             </form>
                             <div class="layui-tab-item layui-show" id="permission-list">
                                 @include('back.rbac.permission.list', ['permissions' => $permissions])

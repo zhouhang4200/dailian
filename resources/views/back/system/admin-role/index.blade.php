@@ -15,7 +15,7 @@
                         <form class="layui-form">
                             <div class="row">
                                 <div class="col-md-2">
-                                    <input type="text" class="layui-input" name="name"  placeholder="角色名" value="{{ request('name') }}">
+                                    <input type="text" class="form-control" name="name"  placeholder="角色名" value="{{ request('name') }}">
                                 </div>
                                 <div class="col-md-2">
                                     <button class="btn btn-success" lay-submit="" lay-filter="search">搜索</button>
@@ -42,7 +42,7 @@
                                 <td>{{ $item->id }}</td>
                                 <td>{{ $item->name }}</td>
                                 <td>
-                                    <a href="{{ route('admin.admin-role.update', ['id' => $item->id]) }}" class="layui-btn layui-btn-normal layui-btn-mini">
+                                    <a href="{{ route('admin.admin-role.update', ['id' => $item->id]) }}" class="btn btn-success">
                                         修改
                                     </a>
                                 </td>

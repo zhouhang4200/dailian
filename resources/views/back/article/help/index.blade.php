@@ -19,7 +19,7 @@
                             <input type="hidden" name="category_id" value="{{ $categoryId }}">
                             <div class="row">
                                 <div class="col-md-2">
-                                    <input type="text" class="layui-input" name="title"  placeholder="标题" value="{{ $title }}">
+                                    <input type="text" class="form-control" name="title"  placeholder="标题" value="{{ $title }}">
                                 </div>
                                 <div class="col-md-2">
                                     <button class="btn btn-success" lay-submit="" lay-filter="search">搜索</button>

@@ -62,7 +62,7 @@
                                 <div class="layui-form-item">
                                     <div class="layui-input-block">
                                         <button class="btn btn-success" lay-submit="" lay-filter="store">确认</button>
-                                        <button type="button" class="layui-btn layui-btn-normal cancel" >取消</button>
+                                        <button type="button" class="btn btn-success cancel" >取消</button>
                                     </div>
                                 </div>
                             </form>

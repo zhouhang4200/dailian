@@ -83,7 +83,7 @@
                                         </div>
 
                                         <button class="btn btn-success" lay-submit="" lay-filter="store">确认</button>
-                                        <a  href="{{ route('admin.admin-user') }}" type="button" class="layui-btn layui-btn-normal " >取消</a>
+                                        <a  href="{{ route('admin.admin-user') }}" type="button" class="btn btn-success" >取消</a>
                                     </form>
                                 </div>
                             </div>

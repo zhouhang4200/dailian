@@ -16,13 +16,13 @@
                         <form class="layui-form" id="search-flow">
                             <div class="row">
                                 <div class="col-md-2">
-                                    <input type="text" class="layui-input" name="id"  placeholder="账号ID" value="{{ $id }}">
+                                    <input type="text" class="form-control" name="id"  placeholder="账号ID" value="{{ $id }}">
                                 </div>
                                 <div class="col-md-2">
-                                    <input type="text" class="layui-input" name="name"  placeholder="昵称" value="{{ $name }}">
+                                    <input type="text" class="form-control" name="name"  placeholder="昵称" value="{{ $name }}">
                                 </div>
                                 <div class="col-md-2">
-                                    <input type="text" class="layui-input" name="phone"  placeholder="手机号" value="{{ $phone }}">
+                                    <input type="text" class="form-control" name="phone"  placeholder="手机号" value="{{ $phone }}">
                                 </div>
                                 <div class="col-md-2">
                                     <button class="btn btn-success" lay-submit="" lay-filter="search">搜索</button>
@@ -55,14 +55,14 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">金额</label>
                 <div class="layui-input-block">
-                    <input type="text" name="amount" autocomplete="off" placeholder="请输入加款金额" class="layui-input" lay-verify="required|number">
+                    <input type="text" name="amount" autocomplete="off" placeholder="请输入加款金额" class="form-control" lay-verify="required|number">
                 </div>
             </div>
 
             <div class="layui-form-item">
                 <label class="layui-form-label">备注</label>
                 <div class="layui-input-block">
-                    <input type="text" name="remark" autocomplete="off" class="layui-input" lay-verify="required">
+                    <input type="text" name="remark" autocomplete="off" class="form-control" lay-verify="required">
                 </div>
             </div>
 
@@ -93,14 +93,14 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">金额</label>
                 <div class="layui-input-block">
-                    <input type="text" name="amount" autocomplete="off" placeholder="请输入减款金额" class="layui-input" lay-verify="required|number">
+                    <input type="text" name="amount" autocomplete="off" placeholder="请输入减款金额" class="form-control" lay-verify="required|number">
                 </div>
             </div>
 
             <div class="layui-form-item">
                 <label class="layui-form-label">备注</label>
                 <div class="layui-input-block">
-                    <input type="text" name="remark" autocomplete="off" class="layui-input" lay-verify="required">
+                    <input type="text" name="remark" autocomplete="off" class="form-control" lay-verify="required">
                 </div>
             </div>
 

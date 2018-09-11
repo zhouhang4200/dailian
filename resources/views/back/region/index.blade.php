@@ -14,7 +14,7 @@
                         <form class="layui-form">
                             <div class="row">
                                 <div class="col-md-2">
-                                    <input type="text" class="layui-input" name="name"  placeholder="游戏区名" value="{{ request('name') }}">
+                                    <input type="text" class="form-control" name="name"  placeholder="游戏区名" value="{{ request('name') }}">
                                 </div>
                                 <div class="col-md-2">
                                     <button class="btn btn-success" lay-submit="" lay-filter="search">搜索</button>
@@ -46,8 +46,8 @@
                                     <td>{{ $item->updated_at }}</td>
                                     <td>{{ $item->updated_at }}</td>
                                     <td>
-                                        <a href="{{ route('admin.region.update', ['id' => $item->id]) }}" class="layui-btn layui-btn-normal layui-btn-mini complete" data-id="">修改</a>
-                                        <button type="button" class="layui-btn layui-btn-mini layui-btn-danger" data-url="{{ route('admin.region.delete', ['id' => $item->id]) }}"  lay-submit lay-filter="delete">删除</button>
+                                        <a href="{{ route('admin.region.update', ['id' => $item->id]) }}" class="btn btn-success" data-id="">修改</a>
+                                        <button type="button" class="btn btn-danger" data-url="{{ route('admin.region.delete', ['id' => $item->id]) }}"  lay-submit lay-filter="delete">删除</button>
                                     </td>
                                 </tr>
                             @empty

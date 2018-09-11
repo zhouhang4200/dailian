@@ -56,7 +56,7 @@
                                         </div>
                                     </div>
                                     <div class="layui-form-item">
-                                        <button class="layui-btn" lay-submit="" lay-filter="demo2">保存设置</button>
+                                        <button class="btn btn-success" lay-submit="" lay-filter="demo2">保存设置</button>
                                     </div>
                                 </form>
                             </div>

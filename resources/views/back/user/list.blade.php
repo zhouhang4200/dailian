@@ -47,7 +47,7 @@
                     @endif
                 </td>
                 <td style="text-align: center;">
-                    <button lay-id="{{ $user->id }}" class="layui-btn layui-btn layui-btn-normal layui-btn-mini" lay-submit="" lay-filter="detail">详情</button>
+                    <button lay-id="{{ $user->id }}" class="btn btn-success" lay-submit="" lay-filter="detail">详情</button>
                 </td>
             </tr>
         @empty

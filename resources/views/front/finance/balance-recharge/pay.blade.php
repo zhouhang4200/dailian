@@ -55,7 +55,7 @@
             var user_id ="{{ auth()->user()->parent_id }}";
             socket.on("notification:recharge", function (data) {
                 if (data.user_id == user_id) {
-                    window.location.href = '{{ route('finance.balance-recharge.pay-success') }}'
+                    layer.alert('充值成功');
                 }
             });
 

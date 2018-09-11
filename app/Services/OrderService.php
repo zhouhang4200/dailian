@@ -180,6 +180,7 @@ class OrderService
                 'status' => 1,
                 'top' => 0,
                 'top_at' => '1971-01-01 00:00:00',
+                'take_at' => '1971-01-01 00:00:00',
                 'player_phone' => $playerPhone,
             ]);
 

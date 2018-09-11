@@ -31,8 +31,8 @@ class CheckApiToken  extends Authenticate
 
         if ($this->auth->guard('api')->check()) {
             return $this->auth->shouldUse('api');
+        } else {
+            return response()->apiJson(1004);
         }
-
-        return response()->apiJson(1004);
     }
 }

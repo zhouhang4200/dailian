@@ -613,7 +613,7 @@ class GameLevelingOrder extends Model
      */
     public function getPoundage()
     {
-        if (optional($this->complain)->status && optional($this->complain)->status == 3) {
+        if (optional($this->complain)->status && optional($this->complain)->status == 2) {
             return $this->poundage;
         } else {
             return 0;

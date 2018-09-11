@@ -137,7 +137,7 @@
                     {field: 'id', title: '流水号', width: 70},
                     {field: 'nameOrId', title: '昵称/ID', width: 100},
                     {field: 'reason', title: '封号原因'},
-                    {field: 'remark', edit:'text',title: '备注', width: 300},
+                    {field: 'remark', edit:'text', title: '备注', width: 300},
                     {field: 'start_time', title: '开始时间', width: 170},
                     {field: 'end_time', title: '结束时间', width: 170},
                     {field: 'left_time', title: '剩余时间', width: 170},

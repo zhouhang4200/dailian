@@ -62,11 +62,11 @@
                         <td>{{ toPercent($orderStatistic->completeCount, $orderStatistic->orderCount) }}</td>
                         <td>{{ $orderStatistic->consultCount }}</td>
                         <td>{{ $orderStatistic->complainCount }}</td>
-                        <td>{{ $orderStatistic->completeIncome }}</td>
-                        <td>{{ $orderStatistic->otherIncome }}</td>
-                        <td>{{ $orderStatistic->otherExpend }}</td>
-                        <td>{{ $orderStatistic->poundageExpend }}</td>
-                        <td>{{ $orderStatistic->completeIncome+$orderStatistic->otherIncome-$orderStatistic->otherExpend-$orderStatistic->poundageExpend }}</td>
+                        <td>{{ $orderStatistic->completeIncome+0 }}</td>
+                        <td>{{ $orderStatistic->otherIncome+0 }}</td>
+                        <td>{{ $orderStatistic->otherExpend+0 }}</td>
+                        <td>{{ $orderStatistic->poundageExpend+0 }}</td>
+                        <td>{{ $orderStatistic->completeIncome+$orderStatistic->otherIncome-$orderStatistic->otherExpend-$orderStatistic->poundageExpend+0 }}</td>
                     </tr>
                 @empty
                     <tr>
@@ -81,11 +81,11 @@
                         <td>{{ toPercent($total->completeCount, $total->orderCount) }}</td>
                         <td>{{ $total->consultCount }}</td>
                         <td>{{ $total->complainCount }}</td>
-                        <td>{{ $total->completeIncome }}</td>
-                        <td>{{ $total->otherIncome }}</td>
-                        <td>{{ $total->otherExpend }}</td>
-                        <td>{{ $total->poundageExpend }}</td>
-                        <td>{{ $total->completeIncome+$total->otherIncome-$total->otherExpend-$total->poundageExpend }}</td>
+                        <td>{{ $total->completeIncome+0 }}</td>
+                        <td>{{ $total->otherIncome+0 }}</td>
+                        <td>{{ $total->otherExpend+0 }}</td>
+                        <td>{{ $total->poundageExpend+0 }}</td>
+                        <td>{{ $total->completeIncome+$total->otherIncome-$total->otherExpend-$total->poundageExpend+0 }}</td>
                     </tr>
                 @endif
                 </tbody>

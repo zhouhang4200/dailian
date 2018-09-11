@@ -19,7 +19,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label"><i class="iconfont icon-youxiang"></i></label>
                 <div class="layui-input-block">
-                    <input type="text" name="phone" required="" lay-verify="required" placeholder="请输入邮箱" value="{{ old('phone') }}"
+                    <input type="text" name="phone" required="" lay-verify="required" placeholder="请输入手机号" value="{{ old('phone') }}"
                        autocomplete="off" class="layui-input">
                 </div>
             </div>

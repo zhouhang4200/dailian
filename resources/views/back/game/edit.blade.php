@@ -71,7 +71,7 @@
                                             <div class="" id="uploadForm" enctype="multipart/form-data">
                                                 <div class="fileinput fileinput-new" data-provides="fileinput" id="exampleInputUpload">
                                                     <div class="fileinput-new thumbnail" style="width: 200px;height: auto;max-height:150px;">
-                                                        <img id="picImg" style="width: 100%;height: auto;max-height: 140px;" src="{{ asset($game->icon) }}" alt="">
+                                                        <img id="picImg" style="height: auto;max-height: 140px;" src="{{ asset($game->icon) }}" alt="">
                                                     </div>
                                                     <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px; line-height: 10px;"></div>
                                                     <div>

@@ -46,10 +46,14 @@ class InitCommand extends Command
      */
     public function createBackDefaultUser()
     {
-        AdminUser::create([
-           'name' => '管理员',
-           'password' => 'admin',
-        ]);
+        try {
+            AdminUser::create([
+                'name' => '管理员',
+                'password' => 'admin',
+            ]);
+        } catch (\Exception $exception) {
+
+        }
     }
 
     /**

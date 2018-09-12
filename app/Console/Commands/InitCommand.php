@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\AdminUser;
 use App\Models\Role;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
@@ -30,16 +31,39 @@ class InitCommand extends Command
      */
     public function handle()
     {
-        $this->createFrontDefaultPermissionRole();
+        $this->createFrontDefaultPermissionAndRole();
         $this->info('前台默认权限与角色创建完成');
+        $this->createBackDefaultUser();
+        $this->info('后台默认用户创建完成');
+        $this->createBackDefaultPermissionAndRole();
+        $this->info('后台默认权限与角色创建完成');
         Artisan::call('passport:install');
         $this->info('passport 安装完成');
     }
 
     /**
+     * 创建后台默认用户
+     */
+    public function createBackDefaultUser()
+    {
+        AdminUser::create([
+           'name' => '管理员',
+           'password' => 'admin',
+        ]);
+    }
+
+    /**
+     * 创建后台默认权限与角色
+     */
+    public function createBackDefaultPermissionAndRole()
+    {
+
+    }
+
+    /**
      * 初始化前台权限与角色
      */
-    public function createFrontDefaultPermissionRole()
+    public function createFrontDefaultPermissionAndRole()
     {
         if (! Role::where('user_id', 0)->exists()) {
             $data = [

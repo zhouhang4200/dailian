@@ -1,6 +1,6 @@
 @extends('front.layouts.home')
 
-@section('title', ' - 帮助中心')
+@section('title', ' - 活动中心')
 
 @section('css')
     <link rel="stylesheet" href="/front/css/about-us.css">

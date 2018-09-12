@@ -1,6 +1,6 @@
 @extends('front.layouts.home')
 
-@section('title', ' - 实名认证')
+@section('title', ' - 首页')
 
 @section('css')
     <style>

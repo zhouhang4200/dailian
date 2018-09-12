@@ -20,7 +20,7 @@ class PlatformFinanceReportDayCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'finance:platform-report-day {date?}';
+    protected $signature = 'wz:platform-report-day {date?}';
 
     /**
      * The console command description.

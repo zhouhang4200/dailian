@@ -26,7 +26,7 @@ class AutoUpdateSSLCertificateToLoadBalanceCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'wanzi:AutoUpdateSSLCertificateToLoadBalance';
+    protected $signature = 'wz:auto-update-ssL-certificate-To-load-balance';
 
     /**
      * The console command description.

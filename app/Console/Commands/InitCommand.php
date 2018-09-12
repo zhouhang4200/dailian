@@ -22,7 +22,7 @@ class InitCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = '初始化程序';
 
     /**
      * Execute the console command.

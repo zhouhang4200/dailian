@@ -21,7 +21,7 @@ class UserFinanceReportDayCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'finance:user-report-day {date?}';
+    protected $signature = 'wz:user-report-day {date?}';
 
     /**
      * The console command description.

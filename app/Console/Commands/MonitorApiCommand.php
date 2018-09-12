@@ -13,14 +13,14 @@ class MonitorApiCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'monitorApi';
+    protected $signature = 'wz:monitor-api';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Api 监听';
 
     /**
      * Create a new command instance.

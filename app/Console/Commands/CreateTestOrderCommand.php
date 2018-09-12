@@ -17,7 +17,7 @@ class CreateTestOrderCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'wanzi:CreateTestOrder {id} {count?}';
+    protected $signature = 'wz:create-test-order {id} {count?}';
 
     /**
      * The console command description.

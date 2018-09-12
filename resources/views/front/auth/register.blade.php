@@ -84,7 +84,7 @@
                     name:data.field.name,
                     password:encrypt(data.field.password),
                     password_confirmation:encrypt(data.field.password_confirmation),
-                    email:data.field.email,
+                    // email:data.field.email,
                     phone:data.field.phone,
                     geetest_challenge:data.field.geetest_challenge,
                     geetest_seccode:data.field.geetest_seccode,
@@ -96,7 +96,7 @@
                         layer.msg(result.message);
                     }
                     return false;
-                });
+                }, 'json');
                 return false;
             });
             $('body').height($(window).height());

@@ -5,7 +5,7 @@ var redis = new Redis({
     port: 6379, // 端口
     host: '127.0.0.1', // 地址
     family: 4, // ip类型
-    db: 0 // 数据库
+    db: 6 // 数据库
 });
 
 app.listen(10086, function () {

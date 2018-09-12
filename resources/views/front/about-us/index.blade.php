@@ -71,7 +71,7 @@
 @endsection
 
 @section('js')
-    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=87azcIUFufa2kZhGHZo0ER85x2SVvet4"></script>
+    <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=87azcIUFufa2kZhGHZo0ER85x2SVvet4"></script>
     <script type="text/javascript">
         // 百度地图API功能
         var map = new BMap.Map("allmap");

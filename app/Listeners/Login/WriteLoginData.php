@@ -4,10 +4,7 @@ namespace App\Listeners\Login;
 
 use Exception;
 use Carbon\Carbon;
-use App\Models\User;
 use Illuminate\Auth\Events\Login;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class WriteLoginData
 {
@@ -24,8 +21,9 @@ class WriteLoginData
     /**
      * Handle the event.
      *
-     * @param  Login  $event
+     * @param  Login $event
      * @return void
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function handle(Login $event)
     {

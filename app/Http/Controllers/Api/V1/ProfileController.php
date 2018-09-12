@@ -51,6 +51,7 @@ class ProfileController extends Controller
             $data['signature'] = $user->signature;
             $data['pay_password'] = ! empty($user->pay_password) ? 1 : 2;
             $data['is_parent'] = $user->isParent() ? 1 : 0;
+            $data['env'] = config('app.env') == 'developer' ? 1 : 2;
 
             return response()->apiJson(0, $data);
         } catch (Exception $e) {

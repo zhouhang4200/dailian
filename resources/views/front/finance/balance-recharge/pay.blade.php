@@ -58,7 +58,6 @@
                     layer.alert('充值成功');
                 }
             });
-
         });
     </script>
 @endsection

@@ -31,7 +31,7 @@ class CheckApiSign
             ksort($par);
             $str = '';
             foreach ($par as $key => $value) {
-                if (!in_array($key, ['sign', 'avatar', 'image', 'image_1', 'image_2', 'image_3'])) {
+                if (!in_array($key, ['sign'])) {
                     $str .= $key . '=' . $value . '&';
                 }
             }

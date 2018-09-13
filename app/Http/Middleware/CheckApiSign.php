@@ -32,18 +32,18 @@ class CheckApiSign
             ksort($par);
             $str = '';
             foreach ($par as $key => $value) {
-                if (!in_array($key, ['sign'])) {
+                if (!in_array($key, ['sign', 'image'])) {
                     $str .= $key . '=' . $value . '&';
                 }
             }
             myLog('signStr', [rtrim($str, '&') . 'ajJKDej2jF']);
+
             $sign = md5(rtrim($str, '&') . 'ajJKDej2jF');
 
             if ($sign != $request->sign) {
                 return response()->apiJson(1002);
 
             }
-
         }
         return $next($request);
     }

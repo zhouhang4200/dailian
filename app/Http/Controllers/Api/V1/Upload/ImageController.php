@@ -16,9 +16,9 @@ class ImageController extends Controller
      */
     public function index()
     {
-//        if (! request()->hasFile('image')) {
-//            return response()->apiJson(1001);
-//        }
+        if (! request()->hasFile('image')) {
+            return response()->apiJson(1001);
+        }
 
         $img = request()->file('image');
         $path = $img->store(date('Ymd'), 'public');

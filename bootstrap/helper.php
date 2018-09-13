@@ -195,7 +195,7 @@ if (!function_exists('base64ToImg')) {
     function base64ToImg($base64Str, $path)
     {
         if (preg_match('/^(data:\s*image\/(\w+);base64,)/', $base64Str, $result)) {
-            $imgDir = '/resources/' . $path . '/';
+            $imgDir = '/storage/' . $path . '/';
             if (!is_dir(public_path($imgDir))) {
                 mkdir(public_path($imgDir), 0777);
             }

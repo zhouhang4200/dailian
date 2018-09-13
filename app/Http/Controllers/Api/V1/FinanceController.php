@@ -2,17 +2,14 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Events\NotificationEvent;
 use App\Exceptions\UserAssetException;
 use App\Exceptions\UserException;
 use App\Services\UserBalanceService;
 use DB;
 use Auth;
-use Hash;
 use Exception;
 use App\Services\UserAssetService;
 use App\Models\BalanceRecharge;
-use App\Models\BalanceWithdraw;
 use App\Models\UserAssetFlow;
 use Yansongda\Pay\Pay;
 use Unisharp\Setting\SettingFacade;
@@ -158,7 +155,7 @@ class FinanceController extends Controller
                 'user_id' => $user->parent_id,
                 'amount' => request('amount'),
                 'trade_no' => $tradeNo,
-                'source' => 2
+                'source' => 1
             ]);
 
             $order = [
@@ -199,13 +196,13 @@ class FinanceController extends Controller
                 // 查找充值订单为用户加款
                 $order = BalanceRecharge::where('trade_no', $data->out_trade_no)
                     ->where('amount', bcdiv($data->cash_fee, 100))
-                    ->where('source', 2)
+                    ->where('source', 1)
                     ->where('status', 1)
                     ->first();
                 // 查到充值订单
                 if ($order) {
                     // 为用户加款
-                    UserAssetService::init(12, $order->user_id, $order->amount, $order->trade_no)->recharge();
+                    UserAssetService::init(11, $order->user_id, $order->amount, $order->trade_no)->recharge();
                     $order->status = 2;
                     $order->save();
                 }

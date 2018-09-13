@@ -84,7 +84,7 @@ class BalanceRechargeController extends Controller
         ]);
 
         $result = null;
-        if (request('source') == 1) { // 支付宝
+        if (request('source') == 2) { // 支付宝
             $order = [
                 'out_trade_no' => $tradeNo,
                 'total_amount' => request('amount'),

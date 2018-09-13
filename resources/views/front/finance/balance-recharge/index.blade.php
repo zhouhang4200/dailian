@@ -54,8 +54,8 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">充值方式</label>
                     <div class="layui-input-block">
-                        <input type="radio" name="source" value="1" title="支付宝 <i class='iconfont  icon-zhifubao' style='color:#198cff;font-size:23px'></i>" checked>
-                        <input type="radio" name="source" value="2" title="微信 <i class='iconfont  icon-weixin' style='color:#5FB878;font-size:23px'></i>">
+                        <input type="radio" name="source" value="2" title="支付宝 <i class='iconfont  icon-zhifubao' style='color:#198cff;font-size:23px'></i>" checked>
+                        <input type="radio" name="source" value="1" title="微信 <i class='iconfont  icon-weixin' style='color:#5FB878;font-size:23px'></i>">
                     </div>
                 </div>
 

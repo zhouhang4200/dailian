@@ -22,6 +22,8 @@ class ImageController extends Controller
 
         $img = request()->file('image');
         $path = $img->store(date('Ymd'), 'public');
+        // 将图片路径与时间写入队列，后台任务定时清理超过一个小时的图片
+
         return response()->apiJson(0, 'storage/' . $path);
     }
 

@@ -368,11 +368,13 @@
                         </td>
                     </tr>
                 @empty
-
+                    <tr><td colspan="9999" style="text-align: center">暂时没有订单</td></tr>
                 @endforelse
                 </tbody>
             </table>
-            {{ $orders->appends(request()->all())->links('front.pagination.default') }}
+            @if($orders)
+                {{ $orders->appends(request()->all())->links('front.pagination.default') }}
+            @endif
         </div>
     </div>
 @endsection

@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 
+use Aliyun\SLB\Request\DeleteServerCertificateRequest;
 use Redis;
 use Aliyun\Core\DefaultAcsClient;
 use Aliyun\Core\Regions\Endpoint;
@@ -77,9 +78,9 @@ class AutoUpdateSSLCertificateToLoadBalanceCommand extends Command
 
             // 删除过期证书
             if ($sslCertificateId = Redis::get('sslCertificateId')) {
-                $deleteLoadBalance = new DeleteLoadBalancerRequest();
+                $deleteLoadBalance = new DeleteServerCertificateRequest();
                 $deleteLoadBalance->setRegionId('cn-hangzhou');
-                $deleteLoadBalance->setLoadBalancerId($sslCertificateId);
+                $deleteLoadBalance->setServerCertificateId($sslCertificateId);
                 $client->getAcsResponse($deleteLoadBalance);
             }
             // 将本次证书ID存入redis

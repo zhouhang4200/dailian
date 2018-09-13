@@ -39,6 +39,7 @@ class AutoUpdateSSLCertificateToLoadBalanceCommand extends Command
      * Execute the console command.
      *
      * @return mixed
+     * @throws \Exception
      */
     public function handle()
     {
@@ -61,26 +62,30 @@ class AutoUpdateSSLCertificateToLoadBalanceCommand extends Command
         $uploadCertificate->setServerCertificate(file_get_contents(config('aliyun.ssl_certificate_path')));
         $uploadCertificateResult = $client->getAcsResponse($uploadCertificate);
 
-        // 修改负载配置
-        $updateHTTPSListenerAttribute = new SetLoadBalancerHTTPSListenerAttributeRequest();
-        $updateHTTPSListenerAttribute->setActionName('SetLoadBalancerHTTPSListenerAttribute');
-        $updateHTTPSListenerAttribute->setRegionId('cn-hangzhou');
-        $updateHTTPSListenerAttribute->setLoadBalancerId('lb-bp1ad69a6d1yozfhu6opm');
-        $updateHTTPSListenerAttribute->setListenerPort(443);
-        $updateHTTPSListenerAttribute->setServerCertificateId($uploadCertificateResult->ServerCertificateId);
-        $updateHTTPSListenerAttribute->setBandwidth(-1);
-        $updateHTTPSListenerAttribute->setStickySession('off');
-        $updateHTTPSListenerAttribute->setHealthCheck('off');
-        $client->getAcsResponse($updateHTTPSListenerAttribute);
+        if (isset($uploadCertificateResult->ServerCertificateId)) {
+            // 修改负载配置
+            $updateHTTPSListenerAttribute = new SetLoadBalancerHTTPSListenerAttributeRequest();
+            $updateHTTPSListenerAttribute->setActionName('SetLoadBalancerHTTPSListenerAttribute');
+            $updateHTTPSListenerAttribute->setRegionId('cn-hangzhou');
+            $updateHTTPSListenerAttribute->setLoadBalancerId('lb-bp1ad69a6d1yozfhu6opm');
+            $updateHTTPSListenerAttribute->setListenerPort(443);
+            $updateHTTPSListenerAttribute->setServerCertificateId($uploadCertificateResult->ServerCertificateId);
+            $updateHTTPSListenerAttribute->setBandwidth(-1);
+            $updateHTTPSListenerAttribute->setStickySession('off');
+            $updateHTTPSListenerAttribute->setHealthCheck('off');
+            $client->getAcsResponse($updateHTTPSListenerAttribute);
 
-        // 删除过期证书
-        if ($sslCertificateId = Redis::get('sslCertificateId')) {
-            $deleteLoadBalance = new DeleteLoadBalancerRequest();
-            $deleteLoadBalance->setRegionId('cn-hangzhou');
-            $deleteLoadBalance->setLoadBalancerId($sslCertificateId);
-            $client->getAcsResponse($deleteLoadBalance);
+            // 删除过期证书
+            if ($sslCertificateId = Redis::get('sslCertificateId')) {
+                $deleteLoadBalance = new DeleteLoadBalancerRequest();
+                $deleteLoadBalance->setRegionId('cn-hangzhou');
+                $deleteLoadBalance->setLoadBalancerId($sslCertificateId);
+                $client->getAcsResponse($deleteLoadBalance);
+            }
+            // 将本次证书ID存入redis
+            Redis::set('sslCertificateId', $uploadCertificateResult->ServerCertificateId);
+        } else {
+            myLog('auto-update-certificate', [$uploadCertificateResult]);
         }
-        // 将本次证书ID存入redis
-        Redis::set('sslCertificateId', $uploadCertificateResult->ServerCertificateId);
     }
 }

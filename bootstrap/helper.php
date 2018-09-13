@@ -3,75 +3,78 @@
 use GuzzleHttp\Client;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
-/**
- * 生成订单号
- * @return string
- * @throws Exception
- */
-function generateOrderNo()
-{
-    // 14位长度当前的时间 20150709105750
-    $orderDate = date('YmdHis');
-    // 今日订单数量
-    $orderQuantity = cache()->increment(config('redis_key.order.quantity') . date('Ymd'));
-    return $orderDate . str_pad($orderQuantity, 8, 0, STR_PAD_LEFT);
-}
-
-/**
- * 将秒转成: (天\小时\分\秒) 形式
- *
- * @param      $seconds
- * @param bool $showSeconds
- *
- * @return bool|string
- */
-function sec2Time($seconds, $showSeconds = false)
-{
-    if (is_numeric($seconds)) {
-        $value = array(
-            'years' => 0, 'days' => 0, 'hours' => 0,
-            'minutes' => 0, 'seconds' => 0,
-        );
-        if ($seconds >= 31556926) {
-            $value['years'] = floor($seconds / 31556926);
-            $seconds = ($seconds % 31556926);
-        }
-        if ($seconds >= 86400) {
-            $value['days'] = floor($seconds / 86400);
-            $seconds = ($seconds % 86400);
-        }
-        if ($seconds >= 3600) {
-            $value['hours'] = floor($seconds / 3600);
-            $seconds = ($seconds % 3600);
-        }
-        if ($seconds >= 60) {
-            $value['minutes'] = floor($seconds / 60);
-            $seconds = ($seconds % 60);
-        }
-        $value['seconds'] = floor($seconds);
-
-        $t = '';
-        if ($value['years'] > 0) {
-            $t .= $value['years'] . '年';
-        }
-        if ($value['days'] > 0) {
-            $t .= $value['days'] . '天';
-        }
-        if ($value['hours'] > 0) {
-            $t .= $value['hours'] . '小时';
-        }
-        if ($value['minutes'] > 0) {
-            $t .= $value['minutes'] . '分';
-        }
-        if ($value['seconds'] > 0 || $showSeconds) {
-            $t .= $value['seconds'] . '秒';
-        }
-        Return $t;
-    } else {
-        return (bool)FALSE;
+if (!function_exists('sec2Time')) {
+    /**
+     * 生成订单号
+     * @return string
+     * @throws Exception
+     */
+    function generateOrderNo()
+    {
+        // 14位长度当前的时间 20150709105750
+        $orderDate = date('YmdHis');
+        // 今日订单数量
+        $orderQuantity = cache()->increment(config('redis_key.order.quantity') . date('Ymd'));
+        return $orderDate . str_pad($orderQuantity, 8, 0, STR_PAD_LEFT);
     }
 }
 
+if (!function_exists('sec2Time')) {
+    /**
+     * 将秒转成: (天\小时\分\秒) 形式
+     *
+     * @param      $seconds
+     * @param bool $showSeconds
+     *
+     * @return bool|string
+     */
+    function sec2Time($seconds, $showSeconds = false)
+    {
+        if (is_numeric($seconds)) {
+            $value = array(
+                'years' => 0, 'days' => 0, 'hours' => 0,
+                'minutes' => 0, 'seconds' => 0,
+            );
+            if ($seconds >= 31556926) {
+                $value['years'] = floor($seconds / 31556926);
+                $seconds = ($seconds % 31556926);
+            }
+            if ($seconds >= 86400) {
+                $value['days'] = floor($seconds / 86400);
+                $seconds = ($seconds % 86400);
+            }
+            if ($seconds >= 3600) {
+                $value['hours'] = floor($seconds / 3600);
+                $seconds = ($seconds % 3600);
+            }
+            if ($seconds >= 60) {
+                $value['minutes'] = floor($seconds / 60);
+                $seconds = ($seconds % 60);
+            }
+            $value['seconds'] = floor($seconds);
+
+            $t = '';
+            if ($value['years'] > 0) {
+                $t .= $value['years'] . '年';
+            }
+            if ($value['days'] > 0) {
+                $t .= $value['days'] . '天';
+            }
+            if ($value['hours'] > 0) {
+                $t .= $value['hours'] . '小时';
+            }
+            if ($value['minutes'] > 0) {
+                $t .= $value['minutes'] . '分';
+            }
+            if ($value['seconds'] > 0 || $showSeconds) {
+                $t .= $value['seconds'] . '秒';
+            }
+            Return $t;
+        } else {
+            return (bool)FALSE;
+        }
+    }
+}
 
 if (!function_exists('hasEmployees')) {
     /**
@@ -184,6 +187,7 @@ if (!function_exists('myLog')) {
         $log->addInfo($fileName, $data);
     }
 }
+
 if (!function_exists('base64ToImg')) {
 
     /**
@@ -211,6 +215,7 @@ if (!function_exists('base64ToImg')) {
         }
     }
 }
+
 if (!function_exists('imageJsonToArr')) {
 
     /**
@@ -272,112 +277,127 @@ if (!function_exists('export')) {
     }
 }
 
-/**
- * 获取汉子首字母
- * @param $s0
- * @return null|string
- */
-function getFirstChar($s0){
-    $fChar = ord($s0{0});
+if (!function_exists('getFirstChar')) {
+    /**
+     * 获取汉子首字母
+     * @param $s0
+     * @return null|string
+     */
+    function getFirstChar($s0){
+        $fChar = ord($s0{0});
 
-    if($fChar >= ord("A") and $fChar <= ord("z") ) {
-        return strtoupper($s0{0});
-    }
-
-    $s1 = getEncoding($s0, 'GB2312');
-    $s2 = getEncoding($s1, 'UTF-8');
-    if ($s2 == $s0) {
-        $s = $s1;
-    } else {
-        $s = $s0;
-    }
-    $asc = ord($s{0}) * 256 + ord($s{1}) - 65536;
-    if ($asc >= -20319 and $asc <= -20284) return "a";
-    if ($asc >= -20283 and $asc <= -19776) return "b";
-    if ($asc >= -19775 and $asc <= -19219) return "c";
-    if ($asc >= -19218 and $asc <= -18711) return "d";
-    if ($asc >= -18710 and $asc <= -18527) return "e";
-    if ($asc >= -18526 and $asc <= -18240) return "f";
-    if ($asc >= -18239 and $asc <= -17923) return "g";
-    if ($asc >= -17922 and $asc <= -17418) return "i";
-    if ($asc >= -17417 and $asc <= -16475) return "j";
-    if ($asc >= -16474 and $asc <= -16213) return "k";
-    if ($asc >= -16212 and $asc <= -15641) return "l";
-    if ($asc >= -15640 and $asc <= -15166) return "m";
-    if ($asc >= -15165 and $asc <= -14923) return "n";
-    if ($asc >= -14922 and $asc <= -14915) return "o";
-    if ($asc >= -14914 and $asc <= -14631) return "p";
-    if ($asc >= -14630 and $asc <= -14150) return "q";
-    if ($asc >= -14149 and $asc <= -14091) return "r";
-    if ($asc >= -14090 and $asc <= -13319) return "s";
-    if ($asc >= -13318 and $asc <= -12839) return "s";
-    if ($asc >= -12838 and $asc <= -12557) return "w";
-    if ($asc >= -12556 and $asc <= -11848) return "w";
-    if ($asc >= -11847 and $asc <= -11056) return "y";
-    if ($asc >= -11055 and $asc <= -10247) return "z";
-    return null;
-}
-
-/**
- * 自动检测内容编码进行转换
- * @param $data
- * @param $to
- * @return null|string|string[]
- */
-function getEncoding($data, $to){
-    $encodeArr =array('UTF-8','ASCII','GBK','GB2312','BIG5','JIS','eucjp-win','sjis-win','EUC-JP');
-    $encoded = mb_detect_encoding($data, $encodeArr);
-    $data = mb_convert_encoding($data, $to, $encoded);
-    return $data;
-}
-
-function pinyin($zh){
-    $ret = "";
-    $s1 = iconv("UTF-8","gb2312", $zh);
-    $s2 = iconv("gb2312","UTF-8", $s1);
-    if($s2 == $zh){$zh = $s1;}
-    for($i = 0; $i < strlen($zh); $i++){
-        $s1 = substr($zh,$i,1);
-        $p = ord($s1);
-        if($p > 160){
-            $s2 = substr($zh,$i++,2);
-            $ret .= getFirstChar($s2);
-        }else{
-            $ret .= $s1;
+        if($fChar >= ord("A") and $fChar <= ord("z") ) {
+            return strtoupper($s0{0});
         }
+
+        $s1 = getEncoding($s0, 'GB2312');
+        $s2 = getEncoding($s1, 'UTF-8');
+        if ($s2 == $s0) {
+            $s = $s1;
+        } else {
+            $s = $s0;
+        }
+        $asc = ord($s{0}) * 256 + ord($s{1}) - 65536;
+        if ($asc >= -20319 and $asc <= -20284) return "a";
+        if ($asc >= -20283 and $asc <= -19776) return "b";
+        if ($asc >= -19775 and $asc <= -19219) return "c";
+        if ($asc >= -19218 and $asc <= -18711) return "d";
+        if ($asc >= -18710 and $asc <= -18527) return "e";
+        if ($asc >= -18526 and $asc <= -18240) return "f";
+        if ($asc >= -18239 and $asc <= -17923) return "g";
+        if ($asc >= -17922 and $asc <= -17418) return "i";
+        if ($asc >= -17417 and $asc <= -16475) return "j";
+        if ($asc >= -16474 and $asc <= -16213) return "k";
+        if ($asc >= -16212 and $asc <= -15641) return "l";
+        if ($asc >= -15640 and $asc <= -15166) return "m";
+        if ($asc >= -15165 and $asc <= -14923) return "n";
+        if ($asc >= -14922 and $asc <= -14915) return "o";
+        if ($asc >= -14914 and $asc <= -14631) return "p";
+        if ($asc >= -14630 and $asc <= -14150) return "q";
+        if ($asc >= -14149 and $asc <= -14091) return "r";
+        if ($asc >= -14090 and $asc <= -13319) return "s";
+        if ($asc >= -13318 and $asc <= -12839) return "s";
+        if ($asc >= -12838 and $asc <= -12557) return "w";
+        if ($asc >= -12556 and $asc <= -11848) return "w";
+        if ($asc >= -11847 and $asc <= -11056) return "y";
+        if ($asc >= -11055 and $asc <= -10247) return "z";
+        return null;
     }
-    return $ret;
 }
 
-function printSql($callback)
-{
-    \DB::connection()->enableQueryLog();
-    call_user_func($callback);
-    dd(\DB::getQueryLog());
-}
-
-/*
- * 文件转base64输出
- */
-function fileToBase64($file){
-    $base64File = '';
-    if(file_exists($file)){
-        $mimeType= mime_content_type($file);
-        $base64Data = base64_encode(file_get_contents($file));
-        $base64File = 'data:'.$mimeType.';base64,'.$base64Data;
-        unlink($file);
+if (!function_exists('getEncoding')) {
+    /**
+     * 自动检测内容编码进行转换
+     * @param $data
+     * @param $to
+     * @return null|string|string[]
+     */
+    function getEncoding($data, $to)
+    {
+        $encodeArr = array('UTF-8', 'ASCII', 'GBK', 'GB2312', 'BIG5', 'JIS', 'eucjp-win', 'sjis-win', 'EUC-JP');
+        $encoded = mb_detect_encoding($data, $encodeArr);
+        $data = mb_convert_encoding($data, $to, $encoded);
+        return $data;
     }
-    return $base64File;
 }
 
-function randomNumber($count = 5) {
-    $number = '';
-    for ($i=0; $i < $count; $i ++) {
-         $number .= random_int(0, 9);
+if (!function_exists('pinyin')) {
+    function pinyin($zh){
+        $ret = "";
+        $s1 = iconv("UTF-8","gb2312", $zh);
+        $s2 = iconv("gb2312","UTF-8", $s1);
+        if($s2 == $zh){$zh = $s1;}
+        for($i = 0; $i < strlen($zh); $i++){
+            $s1 = substr($zh,$i,1);
+            $p = ord($s1);
+            if($p > 160){
+                $s2 = substr($zh,$i++,2);
+                $ret .= getFirstChar($s2);
+            }else{
+                $ret .= $s1;
+            }
+        }
+        return $ret;
     }
-    return $number;
 }
 
+if (!function_exists('printSql')) {
+    function printSql($callback)
+    {
+        \DB::connection()->enableQueryLog();
+        call_user_func($callback);
+        dd(\DB::getQueryLog());
+    }
+}
+
+if (!function_exists('fileToBase64')) {
+    /**
+     * 文件转base64输出
+     * @param $file
+     * @return string
+     */
+    function fileToBase64($file){
+        $base64File = '';
+        if(file_exists($file)){
+            $mimeType= mime_content_type($file);
+            $base64Data = base64_encode(file_get_contents($file));
+            $base64File = 'data:'.$mimeType.';base64,'.$base64Data;
+            unlink($file);
+        }
+        return $base64File;
+    }
+
+}
+
+if (!function_exists('randomNumber')) {
+    function randomNumber($count = 5) {
+        $number = '';
+        for ($i=0; $i < $count; $i ++) {
+            $number .= random_int(0, 9);
+        }
+        return $number;
+    }
+}
 
 if (!function_exists('toPercent')) {
 

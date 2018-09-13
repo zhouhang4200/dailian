@@ -16,11 +16,7 @@ class ImageController extends Controller
      */
     public function index()
     {
-        $validator = Validator::make(request()->all(), [
-            'image' => 'required|image',
-        ]);
-
-        if ($validator->fails()) {
+        if (! request()->hasFile('image')) {
             return response()->apiJson(1001);
         }
 

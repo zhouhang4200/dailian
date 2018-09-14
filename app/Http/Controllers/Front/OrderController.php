@@ -34,12 +34,19 @@ class OrderController extends Controller
             $servers = Server::condition(['region_id' => request('region_id')])->get(['name', 'id']);
         }
 
-        $orders = GameLevelingOrder::searchCondition(array_merge(request()->except('status'), ['status' => 1]))
-            ->orderBy('top_at', 'desc')
-            ->orderBy('id', 'desc')
-            ->paginate(20);
+        $existOrder = GameLevelingOrder::condition(['status' => 1])->first();
+
+        $orders = [];
+        if ($existOrder) {
+            $orders = GameLevelingOrder::searchCondition(array_merge(request()->except('status'), ['status' => 1]))
+                ->orderBy('top_at', 'desc')
+                ->orderBy('id', 'desc')
+                ->paginate(20);
+        }
+
 //            ->explain();
 //        dd($orders);
+
         return view('front.order.index', [
             'orders' => $orders,
             'guest' => auth()->guard()->guest(),
@@ -94,10 +101,15 @@ class OrderController extends Controller
             $servers = Server::condition(['region_id' => request('region_id')])->get(['name', 'id']);
         }
 
-        $orders = GameLevelingOrder::searchCondition(array_merge(request()->except('status'), ['status' => 1]))
-            ->orderBy('top_at', 'desc')
-            ->orderBy('id', 'desc')
-            ->paginate(20);
+        $existOrder = GameLevelingOrder::condition(['status' => 1])->first();
+
+        $orders = [];
+        if ($existOrder) {
+            $orders = GameLevelingOrder::searchCondition(array_merge(request()->except('status'), ['status' => 1]))
+                ->orderBy('top_at', 'desc')
+                ->orderBy('id', 'desc')
+                ->paginate(20);
+        }
 
         return view('front.order.wait-list', [
             'orders' => $orders,

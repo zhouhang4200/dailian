@@ -29,7 +29,7 @@ class HomeController extends Controller
            $tmpStr = sha1($tmpStr);
            if ($tmpStr == request('signature')) {
                myLog('token', ['true']);
-               echo true;
+                echo request('echostr');
            } else {
                echo false;
            }

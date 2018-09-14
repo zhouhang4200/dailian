@@ -22,15 +22,19 @@ class HomeController extends Controller
      */
     public function miniProgramTokenCheck()
     {
-        $tmpArr = array('MM5+sPHXeqLhu2BTXgGRjfp5iJ9dqFCe', request('timestamp'), request('nonce'));
-        sort($tmpArr, SORT_STRING);
-        $tmpStr = implode($tmpArr);
-        $tmpStr = sha1($tmpStr);
-        if ($tmpStr == request('signature')) {
-            myLog('token', ['true']);
-            echo true;
-        } else {
-            echo false;
-        }
+       try {
+           $tmpArr = array('MM5+sPHXeqLhu2BTXgGRjfp5iJ9dqFCe', request('timestamp'), request('nonce'));
+           sort($tmpArr, SORT_STRING);
+           $tmpStr = implode($tmpArr);
+           $tmpStr = sha1($tmpStr);
+           if ($tmpStr == request('signature')) {
+               myLog('token', ['true']);
+               echo true;
+           } else {
+               echo false;
+           }
+       } catch (\Exception $exception) {
+           myLog('tokenException', [$exception->getMessage(), $exception->getLine()]);
+       }
     }
 }

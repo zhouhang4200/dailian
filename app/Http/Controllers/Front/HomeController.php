@@ -18,23 +18,20 @@ class HomeController extends Controller
     }
 
     /**
-     * @return bool
+     * @return void
+     * @throws \Exception
      */
     public function miniProgramTokenCheck()
     {
-       try {
-           $tmpArr = array('MM5+sPHXeqLhu2BTXgGRjfp5iJ9dqFCe', request('timestamp'), request('nonce'));
-           sort($tmpArr, SORT_STRING);
-           $tmpStr = implode($tmpArr);
-           $tmpStr = sha1($tmpStr);
-           if ($tmpStr == request('signature')) {
-               myLog('token', ['true']);
-                echo request('echostr');
-           } else {
-               echo false;
-           }
-       } catch (\Exception $exception) {
-           myLog('tokenException', [$exception->getMessage(), $exception->getLine()]);
-       }
+
+        $tmpArr = array(config('wechat.mini_program.default.token'), request('timestamp'), request('nonce'));
+        sort($tmpArr, SORT_STRING);
+        $tmpStr = implode($tmpArr);
+        $tmpStr = sha1($tmpStr);
+        if ($tmpStr == request('signature')) {
+            echo request('echostr');
+        } else {
+            echo false;
+        }
     }
 }

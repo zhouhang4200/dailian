@@ -25,6 +25,8 @@ Route::get('activity', 'ActivityController@index')->name('activity');
 Route::get('help', 'HelpController@index')->name('help');
 // 关于我们
 Route::get('about-us', 'AboutUsController@index')->name('about-us');
+// 小程序开通消息服务token验证
+Route::get('mini-program-token-check', 'HomeController@miniProgramTokenCheck')->name('mini-program-token-check');
 
 // 登录后
 Route::group(['middleware' => 'auth'], function (){

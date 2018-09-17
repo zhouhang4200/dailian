@@ -902,6 +902,6 @@ class GameLevelingOrder extends Model
     {
         $order = self::where('trade_no', $this->trade_no)->first();
         $order->status = $this->status;
-        $order->save();
+        $order->updated_at = date('Y-m-d H:i:s');
     }
 }

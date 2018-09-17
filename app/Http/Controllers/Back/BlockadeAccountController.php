@@ -7,7 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\BlockadeAccount;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Redis;
+use Redis;
 
 /**
  * 后台封号

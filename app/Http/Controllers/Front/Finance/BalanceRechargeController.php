@@ -140,7 +140,7 @@ class BalanceRechargeController extends Controller
                 // 查找充值订单为用户加款
                 $order = BalanceRecharge::where('trade_no', $data->out_trade_no)
                     ->where('amount', bcdiv($data->cash_fee, 100))
-                    ->where('source', 2)
+                    ->where('source', 1)
                     ->where('status', 1)
                     ->first();
                 // 查到充值订单
@@ -183,7 +183,7 @@ class BalanceRechargeController extends Controller
                 // 查找充值订单为用户加款
                 $order = BalanceRecharge::where('trade_no', $data->out_trade_no)
                     ->where('amount', $data->total_amount)
-                    ->where('source', 1)
+                    ->where('source', 2)
                     ->where('status', 1)
                     ->first();
                 // 查到充值订单

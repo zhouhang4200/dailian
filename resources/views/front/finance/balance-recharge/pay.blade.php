@@ -33,7 +33,7 @@
 
             <div class="" style="border: 1px solid #ddd;width: 300px;margin: 0 auto">
                 <img src="data:image/png;base64, {!! base64_encode(QrCode::format('png')
-                ->merge(request('source') == 1 ? '/public/front/images/alipay_qr.png' : '/public/front/images/wechat_qr.png')
+                ->merge(request('source') == 2 ? '/public/front/images/alipay_qr.png' : '/public/front/images/wechat_qr.png')
                 ->size(300)->errorCorrection('H')
                 ->generate(request('source') == 2 ? $result->qr_code : $result->code_url)) !!}">
             </div>

@@ -18,6 +18,7 @@ class OrderTakeController extends Controller
      */
     public function index()
     {
+        myLog('current_parent_id', [auth()->user()->parent_id]);
         $orders = GameLevelingOrder::searchCondition(request()->except('take_parent_user_id'))
             ->select([
                 'game_id',

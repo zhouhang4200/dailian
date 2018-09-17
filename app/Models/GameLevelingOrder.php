@@ -908,6 +908,7 @@ class GameLevelingOrder extends Model
             $order->status = $order->status;
             $order->updated_at = date('Y-m-d H:i:s');
             $order->save();
+            myLog('order', [$order]);
         }
     }
 }

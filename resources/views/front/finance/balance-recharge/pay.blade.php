@@ -35,10 +35,10 @@
                 <img src="data:image/png;base64, {!! base64_encode(QrCode::format('png')
                 ->merge(request('source') == 1 ? '/public/front/images/alipay_qr.png' : '/public/front/images/wechat_qr.png')
                 ->size(300)->errorCorrection('H')
-                ->generate(request('source') == 1 ? $result->qr_code : $result->code_url)) !!}">
+                ->generate(request('source') == 2 ? $result->qr_code : $result->code_url)) !!}">
             </div>
 
-            <div style="margin:20px 0; text-align: center;font-size: 20px">打开{{ request('source') == 1 ? '支付宝' : '微信' }}“扫一扫”功能，扫码充值</div>
+            <div style="margin:20px 0; text-align: center;font-size: 20px">打开{{ request('source') == 2 ? '支付宝' : '微信' }}“扫一扫”功能，扫码充值</div>
             <div style="margin:20px 0; text-align: center">
                 <a href="{{ route('finance.balance-recharge') }}" class="qs-btn" style="color: #fff">返回</a>
             </div>

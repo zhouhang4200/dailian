@@ -257,7 +257,7 @@ class UserAssetService
         $frozen = UserAssetFlow::where('user_id', self::$userId)
             ->where('trade_no', self::$tradeNO)->where('type', 3)->sum('amount');
 
-        if (is_null($frozen)) {
+        if (is_null($frozen) || empty($frozen)) {
             throw new UserAssetException('不存在相关的冻结记录', 4009);
         }
 

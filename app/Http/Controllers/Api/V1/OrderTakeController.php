@@ -18,7 +18,8 @@ class OrderTakeController extends Controller
      */
     public function index()
     {
-        myLog('current_parent_id', [auth()->user()->parent_id]);
+        $currentUserParentId = request()->user()->parent_id;
+
         $orders = GameLevelingOrder::searchCondition(request()->except('take_parent_user_id'))
             ->select([
                 'game_id',
@@ -42,13 +43,13 @@ class OrderTakeController extends Controller
                 'take_at',
                 'top',
             ])
-            ->where('take_parent_user_id', auth()->user()->parent_id)
+            ->where('status', '!=', 1)
+            ->where('take_parent_user_id', $currentUserParentId)
             ->orderBy('take_at', 'desc')
             ->orderBy('id', 'desc')
             ->with(['game', 'consult', 'complain'])
             ->paginate(request('page_size', 20));
 
-        $currentUserParentId = request()->user()->parent_id;
         $orderList = [];
         foreach ($orders->items() as $key => $item) {
             $itemArr = $item->toArray();

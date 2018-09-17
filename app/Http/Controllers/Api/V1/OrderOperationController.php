@@ -32,15 +32,22 @@ class OrderOperationController extends Controller
             response()->apiJson(1001);
         }
         DB::beginTransaction();
+        $order = null;
         try {
             OrderService::init(request()->user()->id, request('trade_no'))->take(clientRSADecrypt(request('pay_password')), clientRSADecrypt(request('take_password')));
             $order = GameLevelingOrder::where('trade_no', request('trade_no'))->first();
             TmApiService::take($order);
         } catch (OrderException $exception) {
+            $order->status = 1;
+            $order->save();
             return response()->apiJson($exception->getCode());
         } catch (UserAssetException $exception) {
+            $order->status = 1;
+            $order->save();
             return response()->apiJson($exception->getCode());
         } catch (Exception $exception) {
+            $order->status = 1;
+            $order->save();
             return response()->apiJson(1003);
         }
         DB::commit();

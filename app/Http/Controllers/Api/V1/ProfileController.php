@@ -51,7 +51,7 @@ class ProfileController extends Controller
             $data['signature'] = $user->signature;
             $data['pay_password'] = ! empty($user->pay_password) ? 1 : 2;
             $data['is_parent'] = $user->isParent() ? 1 : 0;
-            $data['env'] = SettingFacade::get('mini-program.env');
+            $data['env'] = (int) SettingFacade::get('mini-program.env');
 
             return response()->apiJson(0, $data);
         } catch (Exception $e) {

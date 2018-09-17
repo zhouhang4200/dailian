@@ -51,7 +51,7 @@ class TmApiService
         myLog('tm-request', ['地址' => $url,'信息' => $options,'结果' => $result]);
 
         if (! isset($result) || empty($result)) {
-            throw new Exception('请求返回数据不存在');
+            throw new UnknownException('请求返回数据不存在');
         }
 
         if (isset($result) && ! empty($result)) {
@@ -62,7 +62,7 @@ class TmApiService
                 if (isset($arrResult['code']) && $arrResult['code'] != 1) {
                     $message = $arrResult['message'] ?? '发单器接口返回错误';
 
-                    throw new Exception($message);
+                    throw new UnknownException($message);
                 }
             }
         }
@@ -97,7 +97,7 @@ class TmApiService
         myLog('qs-request-result', ['地址' => $url,'信息' => $options,'结果' => $result]);
 
         if (! isset($result) || empty($result)) {
-            throw new Exception('请求返回数据不存在');
+            throw new UnknownException('请求返回数据不存在');
         }
 
         if (isset($result) && ! empty($result)) {
@@ -107,7 +107,7 @@ class TmApiService
             if (isset($arrResult) && is_array($arrResult) && count($arrResult) > 0) {
                 if (isset($arrResult['code']) && $arrResult['code'] != 1) {
                     $message = $arrResult['message'] ?? '发单器接口返回错误';
-                    throw new Exception($message);
+                    throw new UnknownException($message);
                 }
             }
         }
@@ -143,9 +143,10 @@ class TmApiService
     }
 
     /**
-     *  异常
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * 异常
+     * @param $orderNo
      * @throws UnknownException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public static function anomaly($orderNo)
     {

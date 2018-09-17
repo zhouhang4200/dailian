@@ -30,10 +30,6 @@ class ResponseMacroServiceProvider extends ServiceProvider
         Response::macro('apiJson', function ($code, $data = []) {
             $datas = config('api.code')[$code];
             $datas['data'] = $data;
-
-            if ($code != 0) {
-                GameLevelingOrder::rollbackStatus(request('trade_no'));
-            }
             return response()->json($datas);
         });
     }

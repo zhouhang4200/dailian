@@ -37,10 +37,13 @@ class OrderOperationController extends Controller
             $order = GameLevelingOrder::where('trade_no', request('trade_no'))->first();
             TmApiService::take($order);
         } catch (OrderException $exception) {
+            GameLevelingOrder::rollbackStatus(request('trade_no'));
             return response()->apiJson($exception->getCode());
         } catch (UserAssetException $exception) {
+            GameLevelingOrder::rollbackStatus(request('trade_no'));
             return response()->apiJson($exception->getCode());
         } catch (Exception $exception) {
+            GameLevelingOrder::rollbackStatus(request('trade_no'));
             return response()->apiJson(1003);
         }
         DB::commit();
@@ -65,10 +68,13 @@ class OrderOperationController extends Controller
             OrderService::init(request()->user()->id, request('trade_no'))->applyComplete(imageJsonToArr(request('images')));
             TmApiService::applyComplete(request('trade_no'));
         } catch (UserAssetException $exception) {
+            GameLevelingOrder::rollbackStatus(request('trade_no'));
             return response()->apiJson($exception->getCode());
         } catch (OrderException $exception) {
+            GameLevelingOrder::rollbackStatus(request('trade_no'));
             return response()->apiJson($exception->getCode());
         }  catch (Exception $exception) {
+            GameLevelingOrder::rollbackStatus(request('trade_no'));
             return response()->apiJson(1003);
         }
         DB::commit();
@@ -113,10 +119,13 @@ class OrderOperationController extends Controller
             OrderService::init(request()->user()->id, request('trade_no'))->cancelComplete();
             TmApiService::cancelComplete(request('trade_no'));
         } catch (UserAssetException $exception) {
+            GameLevelingOrder::rollbackStatus(request('trade_no'));
             return response()->apiJson($exception->getCode());
         } catch (OrderException $exception) {
+            GameLevelingOrder::rollbackStatus(request('trade_no'));
             return response()->apiJson($exception->getCode());
         } catch (Exception $exception) {
+            GameLevelingOrder::rollbackStatus(request('trade_no'));
             return response()->apiJson(1003);
         }
         DB::commit();
@@ -150,10 +159,13 @@ class OrderOperationController extends Controller
 
             TmApiService::applyConsult(request('trade_no'), request('amount'), request('deposit'), request('reason'));
         } catch (UserAssetException $exception) {
+            GameLevelingOrder::rollbackStatus(request('trade_no'));
             return response()->apiJson($exception->getCode());
         } catch (OrderException $exception) {
+            GameLevelingOrder::rollbackStatus(request('trade_no'));
             return response()->apiJson($exception->getCode());
         } catch (Exception $exception) {
+            GameLevelingOrder::rollbackStatus(request('trade_no'));
             return response()->apiJson(1003);
         }
         DB::commit();
@@ -177,10 +189,13 @@ class OrderOperationController extends Controller
 
             TmApiService::cancelConsult(request('trade_no'));
         } catch (UserAssetException $exception) {
+            GameLevelingOrder::rollbackStatus(request('trade_no'));
             return response()->apiJson($exception->getCode());
         } catch (OrderException $exception) {
+            GameLevelingOrder::rollbackStatus(request('trade_no'));
             return response()->apiJson($exception->getCode());
         } catch (Exception $exception) {
+            GameLevelingOrder::rollbackStatus(request('trade_no'));
             return response()->apiJson(1003);
         }
         DB::commit();
@@ -203,10 +218,13 @@ class OrderOperationController extends Controller
 
             TmApiService::agreeConsult(request('trade_no'));
         } catch (UserAssetException $exception) {
+            GameLevelingOrder::rollbackStatus(request('trade_no'));
             return response()->apiJson($exception->getCode());
         } catch (OrderException $exception) {
+            GameLevelingOrder::rollbackStatus(request('trade_no'));
             return response()->apiJson($exception->getCode());
         } catch (Exception $exception) {
+            GameLevelingOrder::rollbackStatus(request('trade_no'));
             return response()->apiJson(1003);
         }
         DB::commit();
@@ -229,10 +247,13 @@ class OrderOperationController extends Controller
 
             TmApiService::rejectConsult(request('trade_no'));
         } catch (UserAssetException $exception) {
+            GameLevelingOrder::rollbackStatus(request('trade_no'));
             return response()->apiJson($exception->getCode());
         } catch (OrderException $exception) {
+            GameLevelingOrder::rollbackStatus(request('trade_no'));
             return response()->apiJson($exception->getCode());
         } catch (Exception $exception) {
+            GameLevelingOrder::rollbackStatus(request('trade_no'));
             return response()->apiJson(1003);
         }
         DB::commit();
@@ -255,10 +276,13 @@ class OrderOperationController extends Controller
 
             TmApiService::applyComplain(request('trade_no'), request('reason'));
         } catch (UserAssetException $exception) {
+            GameLevelingOrder::rollbackStatus(request('trade_no'));
             return response()->apiJson($exception->getCode());
         } catch (OrderException $exception) {
+            GameLevelingOrder::rollbackStatus(request('trade_no'));
             return response()->apiJson($exception->getCode());
         } catch (Exception $exception) {
+            GameLevelingOrder::rollbackStatus(request('trade_no'));
             return response()->apiJson(1003);
         }
         DB::commit();
@@ -281,11 +305,13 @@ class OrderOperationController extends Controller
 
             TmApiService::cancelComplain(request('trade_no'));
         } catch (UserAssetException $exception) {
-
+            GameLevelingOrder::rollbackStatus(request('trade_no'));
             return response()->apiJson($exception->getCode());
         } catch (OrderException $exception) {
+            GameLevelingOrder::rollbackStatus(request('trade_no'));
             return response()->apiJson($exception->getCode());
         } catch (Exception $exception) {
+            GameLevelingOrder::rollbackStatus(request('trade_no'));
             return response()->apiJson(1003);
         }
         DB::commit();
@@ -442,10 +468,13 @@ class OrderOperationController extends Controller
 
             TmApiService::anomaly(request('trade_no'));
         } catch (UserAssetException $exception) {
+            GameLevelingOrder::rollbackStatus(request('trade_no'));
             return response()->apiJson($exception->getCode());
         } catch (OrderException $exception) {
+            GameLevelingOrder::rollbackStatus(request('trade_no'));
             return response()->apiJson($exception->getCode());
         }catch (Exception $exception) {
+            GameLevelingOrder::rollbackStatus(request('trade_no'));
             return response()->apiJson(1003);
         }
         DB::commit();
@@ -468,10 +497,13 @@ class OrderOperationController extends Controller
 
             TmApiService::cancelAnomaly(request('trade_no'));
         } catch (UserAssetException $exception) {
+            GameLevelingOrder::rollbackStatus(request('trade_no'));
             return response()->apiJson($exception->getCode());
         } catch (OrderException $exception) {
+            GameLevelingOrder::rollbackStatus(request('trade_no'));
             return response()->apiJson($exception->getCode());
         } catch (Exception $exception) {
+            GameLevelingOrder::rollbackStatus(request('trade_no'));
             return response()->apiJson(1003);
         }
         DB::commit();

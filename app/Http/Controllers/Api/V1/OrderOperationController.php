@@ -32,19 +32,15 @@ class OrderOperationController extends Controller
             response()->apiJson(1001);
         }
         DB::beginTransaction();
-        $order = null;
         try {
             OrderService::init(request()->user()->id, request('trade_no'))->take(clientRSADecrypt(request('pay_password')), clientRSADecrypt(request('take_password')));
             $order = GameLevelingOrder::where('trade_no', request('trade_no'))->first();
             TmApiService::take($order);
         } catch (OrderException $exception) {
-            $order->rollbackStatus();
             return response()->apiJson($exception->getCode());
         } catch (UserAssetException $exception) {
-            $order->rollbackStatus();
             return response()->apiJson($exception->getCode());
         } catch (Exception $exception) {
-            $order->rollbackStatus();
             return response()->apiJson(1003);
         }
         DB::commit();
@@ -285,6 +281,7 @@ class OrderOperationController extends Controller
 
             TmApiService::cancelComplain(request('trade_no'));
         } catch (UserAssetException $exception) {
+
             return response()->apiJson($exception->getCode());
         } catch (OrderException $exception) {
             return response()->apiJson($exception->getCode());

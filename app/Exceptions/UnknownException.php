@@ -11,6 +11,8 @@ use Exception;
  */
 class UnknownException extends Exception
 {
+    use RollbackOrderStatusTrait;
+
     /**
      * UnknownException constructor.
      * @param $message
@@ -26,6 +28,7 @@ class UnknownException extends Exception
             '行号' => self::getLine(),
             '入参' => request()->all()
         ]);
+        $this->rollbackOrderStatus(request()->all());
         parent::__construct($message, $code);
     }
 }

@@ -896,13 +896,4 @@ class GameLevelingOrder extends Model
     {
         return $this->hasOne(OrderStatistic::class, 'trade_no', 'trade_no');
     }
-
-
-    public function rollbackStatus()
-    {
-        $order = GameLevelingOrder::where('trade_no', $this->trade_no)->first();
-        $order->status = $this->status;
-        $order->updated_at = date('Y-m-d H:i:s');
-        $order->save();
-    }
 }

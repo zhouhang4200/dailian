@@ -32,7 +32,6 @@ class ApiAuth
             return response()->apiFail('app_id不正确');
         }
 
-        myLog('receive-datas', ['datas' => $request->all()]);
         // 检测 sign
         $par = $request->all();
         ksort($par);
@@ -44,7 +43,7 @@ class ApiAuth
         }
 
         $sign = md5(rtrim($str,  '&') . $request->user->app_secret);
-//        myLog('sign', ['sign' => $sign, 'str' => $str]);
+
         if ($sign != $request->sign) {
             return response()->apiFail('您的签名不正确');
         }

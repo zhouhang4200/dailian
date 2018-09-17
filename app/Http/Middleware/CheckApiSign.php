@@ -36,7 +36,6 @@ class CheckApiSign
                     $str .= $key . '=' . $value . '&';
                 }
             }
-            myLog('signStr', [rtrim($str, '&') . 'ajJKDej2jF']);
 
             $sign = md5(rtrim($str, '&') . 'ajJKDej2jF');
 

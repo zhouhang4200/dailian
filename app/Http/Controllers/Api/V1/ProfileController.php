@@ -7,9 +7,9 @@ use Carbon\Carbon;
 use Hash;
 use Exception;
 use Redis;
-use App\Models\User;
-use Illuminate\Http\UploadedFile;
 use App\Services\SmSApiService;
+use Unisharp\Setting\SettingFacade;
+use App\Models\User;
 use App\Models\RealNameCertification;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -51,7 +51,7 @@ class ProfileController extends Controller
             $data['signature'] = $user->signature;
             $data['pay_password'] = ! empty($user->pay_password) ? 1 : 2;
             $data['is_parent'] = $user->isParent() ? 1 : 0;
-            $data['env'] = config('app.env') == 'developer' ? 1 : 2;
+            $data['env'] = SettingFacade::get('mini-program.env');
 
             return response()->apiJson(0, $data);
         } catch (Exception $e) {

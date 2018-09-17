@@ -16,8 +16,8 @@
                             <ul class="layui-tab-title">
                                 <li @if($key == 'withdraw') class="layui-this" @endif lay-id="withdraw">提现设置
                                 </li>
-                                {{--<li @if($key == 1) class="layui-this" @endif lay-id="1">短信模版--}}
-                                {{--</li>--}}
+                                <li @if($key == 'mini-program') class="layui-this" @endif lay-id="mini-program">小程序环境
+                                </li>
                             </ul>
                         </div>
 
@@ -60,9 +60,23 @@
                                     </div>
                                 </form>
                             </div>
-                            <div class="layui-tab-item @if(request('key') == 1) layui-show @endif">内容2</div>
-                        </div>
+                            <div class="layui-tab-item @if(request('key') == 'mini_program') layui-show @endif">
+                                <form class="layui-form layui-form-pane" action="{{ route('admin.setting.update', ['key' => 'mini_program']) }}" method="post">
+                                    {!! csrf_field() !!}
+                                    <input type="hidden" name="key" value="withdraw">
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">环境（1 测试 2 正式）</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="env" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input" value="{{ $value['env'] ?? '' }}">
+                                        </div>
+                                    </div>
 
+                                    <div class="layui-form-item">
+                                        <button class="btn btn-success" lay-submit="" lay-filter="demo2">保存设置</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

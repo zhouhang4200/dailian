@@ -11,16 +11,22 @@ use Unisharp\Setting\SettingFacade;
  */
 class SettingController extends Controller
 {
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function index()
     {
         $key = request('key', 'withdraw');
 
-        return view('back.setting.index')->with([
+        return view('back.system.setting.' . $key)->with([
             'key' => $key,
             'value' => SettingFacade::get($key),
         ]);
     }
 
+    /**
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function update()
     {
         SettingFacade::set(request('key'), request()->except('_token'));

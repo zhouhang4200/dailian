@@ -22,6 +22,7 @@ class OrderTakeController extends Controller
             ->select([
                 'game_id',
                 'parent_user_id',
+                'take_parent_user_id',
                 'trade_no',
                 'status',
                 'game_name',

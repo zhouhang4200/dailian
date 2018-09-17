@@ -17,10 +17,12 @@ trait RollbackOrderStatusTrait
     public function rollbackOrderStatus($par)
     {
         if (isset($par['trade_no']) && strlen($par['trade_no']) == 22) {
+
             $order = GameLevelingOrder::where('trade_no', $par['trade_no'])->first();
             $order->status = $order->status;
             $order->updated_at = date('Y-m-d H:i:s');
             $order->save();
+            myLog('order', [$order]);
         }
     }
 }

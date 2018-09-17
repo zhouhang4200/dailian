@@ -11,8 +11,6 @@ use Exception;
  */
 class UserAssetException extends Exception
 {
-    use RollbackOrderStatusTrait;
-
     /**
      * UserAssetException constructor.
      * @param $message
@@ -28,7 +26,6 @@ class UserAssetException extends Exception
             '行号' => self::getLine(),
             '入参' => request()->all()
         ]);
-        $this->rollbackOrderStatus(request()->all());
         parent::__construct($message, $code);
     }
 }

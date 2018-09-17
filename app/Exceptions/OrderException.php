@@ -11,7 +11,6 @@ use Exception;
  */
 class OrderException extends Exception
 {
-    use RollbackOrderStatusTrait;
 
     /**
      * OrderException constructor.
@@ -29,7 +28,6 @@ class OrderException extends Exception
             '入参' => request()->all()
         ]);
 
-        $this->rollbackOrderStatus(request()->all());
         parent::__construct($message, $code);
     }
 }

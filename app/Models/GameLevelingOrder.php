@@ -896,4 +896,16 @@ class GameLevelingOrder extends Model
     {
         return $this->hasOne(OrderStatistic::class, 'trade_no', 'trade_no');
     }
+
+    /**
+     * 回滚es中订单状态
+     * @param $tradeNo
+     */
+    public static function rollbackStatus($tradeNo)
+    {
+        $order = GameLevelingOrder::where('trade_no', $tradeNo)->first();
+        $order->status = $order->status;
+        $order->updated_at = date('Y-m-d H:i:s');
+        $order->save();
+    }
 }

@@ -904,8 +904,10 @@ class GameLevelingOrder extends Model
     public static function rollbackStatus($tradeNo)
     {
         $order = GameLevelingOrder::where('trade_no', $tradeNo)->first();
-        $order->status = $order->status;
-        $order->updated_at = date('Y-m-d H:i:s');
-        $order->save();
+        if ($order) {
+            $order->status = $order->status;
+            $order->updated_at = date('Y-m-d H:i:s');
+            $order->save();
+        }
     }
 }

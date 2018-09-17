@@ -126,7 +126,7 @@ class RealNameCertificationController extends Controller
 
             $data = $request->data ?? [];
             $data['user_id'] = $user->id;
-            $data['status'] = $realNameCertification->status;
+            $data['status'] = 1;
             $data['remark'] = $realNameCertification->remark;
 
             if ($realNameCertification->update($data)) {

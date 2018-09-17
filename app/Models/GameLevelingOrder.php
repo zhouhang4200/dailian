@@ -896,4 +896,11 @@ class GameLevelingOrder extends Model
     {
         return $this->hasOne(OrderStatistic::class, 'trade_no', 'trade_no');
     }
+
+
+    public function rollbackStatus()
+    {
+        $this->status = $this->status;
+        $this->save();
+    }
 }

@@ -19,10 +19,10 @@ trait RollbackOrderStatusTrait
         if (isset($par['trade_no'])) {
 
             $order = GameLevelingOrder::where('trade_no', $par['trade_no'])->first();
-            $order->status = $order->status;
-            $order->updated_at = date('Y-m-d H:i:s');
-            $order->save();
-            myLog('order', [$order]);
+            $newOrder = clone $order;
+            $newOrder->status = $order->status;
+            $newOrder->updated_at = date('Y-m-d H:i:s');
+            myLog('order', [$order, $newOrder->save()]);
         }
     }
 }

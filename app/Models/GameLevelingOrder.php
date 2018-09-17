@@ -900,7 +900,8 @@ class GameLevelingOrder extends Model
 
     public function rollbackStatus()
     {
-        $this->status = $this->status;
-        $this->save();
+        $order = self::where('trade_no', $this->trade_no)->first();
+        $order->status = $this->status;
+        $order->save();
     }
 }

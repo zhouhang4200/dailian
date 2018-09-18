@@ -19,7 +19,7 @@
                                 </div>
                                 <div class="col-md-2">
                                     <button class="btn btn-success" lay-submit="" lay-filter="search">搜索</button>
-                                    <a href="{{ route('admin.game.create') }}" class="btn btn-success" type="button" id="create" >新增</a>
+                                    <a href="{{ route('admin.game.create') }}" class="btn btn-success"  id="create" >新增</a>
                                 </div>
                             </div>
                         </form>
@@ -27,7 +27,7 @@
                 </div>
 
                 <div class="layui-tab-content">
-                    <div class="layui-tab-item layui-show">
+                    <div class="layui-tab-item layui-show ">
                         <table class="layui-table" lay-size="sm">
                             <thead>
                             <tr>
@@ -37,7 +37,8 @@
                                 <th>类别</th>
                                 <th>创建时间</th>
                                 <th>更新时间</th>
-                                <th>操作</th>
+                                <th width="8%">是否显示</th>
+                                <th width="10%">操作</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -49,6 +50,11 @@
                                     <td>{{ optional($item->gameType)->name }}</td>
                                     <td>{{ $item->updated_at }}</td>
                                     <td>{{ $item->updated_at }}</td>
+                                    <td>
+                                        <div class="ui toggle checkbox">
+                                            <input type="checkbox" tabindex="0" class="hidden" data-id="{{$item->id}}" @if($item->status == 1) checked @endif >
+                                        </div>
+                                    </td>
                                     <td>
                                         <a href="{{ route('admin.game.update', ['id' => $item->id]) }}" class="btn btn-success complete" data-id="">修改</a>
                                         <button type="button" class="btn btn-danger" data-url="{{ route('admin.game.delete', ['id' => $item->id]) }}"  lay-submit lay-filter="delete">删除</button>
@@ -68,4 +74,13 @@
 @endsection
 
 @section('js')
+    <script>
+        $('.ui.checkbox').checkbox({
+            onChange: function() {
+                $.post('{{ route('admin.game.change-status') }}', {id:$(this).attr('data-id'), status:$(this).is(':checked')}, function (result) {
+                    layer.msg(result.message)
+                }, 'json');
+            }
+        })
+    </script>
 @endsection

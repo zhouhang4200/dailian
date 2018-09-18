@@ -37,7 +37,7 @@
                                 </div>
                                 <div class="col-md-2">
                                     <button class="btn btn-success" lay-submit="" lay-filter="search">搜索</button>
-                                    <a href="{{ route('admin.game-class.create') }}" class="btn btn-success" type="button" id="create" >新增</a>
+                                    <a href="{{ route('admin.game-class.create') }}" class="btn btn-success"  id="create" >新增</a>
                                 </div>
                             </div>
                         </form>

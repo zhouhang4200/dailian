@@ -55,6 +55,7 @@ Route::group(['middleware' =>  ['auth.admin']], function () {
         Route::get('update/{id}', 'GameController@edit')->name('admin.game.update');
         Route::post('update/{id}', 'GameController@update')->name('admin.game.update');
         Route::post('delete/{id}', 'GameController@delete')->name('admin.game.delete');
+        Route::post('change-status', 'GameController@changeStatus')->name('admin.game.change-status');
     });
 
     // 游戏区

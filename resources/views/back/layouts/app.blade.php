@@ -18,6 +18,7 @@
     <link rel="stylesheet" type="text/css" href="/back/css/compiled/custom.css">
     <link rel="stylesheet" type="text/css" href="/back/layui/css/layui.css">
     <link rel="stylesheet" type="text/css" href="/back/css/globale.css">
+    <link rel="stylesheet" type="text/css" href="/back/vendor/semantic-ui/semantic.min.css">
     {{--<link id="layuicss-layer" rel="stylesheet" href="/front/lib/js/layui/css/modules/layer/default/layer.css" media="all">--}}
     <style>
         .layui-table th{
@@ -96,6 +97,7 @@
 <script src="/back/js/classie.js"></script>
 <script src="/back/js/modalEffects.js"></script>
 <script src="/back/js/jquery.modalEffects.js"></script>
+<script src="/back/vendor/semantic-ui/semantic.min.js"></script>
 <script>
     $.ajaxSetup({
         headers: {

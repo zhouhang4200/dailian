@@ -149,7 +149,7 @@ class RealNameCertificationController extends Controller
 
             $file = $request->file('file');
 
-            $path = public_path("/resources/ident/".date('Ymd')."/");
+            $path = public_path("/storage/ident/".date('Ymd')."/");
 
             $imagePath = $this->uploadImage($file, $path);
 
@@ -168,11 +168,11 @@ class RealNameCertificationController extends Controller
         $extension = $file->getClientOriginalExtension();
 
         if ($extension && ! in_array(strtolower($extension), static::$extensions)) {
-            return response()->json(['status' => 2, 'path' => $imagePath]);
+            return response()->json(['status' => 2, 'path' => '']);
         }
         // 判断上传是否为空
         if (! $file->isValid()) {
-            return response()->json(['status' => 2, 'path' => $imagePath]);
+            return response()->json(['status' => 2, 'path' => '']);
         }
         // 不存在存储路径的时候指定路径
         if (!file_exists($path)) {
@@ -183,7 +183,7 @@ class RealNameCertificationController extends Controller
         $fileName = time().substr($randNum, 0, 6).'.'.$extension;
         // 保存图片
         $path = $file->move($path, $fileName);
-        $path = strstr($path, '/resources');
+        $path = strstr($path, '/storage');
         // 返回图片路径
         return str_replace('\\', '/', $path);
     }

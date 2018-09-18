@@ -289,7 +289,7 @@ class TmOrderController extends Controller
             $pic1 = $request->pic1;
             $pic2 = $request->pic2;
             $pic3 = $request->pic3;
-            $path = public_path("/resources/complain/".date('Ymd')."/");
+            $path = public_path("/storage/complain/".date('Ymd')."/");
             if (isset($pic1) && ! empty($pic1)) {
                 $imagePath1 = static::uploadImage($pic1, $path);
                 $image['pic1']['mime_type'] = 'image/'.explode('.', $imagePath1)[1];
@@ -350,7 +350,7 @@ class TmOrderController extends Controller
         $fileName = time().substr($randNum, 0, 6).'.'.$extension;
         // 保存图片
         $path = $file->move($path, $fileName);
-        $path = strstr($path, '/resources');
+        $path = strstr($path, '/storage');
         // 返回图片路径
         return str_replace('\\', '/', $path);
     }

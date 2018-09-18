@@ -82,7 +82,7 @@ class ProfileController extends Controller
     {
         if ($request->hasFile('file')) {
             $file = $request->file('file');
-            $path = public_path("/resources/users/".date('Ymd')."/");
+            $path = public_path("/storage/users/".date('Ymd')."/");
             $imagePath = $this->uploadImage($file, $path);
             return response()->json(['status' => 1, 'message' => $imagePath]);
         }
@@ -112,7 +112,7 @@ class ProfileController extends Controller
         $randNum = rand(1, 100000000) . rand(1, 100000000);
         $fileName = time().substr($randNum, 0, 6).'.'.$extension;
         $path = $file->move($path, $fileName);
-        $path = strstr($path, '/resources');
+        $path = strstr($path, '/storage');
 
         return str_replace('\\', '/', $path);
     }

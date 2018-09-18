@@ -222,7 +222,7 @@ class OrderService
         if (! empty(self::$order->take_order_password) && self::$order->take_order_password != $takePassword) {
             throw new OrderException('接单密码错误', 7003);
         }
-myLog('aaaa', ['pass' => $payPassword]);
+
         // 验证支付密码
         if (! \Hash::check($payPassword, self::$user->pay_password)) {
             throw new UserAssetException('支付密码错误', 4002);

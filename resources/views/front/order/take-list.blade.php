@@ -222,10 +222,6 @@
             <button class="qs-btn qs-btn-sm" style="width: 80px;" data-no="@{{ d.trade_no }}" lay-submit lay-filter="cancel-complain">取消仲裁</button>
         @{{# }  }}
 
-        @{{# if (d.status_describe == '仲裁中' && d.complain_initiator == 1) {  }}
-            <button class="qs-btn qs-btn-primary qs-btn-sm qs-btn-table" style="width: 80px;" data-no="@{{ d.trade_no }}" lay-submit lay-filter="agree-consult"
-                    data-consult-amount="@{{ d.consult_amount }}" data-consult-deposit="@{{ d.consult_deposit }}" data-consult-reason="@{{ d.consult_reason }}">同意撤销</button>
-        @{{# }   }}
 
         @{{# if (d.status == '异常') {  }}
             <button class="qs-btn qs-btn-sm" style="width: 80px;" data-no="@{{ d.trade_no }}" lay-submit lay-filter="cancel-anomaly">取消异常</button>

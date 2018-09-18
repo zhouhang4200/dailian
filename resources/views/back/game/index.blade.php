@@ -19,7 +19,7 @@
                                 </div>
                                 <div class="col-md-2">
                                     <button class="btn btn-success" lay-submit="" lay-filter="search">搜索</button>
-                                    <a href="{{ route('admin.game.create') }}" class="btn btn-success" type="button" id="create" >新增</a>
+                                    <a href="{{ route('admin.game.create') }}" class="btn btn-success"  id="create" >新增</a>
                                 </div>
                             </div>
                         </form>
@@ -37,8 +37,8 @@
                                 <th>类别</th>
                                 <th>创建时间</th>
                                 <th>更新时间</th>
-                                <th>状态</th>
-                                <th>操作</th>
+                                <th width="8%">是否显示</th>
+                                <th width="10%">操作</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -52,8 +52,7 @@
                                     <td>{{ $item->updated_at }}</td>
                                     <td>
                                         <div class="ui toggle checkbox">
-                                            <input type="checkbox" tabindex="0" class="hidden">
-                                            <label>切换</label>
+                                            <input type="checkbox" tabindex="0" class="hidden" data-id="{{$item->id}}" @if($item->status == 1) checked @endif >
                                         </div>
                                     </td>
                                     <td>
@@ -78,7 +77,9 @@
     <script>
         $('.ui.checkbox').checkbox({
             onChange: function() {
-                alert(1);
+                $.post('{{ route('admin.game.change-status') }}', {id:$(this).attr('data-id'), status:$(this).is(':checked')}, function (result) {
+                    layer.msg(result.message)
+                }, 'json');
             }
         })
     </script>

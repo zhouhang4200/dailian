@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Back;
 use App\Models\Game;
 use App\Http\Controllers\Controller;
 use App\Models\GameClass;
+use App\Models\GameLevelingOrder;
 use App\Models\GameType;
 use Illuminate\Support\Facades\Validator;
 
@@ -114,5 +115,16 @@ class GameController extends Controller
     {
         Game::destroy($id);
         return response()->ajaxSuccess('删除成功');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function changeStatus()
+    {
+        Game::where('id', request('id'))->update([
+           'status' => request('status') == 'true' ? 1 : 2
+        ]);
+        return response()->ajaxSuccess('修改成功');
     }
 }

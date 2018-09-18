@@ -33,6 +33,7 @@ class Kernel extends HttpKernel
         // api sign
         'api.sign' => \App\Http\Middleware\CheckApiSign::class,
         'api.token' => \App\Http\Middleware\CheckApiToken::class,
+        'syncESOrderStatus' => \App\Http\Middleware\SyncESOrderStatus::class,
     ];
 
     /**

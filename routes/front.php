@@ -60,7 +60,7 @@ Route::group(['middleware' => 'auth'], function (){
         Route::get('/{trade_no?}', 'OrderController@show')->name('order.show');
 
         // 订单操作
-        Route::prefix('operation')->group(function (){
+        Route::prefix('operation')->middleware('syncESOrderStatus')->group(function (){
             Route::post('take', 'OrderOperationController@take')->name('order.operation.take'); // 接单
             Route::post('apply-complete', 'OrderOperationController@applyComplete')->name('order.operation.apply-complete'); // 申请验收
             Route::post('cancel-complete', 'OrderOperationController@cancelComplete')->name('order.operation.cancel-complete'); // 取消验收

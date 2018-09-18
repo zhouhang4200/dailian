@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Front;
 
+use App\Exceptions\UnknownException;
+use App\Models\GameLevelingOrder;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 

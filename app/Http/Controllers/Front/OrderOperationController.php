@@ -36,11 +36,14 @@ class OrderOperationController extends Controller
                 ->take(clientRSADecrypt(request('pay_password')), clientRSADecrypt(request('take_password')));
             TmApiService::take($order);
         } catch (OrderException $e) {
+            DB::rollBack();
             return response()->ajaxFail($e->getMessage());
         } catch (UserAssetException $e) {
+            DB::rollBack();
             return response()->ajaxFail($e->getMessage(), [], $e->getCode());
         } catch (Exception $e) {
-            return response()->ajaxFail($e->getMessage(). $e->getFile(). $e->getLine());
+            DB::rollBack();
+            return response()->ajaxFail($e->getMessage() . $e->getFile() . $e->getLine());
         }
         DB::commit();
         return response()->ajaxSuccess('接单成功');
@@ -55,11 +58,11 @@ class OrderOperationController extends Controller
     public function applyComplete()
     {
         // 获取图片信息组成仲裁需要的数组
-        $images[] = base64ToImg(request('image_1'),  'complete');
-        $images[] = base64ToImg(request('image_2'),  'complete');
-        $images[] = base64ToImg(request('image_3'),  'complete');
+        $images[] = base64ToImg(request('image_1'), 'complete');
+        $images[] = base64ToImg(request('image_2'), 'complete');
+        $images[] = base64ToImg(request('image_3'), 'complete');
 
-        if (count($images) == 0)  {
+        if (count($images) == 0) {
             return response()->ajaxFail('提交验收至少需要一张图片');
         }
 
@@ -68,10 +71,13 @@ class OrderOperationController extends Controller
             $order = OrderService::init(request()->user()->id, request('trade_no'))->applyComplete(array_filter($images));
             TmApiService::applyComplete($order->trade_no);
         } catch (OrderException $e) {
+            DB::rollBack();
             return response()->ajaxFail($e->getMessage());
         } catch (UserAssetException $e) {
+            DB::rollBack();
             return response()->ajaxFail($e->getMessage());
         } catch (Exception $e) {
+            DB::rollBack();
             return response()->ajaxFail($e->getMessage());
         }
         DB::commit();
@@ -91,10 +97,13 @@ class OrderOperationController extends Controller
             $order = OrderService::init(request()->user()->id, request('trade_no'))->cancelComplete();
             TmApiService::cancelComplete($order->trade_no);
         } catch (OrderException $e) {
+            DB::rollBack();
             return response()->ajaxFail($e->getMessage());
         } catch (UserAssetException $e) {
+            DB::rollBack();
             return response()->ajaxFail($e->getMessage());
         } catch (Exception $e) {
+            DB::rollBack();
             return response()->ajaxFail($e->getMessage());
         }
         DB::commit();
@@ -113,10 +122,13 @@ class OrderOperationController extends Controller
             $order = OrderService::init(request()->user()->id, request('trade_no'))->complete();
             TmApiService::complete($order->trade_no);
         } catch (OrderException $e) {
+            DB::rollBack();
             return response()->ajaxFail($e->getMessage());
         } catch (UserAssetException $e) {
+            DB::rollBack();
             return response()->ajaxFail($e->getMessage());
         } catch (Exception $e) {
+            DB::rollBack();
             return response()->ajaxFail($e->getMessage());
         }
         DB::commit();
@@ -135,10 +147,13 @@ class OrderOperationController extends Controller
             $order = OrderService::init(request()->user()->id, request('trade_no'))->onSale();
             TmApiService::onSale($order->trade_no);
         } catch (OrderException $e) {
+            DB::rollBack();
             return response()->ajaxFail($e->getMessage());
         } catch (UserAssetException $e) {
+            DB::rollBack();
             return response()->ajaxFail($e->getMessage());
         } catch (Exception $e) {
+            DB::rollBack();
             return response()->ajaxFail($e->getMessage());
         }
         DB::commit();
@@ -157,10 +172,13 @@ class OrderOperationController extends Controller
             $order = OrderService::init(request()->user()->id, request('trade_no'))->offSale();
             TmApiService::offSale($order->trade_no);
         } catch (OrderException $e) {
+            DB::rollBack();
             return response()->ajaxFail($e->getMessage());
         } catch (UserAssetException $e) {
+            DB::rollBack();
             return response()->ajaxFail($e->getMessage());
         } catch (Exception $e) {
+            DB::rollBack();
             return response()->ajaxFail($e->getMessage());
         }
         DB::commit();
@@ -179,10 +197,13 @@ class OrderOperationController extends Controller
             $order = OrderService::init(request()->user()->id, request('trade_no'))->lock();
             TmApiService::lock($order->trade_no);
         } catch (OrderException $e) {
+            DB::rollBack();
             return response()->ajaxFail($e->getMessage());
         } catch (UserAssetException $e) {
+            DB::rollBack();
             return response()->ajaxFail($e->getMessage());
         } catch (Exception $e) {
+            DB::rollBack();
             return response()->ajaxFail($e->getMessage());
         }
         DB::commit();
@@ -201,10 +222,13 @@ class OrderOperationController extends Controller
             $order = OrderService::init(request()->user()->id, request('trade_no'))->cancelLock();
             TmApiService::cancelLock($order->trade_no);
         } catch (OrderException $e) {
+            DB::rollBack();
             return response()->ajaxFail($e->getMessage());
         } catch (UserAssetException $e) {
+            DB::rollBack();
             return response()->ajaxFail($e->getMessage());
         } catch (Exception $e) {
+            DB::rollBack();
             return response()->ajaxFail($e->getMessage());
         }
         DB::commit();
@@ -225,10 +249,13 @@ class OrderOperationController extends Controller
 
             TmApiService::anomaly($order->trade_no);
         } catch (OrderException $e) {
+            DB::rollBack();
             return response()->ajaxFail($e->getMessage());
         } catch (UserAssetException $e) {
+            DB::rollBack();
             return response()->ajaxFail($e->getMessage());
         } catch (Exception $e) {
+            DB::rollBack();
             return response()->ajaxFail($e->getMessage());
         }
         DB::commit();
@@ -247,10 +274,13 @@ class OrderOperationController extends Controller
             $order = OrderService::init(request()->user()->id, request('trade_no'))->cancelAnomaly();
             TmApiService::cancelAnomaly($order->trade_no);
         } catch (OrderException $e) {
+            DB::rollBack();
             return response()->ajaxFail($e->getMessage());
         } catch (UserAssetException $e) {
+            DB::rollBack();
             return response()->ajaxFail($e->getMessage());
         } catch (Exception $e) {
+            DB::rollBack();
             return response()->ajaxFail($e->getMessage());
         }
         DB::commit();
@@ -280,10 +310,13 @@ class OrderOperationController extends Controller
                 ->applyConsult($amount, $depositResult['security_deposit'], $depositResult['efficiency_deposit'], $reason);
             TmApiService::applyConsult($order->trade_no, $amount, $deposit, $reason);
         } catch (OrderException $e) {
+            DB::rollBack();
             return response()->ajaxFail($e->getMessage());
         } catch (UserAssetException $e) {
+            DB::rollBack();
             return response()->ajaxFail($e->getMessage());
         } catch (Exception $e) {
+            DB::rollBack();
             return response()->ajaxFail($e->getMessage());
         }
         DB::commit();
@@ -303,10 +336,13 @@ class OrderOperationController extends Controller
             $order = OrderService::init(request()->user()->id, request('trade_no'))->cancelConsult();
             TmApiService::cancelConsult($order->trade_no);
         } catch (OrderException $e) {
+            DB::rollBack();
             return response()->ajaxFail($e->getMessage());
         } catch (UserAssetException $e) {
+            DB::rollBack();
             return response()->ajaxFail($e->getMessage());
         } catch (Exception $e) {
+            DB::rollBack();
             return response()->ajaxFail($e->getMessage());
         }
         DB::commit();
@@ -325,10 +361,13 @@ class OrderOperationController extends Controller
             $order = OrderService::init(request()->user()->id, request('trade_no'))->agreeConsult();
             TmApiService::agreeConsult($order->trade_no);
         } catch (OrderException $e) {
+            DB::rollBack();
             return response()->ajaxFail($e->getMessage());
         } catch (UserAssetException $e) {
+            DB::rollBack();
             return response()->ajaxFail($e->getMessage());
         } catch (Exception $e) {
+            DB::rollBack();
             return response()->ajaxFail($e->getMessage());
         }
         DB::commit();
@@ -348,10 +387,13 @@ class OrderOperationController extends Controller
             $order = OrderService::init(request()->user()->id, request('trade_no'))->rejectConsult();
             TmApiService::rejectConsult($order->trade_no);
         } catch (OrderException $e) {
+            DB::rollBack();
             return response()->ajaxFail($e->getMessage());
         } catch (UserAssetException $e) {
+            DB::rollBack();
             return response()->ajaxFail($e->getMessage());
         } catch (Exception $e) {
+            DB::rollBack();
             return response()->ajaxFail($e->getMessage());
         }
         DB::commit();
@@ -369,17 +411,20 @@ class OrderOperationController extends Controller
         DB::beginTransaction();
         try {
             // 获取图片信息组成仲裁需要的数组
-            $images[] = base64ToImg(request('image_1'),  'complain');
-            $images[] = base64ToImg(request('image_2'),  'complain');
-            $images[] = base64ToImg(request('image_3'),  'complain');
+            $images[] = base64ToImg(request('image_1'), 'complain');
+            $images[] = base64ToImg(request('image_2'), 'complain');
+            $images[] = base64ToImg(request('image_3'), 'complain');
 
             $order = OrderService::init(request()->user()->id, request('trade_no'))->applyComplain(request('reason'), array_filter($images));
             TmApiService::applyComplain($order->trade_no, request('reason'));
         } catch (OrderException $e) {
+            DB::rollBack();
             return response()->ajaxFail($e->getMessage());
         } catch (UserAssetException $e) {
+            DB::rollBack();
             return response()->ajaxFail($e->getMessage());
         } catch (Exception $e) {
+            DB::rollBack();
             return response()->ajaxFail($e->getMessage());
         }
         DB::commit();
@@ -400,10 +445,13 @@ class OrderOperationController extends Controller
             $order = OrderService::init(request()->user()->id, request('trade_no'))->cancelComplain();
             TmApiService::cancelComplain($order->trade_no);
         } catch (OrderException $e) {
+            DB::rollBack();
             return response()->ajaxFail($e->getMessage());
         } catch (UserAssetException $e) {
+            DB::rollBack();
             return response()->ajaxFail($e->getMessage());
         } catch (Exception $e) {
+            DB::rollBack();
             return response()->ajaxFail($e->getMessage());
         }
         DB::commit();
@@ -437,11 +485,11 @@ class OrderOperationController extends Controller
      */
     public function log($tradeNO)
     {
-        $operationLog =  GameLevelingOrderLog::where('parent_user_id', request()->user()->parent_id)
+        $operationLog = GameLevelingOrderLog::where('parent_user_id', request()->user()->parent_id)
             ->where('game_leveling_order_trade_no', $tradeNO)
             ->get();
 
-        return  view('front.order-operation.log', [
+        return view('front.order-operation.log', [
             'operationLog' => $operationLog
         ]);
     }

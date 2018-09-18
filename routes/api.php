@@ -93,7 +93,7 @@ Route::namespace('V1')->prefix('v1')->group(function () {
                 Route::post('show', 'OrderSendController@show'); // 详情
             });
             // 订单操作
-            Route::prefix('operation')->group(function () {
+            Route::prefix('operation')->middleware('syncESOrderStatus')->group(function () {
                 Route::post('take', 'OrderOperationController@take'); // 接单
                 Route::post('apply-complete', 'OrderOperationController@applyComplete'); // 申请完成
                 Route::post('cancel-complete', 'OrderOperationController@cancelComplete'); // 取消完成

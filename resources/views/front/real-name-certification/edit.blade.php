@@ -120,7 +120,7 @@
                                     上传图片
                                 </button>
                                 <input class="layui-upload-file" type="file" name="identity_card_front">
-                                <div class="layui-upload-list" style="background-image: url({{ $realNameCertification->identity_card_front }})">
+                                <div class="layui-upload-list" style="background-image: url({{ asset($realNameCertification->identity_card_front )}})">
                                     <img class="layui-upload-img" id="demo2">
                                     <input type="hidden" lay-verify="" name="identity_card_front" value="{{ $realNameCertification->identity_card_front }}">
                                     <p id="demoText"></p>
@@ -134,7 +134,7 @@
                                     上传图片
                                 </button>
                                 <input class="layui-upload-file" lay-verify="" type="file" name="identity_card_back">
-                                <div class="layui-upload-list" style="background-image: url({{ $realNameCertification->identity_card_back }})">
+                                <div class="layui-upload-list" style="background-image: url({{ asset($realNameCertification->identity_card_back) }})">
                                     <img class="layui-upload-img" id="demo3">
                                     <input type="hidden" name="identity_card_back" value="{{ $realNameCertification->identity_card_back }}">
                                     <p id="demoText"></p>
@@ -148,7 +148,7 @@
                                     上传图片
                                 </button>
                                 <input class="layui-upload-file" lay-verify="" name="identity_card_hand" value="">
-                                <div class="layui-upload-list" style="background-image: url({{ $realNameCertification->identity_card_hand ?? '' }})">
+                                <div class="layui-upload-list" style="background-image: url({{  asset($realNameCertification->identity_card_hand) }})">
                                     <img class="layui-upload-img" id="demo4">
                                     <input type="hidden" name="identity_card_hand" value="{{ $realNameCertification->identity_card_hand ?? '' }}">
                                     <p id="demoText"></p>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Models\Game;
 use App\Models\GameLevelingOrder;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
@@ -19,7 +20,7 @@ class OrderWaitController extends Controller
     public function index()
     {
         $orders = GameLevelingOrder::searchCondition(array_merge(request()->except('status'), ['status' => 1]))
-            ->where('status', 1)
+            ->whereIn('game_id', Game::where('status', 1)->pluck('id')->toArray())
             ->orderBy('top_at', 'desc')
             ->orderBy('id', 'desc')
             ->paginate(request('page_size', 10));

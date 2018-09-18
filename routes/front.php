@@ -12,7 +12,7 @@
 */
 
 // 首页
-Route::get('/', 'HomeController@index')->name('home');
+Route::get('/', 'HomeController@index')->name('home')->middleware('syncESOrderStatus');
 // 待接单列表
 Route::get('order', 'OrderController@index')->name('order');
 Route::get('order/detail/{trade_no?}', 'OrderController@indexDetail')->name('order.detail');

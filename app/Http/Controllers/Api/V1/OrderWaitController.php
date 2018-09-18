@@ -19,6 +19,7 @@ class OrderWaitController extends Controller
     public function index()
     {
         $orders = GameLevelingOrder::searchCondition(array_merge(request()->except('status'), ['status' => 1]))
+            ->where('status', 1)
             ->orderBy('top_at', 'desc')
             ->orderBy('id', 'desc')
             ->paginate(request('page_size', 10));

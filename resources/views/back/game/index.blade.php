@@ -27,7 +27,7 @@
                 </div>
 
                 <div class="layui-tab-content">
-                    <div class="layui-tab-item layui-show">
+                    <div class="layui-tab-item layui-show ">
                         <table class="layui-table" lay-size="sm">
                             <thead>
                             <tr>
@@ -37,6 +37,7 @@
                                 <th>类别</th>
                                 <th>创建时间</th>
                                 <th>更新时间</th>
+                                <th>状态</th>
                                 <th>操作</th>
                             </tr>
                             </thead>
@@ -49,6 +50,12 @@
                                     <td>{{ optional($item->gameType)->name }}</td>
                                     <td>{{ $item->updated_at }}</td>
                                     <td>{{ $item->updated_at }}</td>
+                                    <td>
+                                        <div class="ui toggle checkbox">
+                                            <input type="checkbox" tabindex="0" class="hidden">
+                                            <label>切换</label>
+                                        </div>
+                                    </td>
                                     <td>
                                         <a href="{{ route('admin.game.update', ['id' => $item->id]) }}" class="btn btn-success complete" data-id="">修改</a>
                                         <button type="button" class="btn btn-danger" data-url="{{ route('admin.game.delete', ['id' => $item->id]) }}"  lay-submit lay-filter="delete">删除</button>
@@ -68,4 +75,11 @@
 @endsection
 
 @section('js')
+    <script>
+        $('.ui.checkbox').checkbox({
+            onChange: function() {
+                alert(1);
+            }
+        })
+    </script>
 @endsection

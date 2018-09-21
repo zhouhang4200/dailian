@@ -22,7 +22,7 @@ class BlockadeAccountController extends Controller
      */
     public function index(Request $request)
     {
-        return view('back.blockade-account.index');
+//        return view('back.blockade-account.index');
         $nameOrId = $request->nameOrId;
         $startTime = $request->startTime;
         $endTime = $request->endTime;

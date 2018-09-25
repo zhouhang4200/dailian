@@ -86,7 +86,7 @@
                     <label class="layui-form-label"></label>
                     <div class="layui-input-inline">
                         <button class="btn btn-success" lay-submit="" lay-filter="update-time">确认</button>
-                        <button type="button" class="layui-btn layui-btn-normal cancel" >取消</button>
+                        <button type="button" class="btn btn-success cancel" >取消</button>
                     </div>
                 </div>
             </form>
@@ -266,7 +266,7 @@
                     type: 1,
                     shade: 0.2,
                     title: '请设置封号时间段',
-                    area: ['380px'],
+                    area: ['420px'],
                     content: $('#update-time')
                 });
                 // 取消按钮

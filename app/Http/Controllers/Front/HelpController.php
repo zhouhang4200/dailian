@@ -20,9 +20,13 @@ class HelpController extends Controller
      */
     public function index(Request $request)
     {
-        $categories = ArticleCategory::where('status', 1)->where('parent_id', 2)->oldest('sort')->with(['articles' => function ($query) {
-            $query->oldest('sort')->where('status', 1);
-        }])->get();
+        $categories = ArticleCategory::where('status', 1)
+            ->where('parent_id', 2)
+            ->oldest('sort')
+            ->with(['articles' => function ($query) {
+                $query->oldest('sort')->where('status', 1);
+            }])
+            ->get();
 
         return view('front.help.index', compact('categories'));
     }

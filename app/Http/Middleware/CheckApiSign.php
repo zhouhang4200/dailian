@@ -4,6 +4,11 @@ namespace App\Http\Middleware;
 
 use Closure;
 
+/**
+ * 检查接口传过来的身份信息，验证签名（发单器对接丸子接口用到）
+ * Class CheckApiSign
+ * @package App\Http\Middleware
+ */
 class CheckApiSign
 {
     /**

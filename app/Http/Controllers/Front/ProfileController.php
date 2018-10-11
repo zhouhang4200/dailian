@@ -23,6 +23,7 @@ class ProfileController extends Controller
     protected static $extensions = ['png', 'jpg', 'jpeg', 'gif'];
 
     /**
+     * 个人资料信息页面
      * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -37,6 +38,7 @@ class ProfileController extends Controller
     }
 
     /**
+     * 个人资料修改页
      * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -48,6 +50,7 @@ class ProfileController extends Controller
     }
 
     /**
+     * 个人资料修改
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
@@ -75,6 +78,7 @@ class ProfileController extends Controller
     }
 
     /**
+     * 显示头像功能
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
@@ -118,6 +122,7 @@ class ProfileController extends Controller
     }
 
     /**
+     * 头像后台上传
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */

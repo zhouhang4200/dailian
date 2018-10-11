@@ -8,6 +8,11 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Lcobucci\JWT\Parser;
 
+/**
+ * 微信小程序每次登录都删除之前的token
+ * Class RevokeOldTokens
+ * @package App\Listeners
+ */
 class RevokeOldTokens
 {
     /**

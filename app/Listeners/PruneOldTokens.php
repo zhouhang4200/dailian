@@ -6,6 +6,11 @@ use Laravel\Passport\Events\RefreshTokenCreated;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
+/**
+ * 微信小程序登录刷新（或过期）之前的token或token设置自动多久刷新（或过期）
+ * Class PruneOldTokens
+ * @package App\Listeners
+ */
 class PruneOldTokens
 {
     /**

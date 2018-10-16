@@ -90,20 +90,29 @@
                                        autocomplete="off" placeholder="请输入您的真实姓名" class="layui-input">
                             </div>
                         </div>
+                        {{--<div class="layui-form-item">--}}
+                            {{--<label class="layui-form-label">*开户银行卡号</label>--}}
+                            {{--<div class="layui-input-block">--}}
+                                {{--<input type="text" name="bank_card"  lay-verify="required|bankcode" value=""--}}
+                                       {{--autocomplete="off" placeholder="请输入开户银行卡号" class="layui-input">--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
+                        {{--<div class="layui-form-item">--}}
+                            {{--<label class="layui-form-label">*开户银行名称</label>--}}
+                            {{--<div class="layui-input-block">--}}
+                                {{--<input type="text" name="bank_name" lay-verify="required" value=""--}}
+                                       {{--autocomplete="off" placeholder="请输入详细银行名称如XX行XX支行" class="layui-input">--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
+
                         <div class="layui-form-item">
-                            <label class="layui-form-label">*开户银行卡号</label>
+                            <label class="layui-form-label">*支付宝账号</label>
                             <div class="layui-input-block">
-                                <input type="text" name="bank_card"  lay-verify="required|bankcode" value=""
-                                       autocomplete="off" placeholder="请输入开户银行卡号" class="layui-input">
+                                <input type="text" name="alipay_account"  lay-verify="required" value="{{ $realNameCertification->alipay_account }}"
+                                       autocomplete="off" placeholder="请输入支付宝账号" class="layui-input">
                             </div>
                         </div>
-                        <div class="layui-form-item">
-                            <label class="layui-form-label">*开户银行名称</label>
-                            <div class="layui-input-block">
-                                <input type="text" name="bank_name" lay-verify="required" value=""
-                                       autocomplete="off" placeholder="请输入详细银行名称如XX行XX支行" class="layui-input">
-                            </div>
-                        </div>
+
                         <div class="layui-form-item">
                             <label class="layui-form-label">*身份证号码</label>
                             <div class="layui-input-block">

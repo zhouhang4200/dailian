@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Front\Auth;
 use App\Http\Controllers\Api\V1\PasswordController;
 use App\Http\Controllers\Api\V1\ProfileController;
 use App\Http\Controllers\Controller;
-use App\Services\SmSApiService;
+
 use Exception;
+
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 
 class ResetPasswordController extends Controller
@@ -74,6 +76,15 @@ class ResetPasswordController extends Controller
      */
     public function verificationCode()
     {
+        $validator = Validator::make(request()->all(), [
+            'geetest_challenge' => 'required',
+        ], [
+            'geetest_challenge.required' => '请点击按钮进行验证',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->ajaxFail($validator->errors()->all()[0]); // 重复注册
+        }
         return (new ProfileController())->verificationCode(request());
     }
 }

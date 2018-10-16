@@ -1875,7 +1875,7 @@ hr {
 }
 
 .layui-btn:hover {
-    opacity: .8;
+    /*opacity: .8;*/
     filter: alpha(opacity=80);
     color: #fff
 }

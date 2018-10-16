@@ -36,7 +36,7 @@
 <div class="">
     <header class="navbar" id="header-navbar">
         <div class="container">
-            <h2 class="logo"><img src="/front/images/title.png" alt=""></h2>
+            <h2 class="logo" style="margin: 10px 0 0 9px;"><img src="/front/images/title.png" alt=""></h2>
             <div class="clearfix">
                 <button class="navbar-toggle" data-target=".navbar-ex1-collapse" data-toggle="collapse" type="button">
                     <span class="sr-only">Toggle navigation</span>

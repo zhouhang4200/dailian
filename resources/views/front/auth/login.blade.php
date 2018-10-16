@@ -23,7 +23,7 @@
             <div class="login_title">
                 账号登录
             </div>
-            <form action="" class="layui-form">
+            <form action="" class="layui-form" id="captcha-container">
                 {{ csrf_field() }}
                 <div class="layui-form-item">
                     <label class="layui-form-label"><i class="iconfont icon-dianhua"></i></label>
@@ -31,6 +31,7 @@
                         <input type="text" name="phone" lay-verify="required" autocomplete="off" placeholder="请输入手机号" class="layui-input">
                     </div>
                 </div>
+
                 <div class="layui-form-item">
                     <label class="layui-form-label"><i class="iconfont icon-ad77"></i></label>
                     <div class="layui-input-block">
@@ -38,8 +39,8 @@
                     </div>
                 </div>
 
-                <div class="layui-form-item" style="height: 45px;">
-                    {!! Geetest::render() !!}
+                <div class="layui-form-item" style="height: 45px;" id="captchaBox">
+                    {{--{!! Geetest::render() !!}--}}
                 </div>
                 <div class="layui-form-item">
                     <button class="qs-btn" lay-submit="" lay-filter="login">登录</button>
@@ -55,13 +56,14 @@
 @endsection
 
 @section('js')
+    <script src="https://static.geetest.com/static/tools/gt.js"></script>
     <script>
         $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')}});
         layui.use(['form', 'layedit', 'laydate', 'element'], function(){
-        var form = layui.form
-        ,layer = layui.layer;
+            var form = layui.form
+            ,layer = layui.layer;
 
-        form.on('submit(login)', function (data) {
+            form.on('submit(login)', function (data) {
             $.post('{{ route('login') }}', {
                 phone:data.field.phone,
                 password:encrypt(data.field.password),
@@ -93,7 +95,33 @@
             return false;
         });
 
-        $('body').height($(window).height());
+            $('body').height($(window).height());
+        });
+        $.ajax({
+            url: "{{ Config::get('geetest.url', 'geetest') }}?t=" + (new Date()).getTime(),
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                //请检测data的数据结构， 保证data.gt, data.challenge, data.success有值
+                initGeetest({
+                    gt: data.gt,
+                    challenge: data.challenge,
+                    offline: !data.success,
+                    new_captcha: true,
+                    product: 'custom',
+                    area: '#captcha-container',
+                    next_width: '100%',
+                    bg_color: 'black',
+                    lang: '{{ Config::get('geetest.lang', 'zh-cn') }}',
+                    http: '{{ Config::get('geetest.protocol', 'http') }}' + '://'
+                }, function (captchaObj) {
+                    captchaObj.appendTo("#captchaBox");
+                    captchaObj.onReady(function () {
+                    }).onSuccess(function () {
+                    }).onError(function () {
+                    })
+                });
+            }
         });
     </script>
 @endsection

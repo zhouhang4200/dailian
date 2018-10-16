@@ -145,3 +145,7 @@
 }
 body  .layui-layer-btn .layui-layer-btn0{background:#ff7a00;border-color:#ff7a00}
 body .layui-laydate .layui-this { background-color: #ff7a00 !important;; color: #fff !important;  }
+
+.layui-btn:hover {
+    opacity: 1 !important;
+}

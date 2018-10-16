@@ -194,22 +194,24 @@
 
     // 取消撤销
     form.on('submit(cancel-consult)', function (data) {
-    var index = layer.load();
-        $.post('{{ route('order.operation.cancel-consult') }}', {trade_no: $(data.elem).attr('data-no')}, function (result) {
-    layer.close(index);
-            if (result.status) {
-                @if($type == 'list')
-                    layer.msg(result.message);
-                    reloadOrderList();
-                @else
-                    layer.msg(result.message,{time:500}, function(){
-                        location.reload();
-                    });
-                @endif
-            } else {
-                layer.alert(result.message);
-            }
-        }, 'json')
+        layer.confirm('您确认取消撤销吗?', {icon: 3}, function(index){
+            var index = layer.load();
+            $.post('{{ route('order.operation.cancel-consult') }}', {trade_no: $(data.elem).attr('data-no')}, function (result) {
+                layer.close(index);
+                if (result.status) {
+                    @if($type == 'list')
+                        layer.msg(result.message);
+                        reloadOrderList();
+                    @else
+                        layer.msg(result.message,{time:500}, function(){
+                            location.reload();
+                        });
+                    @endif
+                } else {
+                    layer.alert(result.message);
+                }
+            }, 'json')
+        });
         return false;
     });
     // 同意撤销

@@ -11,7 +11,7 @@
 @endsection
 
 @section('main')
-    <div class="container" style="padding: 30px 30px 2px 30px">
+    <div class="container" style="padding: 30px 30px 2px 30px" id="captcha-container">
         <div class="title">重置密码</div>
         <form method="POST" action="{{ route('password.reset') }}"  class="layui-form" >
             {!! csrf_field() !!}
@@ -36,6 +36,9 @@
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <div class="layui-form-item" id="captchaBox" style="height: 45px;display: none">
             </div>
 
             <div class="layui-form-item">
@@ -63,77 +66,41 @@
 @endsection
 
 @section('js')
+
     <script>
-        layui.use(['form', 'layedit', 'laydate'], function(){
+        layui.use(['form', 'layedit', 'laydate'], function() {
             var form = layui.form, layer = layui.layer;
 
             form.on('submit(confirm)', function (data) {
 
-                if(data.field.password != data.field.new_password) {
+                if (data.field.password != data.field.new_password) {
                     layer.msg('两次输入密码不一至');
                     return false;
                 }
 
-               $.post('{{ route('password.reset') }}', {
-                   'phone': data.field.phone,
-                   'new_password': encrypt(data.field.new_password),
-                   'verification_code': data.field.verification_code
-               }, function (result) {
+                $.post('{{ route('password.reset') }}', {
+                    'phone': data.field.phone,
+                    'new_password': encrypt(data.field.new_password),
+                    'verification_code': data.field.verification_code
+                }, function (result) {
                     if (result.code == 0) {
                         layer.confirm('密码修改成功', {
                             btn: ['前往登录', '取消'],
                             btnAlign: 'c'
-                        }, function(index, layero){
+                        }, function (index, layero) {
                             window.location.href = '{{ route('login') }}'
-                        }, function(index){
+                        }, function (index) {
                             layer.close();
                         });
                     } else {
                         layer.msg(result.message);
                     }
-               }, 'json');
-               return false;
+                }, 'json');
+                return false;
             });
-
-            $('.get-verification').click(function () {
-                var phone = $('input[name="phone"]').val();
-
-                if ($('input[name="phone"]').val() == '' || ! phone.match(/^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/)) {
-                    layer.msg('请输入正确手机号')
-                } else {
-                    setTime(phone);
-                }
-                return false
-            });
-
-            var countdown = 59;
-            function setTime(phone) {
-                if (countdown == 59) {
-                    $.post('{{ route('password.reset.verification-code') }}',  {phone:phone, type:2}, function(result){
-                        if (result.code != 0) {
-                            return layer.msg(result.message);
-                        } else {
-                            return layer.msg('验证码发送成功请注意查收');
-                        }
-                    }, 'json');
-                }
-                if (countdown == '-1') {
-                    $('.send-code-btn').addClass("get-verification");
-                    $('.send-code-btn').css("background-color", "");
-                    $('.send-code-btn').text("重新发送");
-                    countdown = 59;
-                } else {
-
-                    $('.send-code-btn').removeClass("get-verification");
-                    $('.send-code-btn').css("background-color", "#bbbbbb");
-                    $('.send-code-btn').text("重新发送" + countdown);
-                    countdown--;
-                    setTimeout(function () {
-                        setTime()
-                    }, 1000);//1s后执行setTime 函数；
-                }
-            }
 
         });
+
     </script>
+    @include('front.auth.verification-js')
 @endsection

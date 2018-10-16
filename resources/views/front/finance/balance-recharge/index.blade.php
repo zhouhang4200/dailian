@@ -44,10 +44,10 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">充值金额</label>
                     <div class="layui-input-block">
-                        <input type="radio" name="amount" value="10" title="10元" checked>
-                        <input type="radio" name="amount" value="50" title="50元">
-                        <input type="radio" name="amount" value="100" title="100元">
-                        <input type="radio" name="amount" value="0" title="自定义金额"> <input type="text" name="custom_amount" style="height: 20px">
+                        <input type="radio" name="amount" value="10" title="10元" checked lay-filter="amount">
+                        <input type="radio" name="amount" value="50" title="50元" lay-filter="amount">
+                        <input type="radio" name="amount" value="100" title="100元" lay-filter="amount">
+                        <input type="radio" name="amount" value="0" title="自定义金额" lay-filter="amount"> <input type="text" name="custom_amount" style="height: 20px;display: none">
                     </div>
                 </div>
 
@@ -83,8 +83,17 @@
                 } else if (amount == 0 && data.field.custom_amount != '') {
                     amount = data.field.custom_amount;
                 }
+
                 window.location.href = '{{ route('finance.balance-recharge.pay') }}/?amount=' + amount + '&source=' + data.field.source;
                 return false;
+            });
+            // 控制是否显示自定义金额输入框
+            form.on('radio(amount)', function(data){
+                if (data.value == 0) {
+                    $('input[name=custom_amount]').css('display', 'inline-block')
+                } else {
+                    $('input[name=custom_amount]').css('display', 'none')
+                }
             });
         });
     </script>

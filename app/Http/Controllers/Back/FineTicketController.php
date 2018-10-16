@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Back;
 
 use App\Exceptions\UserAsset\UserAssetBalanceException;
+use App\Exceptions\UserAssetException;
 use App\Models\FineTicket;
 use App\Http\Controllers\Controller;
 use App\Models\User;
@@ -57,7 +58,7 @@ class FineTicketController extends Controller
             ]);
 
             return redirect(route('admin.user.fine-ticket.create'))->with('success', '添加成功');
-        } catch (UserAssetBalanceException $exception) {
+        } catch (UserAssetException $exception) {
             return redirect(route('admin.user.fine-ticket.create'))->with('fail', '账号余额不足');
         } catch (\Exception $exception) {
             return redirect(route('admin.user.fine-ticket.create'))->with('fail', $exception->getMessage());

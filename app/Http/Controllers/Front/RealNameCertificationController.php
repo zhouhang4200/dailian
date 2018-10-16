@@ -18,6 +18,7 @@ class RealNameCertificationController extends Controller
     protected static $extensions = ['png', 'jpg', 'jpeg', 'gif'];
 
     /**
+     * 实名认证首页
      * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -36,6 +37,7 @@ class RealNameCertificationController extends Controller
     }
 
     /**
+     * 填写实名认证页面
      * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -60,6 +62,7 @@ class RealNameCertificationController extends Controller
     }
 
     /**
+     * 保存实名认证信息
      * @param Request $request
      * @return mixed
      */
@@ -88,6 +91,7 @@ class RealNameCertificationController extends Controller
     }
 
     /**
+     * 实名认证编辑页面
      * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -108,6 +112,7 @@ class RealNameCertificationController extends Controller
     }
 
     /**
+     * 实名认证修改
      * @param Request $request
      * @param $id
      * @return mixed

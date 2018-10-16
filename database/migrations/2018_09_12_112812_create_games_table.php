@@ -20,7 +20,7 @@ class CreateGamesTable extends Migration {
 			$table->boolean('game_type_id')->comment('游戏类型:手游 端游');
 			$table->boolean('game_class_id')->comment('游戏类别: 射击 策略');
 			$table->string('icon', 191)->comment('游戏图标');
-			$table->tinyIncrements('status')->default(1)->comment('是否显示 1 显示 2 隐藏');
+			$table->tinyInteger('status')->default(1)->comment('是否显示 1 显示 2 隐藏');
 			$table->timestamps();
 		});
 	}

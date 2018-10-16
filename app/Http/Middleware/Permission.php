@@ -6,6 +6,11 @@ use Auth;
 use Closure;
 use App\Models\Permission as PermissionModel;
 
+/**
+ * 检查登录用户的权限
+ * Class Permission
+ * @package App\Http\Middleware
+ */
 class Permission
 {
     /**

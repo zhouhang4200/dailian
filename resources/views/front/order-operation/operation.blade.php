@@ -48,7 +48,8 @@
             trade_no: data.field.trade_no,
             image_1:pic1,
             image_2:pic2,
-            image_3:pic3
+            image_3:pic3,
+            remark:data.field.remark,
         }, function (result) {
         layer.close(index);
             if (result.status == 1) {

@@ -212,12 +212,12 @@ $financeRoute = [
                                 class="@if(Route::currentRouteName() == 'order.wait-list') layui-this  @endif" >
                                 <a href="{{ route('order.wait-list') }}">接单中心</a>
                             </dd>
-                        @if(Auth::user()->could(['order.take-list']))
+                            @if(Auth::user()->could(['order.take-list']))
                             <dd data-name="console"
                                 class="@if(Route::currentRouteName() == 'order.take-list' || Route::currentRouteName() == 'order.show') layui-this  @endif" >
                                 <a href="{{ route('order.take-list') }}">接单管理</a>
                             </dd>
-                        @endif
+                            @endif
                         </dl>
                     </li>
 
@@ -273,16 +273,16 @@ $financeRoute = [
                             </dd>
                             @endif
                             @if(Auth::user()->could('employee.group'))
-                            <dd data-name="console"
-                                class="@if(Route::currentRouteName() == 'employee.group' || Route::currentRouteName() == 'employee.group.create' || Route::currentRouteName() == 'employee.group.edit') layui-this  @endif">
-                                <a href="{{ route('employee.group') }}">岗位管理</a>
-                            </dd>
+                            {{--<dd data-name="console"--}}
+                                {{--class="@if(Route::currentRouteName() == 'employee.group' || Route::currentRouteName() == 'employee.group.create' || Route::currentRouteName() == 'employee.group.edit') layui-this  @endif">--}}
+                                {{--<a href="{{ route('employee.group') }}">岗位管理</a>--}}
+                            {{--</dd>--}}
                             @endif
                             @if(Auth::user()->could('employee'))
-                            <dd data-name="console"
-                                class="@if(Route::currentRouteName() == 'employee' || Route::currentRouteName() == 'employee.create') layui-this  @endif">
-                                <a href="{{ route('employee') }}">员工管理</a>
-                            </dd>
+                            {{--<dd data-name="console"--}}
+                                {{--class="@if(Route::currentRouteName() == 'employee' || Route::currentRouteName() == 'employee.create') layui-this  @endif">--}}
+                                {{--<a href="{{ route('employee') }}">员工管理</a>--}}
+                            {{--</dd>--}}
                             @endif
                         </dl>
                     </li>

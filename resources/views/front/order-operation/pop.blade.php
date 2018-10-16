@@ -197,6 +197,12 @@
                     </div>
                 </div>
             </div>
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">说明</label>
+                <div class="layui-input-block">
+                    <textarea placeholder="请输入说明" name="remark"  class="layui-textarea"></textarea>
+                </div>
+            </div>
         </div>
         <div class="layui-form-item">
             <div class="layui-input-block">

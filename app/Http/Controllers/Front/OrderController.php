@@ -175,6 +175,8 @@ class OrderController extends Controller
                 'created_at',
                 'take_at',
                 'player_phone',
+                'explain',
+                'requirement',
             ]);
 
             // 写入状态描述

@@ -264,6 +264,12 @@
     <script type="text/html" id="titleTemplate">
         <span class="tips" lay-tips="@{{ d.title  }}">@{{ d.title }}</span>
     </script>
+    <script type="text/html" id="explainTemplate">
+        <span class="tips" lay-tips="@{{ d.explain  }}">@{{ d.explain }}</span>
+    </script>
+    <script type="text/html" id="requirementTemplate">
+        <span class="tips" lay-tips="@{{ d.requirement  }}">@{{ d.requirement }}</span>
+    </script>
     <script type="text/html" id="changeStyleTemplate">
         <style>
             .layui-table-view .layui-table[lay-size=sm] td .laytable-cell-@{{ d  }}-no,
@@ -350,7 +356,9 @@
                     {field: 'amount', title: '代练价格', width: 100},
                     {field: 'security_deposit', title: '安全保证金', width: 120},
                     {field: 'efficiency_deposit', title: '效率保证金', width: 120},
-                    {field: 'created_at', title: '发单时间', width: 160},
+                    {field: 'explain', title: '代练说明', width: 120, templet:'#explainTemplate'},
+                    {field: 'requirement', title: '代练要求', width: 120, templet:'#requirementTemplate'},
+                    {field: 'created_at', title: '发单时间', width: 120},
                     {field: 'take_at', title: '接单时间', width: 160},
                     {title: '代练时间', width: 100, templet:'#dayHours'},
                     {field: 'remaining_time', title: '剩余时间', width: 165},

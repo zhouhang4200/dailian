@@ -13,7 +13,8 @@ use Illuminate\Database\Eloquent\Model;
 class GameLevelingOrderApplyComplete extends Model
 {
     public $fillable = [
-        'game_leveling_order_trade_no'
+        'game_leveling_order_trade_no',
+        'remark'
     ];
 
     /**

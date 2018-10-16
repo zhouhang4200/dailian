@@ -68,7 +68,7 @@ class OrderOperationController extends Controller
 
         DB::beginTransaction();
         try {
-            $order = OrderService::init(request()->user()->id, request('trade_no'))->applyComplete(array_filter($images));
+            $order = OrderService::init(request()->user()->id, request('trade_no'))->applyComplete(array_filter($images), request('remark'));
             TmApiService::applyComplete($order->trade_no);
         } catch (OrderException $e) {
             DB::rollBack();

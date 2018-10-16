@@ -317,11 +317,12 @@ class OrderService
     /**
      * 申请验收
      * @param array $images
+     * @param string $remark 完说成说明
      *
      * @return object
      * @throws \Exception
      */
-    public function applyComplete(array $images = [])
+    public function applyComplete(array $images = [], $remark = '')
     {
         if (! $images) {
             throw new OrderException('至少输入一张验收图片', 7009);
@@ -342,7 +343,8 @@ class OrderService
             self::$order->save();
             // 记录验收记录
             $applyComplete = GameLevelingOrderApplyComplete::create([
-                'game_leveling_order_trade_no' => self::$order->trade_no
+                'game_leveling_order_trade_no' => self::$order->trade_no,
+                'remark' => $remark
             ]);
             // 存储验收图片
             $applyComplete->image()->createMany($images);

@@ -33,8 +33,9 @@
                         <thead>
                         <tr>
                             <th>真实姓名</th>
-                            <th>开户银行卡号</th>
-                            <th>开户银行名称</th>
+                            <th>支付宝账号</th>
+                            {{--<th>开户银行卡号</th>--}}
+                            {{--<th>开户银行名称</th>--}}
                             <th>身份证号</th>
                             <th>申请认证时间</th>
                             <th>审核状态</th>
@@ -48,8 +49,9 @@
                         <tr>
                             <?php $status = ['1' => '审核中', '2' => '通过', '3' => '拒绝']; ?>
                             <td>{{ $realNameCertification->real_name }}</td>
-                            <td>{{ $realNameCertification->bank_card }}</td>
-                            <td>{{ $realNameCertification->bank_name }}</td>
+                            <td>{{ $realNameCertification->alipay_account }}</td>
+                            {{--<td>{{ $realNameCertification->bank_card }}</td>--}}
+                            {{--<td>{{ $realNameCertification->bank_name }}</td>--}}
                             <td>{{ $realNameCertification->identity_card }}</td>
                             <td>{{ $realNameCertification->created_at }}</td>
                             <td id="status">{{ $status[$realNameCertification->status] }}</td>

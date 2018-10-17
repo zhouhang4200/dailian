@@ -17,8 +17,8 @@ class CreateGamesTable extends Migration {
 			$table->increments('id');
 			$table->string('name', 60)->unique()->comment('游戏名称');
 			$table->string('initials', 8)->comment('首字母拼音');
-			$table->boolean('game_type_id')->comment('游戏类型:手游 端游');
-			$table->boolean('game_class_id')->comment('游戏类别: 射击 策略');
+			$table->integer('game_type_id')->comment('游戏类型:手游 端游');
+			$table->integer('game_class_id')->comment('游戏类别: 射击 策略');
 			$table->string('icon', 191)->comment('游戏图标');
 			$table->tinyInteger('status')->default(1)->comment('是否显示 1 显示 2 隐藏');
 			$table->timestamps();

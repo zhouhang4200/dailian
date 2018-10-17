@@ -28,7 +28,7 @@ class CreateGameLevelingOrdersTable extends Migration {
 			$table->string('take_username', 191)->nullable()->comment('接单用户名');
 			$table->integer('take_parent_user_id')->unsigned()->default(0)->comment('接单用户父ID');
 			$table->string('take_parent_username', 191)->nullable()->comment('接单用户父用户名');
-			$table->boolean('order_type_id')->comment('订单类型');
+			$table->integer('order_type_id')->comment('订单类型');
 			$table->integer('game_type_id')->unsigned()->comment('游戏类型ID');
 			$table->integer('game_class_id')->unsigned()->comment('游戏类别ID');
 			$table->integer('game_id')->unsigned()->comment('游戏ID');
@@ -48,8 +48,8 @@ class CreateGameLevelingOrdersTable extends Migration {
 			$table->integer('hour')->unsigned()->default(0)->comment('代练小时');
 			$table->decimal('security_deposit', 17)->default(0.00)->comment('安全保证金');
 			$table->decimal('efficiency_deposit', 17)->default(0.00)->comment('效率保证金');
-			$table->text('explain', 65535)->comment('代练说明');
-			$table->text('requirement', 65535)->comment('代练要求');
+			$table->text('explain')->comment('代练说明');
+			$table->text('requirement')->comment('代练要求');
 			$table->string('take_order_password', 30)->nullable()->comment('接单密码');
 			$table->string('player_name', 80)->default('0')->comment('玩家名称');
 			$table->string('player_phone', 20)->default('0')->comment('玩家电话');
@@ -59,8 +59,8 @@ class CreateGameLevelingOrdersTable extends Migration {
 			$table->decimal('price_ceiling', 17)->default(0.00)->comment('自动加价上限');
 			$table->dateTime('apply_complete_at')->nullable()->comment('申请验收时间');
 			$table->dateTime('complete_at')->nullable()->comment('订单完成时间');
-			$table->boolean('source')->default(1)->comment('订单来源');
-			$table->boolean('top')->default(0)->comment('置顶 0 没有置 1 置顶');
+			$table->integer('source')->default(1)->comment('订单来源');
+			$table->tinyInteger('top')->default(0)->comment('置顶 0 没有置 1 置顶');
 			$table->dateTime('top_at')->nullable()->comment('置顶的时间');
 			$table->timestamps();
 			$table->string('parent_user_phone', 60)->nullable()->default('')->comment('创建订单用户父');

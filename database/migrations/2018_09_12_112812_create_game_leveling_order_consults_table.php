@@ -22,8 +22,8 @@ class CreateGameLevelingOrderConsultsTable extends Migration {
 			$table->decimal('security_deposit', 17)->comment('安全保证金');
 			$table->decimal('efficiency_deposit', 17)->comment('效率保证金');
 			$table->string('reason', 500)->comment('撤销原因');
-			$table->boolean('status')->default(1)->comment('状态 1 处理中 2 成功 3 失败');
-			$table->boolean('initiator')->comment('发起人 1 发单方 2 接单方');
+			$table->tinyInteger('status')->default(1)->comment('状态 1 处理中 2 成功 3 失败');
+			$table->tinyInteger('initiator')->comment('发起人 1 发单方 2 接单方');
 			$table->timestamps();
 		});
 	}

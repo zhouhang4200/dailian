@@ -18,7 +18,7 @@ class CreateArticleCategoriesTable extends Migration {
 			$table->string('name', 191)->comment('分类名');
 			$table->integer('parent_id')->unsigned()->comment('父分类ID');
 			$table->integer('sort')->unsigned()->default(255)->comment('排序');
-			$table->boolean('status')->comment('1:开启，2:禁用');
+			$table->tinyInteger('status')->comment('1:开启，2:禁用');
 			$table->timestamps();
 		});
 	}

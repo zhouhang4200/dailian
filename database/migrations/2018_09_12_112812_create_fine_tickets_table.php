@@ -21,7 +21,7 @@ class CreateFineTicketsTable extends Migration {
 			$table->integer('user_id')->unsigned()->comment('罚款用户ID主ID');
 			$table->string('reason', 500)->comment('罚款原因');
 			$table->string('remark', 500)->nullable()->default('')->comment('备注');
-			$table->boolean('status')->default(1)->comment('状态 1 冻结中 2 已解冻 3 已罚款');
+			$table->tinyInteger('status')->default(1)->comment('状态 1 冻结中 2 已解冻 3 已罚款');
 			$table->timestamps();
 		});
 	}

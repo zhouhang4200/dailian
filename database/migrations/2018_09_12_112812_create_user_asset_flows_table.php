@@ -16,7 +16,7 @@ class CreateUserAssetFlowsTable extends Migration {
 		{
 			$table->increments('id');
 			$table->integer('user_id')->unsigned()->comment('用户ID');
-			$table->boolean('type')->comment('类型');
+			$table->integer('type')->comment('类型');
 			$table->integer('sub_type')->unsigned()->comment('子类型');
 			$table->string('trade_no', 22)->comment('交易单号');
 			$table->decimal('amount', 17)->comment('发生金额');

@@ -28,9 +28,9 @@ class CreateUsersTable extends Migration {
 			$table->string('qq_open_id', 200)->nullable()->comment('QQOpenID');
 			$table->string('wechat_open_id', 200)->nullable()->comment('微信openID');
 			$table->string('avatar', 191)->default('/front/images/default_avatar.png')->comment('头像');
-			$table->boolean('sex')->default(1)->comment('性别 1 男 2 女');
+			$table->tinyInteger('sex')->default(1)->comment('性别 1 男 2 女');
 			$table->dateTime('birthday')->nullable()->comment('生日');
-			$table->boolean('status')->default(1)->comment('状态 1 启用 2 禁用 3 已删除');
+			$table->tinyInteger('status')->default(1)->comment('状态 1 启用 2 禁用 3 已删除');
 			$table->string('last_login_local', 100)->nullable()->comment('最后登录地');
 			$table->dateTime('last_login_at')->nullable()->comment('最后登录时间');
 			$table->bigInteger('last_login_ip')->nullable()->comment('最后登录IP');

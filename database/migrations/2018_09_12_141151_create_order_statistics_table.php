@@ -17,7 +17,7 @@ class CreateOrderStatisticsTable extends Migration {
 			$table->increments('id');
 			$table->date('date')->comment('发单日期');
 			$table->string('trade_no', 191)->comment('订单号');
-			$table->boolean('status')->comment('订单状态');
+			$table->integer('status')->comment('订单状态');
 			$table->integer('game_id')->comment('游戏id');
 			$table->string('game_name', 191)->comment('游戏名称');
 			$table->integer('consult_creator')->default(0)->comment('撤销发起人: 默认0 没有发起撤销, 1 发单发起， 2 接单发起');
@@ -39,8 +39,8 @@ class CreateOrderStatisticsTable extends Migration {
 			$table->dateTime('order_finished_at')->default('0000-00-00 00:00:00')->comment('订单结算时间');
 			$table->timestamps();
 			$table->decimal('original_amount', 10)->default(0.00)->comment('来源价格, 默认 0');
-			$table->boolean('third')->default(1)->comment('发单平台号,默认1 发单器发单');
-			$table->boolean('is_repeat')->default(0)->comment('是否为重发单:0 否, 1 是');
+			$table->tinyInteger('third')->default(1)->comment('发单平台号,默认1 发单器发单');
+			$table->tinyInteger('is_repeat')->default(0)->comment('是否为重发单:0 否, 1 是');
 		});
 	}
 

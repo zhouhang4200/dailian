@@ -72,22 +72,24 @@
 
     // 取消验收
     form.on('submit(cancel-complete)', function (data) {
-    var index = layer.load();
-        $.post('{{ route('order.operation.cancel-complete') }}', {trade_no: $(data.elem).attr('data-no')}, function (result) {
-    layer.close(index);
-            if (result.status) {
-                @if($type == 'list')
-                    layer.msg(result.message);
-                    reloadOrderList();
-                @else
-                    layer.msg(result.message,{time:500}, function(){
-                        location.reload();
-                    });
-                @endif
-            } else {
-                layer.alert(result.message);
-            }
-        }, 'json')
+        layer.confirm('取消验收会导致自动验收时间重新计算，确定要取消验收吗?', {icon: 3}, function(index){
+            var index = layer.load();
+            $.post('{{ route('order.operation.cancel-complete') }}', {trade_no: $(data.elem).attr('data-no')}, function (result) {
+                layer.close(index);
+                if (result.status) {
+                    @if($type == 'list')
+                        layer.msg(result.message);
+                        reloadOrderList();
+                    @else
+                        layer.msg(result.message,{time:500}, function(){
+                            location.reload();
+                        });
+                    @endif
+                } else {
+                    layer.alert(result.message);
+                }
+            }, 'json')
+        });
         return false;
     });
 

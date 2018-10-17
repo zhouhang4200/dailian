@@ -27,6 +27,17 @@
                 return false;
             }
 
+            if ($(data.elem).attr('data-pay_password') == 2) {
+                layer.open({
+                    type: 1,
+                    shade: 0.2,
+                    title: '设置支付密码',
+                    area: ['440px'],
+                    content: $('#set-pay-password-pop')
+                });
+                return false;
+            }
+
             $('input[name=trade_no]').val($(data.elem).attr('data-trade_no'));
 
             if ($(data.elem).attr('data-take_password') == 1) {

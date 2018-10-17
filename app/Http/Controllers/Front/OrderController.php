@@ -75,7 +75,7 @@ class OrderController extends Controller
         unset($detail[0]['id']);
         unset($detail[0]['game_id']);
         unset($detail[0]['game']);
-        unset($detail[0]['take_order_password']);
+//        unset($detail[0]['take_order_password']);
 
 
         return response()->json(view()->make('front.order.index-detail', [
@@ -192,6 +192,7 @@ class OrderController extends Controller
             $ordersArr[$key]['profit'] = $item->getProfit();
             $ordersArr[$key]['consult_initiator'] = $item->getConsultInitiator();
             $ordersArr[$key]['complain_initiator'] = $item->getComplainInitiator();
+            $ordersArr[$key]['auto_complete_time'] = $item->getAutoCompleteTime();
 
             $ordersArr[$key]['consult_amount'] = $item->consult ?  $item->consult->amount : 0;
             $ordersArr[$key]['consult_deposit'] = $item->consult ?  $item->consult->security_deposit + $item->consult->efficiency_deposit : 0;

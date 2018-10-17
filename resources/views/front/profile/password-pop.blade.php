@@ -72,7 +72,6 @@
                 <input type="password" name="repeat_password" required lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
             </div>
         </div>
-
         <div class="layui-form-item">
             <div class="layui-input-block">
                 <button class="qs-btn" lay-submit lay-filter="confirm-set-pay-password">确定</button>

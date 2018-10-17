@@ -362,6 +362,7 @@
                     {field: 'take_at', title: '接单时间', width: 160},
                     {title: '代练时间', width: 100, templet:'#dayHours'},
                     {field: 'remaining_time', title: '剩余时间', width: 165},
+                    {field: 'auto_complete_time', title: '剩余自动验收时间', width: 165},
                     {field: 'player_phone', title: '号主电话', width: 100},
                     {field: 'income_amount', title: '获得金额', width: 80},
                     {field: 'expend_amount', title: '支付金额', width: 80},

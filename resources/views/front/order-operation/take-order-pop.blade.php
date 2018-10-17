@@ -35,7 +35,7 @@
             </div>
             @if(Auth::user()->isParent())
             <div class="layui-form-mid layui-word-aux reset-pay-password" id="">忘记密码</div>
-                @endif
+            @endif
         </div>
         <div class="layui-form-item">
             <div class="layui-input-block">

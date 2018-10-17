@@ -333,197 +333,6 @@ class GameLevelingOrder extends Model
             $query->where('amount', '>', 200);
         }
 
-//        $query = self::search($keyword);
-//
-//        $where = [];
-//
-//        $searchCondition = [
-//            'should' => [
-//                [
-//                    "bool" => [
-//                        "must" => [
-//                            [
-//                                "match" => [
-//                                    "status" => "1",
-//                                ],
-//                            ],
-//                            [
-//                                "match" => [
-//                                    "top" => "1",
-//                                ],
-//                            ]
-//                        ]
-//                    ]
-//                ],
-//                [
-//                    "bool" => [
-//                        "must" => []
-//                    ]
-//                ],
-//                [
-//                    "bool" =>  [
-//                        "should" =>  [
-//                            [
-//                                "bool" =>  [
-//                                    "must" =>  []
-//                                ]
-//                            ],
-//                            [
-//                                "bool" =>  [
-//                                    "must" =>  []
-//                                ]
-//                            ],
-//                            [
-//                                "bool" =>  [
-//                                    "must" =>  []
-//                                ]
-//                            ]
-//                        ]
-//                    ]
-//                ]
-//            ]
-//        ];
-//
-//        if (isset($condition['status']) && $condition['status']) {
-//            $where[] = [
-//                "match" => [
-//                    "status" => $condition['status'],
-//                ]
-//            ];
-//        }
-//
-//        if (isset($condition['take_parent_user_id']) && $condition['take_parent_user_id']) {
-//            $where[] = [
-//                "match" => [
-//                    "take_parent_user_id" => $condition['take_parent_user_id'],
-//                ]
-//            ];
-//        }
-//
-//        if (isset($condition['trade_no']) && $condition['trade_no']) {
-//            $query->where('trade_no', $condition['trade_no']);
-//        }
-//
-//        if (isset($condition['game_id']) && $condition['game_id']) {
-//            $where[] = [
-//                "match" => [
-//                    "game_id" => $condition['game_id'],
-//                ]
-//            ];
-//        }
-//
-//        if (isset($condition['region_id']) && $condition['region_id']) {
-//            $where[] = [
-//                "match" => [
-//                    "region_id" => $condition['region_id'],
-//                ]
-//            ];
-//        }
-//
-//        if (isset($condition['server_id']) && $condition['server_id']) {
-//            $where[] = [
-//                "match" => [
-//                    "server_id" => $condition['server_id'],
-//                ]
-//            ];
-//        }
-//
-//        $filter = [];
-//        if (isset($condition['amount']) && $condition['amount'] == 1) {
-//            $filter = [
-//                'bool' => [
-//                    'must' =>  [
-//                        'range' => [
-//                            'amount' => [
-//                                'lt' => 10,
-//                            ]
-//                        ]
-//                    ]
-//                ]
-//            ];
-//        }
-//
-//        if (isset($condition['amount']) && $condition['amount'] == 2) {
-//            $filter = [
-//                'bool' => [
-//                    'must' =>  [
-//                        'range' => [
-//                            'amount' => [
-//                                'gte' => 10,
-//                                'lte' => 100,
-//                            ]
-//                        ]
-//                    ]
-//                ]
-//            ];
-//        }
-//
-//        if (isset($condition['amount']) && $condition['amount'] == 3) {
-//            $filter = [
-//                'bool' => [
-//                    'must' =>  [
-//                        'range' => [
-//                            'amount' => [
-//                                'gte' => 100,
-//                                'lte' => 200,
-//                            ]
-//                        ]
-//                ]
-//                ]
-//            ];
-//        }
-//
-//        if (isset($condition['amount']) && $condition['amount'] == 4) {
-//            $filter = [
-//                'bool' => [
-//                    'must' =>  [
-//                        'range' => [
-//                            'amount' => [
-//                                'gt' => 200,
-//                            ]
-//                        ]
-//                    ]
-//                ]
-//            ];
-//        }
-//
-//        if ($keyword == '-1') {
-//            $searchCondition['should'][1]['bool']['must'] = $where;
-//            $searchCondition['should'][1]['bool']['filter'] = $filter;
-//            unset($searchCondition['should'][2]);
-//        } else {
-//            $searchCondition['should'][2]['bool']['should'][0]['bool']['must'] = array_merge($where, [
-//                [
-//                    "match" => [
-//                        "trade_no" => $keyword,
-//                    ]
-//                ]
-//            ]);
-//            $searchCondition['should'][2]['bool']['should'][1]['bool']['must'] = array_merge($where, [
-//                [
-//                    "match" => [
-//                        "title" => $keyword,
-//                    ]
-//                ]
-//            ]);
-//            $searchCondition['should'][2]['bool']['should'][2]['bool']['must'] = array_merge($where, [
-//                [
-//                    "match" => [
-//                        "title" => $keyword,
-//                    ]
-//                ]
-//            ]);
-//
-//            $searchCondition['should'][2]['bool']['should'][2]['bool']['filter'] = $filter;
-//            $searchCondition['should'][1] = $searchCondition['should'][2];
-//            unset($searchCondition['should'][2]);
-//        }
-//
-//        // 查询
-//        $query->rule(function() use ($searchCondition) {
-//            return $searchCondition;
-//        });
-
         // 1 价格升序
         if (isset($condition['sort']) && $condition['sort'] == 1) {
             $query->orderBy('amount', 'asc');
@@ -568,6 +377,18 @@ class GameLevelingOrder extends Model
                 ->addDays($this->day)
                 ->addHours($this->hours)
                 ->diffInSeconds(Carbon::now()));
+        } else {
+            return '--';
+        }
+    }
+
+    /**
+     * 获取代练剩余自动验收时间
+     */
+    public function getAutoCompleteTime()
+    {
+        if ($this->status == 3) {
+            return sec2Time(Carbon::parse($this->apply_complete_at)->addHours(24)->diffInSeconds(Carbon::now()));
         } else {
             return '--';
         }

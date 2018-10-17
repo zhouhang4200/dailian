@@ -363,7 +363,6 @@
                                     lay-submit lay-filter="detail"
                                     data-trade_no="{{ $item->trade_no }}"
                                     data-take_password="{{ $item->take_order_password ? 1 : 2 }}"
-                                    data-guest="{{ $guest }}"
                             >接单</button>
                         </td>
                     </tr>

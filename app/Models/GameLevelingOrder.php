@@ -388,7 +388,7 @@ class GameLevelingOrder extends Model
     public function getAutoCompleteTime()
     {
         if ($this->status == 3) {
-            return sec2Time(Carbon::parse($this->apply_complete_at)->addHours(24)->diffInSeconds(Carbon::now()));
+            return sec2Time(Carbon::parse($this->apply_complete_at)->addHours(48)->diffInSeconds(Carbon::now()));
         } else {
             return '--';
         }

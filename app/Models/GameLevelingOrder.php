@@ -406,7 +406,7 @@ class GameLevelingOrder extends Model
     public function getExpendAmount()
     {
         // 当前用户为发单用户 否则 就是接单用户
-        if (request()->user()->parent_id == $this->parent_id) {
+        if (request()->user()->parent_user_id == $this->parent_user_id) {
             if (optional($this->consult)->status && optional($this->consult)->status == 2) {
                 return $this->consult->amount;
             } else if (optional($this->complain)->status && optional($this->complain)->status == 2) {
@@ -440,7 +440,7 @@ class GameLevelingOrder extends Model
     public function getIncomeAmount()
     {
         // 当前用户为发单用户 否则 就是接单用户
-        if (request()->user()->parent_id == $this->parent_id) {
+        if (request()->user()->parent_user_id == $this->parent_user_id) {
             if (optional($this->consult)->status && optional($this->consult)->status == 2) {
                 return bcadd($this->consult->security_deposit, $this->consult->efficiency_deposit);
             } else if (optional($this->complain)->status && optional($this->complain)->status == 2) {

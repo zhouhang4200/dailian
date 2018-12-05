@@ -261,7 +261,7 @@ class UserAssetService
             throw new UserAssetException('不存在相关的冻结记录', 4009);
         }
 
-        if ($frozen < self::$amount) {
+        if (-$frozen < self::$amount) {
             throw new UserAssetException('解冻金额大于冻结金额', 4010);
         }
 
@@ -384,7 +384,7 @@ class UserAssetService
      */
     private function flow($balance, $frozen)
     {
-        UserAssetFlow::create([
+        $data = [
             'user_id' => self::$userId,
             'type' => self::$type,
             'sub_type' => self::$subType,
@@ -394,7 +394,13 @@ class UserAssetService
             'frozen' => $frozen,
             'date' => date('Y-m-d'),
             'remark' => self::$remark,
-        ]);
+        ];
+
+        if (in_array(self::$type, [2, 3, 6])) {
+            $data['amount'] = -self::$amount;
+        }
+
+        UserAssetFlow::create($data);
     }
 }
 

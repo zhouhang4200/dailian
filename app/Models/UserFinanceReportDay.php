@@ -44,7 +44,7 @@ class UserFinanceReportDay extends Model
         if (isset($condition['end_time']) && $condition['end_time']) {
             $query->where('date', '<=',$condition['end_time']);
         }
-        return $query;
+        return $query->where('user_id', \Auth::user()->parent_id);
     }
 
     /**

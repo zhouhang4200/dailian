@@ -21,7 +21,7 @@
 
             $.post('{{ route('password.reset.verification-code') }}', {
                 phone: phone,
-                type: 2,
+                type: 1,
                 geetest_challenge: $('input[name=geetest_challenge]').val(),
                 geetest_seccode: $('input[name=geetest_seccode]').val(),
                 geetest_validate: $('input[name=geetest_validate]').val()

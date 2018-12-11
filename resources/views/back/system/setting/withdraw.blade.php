@@ -18,6 +18,8 @@
                                 </li>
                                 <li @if($key == 'mini-program') class="layui-this" @endif lay-id="mini-program">小程序环境
                                 </li>
+                                <li @if($key == 'spread') class="layui-this" @endif lay-id="spread">推广设置
+                                </li>
                             </ul>
                         </div>
 

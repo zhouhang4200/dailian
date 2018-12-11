@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Spread;
 use Redis;
 use Exception;
 use App\Models\OrderStatistic;
@@ -23,6 +24,7 @@ use App\Models\GameLevelingOrderComplain;
 use App\Models\GameLevelingOrderApplyComplete;
 use App\Models\GameLevelingOrderPreviousStatus;
 use Illuminate\Support\Facades\DB;
+use Unisharp\Setting\SettingFacade;
 
 /**
  * 订单服务类
@@ -406,6 +408,7 @@ class OrderService
         if (self::$order->status != 3) {
             throw new OrderException('完成验收失败,订单当前状态为: ' . self::$order->getStatusDescribe(), 7005);
         }
+
         if (self::$order->parent_user_id != self::$user->parent_id) {
             throw new OrderException('您不是发单方无法完成验收', 7006);
         }
@@ -414,20 +417,36 @@ class OrderService
         try {
             // 发单方从冻结支出代练费用
             UserAssetService::init(61, self::$order->user_id, self::$order->amount, self::$order->trade_no)->expendFromFrozen();
+
             // 接单方收入代练费用
             UserAssetService::init(51, self::$order->take_user_id, self::$order->amount, self::$order->trade_no)->income();
-            // 如果存在保证金, 冻结接单方解冻保证金
+
+            // 如果存在保证金, 接单方解冻保证金
             if (self::$order->security_deposit > 0) {
                 UserAssetService::init(43, self::$order->take_user_id, self::$order->security_deposit, self::$order->trade_no)->unfrozen();
             }
+
             if (self::$order->efficiency_deposit > 0) {
                 UserAssetService::init(42, self::$order->take_user_id, self::$order->efficiency_deposit, self::$order->trade_no)->unfrozen();
             }
             // 获取费率类型
             $gameLevelingType = GameLevelingType::find(self::$order->game_leveling_type_id);
+
             // 支出收入手费
             $poundage = bcmul(self::$order->amount, bcdiv($gameLevelingType->poundage, 100));
             UserAssetService::init(64, self::$order->take_user_id, $poundage, self::$order->trade_no)->expendFromBalance();
+
+            // 返利
+            $spread = Spread::where('user_id', self::$order->take_user_id)->first();
+            $spreadRate = SettingFacade::get('spread')['spread'] ?? null;
+
+            if ($spread && $spreadRate && $spreadRate <= 1) {
+                // 支出
+                $spreadAmount = bcmul(self::$order->amount, $spreadRate, 2);
+                UserAssetService::init(66, self::$order->take_user_id, $spreadAmount, self::$order->trade_no)->expendFromBalance();
+                // 收入
+                UserAssetService::init(55, $spread->spread_user_id, $spreadAmount, self::$order->trade_no)->income();
+            }
 
             // 修改订单状态
             $completeAt = date('Y-m-d H:i:s');

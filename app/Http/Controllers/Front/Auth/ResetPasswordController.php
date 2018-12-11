@@ -71,6 +71,7 @@ class ResetPasswordController extends Controller
 
     /**
      * 发送验证码
+     *
      * @throws Exception
      * @throws \GuzzleHttp\Exception\GuzzleException
      */

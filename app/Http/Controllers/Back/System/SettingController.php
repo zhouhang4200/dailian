@@ -29,7 +29,13 @@ class SettingController extends Controller
      */
     public function update()
     {
+        // 推广比例大于1，返回失败
+        if (request('key') == 'spread' && request('spread') > 1) {
+            return back();
+        }
+
         SettingFacade::set(request('key'), request()->except('_token'));
+
         return back();
     }
 }

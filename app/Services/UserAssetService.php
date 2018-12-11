@@ -191,7 +191,7 @@ class UserAssetService
 
         try {
             // 写流水
-            $this->flow($userAsset->balance,  bcsub($userAsset->frozen, self::$amount));
+            $this->flow($userAsset->balance, bcsub($userAsset->frozen, self::$amount));
 
             // 更新用户冻结余额
             $userAsset->frozen = bcsub($userAsset->frozen, self::$amount);

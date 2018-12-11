@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Front\Auth;
 
+use App\Models\Spread;
 use DB;
 use Exception;
 use App\Models\User;
@@ -96,6 +97,7 @@ class RegisterController extends Controller
     public function register(Request $request)
     {
         DB::beginTransaction();
+
         try {
             $data = $request->all();
             $data['password'] = clientRSADecrypt($request->password);
@@ -121,6 +123,18 @@ class RegisterController extends Controller
             }
 
             event(new Registered($user = $this->create($data)));
+
+            // 推广人
+            if (request('spread_user_id')) {
+                if ($spreadUser = User::find(request('spread_user_id'))) {
+                    Spread::updateOrCreate(
+                        ['spread_user_id' => $spreadUser->id, 'user_id' => $user->id],
+                        ['spread_user_id' => $spreadUser->id, 'user_id' => $user->id]
+                    );
+                } else {
+                    return response()->json(['status' => 0, 'message' => '您填写的推广人ID不存在!']);
+                }
+            }
 
             $this->guard()->login($user);
         } catch (Exception $e) {

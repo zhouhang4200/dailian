@@ -54,6 +54,12 @@
                 <input type="text" class="layui-input" value="{{ $detail['region_name'] }}">
             </div>
         </div>
+        <div class="layui-col-sm4">
+            <label class="layui-form-label">服</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" value="{{ $detail['server_name'] }}">
+            </div>
+        </div>
     </div>
 
     <div class="layui-row  layui-form-item">

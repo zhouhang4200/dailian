@@ -108,7 +108,7 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label">*支付宝账号</label>
                             <div class="layui-input-block">
-                                <input type="text" name="alipay_account"  lay-verify="required" value="{{ $realNameCertification->alipay_account }}"
+                                <input type="text" name="alipay_account"  lay-verify="required" value=""
                                        autocomplete="off" placeholder="请输入支付宝账号" class="layui-input">
                             </div>
                         </div>

@@ -23,6 +23,7 @@ class CreateRealNameCertificationsTable extends Migration {
 			$table->string('identity_card_hand', 500)->comment('手持身份证照');
 			$table->string('bank_card', 60)->comment('银行卡');
 			$table->string('bank_name', 200)->comment('开户行');
+			$table->string('alipay_account', 200)->comment('支付宝账号');
 			$table->boolean('status')->comment('状态 1 正在审核 2 通过 3 未通过');
 			$table->string('remark', 500)->comment('审核没通过时原因');
 			$table->timestamps();

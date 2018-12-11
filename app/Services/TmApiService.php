@@ -138,7 +138,7 @@ class TmApiService
             // 发送
             static::normalRequest($options, config('tm.action.take'));
         } catch (Exception $e) {
-            throw new UnknownException($e->getMessage());
+            throw new UnknownException($e->getMessage() . '=' . $e->getLine(). '=' . $e->getFile());
         }
     }
 

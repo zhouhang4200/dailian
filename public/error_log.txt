@@ -22,3 +22,5 @@
 [07-Dec-2018 12:02:19 Asia/Shanghai] PHP Fatal error:  Allowed memory size of 268435456 bytes exhausted (tried to allocate 20480 bytes) in /var/www/take/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php on line 122
 [07-Dec-2018 12:02:23 Asia/Shanghai] PHP Fatal error:  Allowed memory size of 268435456 bytes exhausted (tried to allocate 20480 bytes) in /var/www/take/vendor/doctrine/dbal/lib/Doctrine/DBAL/Driver/PDOConnection.php on line 46
 [07-Dec-2018 12:02:23 Asia/Shanghai] PHP Fatal error:  Allowed memory size of 268435456 bytes exhausted (tried to allocate 20480 bytes) in /var/www/take/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php on line 122
+[23-Nov-2018 07:49:28 UTC] PHP Warning:  require(/var/www/wz.test/public/../vendor/autoload.php): failed to open stream: No such file or directory in /var/www/wz.test/public/index.php on line 27
+[23-Nov-2018 07:49:28 UTC] PHP Fatal error:  require(): Failed opening required '/var/www/wz.test/public/../vendor/autoload.php' (include_path='.:/usr/local/lib/php') in /var/www/wz.test/public/index.php on line 27

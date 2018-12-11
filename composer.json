@@ -7,6 +7,7 @@
     "require": {
         "php": ">=7.0.0",
         "babenkoivan/scout-elasticsearch-driver": "^3.8",
+        "elfsundae/laravel-hashid": "^1.2",
         "fideloper/proxy": "~3.3",
         "germey/geetest": "^3.0",
         "guzzlehttp/guzzle": "^6.3",

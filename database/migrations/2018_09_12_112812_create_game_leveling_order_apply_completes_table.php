@@ -16,6 +16,7 @@ class CreateGameLevelingOrderApplyCompletesTable extends Migration {
 		{
 			$table->increments('id');
 			$table->string('game_leveling_order_trade_no', 22)->comment('代练订单交易号');
+			$table->string('remark', 200)->comment('备注');
 			$table->timestamps();
 		});
 	}

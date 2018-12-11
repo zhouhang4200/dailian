@@ -513,13 +513,13 @@ class GameLevelingOrder extends Model
 
                 // 当前用户父Id 等于撤销发起人
                 if ($this->consult->parent_user_id == request()->user()->parent_id) {
-                    return sprintf("您发起撤销, <br/> 你支付代练费用 %.2f 元, 对方支付保证金 %.2f, <br/> 原因: %s",
+                    return sprintf("您发起撤销, <br/> 您支付代练费用 %.2f 元, 对方支付保证金 %.2f, <br/> 原因: %s",
                         $this->consult->amount, 
                         bcadd($this->consult->security_deposit, $this->consult->efficiency_deposit),
                         $this->consult->reason
                     );
                 } else {
-                    return sprintf("对方发起撤销, <br/> 对方支付代练费用 %.2f 元, 你方支付保证金 %.2f, <br/> 原因: %s",
+                    return sprintf("对方发起撤销, <br/> 对方支付代练费用 %.2f 元, 您方支付保证金 %.2f, <br/> 原因: %s",
                         $this->consult->amount, 
                         bcadd($this->consult->security_deposit, $this->consult->efficiency_deposit),
                         $this->consult->reason
@@ -528,7 +528,7 @@ class GameLevelingOrder extends Model
             } else if ($this->consult->initiator == 2) {  // 如果发起人为接单方
 
                 if ($this->consult->parent_user_id == request()->user()->parent_id) {
-                    return sprintf("您发起撤销, <br/> 对方支付代练费用 %.2f 元, 你支付保证金 %.2f, <br/> 原因: %s",
+                    return sprintf("您发起撤销, <br/> 对方支付代练费用 %.2f 元, 您支付保证金 %.2f, <br/> 原因: %s",
                         $this->consult->amount, 
                         bcadd($this->consult->security_deposit, $this->consult->efficiency_deposit),
                         $this->consult->reason
@@ -556,7 +556,7 @@ class GameLevelingOrder extends Model
         if (! is_null($this->complain) && $this->complain->status != 3) {
             // 当前用户父Id 等于仲裁发起人
             if ($this->complain->parent_user_id == request()->user()->parent_id) {
-                return sprintf("你发起仲裁 <br/> 原因: %s",
+                return sprintf("您发起仲裁 <br/> 原因: %s",
                     $this->complain->reason
                 );
             } else {
@@ -581,29 +581,29 @@ class GameLevelingOrder extends Model
 
                 // 当前用户父Id 等于仲裁发起人
                 if ($this->complain->parent_user_id == request()->user()->parent_id) {
-                    return sprintf("客服进行了【仲裁】  <br/> 你支付代练费用 %.2f 元, 对方支付保证金 %.2f <br/> 仲裁说明： %s",
+                    return sprintf("客服进行了【仲裁】  <br/> 您支付代练费用 %.2f 元, 对方支付保证金 %.2f <br/> 仲裁说明： %s",
                         $this->complain->amount,
                         bcadd($this->complain->security_deposit, $this->complain->efficiency_deposit),
                         $this->complain->reason
                     );
                 } else {
 
-                    return sprintf("客服进行了【仲裁】  <br/> 你支付代练费用 %.2f 元, 对方支付保证金 %.2f <br/> 仲裁说明： %s",
+                    return sprintf("客服进行了【仲裁】  <br/> 对支付代练费用 %.2f 元, 您方支付保证金 %.2f <br/> 仲裁说明： %s",
                         $this->complain->amount,
                         bcadd($this->complain->security_deposit, $this->complain->efficiency_deposit),
                         $this->complain->reason
                     );
                 }
             } else if ($this->complain->initiator == 2) {  // 如果发起人为接单方
-                // 客服进行了【仲裁】【你（对方）支出代练费1.0元，对方（你）支出保证金0.0元。仲裁说明：经查证，双方协商退单，已判定】
+                // 客服进行了【仲裁】【您（对方）支出代练费1.0元，对方（您）支出保证金0.0元。仲裁说明：经查证，双方协商退单，已判定】
                 if ($this->complain->parent_user_id == request()->user()->parent_id) {
-                    return sprintf("客服进行了【仲裁】 <br/> 对方支付代练费用 %.2f 元, 你支付保证金 %.2f <br/> 仲裁说明： %s",
+                    return sprintf("客服进行了【仲裁】 <br/> 对方支付代练费用 %.2f 元, 您支付保证金 %.2f <br/> 仲裁说明： %s",
                         $this->complain->amount,
                         bcadd($this->complain->security_deposit, $this->complain->efficiency_deposit),
                         $this->complain->reason
                     );
                 } else {
-                    return sprintf("客服进行了【仲裁】 <br/> 你支付代练费用 %.2f 元, 对方支付保证金 %.2f <br/> 仲裁说明： %s",
+                    return sprintf("客服进行了【仲裁】 <br/> 您支付代练费用 %.2f 元, 对方支付保证金 %.2f <br/> 仲裁说明： %s",
                         $this->complain->amount,
                         bcadd($this->complain->security_deposit, $this->complain->efficiency_deposit),
                         $this->complain->reason

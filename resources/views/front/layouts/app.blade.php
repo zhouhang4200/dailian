@@ -376,7 +376,7 @@ $financeRoute = [
     });
 
     (function () {
-        var socket=io("{{ env('SOCKET') }}");
+        var socket=io(window.location.hostname);
         var user_id="{{ auth()->user()->parent_id }}";
         socket.on("blockade:"+user_id, function (message) {
             var message="<div style='padding:25px;font-size:14px; line-height:25px;letter-spacing:1px'>&nbsp;&nbsp;&nbsp;"+message+"</div>";

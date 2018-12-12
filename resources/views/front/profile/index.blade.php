@@ -177,6 +177,13 @@
 
                         </div>
                     @endif
+
+                            <label class="layui-form-label">推广链接 :</label>
+                            <div class="layui-input-inline">
+                                <span id="spread_text">{{ route('register') }}?spread_user_id={{ hashid_encode($user->parent_id) }}</span>
+                                <a href="javascript:void(0)" class="spread" style="color: #198cff">&nbsp;&nbsp;&nbsp;&nbsp;点击复制</a>
+                            </div>
+
                 </div>
                 <div class="info-balance">
                     <div class="available-balance">可用余额：
@@ -261,7 +268,27 @@
 @endsection
 
 @section('js')
+    <script src="/js/clipboard.min.js">
+    </script>
     <script>
+        $(function () {
+            $('.spread').click(function () {
+                var text = $(this).parent().find('#spread_text').text();
+
+                var clipboard = new ClipboardJS('.spread', {
+                    text:function() {
+                        return text;
+                    }
+                });
+                clipboard.on('success', function(e){
+                    alert('复制成功!');
+                });
+                clipboard.on('error', function(e){
+                    alert('复制失败!');
+                });
+            })
+        });
+
         layui.use(['form', 'table', 'upload'], function(){
             var form = layui.form; //只有执行了这一步，部分表单元素才会自动修饰成功
             var layer = layui.layer;

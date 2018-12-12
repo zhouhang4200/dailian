@@ -52,7 +52,9 @@ class RegisterController extends Controller
      */
     public function showRegistrationForm()
     {
-        return view('front.auth.register');
+        $id = request('spread_user_id', '');
+
+        return view('front.auth.register', compact('id'));
     }
 
     /**
@@ -126,7 +128,7 @@ class RegisterController extends Controller
 
             // 推广人
             if (request('spread_user_id')) {
-                if ($spreadUser = User::find(request('spread_user_id'))) {
+                if ($spreadUser = User::find(hashid_decode(request('spread_user_id')))) {
                     Spread::updateOrCreate(
                         ['spread_user_id' => $spreadUser->id, 'user_id' => $user->id],
                         ['spread_user_id' => $spreadUser->id, 'user_id' => $user->id]

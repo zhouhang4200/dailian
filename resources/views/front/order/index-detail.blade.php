@@ -104,14 +104,26 @@
 
     <div  style="text-align: center;">
         @if($detail['status'] == 1)
-            <button class="layui-btn layui-btn-normal"
-                    lay-submit=""
-                    lay-filter="take"
-                    data-guest="{{ auth()->guest() }}"
-                    data-trade_no="{{ $detail['trade_no'] }}"
-                    data-take_password="{{ $detail['take_order_password'] ? 1 : 2 }}"
-                    {{--data-pay_password="{{ auth()->user()->pay_password ? 1 : 2 }}"--}}
-            >立即接单</button>
+            @if(auth()->guest())
+                <button class="layui-btn layui-btn-normal"
+                        lay-submit=""
+                        lay-filter="take"
+                        data-guest="{{ auth()->guest() }}"
+                        data-trade_no="{{ $detail['trade_no'] }}"
+                        data-take_password="{{ $detail['take_order_password'] ? 1 : 2 }}">
+                    立即接单
+                </button>
+            @else
+                <button class="layui-btn layui-btn-normal"
+                        lay-submit=""
+                        lay-filter="take"
+                        data-guest="{{ auth()->guest() }}"
+                        data-trade_no="{{ $detail['trade_no'] }}"
+                        data-take_password="{{ $detail['take_order_password'] ? 1 : 2 }}"
+                        data-pay_password="{{ auth()->user()->pay_password ? 1 : 2 }}">
+                    立即接单
+                </button>
+            @endif
         @else
 
         @endif

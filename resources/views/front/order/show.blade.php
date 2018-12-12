@@ -373,10 +373,10 @@
                                         @endif
 
                                         @if ($order->getStatusDescribe() == '仲裁中' && optional($order->consult)->initiator == 1)
-                                                <button class="qs-btn qs-btn-sm" style="width: 80px;"   data-no="{{ $order->trade_no }}"
-                                                        lay-submit lay-filter="agree-consult" data-consult-amount="{{ $order->consult->amount }}"
-                                                data-consult-deposit="{{ $order->consult->security_deposit+$order->consult->efficiency_deposit }}"
-                                                data-consult-reason="{{ $order->consult->reason }}">同意撤销</button>
+                                                {{--<button class="qs-btn qs-btn-sm" style="width: 80px;"   data-no="{{ $order->trade_no }}"--}}
+                                                        {{--lay-submit lay-filter="agree-consult" data-consult-amount="{{ $order->consult->amount }}"--}}
+                                                {{--data-consult-deposit="{{ $order->consult->security_deposit+$order->consult->efficiency_deposit }}"--}}
+                                                {{--data-consult-reason="{{ $order->consult->reason }}">同意撤销</button>--}}
                                         @endif
 
                                         @if ($order->getStatusDescribe() == '撤销中' && optional($order->consult)->initiator == 1)

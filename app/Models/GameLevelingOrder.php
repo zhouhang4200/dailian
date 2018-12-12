@@ -372,13 +372,15 @@ class GameLevelingOrder extends Model
      */
     public function getRemainingTime()
     {
-        if (! in_array($this->status, [8, 9, 10, 11, 13])) {
-            return sec2Time(Carbon::parse($this->take_at)
-                ->addDays($this->day)
-                ->addHours($this->hours)
-                ->diffInSeconds(Carbon::now()));
+        // 如果存在接单时间
+        if (!empty($this->take_at) && $this->take_at != '1971-01-01 00:00:00') {
+            // 计算到期的时间戳
+            $expirationTimestamp = strtotime($this->take_at) + $this->day * 86400 + $this->hour * 3600;
+            // 计算剩余时间
+            $leftSecond = $expirationTimestamp - time();
+            return sec2Time($leftSecond); // 剩余时间
         } else {
-            return '--';
+            return '';
         }
     }
 

@@ -152,3 +152,9 @@ Route::prefix('tm')->middleware('api.auth')->group(function () {
 });
 Route::post('tm/update', 'TmOrderController@update'); // 修改订单
 Route::post('tm/place-order', 'TmOrderController@placeOrder'); // 下单
+
+#
+Route::prefix('temp')->middleware('api.auth')->group(function () {
+    Route::post('jd-order', 'TempController@jdOrder');
+});
+

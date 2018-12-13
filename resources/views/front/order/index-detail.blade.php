@@ -11,7 +11,6 @@
     }
 </style>
 <form class="layui-form" action="" lay-filter="component-form-group" id="form-order" style="padding: 20px 30px 20px 0;">
-
     <div class="layui-row  layui-form-item">
         <div class="layui-col-sm4">
             <label class="layui-form-label">订单号</label>
@@ -83,7 +82,6 @@
         </div>
     </div>
 
-
     <div class="layui-row  layui-form-item">
         <div class="layui-col-sm12">
             <label class="layui-form-label">代练要求</label>
@@ -125,8 +123,6 @@
                 </button>
             @endif
         @else
-
         @endif
-
     </div>
 </form>

@@ -195,6 +195,7 @@ class UserAssetService
 
             // 更新用户冻结余额
             $userAsset->frozen = bcsub($userAsset->frozen, self::$amount);
+            $userAsset->total_withdraw = bcadd($userAsset->total_withdraw, self::$amount);
             $userAsset->save();
         } catch (Exception $exception) {
             throw new UnknownException($exception->getMessage());
@@ -303,6 +304,7 @@ class UserAssetService
             $this->flow(bcsub($userAsset->balance, self::$amount), $userAsset->frozen);
             // 更新用户余额
             $userAsset->balance = bcsub($userAsset->balance, self::$amount);
+            $userAsset->total_expend = bcadd($userAsset->total_expend, self::$amount);
             $userAsset->save();
         } catch (Exception $exception) {
             throw new UnknownException($exception->getMessage());
@@ -339,6 +341,7 @@ class UserAssetService
 
             // 更新用户冻结余额
             $userAsset->frozen = bcsub($userAsset->frozen, self::$amount);
+            $userAsset->total_expend = bcadd($userAsset->total_expend, self::$amount);
             $userAsset->save();
         } catch (Exception $exception) {
             throw new UnknownException($exception->getMessage());
@@ -369,6 +372,7 @@ class UserAssetService
 
             // 更新用户余额
             $userAsset->balance = bcadd($userAsset->balance, self::$amount);
+            $userAsset->total_income = bcadd($userAsset->total_income, self::$amount);
             $userAsset->save();
         } catch (Exception $exception) {
             throw new UnknownException($exception->getMessage());

@@ -26,10 +26,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('finance:user-report-day')
+        $schedule->command('wz:user-report-day')
             ->dailyAt('01:00')
             ->after(function () {
-                Artisan::call('finance:platform-report-day');
+                \Artisan::call('wz:platform-report-day');
             });
     }
 

@@ -18,12 +18,14 @@
                     <div class="table-responsive">
                         <div class="layui-tab layui-tab-brief" lay-filter="detail">
                             <ul class="layui-tab-title">
-                                <li  class="layui-this"  lay-id="detail"><a href="{{ route('admin.user.show', ['id' => Route::input('id')])  }}">用户资料</a></li>
-                                <li lay-id="authentication"><a href="{{ route('admin.user.show', ['id' => Route::input('id')])  }}">转账信息</a></li>
+                                <li  class="layui-this"  lay-id="detail"><a href="{{ route('admin.user.show')}}?id={{ $user->id }}">用户资料</a></li>
+                                <li lay-id="authentication"><a href="{{ route('admin.user.show') }}?id={{ $user->id }}">转账信息</a></li>
+                                <li lay-id="poundage"><a href="{{ route('admin.user.poundage') }}?id={{ $user->id }}">手续费设置</a></li>
+                                <li lay-id="spread"><a href="{{ route('admin.user.spread') }}?id={{ $user->id }}">推广返利设置</a></li>
                             </ul>
                             <div class="layui-tab-content">
                                 <div class="layui-tab-item layui-show detail">
-                                    <form class="layui-form" action="">
+                                    <form class="layui-form" action="" style="width: 500px">
                                         <div class="layui-form-item">
                                             <label class="layui-form-label">ID</label>
                                             <div class="layui-input-block">

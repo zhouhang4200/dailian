@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Models\Spread;
+use App\Models\UserPoundage;
+use App\Models\UserSpread;
 use Redis;
 use Exception;
 use App\Models\OrderStatistic;
@@ -434,13 +436,25 @@ class OrderService
 
             // 支出收入手费
             $poundage = bcmul(self::$order->amount, bcdiv($gameLevelingType->poundage, 100));
+
+            if ($userPoundage = UserPoundage::where('user_id', self::$order->take_parent_user_id)->first()) {
+                if ($userPoundage->take_poundage) {
+                    $poundage = bcmul(self::$order->amount, $userPoundage->take_poundage);
+                }
+            }
+
             UserAssetService::init(64, self::$order->take_user_id, $poundage, self::$order->trade_no)->expendFromBalance();
 
             // 返利
-            $spread = Spread::where('user_id', self::$order->take_user_id)->first();
+            $spread = Spread::where('user_id', self::$order->take_parent_user_id)->first();
             $spreadRate = SettingFacade::get('spread')['spread'] ?? null;
 
             if ($spread && $spreadRate && $spreadRate <= 1) {
+                if ($userSpread = UserSpread::where('user_id', self::$order->take_parent_user_id)->first()) {
+                    if ($userSpread->spread_rate) {
+                        $spreadRate = $userSpread->spread_rate;
+                    }
+                }
                 // 支出
                 $spreadAmount = bcmul(self::$order->amount, $spreadRate, 2);
                 UserAssetService::init(66, self::$order->take_user_id, $spreadAmount, self::$order->trade_no)->expendFromBalance();
@@ -867,9 +881,33 @@ class OrderService
             if ($income > 0) {
                 UserAssetService::init(51, self::$order->take_user_id, $income, self::$order->trade_no)->income();
                 // 支出收入手费
-                UserAssetService::init(64, self::$order->take_user_id, bcmul($income, bcdiv($gameLevelingType->poundage, 100)), self::$order->trade_no)->expendFromBalance();
-                $takePoundage += bcmul($income, bcdiv($gameLevelingType->poundage, 100));
+                $poundageRate = bcdiv($gameLevelingType->poundage, 100);
+                if ($userPoundage = UserPoundage::where('user_id', self::$order->take_parent_user_id)->first()) {
+                    if ($userPoundage->take_poundage) {
+                        $poundageRate = $userPoundage->take_poundage;
+                    }
+                }
+                UserAssetService::init(64, self::$order->take_user_id, bcmul($income, $poundageRate), self::$order->trade_no)->expendFromBalance();
+                $takePoundage += bcmul($income, $poundageRate);
+
+                // 支出推广返利
+                $spread = Spread::where('user_id', self::$order->take_parent_user_id)->first();
+                $spreadRate = SettingFacade::get('spread')['spread'] ?? null;
+
+                if ($spread && $spreadRate && $spreadRate <= 1) {
+                    if ($userSpread = UserSpread::where('user_id', self::$order->take_parent_user_id)->first()) {
+                        if ($userSpread->spread_rate) {
+                            $spreadRate = $userSpread->spread_rate;
+                        }
+                    }
+                    // 支出
+                    $spreadAmount = bcmul($income, $spreadRate, 2);
+                    UserAssetService::init(66, self::$order->take_user_id, $spreadAmount, self::$order->trade_no)->expendFromBalance();
+                    // 收入
+                    UserAssetService::init(55, $spread->spread_user_id, $spreadAmount, self::$order->trade_no)->income();
+                }
             }
+
             if ($unfrozen > 0) {
                 UserAssetService::init(41, self::$order->user_id, $unfrozen, self::$order->trade_no)->unfrozen();
             }
@@ -877,25 +915,42 @@ class OrderService
             if ($efficiencyDepositExpend > 0) {
                 UserAssetService::init(62, self::$order->take_user_id, $efficiencyDepositExpend, self::$order->trade_no)->expendFromFrozen();
             }
+
             if ($efficiencyDepositIncome > 0) {
                 UserAssetService::init(52, self::$order->user_id, $efficiencyDepositIncome, self::$order->trade_no)->income();
                 // 支出收入手费
-                UserAssetService::init(64, self::$order->user_id, bcmul($efficiencyDepositIncome, bcdiv($gameLevelingType->poundage, 100)), self::$order->trade_no)->expendFromBalance();
-                $poundage += bcmul($efficiencyDepositIncome, bcdiv($gameLevelingType->poundage, 100));
+                $sendPoundageRate = bcdiv($gameLevelingType->poundage, 100);
+                if ($userPoundage = UserPoundage::where('user_id', self::$order->parent_user_id)->first()) {
+                    if ($userPoundage->send_poundage) {
+                        $sendPoundageRate = $userPoundage->send_poundage;
+                    }
+                }
+                UserAssetService::init(64, self::$order->user_id, bcmul($efficiencyDepositIncome, $sendPoundageRate), self::$order->trade_no)->expendFromBalance();
+                $poundage += bcmul($efficiencyDepositIncome, $sendPoundageRate);
             }
+
             if ($efficiencyDepositUnfrozen > 0) {
                 UserAssetService::init(42, self::$order->take_user_id, $efficiencyDepositUnfrozen, self::$order->trade_no)->unfrozen();
             }
+
             // 安全保证金
             if ($securityDepositExpend > 0) {
                 UserAssetService::init(63, self::$order->take_user_id, $securityDepositExpend, self::$order->trade_no)->expendFromFrozen();
             }
+
             if ($securityDepositIncome > 0) {
                 UserAssetService::init(53, self::$order->user_id, $securityDepositIncome, self::$order->trade_no)->income();
                 // 支出收入手费
-                UserAssetService::init(64, self::$order->user_id, bcmul($securityDepositIncome, bcdiv($gameLevelingType->poundage, 100)), self::$order->trade_no)->expendFromBalance();
-                $poundage += bcmul($securityDepositIncome, bcdiv($gameLevelingType->poundage, 100));
+                $sendPoundageRate = bcdiv($gameLevelingType->poundage, 100);
+                if ($userPoundage = UserPoundage::where('user_id', self::$order->parent_user_id)->first()) {
+                    if ($userPoundage->send_poundage) {
+                        $sendPoundageRate = $userPoundage->send_poundage;
+                    }
+                }
+                UserAssetService::init(64, self::$order->user_id, bcmul($securityDepositIncome, $sendPoundageRate), self::$order->trade_no)->expendFromBalance();
+                $poundage += bcmul($securityDepositIncome, $sendPoundageRate);
             }
+
             if ($securityDepositUnfrozen > 0) {
                 UserAssetService::init(43, self::$order->take_user_id, $securityDepositUnfrozen, self::$order->trade_no)->unfrozen();
             }
@@ -1121,12 +1176,37 @@ class OrderService
             if ($expend > 0) {
                 UserAssetService::init(61, self::$order->user_id, $expend, self::$order->trade_no)->expendFromFrozen();
             }
+
             if ($income > 0) {
                 UserAssetService::init(51, self::$order->take_user_id, $income, self::$order->trade_no)->income();
                 // 支出收入手费
-                UserAssetService::init(64, self::$order->take_user_id, bcmul($income, bcdiv($gameLevelingType->poundage, 100)), self::$order->trade_no)->expendFromBalance();
-                $takePoundage += bcmul($income, bcdiv($gameLevelingType->poundage, 100));
+                $poundageRate = bcdiv($gameLevelingType->poundage, 100);
+                if ($userPoundage = UserPoundage::where('user_id', self::$order->take_parent_user_id)->first()) {
+                    if ($userPoundage->take_poundage) {
+                        $poundageRate = $userPoundage->take_poundage;
+                    }
+                }
+                UserAssetService::init(64, self::$order->take_user_id, bcmul($income, $poundageRate), self::$order->trade_no)->expendFromBalance();
+                $takePoundage += bcmul($income, $poundageRate);
+
+                // 支出推广返利
+                $spread = Spread::where('user_id', self::$order->take_parent_user_id)->first();
+                $spreadRate = SettingFacade::get('spread')['spread'] ?? null;
+
+                if ($spread && $spreadRate && $spreadRate <= 1) {
+                    if ($userSpread = UserSpread::where('user_id', self::$order->take_parent_user_id)->first()) {
+                        if ($userSpread->spread_rate) {
+                            $spreadRate = $userSpread->spread_rate;
+                        }
+                    }
+                    // 支出
+                    $spreadAmount = bcmul($income, $spreadRate, 2);
+                    UserAssetService::init(66, self::$order->take_user_id, $spreadAmount, self::$order->trade_no)->expendFromBalance();
+                    // 收入
+                    UserAssetService::init(55, $spread->spread_user_id, $spreadAmount, self::$order->trade_no)->income();
+                }
             }
+
             if ($unfrozen > 0) {
                 UserAssetService::init(41, self::$order->user_id, $unfrozen, self::$order->trade_no)->unfrozen();
             }
@@ -1135,28 +1215,46 @@ class OrderService
             if ($efficiencyDepositExpend > 0) {
                 UserAssetService::init(62, self::$order->take_user_id, $efficiencyDepositExpend, self::$order->trade_no)->expendFromFrozen();
             }
+
             if ($efficiencyDepositIncome > 0) {
                 UserAssetService::init(52, self::$order->user_id, $efficiencyDepositIncome, self::$order->trade_no)->income();
                 // 支出收入手费
-                UserAssetService::init(64, self::$order->user_id, bcmul($efficiencyDepositIncome, bcdiv($gameLevelingType->poundage, 100)), self::$order->trade_no)->expendFromBalance();
-                $poundage += bcmul($efficiencyDepositIncome, bcdiv($gameLevelingType->poundage, 100));
+                $sendPoundageRate = bcdiv($gameLevelingType->poundage, 100);
+                if ($userPoundage = UserPoundage::where('user_id', self::$order->parent_user_id)->first()) {
+                    if ($userPoundage->send_poundage) {
+                        $sendPoundageRate = $userPoundage->send_poundage;
+                    }
+                }
+                UserAssetService::init(64, self::$order->user_id, bcmul($efficiencyDepositIncome, $sendPoundageRate), self::$order->trade_no)->expendFromBalance();
+                $poundage += bcmul($efficiencyDepositIncome, $sendPoundageRate);
             }
+
             if ($efficiencyDepositUnfrozen > 0) {
                 UserAssetService::init(42, self::$order->take_user_id, $efficiencyDepositUnfrozen, self::$order->trade_no)->unfrozen();
             }
+
             // 安全保证金
             if ($securityDepositExpend > 0) {
                 UserAssetService::init(63, self::$order->take_user_id, $securityDepositExpend, self::$order->trade_no)->expendFromFrozen();
             }
+
             if ($securityDepositIncome > 0) {
                 UserAssetService::init(53, self::$order->user_id, $securityDepositIncome, self::$order->trade_no)->income();
                 // 支出收入手费
-                UserAssetService::init(64, self::$order->user_id, bcmul($securityDepositIncome, bcdiv($gameLevelingType->poundage, 100)), self::$order->trade_no)->expendFromBalance();
-                $poundage += bcmul($securityDepositIncome, bcdiv($gameLevelingType->poundage, 100));
+                $sendPoundageRate = bcdiv($gameLevelingType->poundage, 100);
+                if ($userPoundage = UserPoundage::where('user_id', self::$order->parent_user_id)->first()) {
+                    if ($userPoundage->send_poundage) {
+                        $sendPoundageRate = $userPoundage->send_poundage;
+                    }
+                }
+                UserAssetService::init(64, self::$order->user_id, bcmul($securityDepositIncome, $sendPoundageRate), self::$order->trade_no)->expendFromBalance();
+                $poundage += bcmul($securityDepositIncome, $sendPoundageRate);
             }
+
             if ($securityDepositUnfrozen > 0) {
                 UserAssetService::init(43, self::$order->take_user_id, $securityDepositUnfrozen, self::$order->trade_no)->unfrozen();
             }
+
             // 修改订单状态
             $completeAt = date('Y-m-d H:i:s');
             self::$order->status = 9;

@@ -22,6 +22,9 @@ class GameLevelingType extends Model
         if (isset($condition['name']) && $condition['name']) {
             $query->where('name', 'like', '%' .$condition['name'] . '%');
         }
+        if (isset($condition['game_id']) && $condition['game_id']) {
+            $query->where('game_id', $condition['game_id']);
+        }
         return $query;
     }
 

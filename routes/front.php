@@ -16,7 +16,7 @@ Route::get('/', 'HomeController@index')->name('home')->middleware('syncESOrderSt
 // 待接单列表
 Route::get('order', 'OrderController@index')->name('order');
 Route::get('order/detail/{trade_no?}', 'OrderController@indexDetail')->name('order.detail');
-Route::post('order/get-server', 'OrderController@getServers')->name('order.get-server');
+Route::post('order/get-server', 'OrderController@gameServers')->name('order.get-server');
 // 公告中心
 Route::get('notice', 'NoticeController@index')->name('notice');
 // 活动中心
@@ -49,6 +49,13 @@ Route::group(['middleware' => 'auth'], function (){
         Route::post('group/delete', 'EmployeeController@groupDelete')->name('employee.group.delete'); // 岗位信息更新
     });
 
+    # 游戏 区 服 代练类型
+    Route::prefix('game')->group(function (){
+        Route::post('regions', 'GameController@regions')->name('game.regions');
+        Route::post('servers', 'GameController@servers')->name('game.servers');
+        Route::post('leveling-type', 'GameController@levelingTypes')->name('game.leveling-types');
+    });
+
     // 订单
     Route::prefix('order')->group(function (){
         // 待接订单
@@ -56,8 +63,14 @@ Route::group(['middleware' => 'auth'], function (){
         // 接单列表
         Route::get('take-list', 'OrderController@takeList')->name('order.take-list')->middleware('permission:order.take-list');
         Route::post('take-list', 'OrderController@takeListData')->name('order.take-list');
-        // 订单详情
-        Route::get('/{trade_no?}', 'OrderController@show')->name('order.show');
+        Route::get('take-show/{trade_no?}', 'OrderController@takeShow')->name('order.take-show');
+        // 发单列表
+        Route::get('create', 'OrderController@create')->name('order.create');
+        Route::post('store', 'OrderController@store')->name('order.store');
+        Route::get('send-list', 'OrderController@sendList')->name('order.send-list');
+        Route::post('send-list', 'OrderController@sendListData')->name('order.send-list');
+        Route::get('send-show/{trade_no?}', 'OrderController@sendShow')->name('order.send-show');
+
 
         // 订单操作
         Route::prefix('operation')->middleware('syncESOrderStatus')->group(function (){

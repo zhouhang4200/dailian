@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\GameLevelingType;
 use App\Models\Region;
 use App\Models\Server;
+use App\Services\OrderService;
 
 /**
  * Class OrderController
@@ -122,9 +123,19 @@ class OrderController extends Controller
     }
 
     /**
+     * 获取游戏区
+     */
+    public function gameRegions()
+    {
+        if (request()->ajax()) {
+            return response()->ajaxSuccess('获取成功', Region::condition(['game_id' => request('game_id')])->get(['id', 'name']));
+        }
+    }
+
+    /**
      * 获取游戏服务器
      */
-    public function getServers()
+    public function gameServers()
     {
         if (request()->ajax()) {
             return response()->ajaxSuccess('获取成功', Server::condition(['region_id' => request('region_id')])->get(['id', 'name']));
@@ -149,7 +160,126 @@ class OrderController extends Controller
     {
         $orders = GameLevelingOrder::getOrderByCondition(request()->all(), 2)->paginate(50);
 
-        // 对获取数据进行处理后响应
+        # 对获取数据进行处理后响应
+        $ordersArr = $this->handleOrderList($orders);
+
+        return [
+            'code' => 0,
+            'msg' => '',
+            'count' => $orders->total(),
+            'data' =>  $ordersArr,
+        ];
+    }
+
+    /**
+     * 发单列表视图
+     */
+    public function sendList()
+    {
+        return view('front.order.send-list', [
+            'games' => Game::getAll(),
+        ]);
+    }
+
+    /**
+     * 发单列表数据
+     * @return array
+     */
+    public function sendListData()
+    {
+        $orders = GameLevelingOrder::getOrderByCondition(request()->all(), 1)->paginate(50);
+
+        # 对获取数据进行处理后响应
+        $ordersArr = $this->handleOrderList($orders);
+
+        return [
+            'code' => 0,
+            'msg' => '',
+            'count' => $orders->total(),
+            'data' =>  $ordersArr,
+        ];
+    }
+
+    /**
+     * @param $tradeNo
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function sendShow($tradeNo)
+    {
+        $order = GameLevelingOrder::getOrderByCondition(['trade_no' => $tradeNo], 1)->firstOrFail();
+
+        return view('front.order.show', [
+            'order' => $order
+        ]);
+    }
+
+    /**
+     * @param $tradeNo
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function takeShow($tradeNo)
+    {
+        $order = GameLevelingOrder::getOrderByCondition(['trade_no' => $tradeNo], 2)->firstOrFail();
+
+        return view('front.order.show', [
+            'order' => $order
+        ]);
+    }
+
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function create()
+    {
+        return view('front.order.create')->with([
+            'games' => Game::getAll(),
+        ]);
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function store()
+    {
+       try {
+           OrderService::init(request()->user()->parent_id)->create(
+               request('game_id'),
+               request('region_id'),
+               request('server_id'),
+               request('title'),
+               request('game_account'),
+               request('game_password'),
+               request('game_role'),
+               request('day'),
+               request('hour'),
+               request('game_leveling_type_id'),
+               request('amount'),
+               request('security_deposit'),
+               request('efficiency_deposit'),
+               request('explain'),
+               request('requirement'),
+               request('player_phone'),
+               request('username', ''),
+               request('user_phone', ''),
+               request('user_qq', ''),
+               request('take_order_password', ''),
+               request('foreign_trade_no', '')
+           );
+           return response()->ajaxSuccess('下单成功');
+
+       } catch (\Exception $exception) {
+           return response()->ajaxFail();
+       }
+
+    }
+
+    /**
+     * 处理数据
+     * @param $orders
+     * @return array
+     */
+    private function handleOrderList($orders)
+    {
         $ordersArr = [];
         foreach ($orders->items() as $key => $item) {
 
@@ -199,24 +329,6 @@ class OrderController extends Controller
             $ordersArr[$key]['consult_reason'] = $item->consult ?  $item->consult->reason : '';
         }
 
-        return [
-            'code' => 0,
-            'msg' => '',
-            'count' => $orders->total(),
-            'data' =>  $ordersArr,
-        ];
-    }
-
-    /**
-     * @param $tradeNo
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function show($tradeNo)
-    {
-        $order = GameLevelingOrder::getOrderByCondition(['trade_no' => $tradeNo], 2)->firstOrFail();
-
-        return view('front.order.show', [
-            'order' => $order
-        ]);
+        return $ordersArr;
     }
 }

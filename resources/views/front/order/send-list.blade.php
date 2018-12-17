@@ -1,6 +1,6 @@
 @extends('front.layouts.app')
 
-@section('title', '接单管理')
+@section('title', '发单管理')
 
 @section('css')
     <link rel="stylesheet" href="/front/css/bootstrap-fileinput.css">
@@ -158,6 +158,9 @@
                 <div class="layui-tab layui-tab-brief layui-form" lay-filter="order-list">
                     <ul class="layui-tab-title">
                         <li class="layui-this" lay-id="0">全部 <span  class="layui-badge layui-bg-blue wait-handle-quantity  layui-hide"></span></li>
+                        <li class="" lay-id="1">待接单
+                            <span class="qs-badge quantity-13 layui-hide"></span>
+                        </li>
                         <li class="" lay-id="2">代练中
                             <span class="qs-badge quantity-13 layui-hide"></span>
                         </li>
@@ -234,7 +237,7 @@
 
     </script>
     <script type="text/html" id="noTemplate">
-        <a style="color:#1f93ff"  href="{{ route('order.take-show') }}/@{{ d.trade_no }}" target="_blank">@{{ d.trade_no }}</a>
+        <a style="color:#1f93ff"  href="{{ route('order.send-show') }}/@{{ d.trade_no }}" target="_blank">@{{ d.trade_no }}</a>
     </script>
     <script type="text/html" id="statusTemplate">
         @{{ d.status_describe }}  <br>
@@ -343,7 +346,7 @@
             // 加载数据
             table.render({
                 elem: '#order-list',
-                url: '{{ route('order.take-list') }}',
+                url: '{{ route('order.send-list') }}',
                 method: 'post',
                 where:{_token:$('meta[name="_token"]').attr('content')},
                 cols: [[

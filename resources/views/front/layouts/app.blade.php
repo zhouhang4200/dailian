@@ -3,7 +3,10 @@
 $orderRoute = [
     'order.take-list',
     'order.wait-list',
-    'order.show',
+    'order.send-list',
+    'order.send-show',
+    'order.take-show',
+    'order.create',
 ];
 
 $accountRoute = [
@@ -218,6 +221,16 @@ $financeRoute = [
                                 <a href="{{ route('order.take-list') }}">接单管理</a>
                             </dd>
                             @endif
+
+                            <dd data-name="console"
+                                class="@if(Route::currentRouteName() == 'order.create') layui-this  @endif" >
+                                <a href="{{ route('order.create') }}">发布订单</a>
+                            </dd>
+
+                            <dd data-name="console"
+                                class="@if(Route::currentRouteName() == 'order.send-list' || Route::currentRouteName() == 'order.send-list') layui-this  @endif" >
+                                <a href="{{ route('order.send-list') }}">发单管理</a>
+                            </dd>
                         </dl>
                     </li>
 

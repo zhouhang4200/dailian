@@ -19,7 +19,7 @@
         <div class="login_img">
             <img src="/front/images/login_img.png" alt="">
         </div>
-        <div class="login_box" style="height:410px;">
+        <div class="login_box" style="" id="login">
             <div class="login_title">
                 账号登录
             </div>
@@ -50,7 +50,7 @@
                     <a href="{{ route('register') }}" style="float: left;">立即注册</a>
                 </div>
             </form>
-            <div style="width: 410px;height: 130px;margin-top:5px;position: absolute;right:-10px;background: #342353"></div>
+            {{--<div style="width: 410px;height: 130px;margin-top:5px;position: absolute;right:-10px;background: #342353"></div>--}}
         </div>
     </div>
 @endsection
@@ -109,7 +109,7 @@
                     offline: !data.success,
                     new_captcha: true,
                     product: 'custom',
-                    area: '#captcha-container',
+                    area: '#login',
                     next_width: '100%',
                     bg_color: 'black',
                     lang: '{{ Config::get('geetest.lang', 'zh-cn') }}',

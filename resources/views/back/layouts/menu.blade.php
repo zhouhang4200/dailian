@@ -106,6 +106,8 @@ $systemRoute = [
                     <li @if(in_array($currentRouteName, [
                         'admin.user',
                         'admin.user.show',
+                        'admin.user.poundage',
+                        'admin.user.spread',
                         'admin.user.certification',
                         'admin.user.certification-list',
                         'admin.user.certification-show',

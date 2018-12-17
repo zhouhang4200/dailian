@@ -22,7 +22,7 @@
                 <td width="30%">订单号：{{ $item->game_leveling_order_trade_no }}</td>
                 <td>{{ $item->created_at }}  留言：{{ str_limit( $item->content, 58) }}</td>
                 <td width="15%">
-                    <a style="color:#1f93ff" href="{{ route('order.show', ['trade_no' => $item->game_leveling_order_trade_no]) }}" class="opt"  data-id="{{ $item->id }}" target="_blank" lay-submit=""  lay-filter="detail">详情</a>
+                    <a style="color:#1f93ff" href="{{ route('order.take-show', ['trade_no' => $item->game_leveling_order_trade_no]) }}" class="opt"  data-id="{{ $item->id }}" target="_blank" lay-submit=""  lay-filter="detail">详情</a>
                     <a style="color:#1f93ff" class="opt" lay-submit=""  lay-filter="del" data-id="{{ $item->id }}">删除</a>
                 </td>
             </tr>

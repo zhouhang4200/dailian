@@ -217,7 +217,7 @@ $financeRoute = [
                             </dd>
                             @if(Auth::user()->could(['order.take-list']))
                             <dd data-name="console"
-                                class="@if(Route::currentRouteName() == 'order.take-list' || Route::currentRouteName() == 'order.show') layui-this  @endif" >
+                                class="@if(Route::currentRouteName() == 'order.take-list' || Route::currentRouteName() == 'order.take-show') layui-this  @endif" >
                                 <a href="{{ route('order.take-list') }}">接单管理</a>
                             </dd>
                             @endif

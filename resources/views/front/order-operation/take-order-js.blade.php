@@ -88,10 +88,10 @@
                             fn();
                         },
                         end:function () {
-                            window.location.href = "{{ route('order.show') }}/" + data.field.trade_no;
+                            window.location.href = "{{ route('order.take-show') }}/" + data.field.trade_no;
                         }
                     }, function() {
-                        window.location.href = "{{ route('order.show') }}/" + data.field.trade_no;
+                        window.location.href = "{{ route('order.take-show') }}/" + data.field.trade_no;
                     });
                 } else if (result.status == 4001) {
                     layer.confirm('您的账号余额不足，是否前往充值？', {

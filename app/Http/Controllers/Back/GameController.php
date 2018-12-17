@@ -57,6 +57,7 @@ class GameController extends Controller
 
             Game::create([
                 'name' => request('name'),
+                'sort' => request('sort', 9999),
                 'icon' => $path,
                 'initials' => getFirstChar(request('name')) == null ? substr(request('name'), 0 ,1) : getFirstChar(request('name')),
                 'game_type_id' => request('game_type_id'),
@@ -90,6 +91,7 @@ class GameController extends Controller
         try {
             $updateData = [
                 'name' => request('name'),
+                'sort' => request('sort', 9999),
                 'initials' => getFirstChar(request('name')) == null ? substr(request('name'), 0 ,1) : getFirstChar(request('name')),
                 'game_type_id' =>  request('game_type_id'),
                 'game_class_id' =>  request('game_class_id'),

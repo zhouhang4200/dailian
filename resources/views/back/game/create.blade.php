@@ -71,6 +71,11 @@
                                         </div>
 
                                         <div class="form-group">
+                                            <label for="exampleInputEmail1">排序</label>
+                                            <input type="text" lay-verify="required" class="form-control" name="sort" value="{{ old('sort') }}">
+                                        </div>
+
+                                        <div class="form-group">
                                             <label for="exampleInputPassword1">图标</label>
                                             <div class="" id="uploadForm" enctype="multipart/form-data">
                                                 <div class="fileinput fileinput-new" data-provides="fileinput" id="exampleInputUpload">

@@ -50,7 +50,7 @@ class OrderController extends Controller
         return view('front.order.index', [
             'orders' => $orders,
             'guest' => auth()->guard()->guest(),
-            'games' => Game::all(),
+            'games' => Game::getAll(),
             'regions' => $regions,
             'servers' => $servers,
             'gameLevelingTypes' => $gameLevelingTypes,
@@ -114,7 +114,7 @@ class OrderController extends Controller
         return view('front.order.wait-list', [
             'orders' => $orders,
             'guest' => auth()->guard()->guest(),
-            'games' => Game::all(),
+            'games' => Game::getAll(),
             'regions' => $regions,
             'servers' => $servers,
             'gameLevelingTypes' => $gameLevelingTypes,

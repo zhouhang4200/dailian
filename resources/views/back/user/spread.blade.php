@@ -31,7 +31,7 @@
                                             <div class="layui-form-item">
                                                 <label class="layui-form-label">用户名</label>
                                                 <div class="layui-input-block">
-                                                    <input type="text" name="name" required disabled readonly  lay-verify="" autocomplete="off" class="layui-input" value="{{ $user->name }}">
+                                                    <input type="text" name="name" style="background-color: #e1e1e1" required disabled readonly  lay-verify="" autocomplete="off" class="layui-input" value="{{ $user->name }}">
                                                 </div>
                                             </div>
                                             <div class="layui-form-item">

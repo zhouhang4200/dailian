@@ -14,6 +14,7 @@ class Game extends Model
 {
     public $fillable = [
         'name',
+        'sort',
         'icon',
         'initials',
         'game_type_id',
@@ -26,7 +27,7 @@ class Game extends Model
      */
     public static function getAll()
     {
-        return self::all();
+        return self::orderBy('sort')->get();
     }
 
     /**

@@ -5,7 +5,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">接单密码</label>
             <div class="layui-input-inline">
-                <input type="password" name="take_password" required lay-verify="required" placeholder="请输入支付密码" autocomplete="off" class="layui-input">
+                <input type="password" name="take_password" required lay-verify="required" placeholder="请输入接单密码" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">

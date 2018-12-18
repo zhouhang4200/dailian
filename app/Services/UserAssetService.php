@@ -289,7 +289,7 @@ class UserAssetService
             } else {
                 // 更新平台资金
                 $platformAsset = PlatformAsset::first();
-                $platformAsset->balance = bcadd($platformAsset->balance, self::$amount);
+                $platformAsset->balance = bcsub($platformAsset->balance, self::$amount);
                 $platformAsset->save();
             }
         } catch (Exception $exception) {

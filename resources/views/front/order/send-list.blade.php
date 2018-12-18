@@ -244,6 +244,10 @@
             <button class="qs-btn qs-btn-primary qs-btn-sm qs-btn-table" style="width: 80px;"   data-no="@{{ d.trade_no }}"  lay-submit lay-filter="on-sale">上架</button>
         @{{# }   }}
 
+        @{{# if (d.status == '已撤单') {  }}
+            <button class="qs-btn qs-btn-primary qs-btn-sm qs-btn-table" style="width: 80px;"   data-no="@{{ d.trade_no }}"  lay-submit lay-filter="repeat">重发</button>
+        @{{# } }}
+
     </script>
     <script type="text/html" id="noTemplate">
         <a style="color:#1f93ff"  href="{{ route('order.send-show') }}/@{{ d.trade_no }}" target="_blank">@{{ d.trade_no }}</a>

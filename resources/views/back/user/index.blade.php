@@ -109,6 +109,52 @@
             </div>
         </form>
     </div>
+
+    <div class="setting-pop" style="display: none; padding:  0 20px">
+        <div class="layui-tab-content">
+            <form class="layui-form" method="POST" action="">
+                {!! csrf_field() !!}
+                <div  id="info">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">*用户名</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="send_poundage" lay-verify="required" disabled autocomplete="off"
+                                   id="username" value="" class="layui-input" style="width:400px">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">*发单手续费比例</label>
+                        <div class="layui-input-block">
+                            <input type="text" id="send" name="send_poundage" lay-verify="required"  autocomplete="off" value="0"
+                                   placeholder="填写0则为默认手续费比例，不得大于1" class="layui-input" style="width:400px">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">*接单手续费比例（包含推广比例）</label>
+                        <div class="layui-input-block">
+                            <input type="text" id="take" name="take_poundage" id="order_amount" lay-verify="required" value="0"
+                                   autocomplete="off" placeholder="填写0则为默认手续费比例，不得大于1" class="layui-input order_amount" style="width:400px">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">*推广返佣比例</label>
+                        <div class="layui-input-block">
+                            <input type="text" id="spread" name="spread_rate" lay-verify="required" value="0"
+                                   autocomplete="off"
+                                   placeholder="填写0则为默认返佣比例，不得大于接单手续费比例" class="layui-input" style="width:400px">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label"></label>
+                        <div class="layui-input-block">
+                            <button class="btn btn-success" lay-submit lay-filter="poundageSetting">确认</button>
+                            <span cancel class="btn btn-success cancel">取消</span>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 @endsection
 
 @section('js')
@@ -191,6 +237,77 @@
                 window.location.href="{{ route('admin.user.show') }}?id="+id;
                 return false;
             });
+
+            // 弹出设置
+            form.on('submit(setting)', function () {
+                var id=this.getAttribute('lay-id');
+                var name=this.getAttribute('lay-name');
+                var send_poundage=this.getAttribute('send-poundage');
+                var take_poundage=this.getAttribute('take-poundage');
+                var spread_rate=this.getAttribute('spread-rate');
+                $('#username').val(name);
+                $('#send').val(send_poundage);
+                $('#take').val(take_poundage);
+                $('#spread').val(spread_rate);
+                var s = window.location.search; //先截取当前url中“?”及后面的字符串
+                var page=s.getAddrVal('page');
+
+                form.render();
+                layer.open({
+                    type: 1,
+                    shade: 0.6,
+                    title: '设置',
+                    area: ['800px', '400px'],
+                    content: $('.setting-pop')
+                });
+
+                form.on('submit(poundageSetting)', function(data){
+                    var send_poundage=data.field.send_poundage;
+                    var take_poundage=data.field.take_poundage;
+                    var spread_rate=data.field.spread_rate;
+
+                    if (!send_poundage && !take_poundage && !spread_rate) {
+                        layer.closeAll();
+                        return false;
+                    }
+                    $.ajax({
+                        type: 'POST',
+                        url: "{{ route('admin.user.poundage-setting') }}",
+                        data:{id:id, send_poundage:data.field.send_poundage, take_poundage:data.field.take_poundage, spread_rate:data.field.spread_rate},
+                        success: function (data) {
+                            if (data.status == 1) {
+                                layer.closeAll();
+                                if (page) {
+                                    $.get("{{ route('admin.user') }}?page="+page, function (result) {
+                                        $('#user').html(result);
+                                        form.render();
+                                    }, 'json');
+                                } else {
+                                    $.get("{{ route('admin.user') }}", function (result) {
+                                        $('#user').html(result);
+                                        form.render();
+                                    }, 'json');
+                                }
+                            }
+                            layer.msg(data.message);
+                        }
+                    });
+//                    layer.closeAll();
+                    return false;
+                });
+                return false;
+            });
+
+            // 取消按钮
+            $('.cancel').click(function () {
+                layer.closeAll();
+            });
+
+            String.prototype.getAddrVal = String.prototype.getAddrVal||function(name){
+                    var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+                    var data = this.substr(1).match(reg);
+                    return data!=null?decodeURIComponent(data[2]):null;
+                }
         });
     </script>
 @endsection

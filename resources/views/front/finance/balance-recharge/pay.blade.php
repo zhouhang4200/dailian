@@ -50,8 +50,7 @@
     <script>
         layui.use(['form', 'element'], function(){
             var form = layui.form, layer = layui.layer, element = layui.element;
-
-            var socket = io("{{ env('SOCKET') }}");
+            var socket=io(window.location.hostname);
             var user_id ="{{ auth()->user()->parent_id }}";
             socket.on("notification:recharge", function (data) {
                 if (data.user_id == user_id) {

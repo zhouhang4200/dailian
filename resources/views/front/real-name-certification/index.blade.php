@@ -15,7 +15,7 @@
     </style>
     <script>
         (function () {
-            var socket=io("{{ env('SOCKET') }}");
+            var socket=io(window.location.hostname);
             var user_id="{{ auth()->user()->parent_id }}";
             socket.on("certification:"+user_id, function (message) {
                 $("#status").html(message);

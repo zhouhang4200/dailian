@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Back\System;
 
 use App\Http\Controllers\Controller;
+use App\Models\GameLevelingType;
 use Unisharp\Setting\SettingFacade;
 
 /**
@@ -31,6 +32,12 @@ class SettingController extends Controller
     {
         // 推广比例大于1，返回失败
         if (request('key') == 'spread' && request('spread') > 1) {
+            return back();
+        }
+
+        $poundage = GameLevelingType::min('poundage');
+
+        if (request('key') == 'spread' && request('spread') > bcdiv($poundage, 100)) {
             return back();
         }
 

@@ -141,6 +141,7 @@ Route::group(['middleware' =>  ['auth.admin']], function () {
     Route::prefix('user')->group(function () {
         // 商户列表
         Route::get('/', 'UserController@index')->name('admin.user');
+        Route::post('poundage/setting', 'UserController@poundageSetting')->name('admin.user.poundage-setting');
         Route::get('show', 'UserController@show')->name('admin.user.show'); // 详情
         Route::get('poundage', 'UserController@poundage')->name('admin.user.poundage'); // 手续费设置
         Route::post('poundage/store', 'UserController@poundageStore')->name('admin.user.poundage.store'); // 手续费设置

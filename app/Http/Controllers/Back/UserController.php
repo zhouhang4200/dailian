@@ -339,4 +339,70 @@ class UserController extends Controller
             return response()->ajaxFail('操作失败！');
         }
     }
+
+    public function poundageSetting()
+    {
+        try {
+            $user = User::find(request('id'));
+
+            if (request('send_poundage') && request('send_poundage') > 1) {
+                return response()->ajaxFail('发单手续费比例不得大于1！');
+            }
+
+            if (request('take_poundage') && request('take_poundage') > 1) {
+                return response()->ajaxFail('接单手续费比例不得大于1！');
+            }
+
+            if (request('spread_rate') && is_null(request('take_poundage'))) {
+                return response()->ajaxFail('请先设置接单手续费比例！');
+            }
+
+            if (request('spread_rate') && request('spread_rate') > 1) {
+                return response()->ajaxFail('推广返利比例不得大于1！');
+            }
+
+            if (request('spread_rate') && request('spread_rate') > request('take_poundage')) {
+                return response()->ajaxFail('推广返利比例不得大于接单手续费比例！');
+            }
+
+            if (request('send_poundage') > 0 && request('send_poundage') < 0.01) {
+                return response()->ajaxFail('请填写2位小数！');
+            }
+
+            if (request('take_poundage') > 0 && request('take_poundage') < 0.01) {
+                return response()->ajaxFail('请填写2位小数！');
+            }
+
+            if (request('spread_rate') > 0 && request('spread_rate') < 0.01) {
+                return response()->ajaxFail('请填写2位小数！');
+            }
+
+            if (request('send_poundage') || request('take_poundage')) {
+                UserPoundage::updateOrCreate(['user_id' => $user->id], [
+                    'user_id' => $user->id,
+                    'send_poundage' => request('send_poundage', 0),
+                    'take_poundage' => request('take_poundage', 0),
+                ]);
+            }
+
+            if (!request('send_poundage') && !request('take_poundage')) {
+                UserPoundage::where('user_id', $user->id)->delete();
+            }
+
+            if (request('spread_rate')) {
+                UserSpread::updateOrCreate(['user_id' => $user->id], [
+                    'user_id' => $user->id,
+                    'spread_rate' => request('spread_rate'),
+                ]);
+            }
+
+            if (!request('spread_rate')) {
+                UserSpread::where('user_id', $user->id)->delete();
+            }
+
+            return response()->ajaxSuccess('操作成功！');
+        } catch (Exception $e) {
+            return response()->ajaxFail('操作失败！');
+        }
+    }
 }

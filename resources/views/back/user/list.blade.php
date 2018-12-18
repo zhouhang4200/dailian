@@ -53,6 +53,9 @@
                 <td>{{ $user->userPoundage && $user->userPoundage->take_poundage ? $user->userPoundage->take_poundage : '默认' }}</td>
                 <td>{{ $user->userSpread ? $user->userSpread->spread_rate : '默认' }}</td>
                 <td style="text-align: center;">
+                    <button lay-name="{{ $user->name  }}" lay-id="{{ $user->id }}"  send-poundage="{{ $user->userPoundage ? $user->userPoundage->send_poundage : 0 }}"
+                            take-poundage="{{ $user->userPoundage ? $user->userPoundage->take_poundage : 0 }}" spread-rate="{{ $user->userSpread ? $user->userSpread->spread_rate : 0 }}"
+                            class="btn btn-success" lay-submit="" lay-filter="setting">设置</button>
                     <button lay-id="{{ $user->id }}" class="btn btn-success" lay-submit="" lay-filter="detail">详情</button>
                 </td>
             </tr>

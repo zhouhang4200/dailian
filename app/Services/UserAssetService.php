@@ -242,8 +242,8 @@ class UserAssetService
 
             // 更新平台余额
             $platformAsset = PlatformAsset::first();
-            $platformAsset->balance = bcsub($platformAsset->balance, self::$amount);
-            $platformAsset->frozen = bcadd($platformAsset->frozen, self::$amount);
+            $platformAsset->balance = bcadd($platformAsset->balance, self::$amount);
+            $platformAsset->frozen = bcsub($platformAsset->frozen, self::$amount);
             $platformAsset->save();
         } catch (Exception $exception) {
             throw new UnknownException($exception->getMessage() . $exception->getLine());

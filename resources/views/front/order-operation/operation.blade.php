@@ -1,4 +1,87 @@
 
+    // 撤单
+    form.on('submit(delete)', function (data) {
+        var index = layer.load();
+        $.post('{{ route('order.operation.delete') }}', {trade_no: $(data.elem).attr('data-no')}, function (result) {
+            layer.close(index);
+            if (result.status) {
+                @if($type == 'list')
+                    layer.msg(result.message);
+                    reloadOrderList();
+                @else
+                    layer.msg(result.message,{time:500}, function(){
+                    location.reload();
+                    });
+                @endif
+            } else {
+
+            }
+        }, 'json');
+        return false;
+    });
+    // 接单
+    form.on('submit(take)', function (data) {
+        var index = layer.load();
+        $.post('{{ route('order.operation.delete') }}', {trade_no: $(data.elem).attr('data-no')}, function (result) {
+            layer.close(index);
+            if (result.status) {
+                @if($type == 'list')
+                    layer.msg(result.message);
+                    reloadOrderList();
+                @else
+                    layer.msg(result.message,{time:500}, function(){
+                    location.reload();
+                    });
+                @endif
+            } else {
+
+            }
+        }, 'json');
+        return false;
+    });
+
+    // 上架
+    form.on('submit(on-sale)', function (data) {
+        var index = layer.load();
+        $.post('{{ route('order.operation.on-sale') }}', {trade_no: $(data.elem).attr('data-no')}, function (result) {
+            layer.close(index);
+            if (result.status) {
+                @if($type == 'list')
+                    layer.msg(result.message);
+                    reloadOrderList();
+                @else
+                    layer.msg(result.message,{time:500}, function(){
+                    location.reload();
+                    });
+                @endif
+            } else {
+
+            }
+        }, 'json');
+        return false;
+    });
+
+    // 下架
+    form.on('submit(off-sale)', function (data) {
+        var index = layer.load();
+        $.post('{{ route('order.operation.off-sale') }}', {trade_no: $(data.elem).attr('data-no')}, function (result) {
+            layer.close(index);
+            if (result.status) {
+                @if($type == 'list')
+                    layer.msg(result.message);
+                    reloadOrderList();
+                @else
+                    layer.msg(result.message,{time:500}, function(){
+                    location.reload();
+                    });
+                @endif
+            } else {
+
+            }
+        }, 'json');
+        return false;
+    });
+
     // 接单
     form.on('submit(take)', function (data) {
         var index = layer.load();
@@ -32,6 +115,7 @@
         });
         return false;
     });
+
     // 确认申请验收
     form.on('submit(confirm-apply-complete)', function (data) {
 
@@ -217,6 +301,7 @@
         });
         return false;
     });
+
     // 同意撤销
     form.on('submit(agree-consult)', function (data) {
         var amount = $(data.elem).attr('data-consult-amount');
@@ -244,6 +329,7 @@
         });
         return false;
     });
+
     // 不同意撤销
     form.on('submit(reject-consult)', function (data) {
     var index = layer.load();
@@ -264,6 +350,7 @@
         }, 'json');
         return false;
     });
+
     // 申请仲裁
     form.on('submit(apply-complain)', function (data) {
         // 打开申请仲裁弹窗
@@ -277,6 +364,7 @@
         });
         return false;
     });
+
     // 确定申请仲裁
     form.on('submit(confirm-apply-complain)', function (data) {
 
@@ -314,6 +402,7 @@
     }, 'json');
         return false;
     });
+
     // 取消仲裁
     form.on('submit(cancel-complain)', function (data) {
     var index = layer.load();

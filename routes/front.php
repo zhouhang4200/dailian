@@ -74,31 +74,58 @@ Route::group(['middleware' => 'auth'], function (){
 
         // 订单操作
         Route::prefix('operation')->middleware('syncESOrderStatus')->group(function (){
-            Route::post('take', 'OrderOperationController@take')->name('order.operation.take'); // 接单
-            Route::post('apply-complete', 'OrderOperationController@applyComplete')->name('order.operation.apply-complete'); // 申请验收
-            Route::post('cancel-complete', 'OrderOperationController@cancelComplete')->name('order.operation.cancel-complete'); // 取消验收
-            Route::post('complete', 'OrderOperationController@complete')->name('order.operation.complete'); // 完成
-            Route::post('on-sale', 'OrderOperationController@onSale')->name('order.operation.on-sale'); // 上架
-            Route::post('off-sale', 'OrderOperationController@offSale')->name('order.operation.off-sale'); // 下架
-            Route::post('lock', 'OrderOperationController@lock')->name('order.operation.lock'); // 锁定
-            Route::post('cancel-lock', 'OrderOperationController@cancelLock')->name('order.operation.cancel-lock'); // 取消锁定
-            Route::post('anomaly', 'OrderOperationController@anomaly')->name('order.operation.anomaly'); // 提交异常
-            Route::post('cancel-anomaly', 'OrderOperationController@cancelAnomaly')->name('order.operation.cancel-anomaly'); // 取消异常
-            Route::post('apply-consult', 'OrderOperationController@applyConsult')->name('order.operation.apply-consult'); // 申请撤销
-            Route::post('cancel-consult', 'OrderOperationController@cancelConsult')->name('order.operation.cancel-consult'); // 取消撤销
-            Route::post('agree-consult', 'OrderOperationController@agreeConsult')->name('order.operation.agree-consult'); // 同意撤销
-            Route::post('reject-consult', 'OrderOperationController@rejectConsult')->name('order.operation.reject-consult'); // 不同意撤销
-            Route::post('apply-complain', 'OrderOperationController@applyComplain')->name('order.operation.apply-complain'); // 申请仲裁
-            Route::post('cancel-complain', 'OrderOperationController@cancelComplain')->name('order.operation.cancel-complain'); // 取消仲裁
-            Route::get('apply-complete-image/{trade_no}', 'OrderOperationController@applyCompleteImage')->name('order.operation.apply-complete-image'); // 申请验收图片
-            Route::get('log/{trade_no}', 'OrderOperationController@log')->name('order.operation.log'); // 订单操作日志
-            Route::get('complain-info/{trade_no}', 'OrderOperationController@complainInfo')->name('order.operation.complain-info'); // 仲裁信息
-            Route::post('send-complain-message', 'OrderOperationController@sendComplainMessage')->name('order.operation.send-complain-message'); // 发送仲裁留言
-            Route::get('message/{trade_no}', 'OrderOperationController@message')->name('order.operation.message'); // 获取订单留言
-            Route::post('send-message/{trade_no}', 'OrderOperationController@sendMessage')->name('order.operation.send-message'); // 发送订单留言
-            Route::get('message-list', 'OrderOperationController@messageList')->name('order.operation.message-list'); // 留言列表
-            Route::post('delete-message', 'OrderOperationController@deleteMessage')->name('order.operation.delete-message'); // 删除留言
-            Route::post('delete-all-message', 'OrderOperationController@deleteAllMessage')->name('order.operation.delete-all-message'); // 删除所有留言
+            # 接单
+            Route::post('take', 'OrderOperationController@take')->name('order.operation.take');
+            # 撤单
+            Route::post('delete', 'OrderOperationController@delete')->name('order.operation.delete');
+            # 申请验收
+            Route::post('apply-complete', 'OrderOperationController@applyComplete')->name('order.operation.apply-complete');
+            # 取消验收
+            Route::post('cancel-complete', 'OrderOperationController@cancelComplete')->name('order.operation.cancel-complete');
+            # 完成
+            Route::post('complete', 'OrderOperationController@complete')->name('order.operation.complete');
+            # 上架
+            Route::post('on-sale', 'OrderOperationController@onSale')->name('order.operation.on-sale');
+            # 下架
+            Route::post('off-sale', 'OrderOperationController@offSale')->name('order.operation.off-sale');
+            # 锁定
+            Route::post('lock', 'OrderOperationController@lock')->name('order.operation.lock');
+            # 取消锁定
+            Route::post('cancel-lock', 'OrderOperationController@cancelLock')->name('order.operation.cancel-lock');
+            # 提交异常
+            Route::post('anomaly', 'OrderOperationController@anomaly')->name('order.operation.anomaly');
+            # 取消异常
+            Route::post('cancel-anomaly', 'OrderOperationController@cancelAnomaly')->name('order.operation.cancel-anomaly');
+            # 申请撤销
+            Route::post('apply-consult', 'OrderOperationController@applyConsult')->name('order.operation.apply-consult');
+            # 取消撤销
+            Route::post('cancel-consult', 'OrderOperationController@cancelConsult')->name('order.operation.cancel-consult');
+            # 同意撤销
+            Route::post('agree-consult', 'OrderOperationController@agreeConsult')->name('order.operation.agree-consult');
+            # 不同意撤销
+            Route::post('reject-consult', 'OrderOperationController@rejectConsult')->name('order.operation.reject-consult');
+            # 申请仲裁
+            Route::post('apply-complain', 'OrderOperationController@applyComplain')->name('order.operation.apply-complain');
+            # 取消仲裁
+            Route::post('cancel-complain', 'OrderOperationController@cancelComplain')->name('order.operation.cancel-complain');
+            # 申请验收图片
+            Route::get('apply-complete-image/{trade_no}', 'OrderOperationController@applyCompleteImage')->name('order.operation.apply-complete-image');
+            # 订单操作日志
+            Route::get('log/{trade_no}', 'OrderOperationController@log')->name('order.operation.log');
+            # 仲裁信息
+            Route::get('complain-info/{trade_no}', 'OrderOperationController@complainInfo')->name('order.operation.complain-info');
+            # 发送仲裁留言
+            Route::post('send-complain-message', 'OrderOperationController@sendComplainMessage')->name('order.operation.send-complain-message');
+            # 获取订单留言
+            Route::get('message/{trade_no}', 'OrderOperationController@message')->name('order.operation.message');
+            # 发送订单留言
+            Route::post('send-message/{trade_no}', 'OrderOperationController@sendMessage')->name('order.operation.send-message');
+            # 留言列表
+            Route::get('message-list', 'OrderOperationController@messageList')->name('order.operation.message-list');
+            # 删除留言
+            Route::post('delete-message', 'OrderOperationController@deleteMessage')->name('order.operation.delete-message');
+            # 删除所有留言
+            Route::post('delete-all-message', 'OrderOperationController@deleteAllMessage')->name('order.operation.delete-all-message');
         });
     });
 

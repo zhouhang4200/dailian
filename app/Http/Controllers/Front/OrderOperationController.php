@@ -43,10 +43,37 @@ class OrderOperationController extends Controller
             return response()->ajaxFail($e->getMessage(), [], $e->getCode());
         } catch (Exception $e) {
             DB::rollBack();
-            return response()->ajaxFail($e->getMessage() . $e->getFile() . $e->getLine());
+            return response()->ajaxFail($e->getMessage());
         }
         DB::commit();
         return response()->ajaxSuccess('接单成功');
+    }
+
+    /**
+     * 撤单
+     * @return mixed
+     * @throws Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function delete()
+    {
+        DB::beginTransaction();
+        try {
+            $order = OrderService::init(request()->user()->id, request('trade_no'))
+                ->delete();
+            TmApiService::take($order);
+        } catch (OrderException $e) {
+            DB::rollBack();
+            return response()->ajaxFail($e->getMessage());
+        } catch (UserAssetException $e) {
+            DB::rollBack();
+            return response()->ajaxFail($e->getMessage(), [], $e->getCode());
+        } catch (Exception $e) {
+            DB::rollBack();
+            return response()->ajaxFail($e->getMessage());
+        }
+        DB::commit();
+        return response()->ajaxSuccess('撤单成功');
     }
 
     /**

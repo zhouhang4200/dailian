@@ -158,7 +158,7 @@
                 <div class="layui-tab layui-tab-brief layui-form" lay-filter="order-list">
                     <ul class="layui-tab-title">
                         <li class="layui-this" lay-id="0">全部 <span  class="layui-badge layui-bg-blue wait-handle-quantity  layui-hide"></span></li>
-                        <li class="" lay-id="1">待接单
+                        <li class="" lay-id="1">未接单
                             <span class="qs-badge quantity-13 layui-hide"></span>
                         </li>
                         <li class="" lay-id="2">代练中
@@ -202,37 +202,46 @@
     <script src="/front/js/bootstrap-fileinput.js"></script>
     <script type="text/html" id="operation">
 
+        @{{# if (d.status_describe == '未接单') {  }}
+            <button class="qs-btn qs-btn-sm" style="width: 80px;"   data-no="@{{ d.trade_no }}" lay-submit lay-filter="delete">撤单</button>
+            <button class="qs-btn qs-btn-primary qs-btn-sm qs-btn-table" style="width: 80px;"   data-no="@{{ d.trade_no }}"  lay-submit lay-filter="off-sale">下架</button>
+        @{{# }   }}
+
         @{{# if (d.status_describe == '代练中') {  }}
-            <button class="qs-btn qs-btn-sm" style="width: 80px;"   data-no="@{{ d.trade_no }}" lay-submit lay-filter="apply-complete">申请验收</button>
-            <button class="qs-btn qs-btn-primary qs-btn-sm qs-btn-table" style="width: 80px;"   data-no="@{{ d.trade_no }}" data-amount="@{{ d.amount }}" data-security_deposit="@{{ d.security_deposit }}" data-efficiency_deposit="@{{ d.efficiency_deposit }}" lay-submit lay-filter="apply-consult">协商撤销</button>
+            <button class="qs-btn qs-btn-primary qs-btn-sm qs-btn-table" style="width: 80px;" data-no="@{{ d.trade_no }}" data-amount="@{{ d.amount }}" data-security_deposit="@{{ d.security_deposit }}" data-efficiency_deposit="@{{ d.efficiency_deposit }}" lay-submit lay-filter="apply-consult">协商撤销</button>
+            <button class="qs-btn qs-btn-primary qs-btn-sm qs-btn-table" style="width: 80px;"   data-no="@{{ d.trade_no }}" lay-submit lay-filter="apply-complain">申请仲裁</button>
         @{{# }   }}
 
         @{{# if (d.status_describe == '待验收') {  }}
-        <button class="qs-btn qs-btn-sm " style="width: 80px;" data-no="@{{ d.trade_no }}" lay-submit lay-filter="cancel-complete">取消验收</button>
-        <button class="qs-btn qs-btn-primary qs-btn-sm qs-btn-table" style="width: 80px;" data-no="@{{ d.trade_no }}" data-amount="@{{ d.amount }}" data-security_deposit="@{{ d.security_deposit }}" data-efficiency_deposit="@{{ d.efficiency_deposit }}" lay-submit lay-filter="apply-consult">协商撤销</button>
+            <button class="qs-btn qs-btn-sm " style="width: 80px;" data-no="@{{ d.trade_no }}" lay-submit lay-filter="confirm-apply-complete">完成验收</button>
+            <button class="qs-btn qs-btn-primary qs-btn-sm qs-btn-table" style="width: 80px;" data-no="@{{ d.trade_no }}" data-amount="@{{ d.amount }}" data-security_deposit="@{{ d.security_deposit }}" data-efficiency_deposit="@{{ d.efficiency_deposit }}" lay-submit lay-filter="apply-consult">协商撤销</button>
         @{{# }   }}
 
-        @{{# if (d.status_describe == '撤销中' && d.consult_initiator == 2) {  }}
+        @{{# if (d.status_describe == '撤销中' && d.consult_initiator == 1) {  }}
             <button class="qs-btn qs-btn-sm" style="width: 80px;"   data-no="@{{ d.trade_no }}" lay-submit lay-filter="cancel-consult">取消撤销</button>
             <button class="qs-btn qs-btn-primary qs-btn-sm qs-btn-table" style="width: 80px;"   data-no="@{{ d.trade_no }}" lay-submit lay-filter="apply-complain">申请仲裁</button>
-        @{{# } else if(d.status_describe == '撤销中' && d.consult_initiator == 1) {  }}
+        @{{# } else if(d.status_describe == '撤销中' && d.consult_initiator == 2) {  }}
             <button class="qs-btn qs-btn-sm" style="width: 80px;"   data-no="@{{ d.trade_no }}" lay-submit lay-filter="agree-consult"
             data-consult-amount="@{{ d.consult_amount }}" data-consult-deposit="@{{ d.consult_deposit }}" data-consult-reason="@{{ d.consult_reason }}">同意撤销</button>
             <button class="qs-btn qs-btn-primary qs-btn-sm qs-btn-table" style="width: 80px;"   data-no="@{{ d.trade_no }}" lay-submit lay-filter="apply-complain">申请仲裁</button>
         @{{# }  }}
 
-        @{{# if (d.status_describe == '仲裁中' && d.complain_initiator == 2) {  }}
+        @{{# if (d.status_describe == '仲裁中' && d.complain_initiator == 1) {  }}
             <button class="qs-btn qs-btn-sm" style="width: 80px;" data-no="@{{ d.trade_no }}" lay-submit lay-filter="cancel-complain">取消仲裁</button>
         @{{# }  }}
 
-
         @{{# if (d.status == '异常') {  }}
-            <button class="qs-btn qs-btn-sm" style="width: 80px;" data-no="@{{ d.trade_no }}" lay-submit lay-filter="cancel-anomaly">取消异常</button>
+            <button class="qs-btn qs-btn-sm" style="width: 80px;" data-no="@{{ d.trade_no }}" lay-submit lay-filter="lock">锁定</button>
             <button class="qs-btn qs-btn-primary qs-btn-sm qs-btn-table" style="width: 80px;"   data-no="@{{ d.trade_no }}" data-amount="@{{ d.amount }}" data-security_deposit="@{{ d.security_deposit }}" data-efficiency_deposit="@{{ d.efficiency_deposit }}" lay-submit lay-filter="apply-consult">协商撤销</button>
         @{{# }   }}
 
         @{{# if (d.status == '锁定') {  }}
-            <button class="qs-btn qs-btn-sm" style="width: 80px;" data-no="@{{ d.trade_no }}" data-amount="@{{ d.amount }}" data-security_deposit="@{{ d.security_deposit }}" data-efficiency_deposit="@{{ d.efficiency_deposit }}" lay-submit lay-filter="apply-consult">协商撤销</button>
+            <button class="qs-btn qs-btn-sm" style="width: 80px;" data-no="@{{ d.trade_no }}" data-amount="@{{ d.amount }}" data-security_deposit="@{{ d.security_deposit }}" data-efficiency_deposit="@{{ d.efficiency_deposit }}" lay-submit lay-filter="apply-consult">取消锁定</button>
+            <button class="qs-btn qs-btn-primary qs-btn-sm qs-btn-table" style="width: 80px;"   data-no="@{{ d.trade_no }}" data-amount="@{{ d.amount }}" data-security_deposit="@{{ d.security_deposit }}" data-efficiency_deposit="@{{ d.efficiency_deposit }}" lay-submit lay-filter="apply-consult">协商撤销</button>
+        @{{# }   }}
+
+        @{{# if (d.status == '已下架') {  }}
+            <button class="qs-btn qs-btn-primary qs-btn-sm qs-btn-table" style="width: 80px;"   data-no="@{{ d.trade_no }}"  lay-submit lay-filter="on-sale">上架</button>
         @{{# }   }}
 
     </script>

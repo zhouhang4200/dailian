@@ -373,17 +373,16 @@ class UserAssetService
             $userAsset->total_income = bcadd($userAsset->total_income, self::$amount);
             $userAsset->save();
 
+            // 更新平台冻结与余额
+            $platformAsset = PlatformAsset::first();
+            $platformAsset->balance = bcadd($platformAsset->balance, self::$amount);
+            $platformAsset->save();
 
             // 如果用户收入的的子类型,在平台资产配置文件支出类型中则需要更新平台资产表的支出
             if (in_array(self::$subType, config('platform_asset.expend'))) {
                 // 更新平台余额
                 $platformAsset = PlatformAsset::first();
                 $platformAsset->total_expend = bcadd($platformAsset->total_expend, self::$amount);
-                $platformAsset->save();
-            } else {
-                // 更新平台冻结与余额
-                $platformAsset = PlatformAsset::first();
-                $platformAsset->balance = bcadd($platformAsset->balance, self::$amount);
                 $platformAsset->save();
             }
         } catch (Exception $exception) {

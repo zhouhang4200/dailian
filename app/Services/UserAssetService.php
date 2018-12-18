@@ -324,6 +324,11 @@ class UserAssetService
             $userAsset->total_expend = bcadd($userAsset->total_expend, self::$amount);
             $userAsset->save();
 
+            // 更新平台冻结金额
+            $platformAsset = PlatformAsset::first();
+            $platformAsset->frozen = bcsub($platformAsset->frozen, self::$amount);
+            $platformAsset->save();
+
             // 如果支出的子类型在配置文件中则需要更新平台资产表的收入
             if (in_array(self::$subType, config('platform_asset.income'))) {
                 // 更新平台余额

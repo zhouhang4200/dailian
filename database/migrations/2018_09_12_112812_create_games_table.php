@@ -16,6 +16,7 @@ class CreateGamesTable extends Migration {
 		{
 			$table->increments('id');
 			$table->string('name', 60)->unique()->comment('游戏名称');
+			$table->integer('sort', 60)->default('9999')->comment('显示排序');
 			$table->string('initials', 8)->comment('首字母拼音');
 			$table->integer('game_type_id')->comment('游戏类型:手游 端游');
 			$table->integer('game_class_id')->comment('游戏类别: 射击 策略');

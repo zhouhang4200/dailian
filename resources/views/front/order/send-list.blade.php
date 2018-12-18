@@ -213,7 +213,7 @@
         @{{# }   }}
 
         @{{# if (d.status_describe == '待验收') {  }}
-            <button class="qs-btn qs-btn-sm " style="width: 80px;" data-no="@{{ d.trade_no }}" lay-submit lay-filter="confirm-apply-complete">完成验收</button>
+            <button class="qs-btn qs-btn-sm " style="width: 80px;" data-no="@{{ d.trade_no }}" lay-submit lay-filter="complete">完成验收</button>
             <button class="qs-btn qs-btn-primary qs-btn-sm qs-btn-table" style="width: 80px;" data-no="@{{ d.trade_no }}" data-amount="@{{ d.amount }}" data-security_deposit="@{{ d.security_deposit }}" data-efficiency_deposit="@{{ d.efficiency_deposit }}" lay-submit lay-filter="apply-consult">协商撤销</button>
         @{{# }   }}
 

@@ -125,7 +125,6 @@
 @endsection
 
 @section('js')
-    <script src="//cdn.bootcss.com/socket.io/1.3.7/socket.io.min.js"></script>
     <script>
         $('#export').click(function () {
             var url = "?export=1&" + $('#search-flow').serialize();
@@ -141,7 +140,7 @@
         });
 
         (function () {
-            var socket=io("{{ env('SOCKET') }}");
+            var socket=io(window.location.hostname);
             socket.on("complain_message:all", function (message) {
                 var id = 'complain_message_'+message;
                 var data = document.getElementById(id);

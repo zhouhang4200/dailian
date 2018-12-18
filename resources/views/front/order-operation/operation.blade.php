@@ -177,6 +177,29 @@
         return false;
     });
 
+    // 完成验收
+    form.on('submit(complete)', function (data) {
+        layer.confirm('确定要完成验收吗?', {icon: 3}, function(index){
+            var index = layer.load();
+            $.post('{{ route('order.operation.complete') }}', {trade_no: $(data.elem).attr('data-no')}, function (result) {
+                layer.close(index);
+                if (result.status) {
+                    @if($type == 'list')
+                        layer.msg(result.message);
+                        reloadOrderList();
+                    @else
+                        layer.msg(result.message,{time:500}, function(){
+                            location.reload();
+                        });
+                    @endif
+                } else {
+                    layer.alert(result.message);
+                }
+            }, 'json')
+        });
+        return false;
+    });
+
     // 异常提示框
     form.on('submit(anomaly)', function (data) {
         $('.anomaly-pop input[name=trade_no]').val($(data.elem).attr('data-no'));

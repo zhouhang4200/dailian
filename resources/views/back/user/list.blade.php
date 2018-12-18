@@ -11,6 +11,9 @@
             <th>注册时间</th>
             <th>最后登录时间</th>
             <th>实名认证</th>
+            <th>发单手续费比例</th>
+            <th>接单手续费比例</th>
+            <th>推广比例</th>
             <th style="text-align: center">操作</th>
         </tr>
         </thead>
@@ -39,13 +42,16 @@
                     @if ($user->realNameCertification && $user->realNameCertification->status === 1)
                         <span style="color: #95a5a6">待审核</span>
                     @elseif ($user->realNameCertification && $user->realNameCertification->status === 2)
-                        <span style="color: #00F7DE">通过</span>
+                        <span style="color: #2980b9">通过</span>
                     @elseif ($user->realNameCertification && $user->realNameCertification->status === 3)
                         <span style="color: #cc0000">拒绝</span>
                     @else
                         --
                     @endif
                 </td>
+                <td>{{ $user->userPoundage && $user->userPoundage->send_poundage ? $user->userPoundage->send_poundage : '默认' }}</td>
+                <td>{{ $user->userPoundage && $user->userPoundage->take_poundage ? $user->userPoundage->take_poundage : '默认' }}</td>
+                <td>{{ $user->userSpread ? $user->userSpread->spread_rate : '默认' }}</td>
                 <td style="text-align: center;">
                     <button lay-id="{{ $user->id }}" class="btn btn-success" lay-submit="" lay-filter="detail">详情</button>
                 </td>

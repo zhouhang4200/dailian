@@ -340,7 +340,6 @@ class UserAssetService
             } else {
                 // 更新平台冻结与余额
                 $platformAsset = PlatformAsset::first();
-                $platformAsset->balance = bcadd($platformAsset->balance, self::$amount);
                 $platformAsset->frozen = bcsub($platformAsset->frozen, self::$amount);
                 $platformAsset->save();
             }

@@ -205,8 +205,8 @@
         @{{# }   }}
 
         @{{# if (d.status_describe == '待验收') {  }}
-        <button class="qs-btn qs-btn-sm " style="width: 80px;" data-no="@{{ d.trade_no }}" lay-submit lay-filter="cancel-complete">取消验收</button>
-        <button class="qs-btn qs-btn-primary qs-btn-sm qs-btn-table" style="width: 80px;" data-no="@{{ d.trade_no }}" data-amount="@{{ d.amount }}" data-security_deposit="@{{ d.security_deposit }}" data-efficiency_deposit="@{{ d.efficiency_deposit }}" lay-submit lay-filter="apply-consult">协商撤销</button>
+            <button class="qs-btn qs-btn-sm " style="width: 80px;" data-no="@{{ d.trade_no }}" lay-submit lay-filter="cancel-complete">取消验收</button>
+            <button class="qs-btn qs-btn-primary qs-btn-sm qs-btn-table" style="width: 80px;" data-no="@{{ d.trade_no }}" data-amount="@{{ d.amount }}" data-security_deposit="@{{ d.security_deposit }}" data-efficiency_deposit="@{{ d.efficiency_deposit }}" lay-submit lay-filter="apply-consult">协商撤销</button>
         @{{# }   }}
 
         @{{# if (d.status_describe == '撤销中' && d.consult_initiator == 2) {  }}
@@ -221,7 +221,6 @@
         @{{# if (d.status_describe == '仲裁中' && d.complain_initiator == 2) {  }}
             <button class="qs-btn qs-btn-sm" style="width: 80px;" data-no="@{{ d.trade_no }}" lay-submit lay-filter="cancel-complain">取消仲裁</button>
         @{{# }  }}
-
 
         @{{# if (d.status == '异常') {  }}
             <button class="qs-btn qs-btn-sm" style="width: 80px;" data-no="@{{ d.trade_no }}" lay-submit lay-filter="cancel-anomaly">取消异常</button>

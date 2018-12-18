@@ -201,9 +201,9 @@
                                     <label class="layui-form-label">游戏</label>
                                     <div class="layui-input-block">
                                         <select name="game_id" lay-verify="required" lay-search="" show-name="x" display-name="游戏" lay-filter="game">
-                                            <option value="">请选择</option>
+                                            <option value="" >请选择</option>
                                             @foreach($games as $item)
-                                                <option value="{{ $item->id }}">{{ $item->name  }}</option>
+                                                <option value="{{ $item->id }}" >{{ $item->name  }}</option>
                                             @endforeach
                                         </select>
                                     </div>

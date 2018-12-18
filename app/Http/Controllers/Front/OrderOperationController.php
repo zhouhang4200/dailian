@@ -22,6 +22,21 @@ use Illuminate\Support\Facades\DB;
  */
 class OrderOperationController extends Controller
 {
+    private $taobaoOrder = false;
+
+    /**
+     * 发单用户为 1 的订单则需要调用发单平台接口
+     * OrderOperationController constructor.
+     */
+    public function __construct()
+    {
+        $sendUserId = GameLevelingOrder::where('trade_no', request('trade_no'))->value('parent_user_id');
+
+        if (in_array($sendUserId, [1])) {
+            $this->taobaoOrder = true;
+        }
+    }
+
     /**
      * 接单
      * @return mixed
@@ -34,7 +49,10 @@ class OrderOperationController extends Controller
         try {
             $order = OrderService::init(request()->user()->id, request('trade_no'))
                 ->take(clientRSADecrypt(request('pay_password')), clientRSADecrypt(request('take_password')));
-            TmApiService::take($order);
+
+            if ($this->taobaoOrder) {
+                TmApiService::take($order);
+            }
         } catch (OrderException $e) {
             DB::rollBack();
             return response()->ajaxFail($e->getMessage());
@@ -43,10 +61,40 @@ class OrderOperationController extends Controller
             return response()->ajaxFail($e->getMessage(), [], $e->getCode());
         } catch (Exception $e) {
             DB::rollBack();
-            return response()->ajaxFail($e->getMessage() . $e->getFile() . $e->getLine());
+            return response()->ajaxFail($e->getMessage());
         }
         DB::commit();
         return response()->ajaxSuccess('接单成功');
+    }
+
+    /**
+     * 撤单
+     * @return mixed
+     * @throws Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function delete()
+    {
+        DB::beginTransaction();
+        try {
+            $order = OrderService::init(request()->user()->id, request('trade_no'))
+                ->delete();
+
+            if ($this->taobaoOrder) {
+                TmApiService::delete($order);
+            }
+        } catch (OrderException $e) {
+            DB::rollBack();
+            return response()->ajaxFail($e->getMessage());
+        } catch (UserAssetException $e) {
+            DB::rollBack();
+            return response()->ajaxFail($e->getMessage(), [], $e->getCode());
+        } catch (Exception $e) {
+            DB::rollBack();
+            return response()->ajaxFail($e->getMessage());
+        }
+        DB::commit();
+        return response()->ajaxSuccess('撤单成功');
     }
 
     /**
@@ -69,7 +117,11 @@ class OrderOperationController extends Controller
         DB::beginTransaction();
         try {
             $order = OrderService::init(request()->user()->id, request('trade_no'))->applyComplete(array_filter($images), request('remark'));
-            TmApiService::applyComplete($order->trade_no);
+
+            if ($this->taobaoOrder) {
+                TmApiService::applyComplete($order->trade_no);
+            }
+
         } catch (OrderException $e) {
             DB::rollBack();
             return response()->ajaxFail($e->getMessage());
@@ -95,7 +147,10 @@ class OrderOperationController extends Controller
         DB::beginTransaction();
         try {
             $order = OrderService::init(request()->user()->id, request('trade_no'))->cancelComplete();
-            TmApiService::cancelComplete($order->trade_no);
+
+            if ($this->taobaoOrder) {
+                TmApiService::cancelComplete($order->trade_no);
+            }
         } catch (OrderException $e) {
             DB::rollBack();
             return response()->ajaxFail($e->getMessage());
@@ -120,7 +175,10 @@ class OrderOperationController extends Controller
         DB::beginTransaction();
         try {
             $order = OrderService::init(request()->user()->id, request('trade_no'))->complete();
-            TmApiService::complete($order->trade_no);
+
+            if ($this->taobaoOrder) {
+                TmApiService::complete($order->trade_no);
+            }
         } catch (OrderException $e) {
             DB::rollBack();
             return response()->ajaxFail($e->getMessage());
@@ -145,7 +203,10 @@ class OrderOperationController extends Controller
         DB::beginTransaction();
         try {
             $order = OrderService::init(request()->user()->id, request('trade_no'))->onSale();
-            TmApiService::onSale($order->trade_no);
+
+            if ($this->taobaoOrder) {
+                TmApiService::onSale($order->trade_no);
+            }
         } catch (OrderException $e) {
             DB::rollBack();
             return response()->ajaxFail($e->getMessage());
@@ -170,7 +231,10 @@ class OrderOperationController extends Controller
         DB::beginTransaction();
         try {
             $order = OrderService::init(request()->user()->id, request('trade_no'))->offSale();
-            TmApiService::offSale($order->trade_no);
+
+            if ($this->taobaoOrder) {
+                TmApiService::offSale($order->trade_no);
+            }
         } catch (OrderException $e) {
             DB::rollBack();
             return response()->ajaxFail($e->getMessage());
@@ -195,7 +259,10 @@ class OrderOperationController extends Controller
         DB::beginTransaction();
         try {
             $order = OrderService::init(request()->user()->id, request('trade_no'))->lock();
-            TmApiService::lock($order->trade_no);
+
+            if ($this->taobaoOrder) {
+                TmApiService::lock($order->trade_no);
+            }
         } catch (OrderException $e) {
             DB::rollBack();
             return response()->ajaxFail($e->getMessage());
@@ -220,7 +287,10 @@ class OrderOperationController extends Controller
         DB::beginTransaction();
         try {
             $order = OrderService::init(request()->user()->id, request('trade_no'))->cancelLock();
-            TmApiService::cancelLock($order->trade_no);
+
+            if ($this->taobaoOrder) {
+                TmApiService::cancelLock($order->trade_no);
+            }
         } catch (OrderException $e) {
             DB::rollBack();
             return response()->ajaxFail($e->getMessage());
@@ -247,7 +317,9 @@ class OrderOperationController extends Controller
         try {
             $order = OrderService::init(request()->user()->id, request('trade_no'))->anomaly(request('reason'));
 
-            TmApiService::anomaly($order->trade_no);
+            if ($this->taobaoOrder) {
+                TmApiService::anomaly($order->trade_no);
+            }
         } catch (OrderException $e) {
             DB::rollBack();
             return response()->ajaxFail($e->getMessage());
@@ -272,7 +344,10 @@ class OrderOperationController extends Controller
         DB::beginTransaction();
         try {
             $order = OrderService::init(request()->user()->id, request('trade_no'))->cancelAnomaly();
-            TmApiService::cancelAnomaly($order->trade_no);
+
+            if ($this->taobaoOrder) {
+                TmApiService::cancelAnomaly($order->trade_no);
+            }
         } catch (OrderException $e) {
             DB::rollBack();
             return response()->ajaxFail($e->getMessage());
@@ -308,7 +383,10 @@ class OrderOperationController extends Controller
         try {
             $order = OrderService::init(request()->user()->id, $tradeNO)
                 ->applyConsult($amount, $depositResult['security_deposit'], $depositResult['efficiency_deposit'], $reason);
-            TmApiService::applyConsult($order->trade_no, $amount, $deposit, $reason);
+
+            if ($this->taobaoOrder) {
+                TmApiService::applyConsult($order->trade_no, $amount, $deposit, $reason);
+            }
         } catch (OrderException $e) {
             DB::rollBack();
             return response()->ajaxFail($e->getMessage());
@@ -334,7 +412,10 @@ class OrderOperationController extends Controller
         DB::beginTransaction();
         try {
             $order = OrderService::init(request()->user()->id, request('trade_no'))->cancelConsult();
-            TmApiService::cancelConsult($order->trade_no);
+
+            if ($this->taobaoOrder) {
+                TmApiService::cancelConsult($order->trade_no);
+            }
         } catch (OrderException $e) {
             DB::rollBack();
             return response()->ajaxFail($e->getMessage());
@@ -359,7 +440,10 @@ class OrderOperationController extends Controller
         DB::beginTransaction();
         try {
             $order = OrderService::init(request()->user()->id, request('trade_no'))->agreeConsult();
-            TmApiService::agreeConsult($order->trade_no);
+
+            if ($this->taobaoOrder) {
+                TmApiService::agreeConsult($order->trade_no);
+            }
         } catch (OrderException $e) {
             DB::rollBack();
             return response()->ajaxFail($e->getMessage());
@@ -385,7 +469,10 @@ class OrderOperationController extends Controller
         DB::beginTransaction();
         try {
             $order = OrderService::init(request()->user()->id, request('trade_no'))->rejectConsult();
-            TmApiService::rejectConsult($order->trade_no);
+
+            if ($this->taobaoOrder) {
+                TmApiService::rejectConsult($order->trade_no);
+            }
         } catch (OrderException $e) {
             DB::rollBack();
             return response()->ajaxFail($e->getMessage());
@@ -416,7 +503,10 @@ class OrderOperationController extends Controller
             $images[] = base64ToImg(request('image_3'), 'complain');
 
             $order = OrderService::init(request()->user()->id, request('trade_no'))->applyComplain(request('reason'), array_filter($images));
-            TmApiService::applyComplain($order->trade_no, request('reason'));
+
+            if ($this->taobaoOrder) {
+                TmApiService::applyComplain($order->trade_no, request('reason'));
+            }
         } catch (OrderException $e) {
             DB::rollBack();
             return response()->ajaxFail($e->getMessage());
@@ -443,7 +533,10 @@ class OrderOperationController extends Controller
         DB::beginTransaction();
         try {
             $order = OrderService::init(request()->user()->id, request('trade_no'))->cancelComplain();
-            TmApiService::cancelComplain($order->trade_no);
+
+            if ($this->taobaoOrder) {
+                TmApiService::cancelComplain($order->trade_no);
+            }
         } catch (OrderException $e) {
             DB::rollBack();
             return response()->ajaxFail($e->getMessage());

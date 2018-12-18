@@ -116,61 +116,7 @@ class UserAssetService
             // 更新平台余额
             $platformAsset = PlatformAsset::first();
             $platformAsset->balance = bcadd($platformAsset->balance, self::$amount);
-            $platformAsset->save();
-        } catch (Exception $exception) {
-            throw new UnknownException($exception->getMessage());
-        }
-        DB::commit();
-        return true;
-    }
-
-    /**
-     * 生成提现单
-     * @return bool
-     * @throws UserAssetException
-     * @throws Exception
-     */
-    public function withdraw()
-    {
-        if (self::$type != 3) {
-            throw new UserAssetException('请检查传入的子类型是否正确', 4007);
-        }
-
-        DB::beginTransaction();
-
-        $userAsset = UserAsset::where('user_id', self::$userId)->lockForUpdate()->first();
-        // 检测余额是否够本次提现
-        if ($userAsset->balance < self::$amount) {
-            throw new UserAssetException('您的余额不够,请调整提现金额', 4001);
-        }
-
-        // 获取用户认证信息
-        $realNameCertification = RealNameCertification::where('user_id', self::$userId)->first();
-        if (!$realNameCertification) {
-            throw new UserAssetException('您的账号没有进行实名认证无法进行提现');
-        }
-
-        try {
-            // 写流水
-            $this->flow(bcsub($userAsset->balance, self::$amount), bcadd($userAsset->frozen, self::$amount));
-            // 生成提现单
-            BalanceWithdraw::create([
-                'user_id' => self::$userId,
-                'trade_no' => self::$tradeNO,
-                'amount' => self::$amount,
-                'real_name' => $realNameCertification->real_name,
-                'bank_card' => $realNameCertification->bank_card,
-                'bank_name' => $realNameCertification->bank_name,
-                'status' => 1,
-            ]);
-            // 更新用户余额与冻结金额
-            $userAsset->balance = bcsub($userAsset->balance, self::$amount);
-            $userAsset->frozen = bcadd($userAsset->frozen, self::$amount);
-            $userAsset->save();
-            // 更新平台余额
-            $platformAsset = PlatformAsset::first();
-            $platformAsset->balance = bcsub($platformAsset->balance, self::$amount);
-            $platformAsset->frozen = bcadd($platformAsset->frozen, self::$amount);
+            $platformAsset->total_recharge = bcadd($platformAsset->total_recharge, self::$amount);
             $platformAsset->save();
         } catch (Exception $exception) {
             throw new UnknownException($exception->getMessage());
@@ -210,6 +156,7 @@ class UserAssetService
             // 更新平台余额
             $platformAsset = PlatformAsset::first();
             $platformAsset->frozen = bcsub($platformAsset->frozen, self::$amount);
+            $platformAsset->total_withdraw = bcadd($platformAsset->total_withdraw, self::$amount);
             $platformAsset->save();
         } catch (Exception $exception) {
             throw new UnknownException($exception->getMessage());
@@ -336,7 +283,7 @@ class UserAssetService
             if (in_array(self::$subType, config('platform_asset.income'))) {
                 // 更新平台余额
                 $platformAsset = PlatformAsset::first();
-                $platformAsset->income = bcadd($platformAsset->income, self::$amount);
+                $platformAsset->total_income = bcadd($platformAsset->total_income, self::$amount);
                 $platformAsset->save();
             }
         } catch (Exception $exception) {
@@ -376,6 +323,14 @@ class UserAssetService
             $userAsset->frozen = bcsub($userAsset->frozen, self::$amount);
             $userAsset->total_expend = bcadd($userAsset->total_expend, self::$amount);
             $userAsset->save();
+
+            // 如果支出的子类型在配置文件中则需要更新平台资产表的收入
+            if (in_array(self::$subType, config('platform_asset.income'))) {
+                // 更新平台余额
+                $platformAsset = PlatformAsset::first();
+                $platformAsset->total_income = bcadd($platformAsset->total_income, self::$amount);
+                $platformAsset->save();
+            }
         } catch (Exception $exception) {
             throw new UnknownException($exception->getMessage());
         }
@@ -412,7 +367,7 @@ class UserAssetService
             if (in_array(self::$subType, config('platform_asset.expend'))) {
                 // 更新平台余额
                 $platformAsset = PlatformAsset::first();
-                $platformAsset->expend = bcadd($platformAsset->expend, self::$amount);
+                $platformAsset->total_expend = bcadd($platformAsset->total_expend, self::$amount);
                 $platformAsset->save();
             }
         } catch (Exception $exception) {

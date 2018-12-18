@@ -224,10 +224,12 @@ class FinanceController extends Controller
     {
         try {
             $user = Auth::user();
+            // 默认手续费 1%
+            $rate =  \Setting::get('withdraw.rate') ? \Setting::get('withdraw.rate') : 1;
 
             $data = [
                 'balance' => auth()->user()->userAsset->balance,
-                'rate' => bcdiv(SettingFacade::get('withdraw.rate'), 100, 2),
+                'rate' => bcdiv($rate, 100, 2),
                 'tips' => SettingFacade::get('withdraw.tips'),
                 'min_amount' => SettingFacade::get('withdraw.min_amount'),
                 'max_amount' => SettingFacade::get('withdraw.max_amount'),

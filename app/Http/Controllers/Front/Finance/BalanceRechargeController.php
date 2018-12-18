@@ -21,7 +21,9 @@ class BalanceRechargeController extends Controller
      */
     public function index()
     {
-        return view('front.finance.balance-recharge.index');
+        return view('front.finance.balance-recharge.index')->with([
+            'rate' => \Setting::get('withdraw.rate') ? \Setting::get('withdraw.rate') : 1
+        ]);
     }
 
     /**

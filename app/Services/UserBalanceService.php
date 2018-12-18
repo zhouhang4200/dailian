@@ -31,9 +31,10 @@ class UserBalanceService
        if (! \Hash::check(clientRSADecrypt(request('password')), $user->pay_password)) {
            throw new UserAssetException('支付密码错误', 4002);
        }
-
+        // 设置默认手续费为 1%
+       $rate = \Setting::get('withdraw.rate') ? \Setting::get('withdraw.rate') : 1;
        // 计算手续费
-       $poundage = bcmul($amount, bcdiv(\Setting::get('withdraw.rate'), 100, 2));
+       $poundage = bcmul($amount, bcdiv($rate, 100, 2));
        // 实际到账金额
        $amount = bcsub($amount, $poundage);
 

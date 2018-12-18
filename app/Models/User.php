@@ -216,5 +216,13 @@ class User extends Authenticatable
         });
     }
 
+    public function userSpread()
+    {
+        return $this->hasOne(UserSpread::class);
+    }
 
+    public function userPoundage()
+    {
+        return $this->hasOne(UserPoundage::class);
+    }
 }

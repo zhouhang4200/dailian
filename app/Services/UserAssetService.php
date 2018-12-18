@@ -279,16 +279,17 @@ class UserAssetService
             $userAsset->total_expend = bcadd($userAsset->total_expend, self::$amount);
             $userAsset->save();
 
-            // 更新平台资金
-            $platformAsset = PlatformAsset::first();
-            $platformAsset->balance = bcadd($platformAsset->balance, self::$amount);
-            $platformAsset->save();
 
             // 如果支出的子类型在配置文件中则需要更新平台资产表的收入
             if (in_array(self::$subType, config('platform_asset.income'))) {
                 // 更新平台余额
                 $platformAsset = PlatformAsset::first();
                 $platformAsset->total_income = bcadd($platformAsset->total_income, self::$amount);
+                $platformAsset->save();
+            } else {
+                // 更新平台资金
+                $platformAsset = PlatformAsset::first();
+                $platformAsset->balance = bcadd($platformAsset->balance, self::$amount);
                 $platformAsset->save();
             }
         } catch (Exception $exception) {
@@ -329,17 +330,18 @@ class UserAssetService
             $userAsset->total_expend = bcadd($userAsset->total_expend, self::$amount);
             $userAsset->save();
 
-            // 更新平台冻结与余额
-            $platformAsset = PlatformAsset::first();
-            $platformAsset->balance = bcadd($platformAsset->balance, self::$amount);
-            $platformAsset->frozen = bcsub($platformAsset->frozen, self::$amount);
-            $platformAsset->save();
 
             // 如果支出的子类型在配置文件中则需要更新平台资产表的收入
             if (in_array(self::$subType, config('platform_asset.income'))) {
                 // 更新平台余额
                 $platformAsset = PlatformAsset::first();
                 $platformAsset->total_income = bcadd($platformAsset->total_income, self::$amount);
+                $platformAsset->save();
+            } else {
+                // 更新平台冻结与余额
+                $platformAsset = PlatformAsset::first();
+                $platformAsset->balance = bcadd($platformAsset->balance, self::$amount);
+                $platformAsset->frozen = bcsub($platformAsset->frozen, self::$amount);
                 $platformAsset->save();
             }
         } catch (Exception $exception) {
@@ -374,16 +376,17 @@ class UserAssetService
             $userAsset->total_income = bcadd($userAsset->total_income, self::$amount);
             $userAsset->save();
 
-            // 更新平台冻结与余额
-            $platformAsset = PlatformAsset::first();
-            $platformAsset->balance = bcadd($platformAsset->balance, self::$amount);
-            $platformAsset->save();
 
             // 如果用户收入的的子类型,在平台资产配置文件支出类型中则需要更新平台资产表的支出
             if (in_array(self::$subType, config('platform_asset.expend'))) {
                 // 更新平台余额
                 $platformAsset = PlatformAsset::first();
                 $platformAsset->total_expend = bcadd($platformAsset->total_expend, self::$amount);
+                $platformAsset->save();
+            } else {
+                // 更新平台冻结与余额
+                $platformAsset = PlatformAsset::first();
+                $platformAsset->balance = bcadd($platformAsset->balance, self::$amount);
                 $platformAsset->save();
             }
         } catch (Exception $exception) {

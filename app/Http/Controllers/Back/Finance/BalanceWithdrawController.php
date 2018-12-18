@@ -38,9 +38,9 @@ class BalanceWithdrawController extends Controller
             $balanceWithdraw->status = 2;
             $balanceWithdraw->save();
 
-            $userAssetFlow = UserAssetFlow::where('trade_no', $balanceWithdraw->trade_no)->first();
+//            $userAssetFlow = UserAssetFlow::where('trade_no', $balanceWithdraw->trade_no)->first();
 
-            UserAssetService::init(23, $userAssetFlow->user_id, $userAssetFlow->amount, $userAssetFlow->trade_no)->agreeWithdraw();
+            UserAssetService::init(23, $balanceWithdraw->user_id, $balanceWithdraw->real_amount, $balanceWithdraw->trade_no)->agreeWithdraw();
         } catch (Exception $e) {
             DB::rollback();
             return response()->json(['status' => 0, 'message' => '失败' . $e->getMessage()]);
@@ -64,9 +64,9 @@ class BalanceWithdrawController extends Controller
             $balanceWithdraw->status = 3;
             $balanceWithdraw->save();
 
-            $userAssetFlow = UserAssetFlow::where('trade_no', $balanceWithdraw->trade_no)->first();
+//            $userAssetFlow = UserAssetFlow::where('trade_no', $balanceWithdraw->trade_no)->first();
 
-            UserAssetService::init(45, $userAssetFlow->user_id, $userAssetFlow->amount, $userAssetFlow->trade_no)->unfrozen();
+            UserAssetService::init(45, $balanceWithdraw->user_id, $balanceWithdraw->amount, $balanceWithdraw->trade_no)->unfrozen();
         } catch (Exception $e) {
             DB::rollback();
             return response()->json(['status' => 0, 'message' => '失败']);

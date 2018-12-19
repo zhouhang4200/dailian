@@ -141,20 +141,13 @@ Route::group(['middleware' =>  ['auth.admin']], function () {
     Route::prefix('user')->group(function () {
         // 商户列表
         Route::get('/', 'UserController@index')->name('admin.user');
-        Route::post('poundage/setting', 'UserController@poundageSetting')->name('admin.user.poundage-setting');
+        Route::post('poundage/setting', 'UserController@poundageSetting')->name('admin.user.poundage-setting'); // 手续费设置
         Route::get('show', 'UserController@show')->name('admin.user.show'); // 详情
-        Route::get('poundage', 'UserController@poundage')->name('admin.user.poundage'); // 手续费设置
-        Route::post('poundage/store', 'UserController@poundageStore')->name('admin.user.poundage.store'); // 手续费设置
-        Route::post('poundage/update', 'UserController@poundageUpdate')->name('admin.user.poundage.update'); // 手续费设置
-        Route::get('spread', 'UserController@spread')->name('admin.user.spread'); // 推广返利设置
-        Route::post('spread/store', 'UserController@spreadStore')->name('admin.user.spread.store'); // 推广返利设置
-        Route::post('spread/update', 'UserController@spreadUpdate')->name('admin.user.spread.update'); // 推广返利设置
         // 实名认证
         Route::get('certification', 'UserController@certification')->name('admin.user.certification'); // 实名认证列表
         Route::get('certification/{id}', 'UserController@certificationShow')->name('admin.user.certification-show'); // 实名认证信息
         Route::post('certification/pass', 'UserController@certificationPass')->name('admin.user.certification-pass'); // 实名认证通过
         Route::post('certification/refuse', 'UserController@certificationRefuse')->name('admin.user.certification-refuse'); // 实名认证拒绝
-
         // 罚款
         Route::prefix('fine-ticket')->group(function () {
             Route::get('/', 'FineTicketController@index')->name('admin.user.fine-ticket');
